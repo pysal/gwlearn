@@ -61,6 +61,14 @@ jobs:
       - name: spatial versions
         run: 'python -c "import geopandas; geopandas.show_versions();"'
 
+      - name: Download test files
+        run: |
+          python -c '
+          import geodatasets
+
+          geodatasets.fetch("geoda guerry")
+          '
+
       - name: run tests
         run: |
           pytest \
