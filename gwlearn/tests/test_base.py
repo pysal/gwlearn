@@ -361,12 +361,10 @@ def test_fit_with_strict_option(sample_data):
     """Test the strict option for invariant y."""
     X, y, geometry = sample_data
 
-    # Create a situation where y is invariant in some neighborhoods
-    # by using a very large bandwidth (essentially global)
     clf = BaseClassifier(
         RandomForestClassifier,
-        bandwidth=1e10,  # Very large bandwidth
-        fixed=True,
+        bandwidth=X.shape[0] - 1,  # global bandwidth
+        fixed=False,
         strict=True,  # Raise error if invariant
         random_state=42,
     )
@@ -375,37 +373,30 @@ def test_fit_with_strict_option(sample_data):
     # the target is likely varied enough
     clf.fit(X, y, geometry)
 
-    # Now create a situation with truly invariant y
-    # We'll create a small subset with all the same target value
-    same_value_indices = y[y].index[:5]
-    X_same = X.loc[same_value_indices]
-    y_same = y.loc[same_value_indices]
-    geometry_same = geometry.loc[same_value_indices]
-
     clf = BaseClassifier(
         RandomForestClassifier,
-        bandwidth=1e10,  # Very large bandwidth
-        fixed=True,
+        bandwidth=5,  # known to produce invariant subsets
+        fixed=False,
         strict=True,  # Raise error if invariant
         random_state=42,
     )
 
     # This should raise a ValueError due to invariant y
     with pytest.raises(ValueError, match="y at locations .* is invariant"):
-        clf.fit(X_same, y_same, geometry_same)
+        clf.fit(X, y, geometry)
 
     # But with strict=False, it should just warn
     clf = BaseClassifier(
         RandomForestClassifier,
-        bandwidth=1e10,
-        fixed=True,
-        strict=False,  # Just warn if invariant
+        bandwidth=5,
+        fixed=False,
+        strict=None,  # Just warn if invariant
         random_state=42,
     )
 
     # Should complete with a warning
-    # with pytest.warns(UserWarning, match="y at locations .* is invariant"):
-    clf.fit(X_same, y_same, geometry_same)
+    with pytest.warns(UserWarning, match="y at locations .* is invariant"):
+        clf.fit(X, y, geometry)
 
 
 def test_non_point_geometry_raises_error(sample_data):
