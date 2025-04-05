@@ -1,0 +1,17 @@
+---
+name: py311-latest
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - geopandas
+  - libpysal
+  - numpy
+  - scipy
+  - scikit-learn
+  - joblib
+  # testing
+  - pre-commit
+  - pytest
+  - pytest-cov
+  - pytest-xdist

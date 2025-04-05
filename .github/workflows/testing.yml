@@ -1,0 +1,82 @@
+---
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches:
+      - "*"
+  schedule:
+    - cron: "59 23 * * *"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Manual CI Run
+        default: test
+        required: false
+
+jobs:
+  tests:
+    name: ${{ matrix.os }}, ${{ matrix.environment-file }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        environment-file: [
+          py311_oldest,
+          py311_latest,
+          py312_latest,
+          py313_latest,
+          py313_dev,
+        ]
+        include:
+          - environment-file: py313_latest
+            os: macos-13  # Intel
+          - environment-file: py313_latest
+            os: macos-latest  # Apple Silicon
+          - environment-file: py313_latest
+            os: windows-latest
+      fail-fast: false
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags.
+
+      - name: setup micromamba
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: ci/${{ matrix.environment-file }}.yaml
+          micromamba-version: "latest"
+
+      - name: install package
+        run: "pip install -e . --no-deps"
+
+      - name: spatial versions
+        run: 'python -c "import geopandas; geopandas.show_versions();"'
+
+      - name: run tests
+        run: |
+          pytest \
+          gwlearn/ \
+          --verbose \
+          -r a \
+          --numprocesses logical \
+          --color yes \
+          --cov gwlearn \
+          --cov-append \
+          --cov-report term-missing \
+          --cov-report xml . \
+          --env_type ${{ matrix.environment-file }} \
+
+      - name: codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

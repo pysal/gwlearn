@@ -1,0 +1,26 @@
+---
+name: py313-latest
+channels:
+  - conda-forge
+dependencies:
+  - python=3.13
+  - geopandas
+  - libpysal
+  - numpy
+  - scipy
+  - scikit-learn
+  - joblib
+  # testing
+  - pre-commit
+  - pytest
+  - pytest-cov
+  - pytest-xdist
+  # docs
+  - ipykernel
+  - myst-nb
+  - numpydoc
+  - sphinx<8.2
+  - sphinxcontrib-bibtex
+  - sphinx-autosummary-accessors
+  - sphinx-copybutton
+  - sphinx-book-theme

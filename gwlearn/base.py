@@ -1,5 +1,4 @@
 import inspect
-import os
 import warnings
 from collections.abc import Callable, Hashable
 from pathlib import Path
@@ -354,6 +353,9 @@ class BaseClassifier:
                     ),  # local coefficients
                     np.array([np.nan]),  # intercept
                 )
+                feature_imp = None
+            else:
+                score_data = None
                 feature_imp = None
             output = [
                 name,

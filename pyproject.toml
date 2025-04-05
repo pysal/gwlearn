@@ -78,6 +78,8 @@ scipy = ">=1.15.2,<2"
 ipykernel = ">=6.29.5,<7"
 numpy = ">=2.2.4,<3"
 pytest = ">=8.3.5,<9"
+pytest-cov = ">=6.0.0,<7"
+pre-commit = ">=4.2.0,<5"
 
 [tool.pixi.pypi-dependencies]
 gwlearn = { path = ".", editable = true }

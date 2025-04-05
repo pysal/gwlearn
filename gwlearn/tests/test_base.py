@@ -1,9 +1,14 @@
+import io
+import tempfile
+from contextlib import redirect_stdout
 from pathlib import Path
 
 import geopandas as gpd
 import numpy as np
+import pandas as pd
 import pytest
 from geodatasets import get_path
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 
 from gwlearn.base import BaseClassifier, _kernel_functions
@@ -115,7 +120,7 @@ def test_init_oob_scoring_detection():
 
     # Mock model that supports oob_score
     class ModelWithOOB:
-        def __init__(self, oob_score=False, **kwargs):
+        def __init__(self, oob_score=False):
             self.oob_score = oob_score
 
     clf = BaseClassifier(ModelWithOOB, bandwidth=100)
@@ -124,7 +129,7 @@ def test_init_oob_scoring_detection():
 
     # Mock model that doesn't support oob_score
     class ModelWithoutOOB:
-        def __init__(self, **kwargs):
+        def __init__(self):
             pass
 
     clf = BaseClassifier(ModelWithoutOOB, bandwidth=100)
@@ -181,3 +186,473 @@ def test_init_preserve_model_class():
     # The model should be stored as a class, not an instance
     assert clf.model == LogisticRegression
     assert not isinstance(clf.model, LogisticRegression)
+
+
+def test_fit_basic_functionality(sample_data):
+    """Test basic fitting functionality of BaseClassifier."""
+    X, y, geometry = sample_data
+
+    # Create classifier with default params
+    clf = BaseClassifier(
+        RandomForestClassifier,
+        bandwidth=10,
+        fixed=False,
+        random_state=42,  # For reproducibility
+    )
+
+    # Fit the model
+    fitted_clf = clf.fit(X, y, geometry)
+
+    # Test that fitting works and returns self
+    assert fitted_clf is clf
+
+    # Test that the global model was fitted
+    assert hasattr(clf, "global_model")
+    assert isinstance(clf.global_model, RandomForestClassifier)
+
+    # Test that performance metrics were calculated
+    assert hasattr(clf, "score_")
+    assert 0 <= clf.score_ <= 1
+    assert hasattr(clf, "f1_macro_")
+    assert hasattr(clf, "f1_micro_")
+    assert hasattr(clf, "f1_weighted_")
+
+
+def test_fit_with_keep_models(sample_data):
+    """Test fitting with keep_models=True to retain local models."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=10,
+        fixed=False,
+        keep_models=True,
+        random_state=42,
+        max_iter=250,
+    )
+
+    clf.fit(X, y, geometry)
+
+    # Check that local models were kept
+    assert hasattr(clf, "local_models")
+    assert isinstance(clf.local_models, pd.Series)
+    assert len(clf.local_models) > 0
+
+    # Check that each local model is a fitted LogisticRegression
+    for model in clf.local_models:
+        assert isinstance(model, LogisticRegression | None)
+        # Check that the model has been fitted by ensuring it has a coef_ attribute
+        assert (
+            hasattr(model, "coef_") if isinstance(model, LogisticRegression) else True
+        )
+
+
+def test_fit_with_keep_models_path(sample_data):
+    """Test fitting with keep_models as a Path to save models to disk."""
+    X, y, geometry = sample_data
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create a classifier with keep_models as a path
+        clf = BaseClassifier(
+            RandomForestClassifier,
+            bandwidth=10,
+            fixed=False,
+            keep_models=temp_dir,
+            random_state=42,
+        )
+
+        clf.fit(X, y, geometry)
+
+        # Check that models were serialized to disk
+        model_files = list(Path(temp_dir).glob("*"))
+        assert len(model_files) > 0
+
+
+@pytest.mark.parametrize("kernel", _kernel_functions)
+def test_fit_different_kernels(sample_data, kernel):
+    """Test fitting with different kernel functions."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        RandomForestClassifier,
+        bandwidth=10,
+        fixed=False,
+        kernel=kernel,
+        random_state=42,
+    )
+
+    clf.fit(X, y, geometry)
+
+    # Check that the model was fit successfully
+    assert hasattr(clf, "score_")
+    assert 0 <= clf.score_ <= 1
+
+
+def test_fit_fixed_bandwidth(sample_data):
+    """Test fitting with adaptive bandwidth (fixed=False)."""
+    X, y, geometry = sample_data
+
+    # Use a small k for faster testing
+    clf = BaseClassifier(
+        RandomForestClassifier,
+        bandwidth=100_000,  # Use 10 nearest neighbors
+        fixed=True,  # Adaptive bandwidth
+        random_state=42,
+    )
+
+    clf.fit(X, y, geometry)
+
+    # Check that the model was fit successfully
+    assert hasattr(clf, "score_")
+    assert 0 <= clf.score_ <= 1
+
+
+def test_fit_without_global_model(sample_data):
+    """Test fitting without computing a global model."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150_000,
+        fixed=True,
+        fit_global_model=False,
+        random_state=42,
+    )
+
+    clf.fit(X, y, geometry)
+
+    # Check that global model was not fitted
+    assert not hasattr(clf, "global_model")
+
+    # But local results should still be available
+    assert hasattr(clf, "focal_proba_")
+
+
+def test_fit_without_performance_metrics(sample_data):
+    """Test fitting without computing performance metrics."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+        measure_performance=False,
+        random_state=42,
+    )
+
+    clf.fit(X, y, geometry)
+
+    # Check that performance metrics were not computed
+    assert not hasattr(clf, "score_")
+    assert not hasattr(clf, "f1_macro_")
+
+    # But focal probabilities should still be available
+    assert hasattr(clf, "focal_proba_")
+
+
+def test_fit_with_strict_option(sample_data):
+    """Test the strict option for invariant y."""
+    X, y, geometry = sample_data
+
+    # Create a situation where y is invariant in some neighborhoods
+    # by using a very large bandwidth (essentially global)
+    clf = BaseClassifier(
+        RandomForestClassifier,
+        bandwidth=1e10,  # Very large bandwidth
+        fixed=True,
+        strict=True,  # Raise error if invariant
+        random_state=42,
+    )
+
+    # The fit should complete without error because even with large bandwidth,
+    # the target is likely varied enough
+    clf.fit(X, y, geometry)
+
+    # Now create a situation with truly invariant y
+    # We'll create a small subset with all the same target value
+    same_value_indices = y[y].index[:5]
+    X_same = X.loc[same_value_indices]
+    y_same = y.loc[same_value_indices]
+    geometry_same = geometry.loc[same_value_indices]
+
+    clf = BaseClassifier(
+        RandomForestClassifier,
+        bandwidth=1e10,  # Very large bandwidth
+        fixed=True,
+        strict=True,  # Raise error if invariant
+        random_state=42,
+    )
+
+    # This should raise a ValueError due to invariant y
+    with pytest.raises(ValueError, match="y at locations .* is invariant"):
+        clf.fit(X_same, y_same, geometry_same)
+
+    # But with strict=False, it should just warn
+    clf = BaseClassifier(
+        RandomForestClassifier,
+        bandwidth=1e10,
+        fixed=True,
+        strict=False,  # Just warn if invariant
+        random_state=42,
+    )
+
+    # Should complete with a warning
+    with pytest.warns(UserWarning, match="y at locations .* is invariant"):
+        clf.fit(X_same, y_same, geometry_same)
+
+
+def test_non_point_geometry_raises_error(sample_data):
+    """Test that non-point geometries raise an error."""
+    X, y, _ = sample_data
+
+    # Get the original polygons instead of centroids
+    gdf = gpd.read_file(get_path("geoda.guerry"))
+    polygon_geometry = gdf.geometry
+
+    clf = BaseClassifier(LogisticRegression, bandwidth=50000, fixed=True)
+
+    # This should raise a ValueError due to non-point geometries
+    with pytest.raises(ValueError, match="Unsupported geometry type"):
+        clf.fit(X, y, polygon_geometry)
+
+
+def test_fit_with_batch_processing(sample_data):
+    """Test fitting with batch processing enabled."""
+    X, y, geometry = sample_data
+
+    # Create a classifier with a small batch size
+    batch_size = 5
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+        batch_size=batch_size,  # Process in small batches
+        random_state=42,
+    )
+
+    # Capture print output to verify batch processing messages
+    f = io.StringIO()
+    with redirect_stdout(f):
+        clf.fit(X, y, geometry)
+
+    # Get the captured output
+    output = f.getvalue()
+
+    # Test that batch processing messages were printed
+    expected_batches = ((len(X) + batch_size - 1) // batch_size) + 1  # Ceiling division
+    assert f"Processing batch 1 out of {expected_batches}" in output
+
+    # Check that the model was fit successfully
+    assert hasattr(clf, "focal_proba_")
+    assert hasattr(clf, "score_")
+    assert 0 <= clf.score_ <= 1
+
+    # Compare with a model without batching to ensure results are consistent
+    clf_no_batch = BaseClassifier(
+        LogisticRegression, bandwidth=150000, fixed=True, random_state=42
+    )
+    clf_no_batch.fit(X, y, geometry)
+
+    # Results should be similar regardless of batching
+    pd.testing.assert_frame_equal(
+        clf.focal_proba_, clf_no_batch.focal_proba_, check_exact=False, rtol=1e-5
+    )
+
+
+def test_fit_n_jobs_consistency(sample_data):
+    """Test that parallel processing gives the same results as sequential (n_jobs=1)."""
+    X, y, geometry = sample_data
+
+    # Create a classifier with n_jobs=1 (sequential)
+    clf_sequential = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+        n_jobs=1,
+        random_state=42,
+    )
+    clf_sequential.fit(X, y, geometry)
+
+    # Create a classifier with n_jobs=-1 (parallel)
+    clf_parallel = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+        n_jobs=-1,
+        random_state=42,
+    )
+    clf_parallel.fit(X, y, geometry)
+
+    # Check that the results are the same regardless of parallelization
+    pd.testing.assert_frame_equal(
+        clf_sequential.focal_proba_,
+        clf_parallel.focal_proba_,
+        check_exact=False,
+        rtol=1e-5,
+    )
+
+    # Check that performance metrics are also equal
+    assert clf_sequential.score_ == pytest.approx(clf_parallel.score_)
+    assert clf_sequential.f1_macro_ == pytest.approx(clf_parallel.f1_macro_)
+    assert clf_sequential.f1_weighted_ == pytest.approx(clf_parallel.f1_weighted_)
+
+    # Check that global models have the same coefficients
+    np.testing.assert_allclose(
+        clf_sequential.global_model.coef_, clf_parallel.global_model.coef_, rtol=1e-5
+    )
+
+
+def test_predict_proba_basic(sample_data):
+    """Test basic functionality of predict_proba method."""
+    X, y, geometry = sample_data
+
+    # Create and fit classifier with keep_models=True (required for prediction)
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,  # Only fixed bandwidth supports prediction currently
+        keep_models=True,
+        random_state=42,
+    )
+    clf.fit(X, y, geometry)
+
+    # Predict probabilities for first 5 samples
+    proba = clf.predict_proba(X.iloc[:5], geometry.iloc[:5])
+
+    # Check output format
+    assert isinstance(proba, pd.DataFrame)
+    assert proba.shape == (5, 2)  # Binary classification, so 2 columns
+    assert all(column in proba.columns for column in [True, False])
+
+    # Check probability values are valid
+    assert (proba >= 0).all().all()
+    assert (proba <= 1).all().all()
+    assert np.allclose(proba.sum(axis=1), 1.0)
+
+
+def test_predict_basic(sample_data):
+    """Test basic functionality of predict method."""
+    X, y, geometry = sample_data
+
+    # Create and fit classifier with keep_models=True (required for prediction)
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+        keep_models=True,
+        random_state=42,
+    )
+    clf.fit(X, y, geometry)
+
+    # Predict classes for first 5 samples
+    pred = clf.predict(X.iloc[:5], geometry.iloc[:5])
+
+    # Check output format
+    assert isinstance(pred, pd.Series)
+    assert len(pred) == 5
+
+    # Check all predicted values are either True or False
+    assert pred.isin([True, False]).all()
+
+
+def test_predict_with_models_on_disk(sample_data):
+    """Test prediction with models stored on disk."""
+    X, y, geometry = sample_data
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create and fit classifier with keep_models as a path
+        clf = BaseClassifier(
+            LogisticRegression,
+            bandwidth=150000,
+            fixed=True,
+            keep_models=temp_dir,
+            random_state=42,
+        )
+        clf.fit(X, y, geometry)
+
+        # Predict probabilities
+        proba = clf.predict_proba(X.iloc[:5], geometry.iloc[:5])
+
+        # Check output
+        assert isinstance(proba, pd.DataFrame)
+        assert proba.shape == (5, 2)
+
+        # Also test predict method
+        pred = clf.predict(X.iloc[:5], geometry.iloc[:5])
+        assert isinstance(pred, pd.Series)
+        assert len(pred) == 5
+
+
+def test_predict_invalid_geometry(sample_data):
+    """Test that prediction raises error with non-point geometries."""
+    X, y, _ = sample_data
+
+    # Get the original polygons instead of centroids
+    gdf = gpd.read_file(get_path("geoda.guerry"))
+    polygon_geometry = gdf.geometry
+
+    # Create and fit classifier with point geometries
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+        keep_models=True,
+        random_state=42,
+    )
+    clf.fit(X, y, sample_data[2])  # Use point geometries for fitting
+
+    # Attempt to predict with polygon geometries
+    with pytest.raises(ValueError, match="Unsupported geometry type"):
+        clf.predict_proba(X.iloc[:5], polygon_geometry.iloc[:5])
+
+
+def test_predict_comparison_with_focal_proba(sample_data):
+    """Test that prediction for training data matches focal probabilities."""
+    X, y, geometry = sample_data
+
+    # Use small dataset for quicker testing
+    subset_indices = range(10)
+    X_subset = X.iloc[subset_indices]
+    y_subset = y.iloc[subset_indices]
+    geometry_subset = geometry.iloc[subset_indices]
+
+    # Create and fit classifier
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+        keep_models=True,
+        random_state=42,
+    )
+    clf.fit(X_subset, y_subset, geometry_subset)
+
+    # Get predictions for the same data used for training
+    predicted_proba = clf.predict_proba(X_subset, geometry_subset)
+
+    # Compare with focal_proba_ (should be very similar but not identical
+    # because focal_proba_ is calculated during training without using the focal point)
+    pd.testing.assert_series_equal(
+        predicted_proba.loc[1],
+        clf.focal_proba_.loc[1],
+        check_exact=False,
+        rtol=0.05,  # Allow some tolerance because they're not identical
+    )
+
+
+def test_adaptive_kernel_not_implemented(sample_data):
+    """Test that predict_proba raises NotImplementedError with adaptive kernel."""
+    X, y, geometry = sample_data
+
+    # Create and fit classifier with adaptive kernel
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=10,  # KNN
+        fixed=False,  # Adaptive bandwidth
+        keep_models=True,
+        random_state=42,
+    )
+    clf.fit(X, y, geometry)
+
+    # Attempt to predict with adaptive kernel
+    with pytest.raises(NotImplementedError):
+        clf.predict_proba(X.iloc[:5], geometry.iloc[:5])
