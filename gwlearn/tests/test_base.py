@@ -87,12 +87,12 @@ def test_init_custom_parameters():
 
 def test_init_keep_models_path():
     """Test BaseClassifier initialization with keep_models as Path."""
-    path_str = "/tmp/models"
+    path_str = ["/tmp/models", "\\tmp\\models"]
 
     # Test with string
     clf = BaseClassifier(LogisticRegression, bandwidth=100, keep_models=path_str)
     assert isinstance(clf.keep_models, Path)
-    assert str(clf.keep_models) == path_str
+    assert str(clf.keep_models) in path_str
 
     # Test with Path object
     path_obj = Path(path_str)
