@@ -1,0 +1,82 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+
+[project]
+name = "gwlearn"
+dynamic = ["version"]
+license = { text = "BSD 3-Clause" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: GIS",
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "geopandas",
+    "libpysal",
+    "numpy",
+    "scipy",
+    "scikit-learn",
+    "pandas",
+    "joblib",
+]
+
+[tool.setuptools.packages.find]
+include = ["gwlearn", "gwlearn.*"]
+
+[tool.ruff]
+line-length = 88
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "N", "B", "A", "C4", "SIM", "ARG"]
+ignore = ["N803", "N806"] # name {} should be lowercase
+
+[tool.ruff.lint.per-file-ignores]
+ "*__init__.py" = [
+     "F401",  # imported but unused
+     "F403",  # star import; unable to detect undefined names
+ ]
+ "*.ipynb" = [
+    "C408",  # Unnecessary `dict` call
+    "E501",  # Line too long
+    "F401",  # imported but unused
+]
+
+[tool.coverage.run]
+source = ["./gwlearn"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "if self.debug:",
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "except ModuleNotFoundError:",
+    "except ImportError",
+]
+ignore_errors = true
+omit = ["gwlearn/tests/*"]
+
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["linux-64", "osx-arm64", "osx-64", "win-64"]
+
+[tool.pixi.dependencies]
+geopandas = ">=1.0.1,<2"
+libpysal = ">=4.12.1,<5"
+pandas = ">=2.2.3,<3"
+geodatasets = ">=2024.8.0,<2025"
+scikit-learn = ">=1.6.1,<2"
+joblib = ">=1.4.2,<2"
+scipy = ">=1.15.2,<2"
+ipykernel = ">=6.29.5,<7"
+numpy = ">=2.2.4,<3"
+
+[tool.pixi.pypi-dependencies]
+gwlearn = { path = ".", editable = true }
