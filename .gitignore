@@ -175,3 +175,5 @@ cython_debug/
 
 .pixi/
 pixi.lock
+
+docs/source/generated

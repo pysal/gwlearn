@@ -83,6 +83,13 @@ numpy = ">=2.2.4,<3"
 pytest = ">=8.3.5,<9"
 pytest-cov = ">=6.0.0,<7"
 pre-commit = ">=4.2.0,<5"
+numpydoc = ">=1.8.0,<2"
+myst-nb = ">=1.2.0,<2"
+sphinx-copybutton = ">=0.5.2,<0.6"
+sphinx-autosummary-accessors = ">=2025.3.1,<2026"
+sphinx = ">=8.2.3,<9"
+sphinxcontrib-bibtex = ">=2.6.3,<3"
+sphinx-book-theme = ">=1.1.4,<2"
 
 [tool.pixi.pypi-dependencies]
 gwlearn = { path = ".", editable = true }
