@@ -146,6 +146,7 @@ class BaseClassifier:
         self._measure_oob = "oob_score" in inspect.signature(model).parameters
         if self._measure_oob:
             self.model_kwargs["oob_score"] = self._get_score_data
+        self._model_type = None
 
     def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
         """Fit the geographically weighted model
@@ -193,9 +194,7 @@ class BaseClassifier:
         grouper = data.groupby(weights._adjacency.index.get_level_values(0))
 
         invariant = (
-            data["_y"]
-            .groupby(weights._adjacency.index.get_level_values(0))
-            .nunique()
+            data["_y"].groupby(weights._adjacency.index.get_level_values(0)).nunique()
             == 1
         )
         if invariant.any():
