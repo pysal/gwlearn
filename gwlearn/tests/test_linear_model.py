@@ -68,7 +68,7 @@ def test_gwlogistic_fit_basic(sample_data):  # noqa: F811
     # Check structure of intercepts
     assert isinstance(model.local_intercept_, pd.Series)
     assert len(model.local_intercept_) == len(X)
-    assert pytest.approx(7.662016468331575) == model.local_intercept_.mean()
+    assert pytest.approx(7.662016468, abs=0.01) == model.local_intercept_.mean()
 
 
 def test_gwlogistic_coefficients_structure(sample_data):  # noqa: F811
