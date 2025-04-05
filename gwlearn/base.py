@@ -96,9 +96,10 @@ class BaseClassifier:
     fit_global_model : bool, optional
         Determines if the global baseline model shall be fitted alognside
         the geographically weighted, by default True
-    strict : bool, optional
+    strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``,
-        by default False
+        by default None. None is treated as False but provides a warning if there are
+        invariant models.
     keep_models : bool | str | Path, optional
         Keep all local models (required for prediction), by default False. Note that
         for some models, like random forests, the objects can be large. If string or
@@ -120,8 +121,8 @@ class BaseClassifier:
         n_jobs: int = -1,
         fit_global_model: bool = True,
         measure_performance: bool = True,
-        strict: bool | str | Path = False,
-        keep_models: bool = False,
+        strict: bool | None = False,
+        keep_models: bool | str | Path = False,
         temp_folder: str | None = None,
         batch_size: int | None = None,
         min_proportion: float = 0.2,
@@ -201,7 +202,7 @@ class BaseClassifier:
                 raise ValueError(
                     f"y at locations {invariant.index[invariant]} is invariant."
                 )
-            else:
+            elif self.strict is None:
                 warnings.warn(
                     f"y at locations {invariant.index[invariant]} is invariant.",
                     stacklevel=3,
@@ -289,19 +290,23 @@ class BaseClassifier:
             self.focal_pred_ = self.focal_proba_[True][~nan_mask] > 0.5
             masked_y = y[~nan_mask]
             self.score_ = metrics.accuracy_score(masked_y, self.focal_pred_)
-            self.precision_ = metrics.precision_score(masked_y, self.focal_pred_)
-            self.recall_ = metrics.recall_score(masked_y, self.focal_pred_)
+            self.precision_ = metrics.precision_score(
+                masked_y, self.focal_pred_, zero_division=0
+            )
+            self.recall_ = metrics.recall_score(
+                masked_y, self.focal_pred_, zero_division=0
+            )
             self.balanced_accuracy_ = metrics.balanced_accuracy_score(
                 masked_y, self.focal_pred_
             )
             self.f1_macro_ = metrics.f1_score(
-                masked_y, self.focal_pred_, average="macro"
+                masked_y, self.focal_pred_, average="macro", zero_division=0
             )
             self.f1_micro_ = metrics.f1_score(
-                masked_y, self.focal_pred_, average="micro"
+                masked_y, self.focal_pred_, average="micro", zero_division=0
             )
             self.f1_weighted_ = metrics.f1_score(
-                masked_y, self.focal_pred_, average="weighted"
+                masked_y, self.focal_pred_, average="weighted", zero_division=0
             )
 
         return self
