@@ -63,7 +63,7 @@ def test_gwlogistic_fit_basic(sample_data):  # noqa: F811
             index=["Crm_prs", "Litercy", "Wealth"],
         ),
         check_exact=False,
-        atol=-0.001,
+        atol=0.001,
     )
 
     # Check structure of intercepts
