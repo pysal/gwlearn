@@ -1,10 +1,7 @@
 import contextlib
 from importlib.metadata import PackageNotFoundError, version
 
-from .bandwidth_search import BandwidthSearch
-from .base import BaseClassifier
-from .ensemble import GWRandomForestClassifier, GWGradientBoostingClassifier
-from .linear_model import GWLogisticRegression
+from . import base, ensemble, linear_model, search
 
 with contextlib.suppress(PackageNotFoundError):
     __version__ = version("gwlearn")
