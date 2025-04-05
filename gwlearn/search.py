@@ -67,7 +67,7 @@ class BandwidthSearch:
         elif self.search_method == "golden_section":
             self._golden_section(X=X, y=y, geometry=geometry, tolerance=self.tolerance)
 
-        self.optimal_bandwidth = self.scores.idxmin()
+        self.optimal_bandwidth_ = self.scores_.idxmin()
 
         return self
 
@@ -194,7 +194,7 @@ class BandwidthSearch:
 
             diff = np.abs(score_b - score_d)
 
-        self.scores = pd.Series(scores, name="oob_score")
+        self.scores_ = pd.Series(scores, name="oob_score")
 
     def _aic(self, k, _, log_likelihood):
         return 2 * k - 2 * log_likelihood

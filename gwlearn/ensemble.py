@@ -25,8 +25,6 @@ class GWRandomForestClassifier(BaseClassifier):
         min_proportion: float = 0.2,
         **kwargs,
     ):
-        self._model_type = "random_forest"
-
         super().__init__(
             model=RandomForestClassifier,
             bandwidth=bandwidth,
@@ -42,6 +40,12 @@ class GWRandomForestClassifier(BaseClassifier):
             min_proportion=min_proportion,
             **kwargs,
         )
+
+        self._model_type = "random_forest"
+        self.model_kwargs["oob_score"] = self._get_score_data
+
+    def _get_score_data(self, true, pred):
+        return true, pred
 
     def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
         super().fit(X=X, y=y, geometry=geometry)
@@ -63,13 +67,13 @@ class GWRandomForestClassifier(BaseClassifier):
             self.oob_balanced_accuracy_ = metrics.balanced_accuracy_score(
                 all_true, all_pred
             )
-            self.oob_f1_macro = metrics.f1_score(
+            self.oob_f1_macro_ = metrics.f1_score(
                 all_true, all_pred, average="macro", zero_division=0
             )
-            self.oob_f1_micro = metrics.f1_score(
+            self.oob_f1_micro_ = metrics.f1_score(
                 all_true, all_pred, average="micro", zero_division=0
             )
-            self.oob_f1_weighted = metrics.f1_score(
+            self.oob_f1_weighted_ = metrics.f1_score(
                 all_true, all_pred, average="weighted", zero_division=0
             )
 
@@ -121,8 +125,6 @@ class GWGradientBoostingClassifier(BaseClassifier):
         batch_size: int | None = None,
         **kwargs,
     ):
-        self._model_type = "gradient_boosting"
-
         super().__init__(
             model=GradientBoostingClassifier,
             bandwidth=bandwidth,
@@ -137,6 +139,8 @@ class GWGradientBoostingClassifier(BaseClassifier):
             batch_size=batch_size,
             **kwargs,
         )
+
+        self._model_type = "gradient_boosting"
 
     def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
         super().fit(X=X, y=y, geometry=geometry)

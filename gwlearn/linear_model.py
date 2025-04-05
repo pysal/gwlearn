@@ -24,8 +24,6 @@ class GWLogisticRegression(BaseClassifier):
         batch_size: int | None = None,
         **kwargs,
     ):
-        self._model_type = "logistic"
-
         super().__init__(
             model=LogisticRegression,
             bandwidth=bandwidth,
@@ -40,6 +38,8 @@ class GWLogisticRegression(BaseClassifier):
             batch_size=batch_size,
             **kwargs,
         )
+
+        self._model_type = "logistic"
 
     def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
         super().fit(X=X, y=y, geometry=geometry)
@@ -67,9 +67,9 @@ class GWLogisticRegression(BaseClassifier):
             self.pred_f1_macropred_balanced_accuracy_ = metrics.balanced_accuracy_score(
                 all_true, all_pred
             )
-            self.pred_f1_macro = metrics.f1_score(all_true, all_pred, average="macro")
-            self.pred_f1_micro = metrics.f1_score(all_true, all_pred, average="micro")
-            self.pred_f1_weighted = metrics.f1_score(
+            self.pred_f1_macro_ = metrics.f1_score(all_true, all_pred, average="macro")
+            self.pred_f1_micro_ = metrics.f1_score(all_true, all_pred, average="micro")
+            self.pred_f1_weighted_ = metrics.f1_score(
                 all_true, all_pred, average="weighted"
             )
 

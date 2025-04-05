@@ -143,9 +143,6 @@ class BaseClassifier:
         self.temp_folder = temp_folder
         self.batch_size = batch_size
         self.min_proportion = min_proportion
-        self._measure_oob = "oob_score" in inspect.signature(model).parameters
-        if self._measure_oob:
-            self.model_kwargs["oob_score"] = self._get_score_data
         self._model_type = None
 
     def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
@@ -276,7 +273,7 @@ class BaseClassifier:
         self.focal_proba_ = pd.DataFrame(focal_proba, index=self._names)
 
         if self.fit_global_model:
-            if self._measure_oob:
+            if self._model_type == "random_forest":
                 self.model_kwargs["oob_score"] = True
             # fit global model as a baseline
             if "n_jobs" in inspect.signature(self.model).parameters:
@@ -347,7 +344,10 @@ class BaseClassifier:
             skip = (vc.iloc[1] / vc.iloc[0]) < self.min_proportion
         if skip:
             if self._model_type in ["random_forest", "gradient_boosting"]:
-                score_data = (np.array([]).reshape(-1, 1), np.array([]))
+                if self._model_type == "random_forest":
+                    score_data = (np.array([]).reshape(-1, 1), np.array([]))
+                else:
+                    score_data = np.nan
                 feature_imp = np.array([np.nan] * (data.shape[1] - 2))
             elif self._model_type == "logistic":
                 score_data = (
@@ -430,9 +430,6 @@ class BaseClassifier:
             del local_model
 
         return output
-
-    def _get_score_data(self, true, pred):
-        return true, pred
 
     def predict_proba(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.DataFrame:
         """Predict probabiliies using the ensemble of local models

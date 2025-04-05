@@ -115,32 +115,8 @@ def test_init_kernel_validation():
     assert clf.kernel == custom_kernel
 
 
-def test_init_oob_scoring_detection():
-    """Test that BaseClassifier correctly detects and configures OOB scoring."""
-
-    # Mock model that supports oob_score
-    class ModelWithOOB:
-        def __init__(self, oob_score=False):
-            self.oob_score = oob_score
-
-    clf = BaseClassifier(ModelWithOOB, bandwidth=100)
-    assert clf._measure_oob is True
-    assert "oob_score" in clf.model_kwargs
-
-    # Mock model that doesn't support oob_score
-    class ModelWithoutOOB:
-        def __init__(self):
-            pass
-
-    clf = BaseClassifier(ModelWithoutOOB, bandwidth=100)
-    assert clf._measure_oob is False
-    assert "oob_score" not in clf.model_kwargs
-
-
-def test_init_with_real_data(sample_data):
+def test_init_with_real_data():
     """Test BaseClassifier initialization with real data."""
-    X, y, geometry = sample_data
-
     # Create classifier with default params
     clf = BaseClassifier(LogisticRegression, bandwidth=50000, fixed=True)
 
@@ -231,6 +207,7 @@ def test_fit_with_keep_models(sample_data):
         random_state=42,
         max_iter=250,
         strict=False,  # To avoid warnings on invariance
+        n_jobs=1,
     )
 
     clf.fit(X, y, geometry)
@@ -262,6 +239,7 @@ def test_fit_with_keep_models_path(sample_data):
             keep_models=temp_dir,
             random_state=42,
             strict=False,  # To avoid warnings on invariance
+            n_jobs=1,
         )
 
         clf.fit(X, y, geometry)
