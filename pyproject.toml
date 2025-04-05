@@ -7,6 +7,9 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "gwlearn"
 dynamic = ["version"]
+authors = [
+   { name = "Martin Fleischmann", email = "martin@martinfleischmann.net" },
+]
 license = { text = "BSD 3-Clause" }
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -83,3 +86,8 @@ pre-commit = ">=4.2.0,<5"
 
 [tool.pixi.pypi-dependencies]
 gwlearn = { path = ".", editable = true }
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore:The 'shapely.geos' module is deprecated*:DeprecationWarning",
+]
