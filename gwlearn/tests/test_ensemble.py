@@ -1,12 +1,8 @@
-import geopandas as gpd
-import numpy as np
 import pandas as pd
 import pytest
 
 from gwlearn.ensemble import GWGradientBoostingClassifier, GWRandomForestClassifier
 from gwlearn.tests.test_base import sample_data  # noqa: F401
-
-# ----------------------- Tests for GWRandomForestClassifier ----------------------- #
 
 
 def test_gwrf_init():
@@ -138,9 +134,6 @@ def test_gwrf_global_oob_metrics(sample_data):  # noqa: F811
     assert pytest.approx(0.601803603) == model.oob_f1_weighted_
 
 
-# ----------------------- Tests for GWGradientBoostingClassifier ----------------------- #
-
-
 def test_gwgb_init():
     """Test GWGradientBoostingClassifier initialization."""
     model = GWGradientBoostingClassifier(bandwidth=100)
@@ -169,7 +162,7 @@ def test_gwgb_init():
 
 
 def test_gwgb_fit_basic(sample_data):  # noqa: F811
-    """Test that GWGradientBoostingClassifier fit method works and creates expected attributes."""
+    """Test that GWGradientBoostingClassifier fit method works as expected."""
     X, y, geometry = sample_data
 
     model = GWGradientBoostingClassifier(

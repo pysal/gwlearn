@@ -1,4 +1,3 @@
-import geopandas as gpd
 import numpy as np
 import pandas as pd
 import pytest
@@ -31,7 +30,7 @@ def test_gwlogistic_init():
 
 
 def test_gwlogistic_fit_basic(sample_data):  # noqa: F811
-    """Test that GWLogisticRegression fit method works and creates expected attributes."""
+    """Test that GWLogisticRegression fit method works and as expected."""
     X, y, geometry = sample_data
 
     model = GWLogisticRegression(
@@ -90,7 +89,8 @@ def test_gwlogistic_coefficients_structure(sample_data):  # noqa: F811
     # Check that coefficient names match feature names
     assert all(col in model.local_coef_.columns for col in X.columns)
 
-    # Pick a sample location and check consistency between local_coef_ and the stored model
+    # Pick a sample location and check consistency between local_coef_
+    # and the stored model
     sample_loc = model.local_models.index[0]
     local_model = model.local_models[sample_loc]
 

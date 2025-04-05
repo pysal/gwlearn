@@ -90,6 +90,7 @@ sphinx-autosummary-accessors = ">=2025.3.1,<2026"
 sphinx = ">=8.2.3,<9"
 sphinxcontrib-bibtex = ">=2.6.3,<3"
 sphinx-book-theme = ">=1.1.4,<2"
+ruff = ">=0.11.4,<0.12"
 
 [tool.pixi.pypi-dependencies]
 gwlearn = { path = ".", editable = true }
