@@ -61,6 +61,7 @@ def test_gwrf_fit_basic(sample_data):  # noqa: F811
             index=["Crm_prs", "Litercy", "Wealth"],
         ),
         check_exact=False,
+        atol=-0.001,
     )
 
 
