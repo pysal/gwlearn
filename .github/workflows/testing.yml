@@ -25,7 +25,6 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         environment-file: [
-          py311_oldest,
           py311_latest,
           py312_latest,
           py313_latest,
@@ -74,7 +73,6 @@ jobs:
           --cov-append \
           --cov-report term-missing \
           --cov-report xml . \
-          --env_type ${{ matrix.environment-file }} \
 
       - name: codecov
         uses: codecov/codecov-action@v4
