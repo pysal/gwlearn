@@ -501,6 +501,7 @@ def test_predict_proba_basic(sample_data):
         keep_models=True,
         random_state=42,
         strict=False,  # To avoid warnings on invariance
+        max_iter=500,
     )
     clf.fit(X, y, geometry)
 
@@ -530,6 +531,7 @@ def test_predict_proba_adaptive(sample_data):
         keep_models=True,
         random_state=42,
         strict=False,  # To avoid warnings on invariance
+        max_iter=500,
     )
     clf.fit(X, y, geometry)
 
