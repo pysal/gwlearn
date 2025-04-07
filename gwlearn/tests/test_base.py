@@ -496,7 +496,36 @@ def test_predict_proba_basic(sample_data):
     clf = BaseClassifier(
         LogisticRegression,
         bandwidth=150000,
-        fixed=True,  # Only fixed bandwidth supports prediction currently
+        fixed=True,
+        keep_models=True,
+        random_state=42,
+        strict=False,  # To avoid warnings on invariance
+    )
+    clf.fit(X, y, geometry)
+
+    # Predict probabilities for first 5 samples
+    proba = clf.predict_proba(X.iloc[:5], geometry.iloc[:5])
+
+    # Check output format
+    assert isinstance(proba, pd.DataFrame)
+    assert proba.shape == (5, 2)  # Binary classification, so 2 columns
+    assert all(column in proba.columns for column in [True, False])
+
+    # Check probability values are valid
+    assert (proba >= 0).all().all()
+    assert (proba <= 1).all().all()
+    assert np.allclose(proba.sum(axis=1), 1.0)
+
+
+def test_predict_proba_adaptive(sample_data):
+    """Test basic functionality of predict_proba method using adaptive kernel."""
+    X, y, geometry = sample_data
+
+    # Create and fit classifier with keep_models=True (required for prediction)
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=7,
+        fixed=False,
         keep_models=True,
         random_state=42,
         strict=False,  # To avoid warnings on invariance

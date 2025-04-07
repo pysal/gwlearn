@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed, dump, load
 from libpysal import graph
+from scipy.spatial import KDTree
 from sklearn import metrics
 
 # TODO: predict_proba for adaptive kernel
@@ -483,7 +484,23 @@ class BaseClassifier:
                 self.bandwidth,
             )
         else:
-            raise NotImplementedError
+            training_coords = self._geometry.get_coordinates()
+            tree = KDTree(training_coords)
+            query_coords = geometry.get_coordinates()
+
+            distances, indices_array = tree.query(query_coords, k=self.bandwidth)
+
+            # Flatten arrays for consistent format
+            input_ids = np.repeat(np.arange(len(geometry)), self.bandwidth)
+            local_ids = indices_array.flatten()
+            distances = distances.flatten()
+
+            # For adaptive KNN, determine the bandwidth for each neighborhood
+            # by finding the max distance in each neighborhood
+            kernel_bandwidth = (
+                pd.Series(distances).groupby(input_ids).transform("max") + 1e-6
+            )  # can't have 0
+            distance = _kernel_functions[self.kernel](distances, kernel_bandwidth)
 
         split_indices = np.where(np.diff(input_ids))[0] + 1
         local_model_ids = np.split(local_ids, split_indices)
