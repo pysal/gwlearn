@@ -60,20 +60,28 @@ class GWLogisticRegression(BaseClassifier):
             all_true = np.concat(true)
             all_pred = np.concat(pred)
 
-            # global OOB scores
+            # global pred scores
             self.pred_score_ = metrics.accuracy_score(all_true, all_pred)
-            self.pred_precision_ = metrics.precision_score(all_true, all_pred)
-            self.pred_recall_ = metrics.recall_score(all_true, all_pred)
+            self.pred_precision_ = metrics.precision_score(
+                all_true, all_pred, zero_division=0
+            )
+            self.pred_recall_ = metrics.recall_score(
+                all_true, all_pred, zero_division=0
+            )
             self.pred_f1_macropred_balanced_accuracy_ = metrics.balanced_accuracy_score(
                 all_true, all_pred
             )
-            self.pred_f1_macro_ = metrics.f1_score(all_true, all_pred, average="macro")
-            self.pred_f1_micro_ = metrics.f1_score(all_true, all_pred, average="micro")
+            self.pred_f1_macro_ = metrics.f1_score(
+                all_true, all_pred, average="macro", zero_division=0
+            )
+            self.pred_f1_micro_ = metrics.f1_score(
+                all_true, all_pred, average="micro", zero_division=0
+            )
             self.pred_f1_weighted_ = metrics.f1_score(
-                all_true, all_pred, average="weighted"
+                all_true, all_pred, average="weighted", zero_division=0
             )
 
-            # local OOB scores
+            # local pred scores
             local_score = pd.DataFrame(
                 [
                     _scores(y_true, y_false)
