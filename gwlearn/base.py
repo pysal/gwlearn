@@ -11,12 +11,12 @@ from libpysal import graph
 from scipy.spatial import KDTree
 from sklearn import metrics
 
-# TODO: formal documentation
-# TODO: comments in code
 # TODO: better handling of verbosity
 # TODO: summary
 # TODO: repr
 # TODO: better type hinting (Literal etc)
+# TODO: formal documentation
+# TODO: comments in code
 
 __all__ = ["BaseClassifier"]
 
@@ -123,6 +123,7 @@ class BaseClassifier:
         temp_folder: str | None = None,
         batch_size: int | None = None,
         min_proportion: float = 0.2,
+        verbose: bool = False,
         **kwargs,
     ):
         self.model = model
@@ -140,6 +141,7 @@ class BaseClassifier:
         self.temp_folder = temp_folder
         self.batch_size = batch_size
         self.min_proportion = min_proportion
+        self.verbose = verbose
         self._model_type = None
 
     def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
@@ -228,10 +230,11 @@ class BaseClassifier:
                 ]
                 batch_X = X.values[batch_indices]
 
-                print(
-                    f"Processing batch {i // self.batch_size + 1} "
-                    f"out of {(num_groups // self.batch_size) + 1}."
-                )
+                if self.verbose:
+                    print(
+                        f"Processing batch {i // self.batch_size + 1} "
+                        f"out of {(num_groups // self.batch_size) + 1}."
+                    )
                 batch_training_output = Parallel(
                     n_jobs=self.n_jobs, temp_folder=self.temp_folder
                 )(

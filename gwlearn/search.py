@@ -44,7 +44,7 @@ class BandwidthSearch:
         interval: int | float | None = None,
         max_iterations: int = 100,
         tolerance: float = 1e-2,
-        verbose: bool = False,
+        verbose: bool | int = False,
         **kwargs,
     ) -> None:
         self.model = model
@@ -89,12 +89,12 @@ class BandwidthSearch:
             fit_global_model=False,
             measure_performance=False,
             strict=False,
+            verbose=self.verbose == 2,
             **self.model_kwargs,
         ).fit(X=X, y=y, geometry=geometry)
         mask = (gwm._n_labels < 2) | np.isnan(gwm.focal_proba_).any(axis=1)
         log_likelihood = -metrics.log_loss(y[~mask], gwm.focal_proba_[~mask])
         n, k = X[~mask].shape
-        print(log_likelihood, n, k)
 
         match self.criterion:
             case "aic":
