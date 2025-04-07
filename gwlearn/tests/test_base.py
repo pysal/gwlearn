@@ -654,26 +654,6 @@ def test_predict_comparison_with_focal_proba(sample_data):
     )
 
 
-def test_adaptive_kernel_not_implemented(sample_data):
-    """Test that predict_proba raises NotImplementedError with adaptive kernel."""
-    X, y, geometry = sample_data
-
-    # Create and fit classifier with adaptive kernel
-    clf = BaseClassifier(
-        LogisticRegression,
-        bandwidth=10,  # KNN
-        fixed=False,  # Adaptive bandwidth
-        keep_models=True,
-        random_state=42,
-        strict=False,  # To avoid warnings on invariance
-    )
-    clf.fit(X, y, geometry)
-
-    # Attempt to predict with adaptive kernel
-    with pytest.raises(NotImplementedError):
-        clf.predict_proba(X.iloc[:5], geometry.iloc[:5])
-
-
 def test_binary_target_zero_one(sample_data):
     """Test that 0/1 target values are correctly recognized as binary."""
     X, y, geometry = sample_data

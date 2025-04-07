@@ -11,8 +11,6 @@ from libpysal import graph
 from scipy.spatial import KDTree
 from sklearn import metrics
 
-# TODO: predict_proba for adaptive kernel
-# TODO: UndefinedMetricWarning
 # TODO: formal documentation
 # TODO: comments in code
 # TODO: better handling of verbosity
@@ -567,10 +565,10 @@ def _scores(y_true, y_pred):
 
     return (
         metrics.accuracy_score(y_true, y_pred),
-        metrics.precision_score(y_true, y_pred),
-        metrics.recall_score(y_true, y_pred),
+        metrics.precision_score(y_true, y_pred, zero_division=0),
+        metrics.recall_score(y_true, y_pred, zero_division=0),
         metrics.balanced_accuracy_score(y_true, y_pred),
-        metrics.f1_score(y_true, y_pred, average="macro"),
-        metrics.f1_score(y_true, y_pred, average="micro"),
-        metrics.f1_score(y_true, y_pred, average="weighted"),
+        metrics.f1_score(y_true, y_pred, average="macro", zero_division=0),
+        metrics.f1_score(y_true, y_pred, average="micro", zero_division=0),
+        metrics.f1_score(y_true, y_pred, average="weighted", zero_division=0),
     )
