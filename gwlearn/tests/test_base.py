@@ -643,3 +643,70 @@ def test_adaptive_kernel_not_implemented(sample_data):
     # Attempt to predict with adaptive kernel
     with pytest.raises(NotImplementedError):
         clf.predict_proba(X.iloc[:5], geometry.iloc[:5])
+
+
+def test_binary_target_zero_one(sample_data):
+    """Test that 0/1 target values are correctly recognized as binary."""
+    X, y, geometry = sample_data
+
+    # Create a 0/1 encoded target
+    y_01 = y.astype(int)
+
+    clf = BaseClassifier(
+        RandomForestClassifier,
+        bandwidth=150000,
+        fixed=True,
+        random_state=42,
+        strict=False,
+    )
+
+    # Should run without errors
+    fitted_clf = clf.fit(X, y_01, geometry)
+    assert fitted_clf is clf
+
+    # Check that performance metrics were calculated
+    assert hasattr(clf, "score_")
+    assert 0 <= clf.score_ <= 1
+
+    # propagation to prediction
+    pd.testing.assert_index_equal(clf.focal_proba_.columns, pd.Index([0, 1]))
+
+
+def test_non_binary_target_raises_error(sample_data):
+    """Test that non-binary target variables raise an error."""
+    X, _, geometry = sample_data
+
+    # Create a non-binary target with values 1, 2, 3
+    y_non_binary = pd.Series(np.random.choice([1, 2, 3], size=len(X)), index=X.index)
+
+    clf = BaseClassifier(
+        RandomForestClassifier,
+        bandwidth=150000,
+        fixed=True,
+        random_state=42,
+        strict=False,
+    )
+
+    # This should raise a ValueError due to non-binary target
+    with pytest.raises(ValueError, match="Only binary dependent variable is supported"):
+        clf.fit(X, y_non_binary, geometry)
+
+
+def test_binary_with_string_values_raises_error(sample_data):
+    """Test that binary target with string values raises an error."""
+    X, _, geometry = sample_data
+
+    # Create a binary target with string values
+    y_str = pd.Series(np.random.choice(["yes", "no"], size=len(X)), index=X.index)
+
+    clf = BaseClassifier(
+        RandomForestClassifier,
+        bandwidth=150000,
+        fixed=True,
+        random_state=42,
+        strict=False,
+    )
+
+    # This should raise a ValueError due to string values
+    with pytest.raises(ValueError, match="Only binary dependent variable is supported"):
+        clf.fit(X, y_str, geometry)

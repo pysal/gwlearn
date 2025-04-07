@@ -10,16 +10,14 @@ from joblib import Parallel, delayed, dump, load
 from libpysal import graph
 from sklearn import metrics
 
-# TODO: testing
+# TODO: predict_proba for adaptive kernel
+# TODO: UndefinedMetricWarning
 # TODO: formal documentation
 # TODO: comments in code
 # TODO: better handling of verbosity
 # TODO: summary
 # TODO: repr
-# TODO: predict_proba for adaptive kernel
 # TODO: better type hinting (Literal etc)
-# TODO: catch non-binary cases
-# TODO: UndefinedMetricWarning
 
 __all__ = ["BaseClassifier"]
 
@@ -157,10 +155,25 @@ class BaseClassifier:
         geometry : gpd.GeoSeries
             Geographic location
         """
+
+        def _is_binary(series: pd.Series) -> bool:
+            """Check if a pandas Series encodes a binary variable (bool or 0/1)."""
+            unique_values = set(series.unique())
+
+            # Check for boolean type
+            if series.dtype == bool or unique_values.issubset({True, False}):
+                return True
+
+            # Check for 0, 1 encoding
+            return bool(unique_values.issubset({0, 1}))
+
         if not (geometry.geom_type == "Point").all():
             raise ValueError(
                 "Unsupported geometry type. Only point geometry is allowed."
             )
+
+        if not _is_binary(y):
+            raise ValueError("Only binary dependent variable is supported.")
 
         # build graph
         if self.fixed:  # fixed distance
@@ -282,9 +295,11 @@ class BaseClassifier:
             self.global_model.fit(X=X, y=y)
 
         if self.measure_performance:
+            # support both bool and 0, 1 encoding of binary variable
+            col = True if True in self.focal_proba_.columns else 1
             # global GW accuracy
-            nan_mask = self.focal_proba_[True].isna()
-            self.focal_pred_ = self.focal_proba_[True][~nan_mask] > 0.5
+            nan_mask = self.focal_proba_[col].isna()
+            self.focal_pred_ = self.focal_proba_[col][~nan_mask] > 0.5
             masked_y = y[~nan_mask]
             self.score_ = metrics.accuracy_score(masked_y, self.focal_pred_)
             self.precision_ = metrics.precision_score(
