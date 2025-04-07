@@ -410,6 +410,7 @@ def test_fit_with_batch_processing(sample_data):
         batch_size=batch_size,  # Process in small batches
         random_state=42,
         strict=False,  # To avoid warnings on invariance
+        verbose=True,
     )
 
     # Capture print output to verify batch processing messages

@@ -11,7 +11,6 @@ from libpysal import graph
 from scipy.spatial import KDTree
 from sklearn import metrics
 
-# TODO: better handling of verbosity
 # TODO: summary
 # TODO: repr
 # TODO: better type hinting (Literal etc)
