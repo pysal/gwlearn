@@ -6,7 +6,6 @@ from pathlib import Path
 import geopandas as gpd
 import numpy as np
 import pandas as pd
-from imblearn.under_sampling import RandomUnderSampler
 from joblib import Parallel, delayed, dump, load
 from libpysal import graph
 from scipy.spatial import KDTree
@@ -147,6 +146,14 @@ class BaseClassifier:
         self.random_state = random_state
         self.verbose = verbose
         self._model_type = None
+
+        if undersample:
+            try:
+                from imblearn.under_sampling import RandomUnderSampler  # noqa: F401
+            except ImportError as err:
+                raise ImportError(
+                    "imbalance-learn is required for undersampling."
+                ) from err
 
     def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
         """Fit the geographically weighted model
@@ -358,6 +365,9 @@ class BaseClassifier:
         tuple
             name, fitted model
         """
+        if self.undersample:
+            from imblearn.under_sampling import RandomUnderSampler
+
         vc = data["_y"].value_counts()
         n_labels = len(vc)
         skip = n_labels == 1

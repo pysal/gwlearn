@@ -26,9 +26,14 @@ dependencies = [
     "numpy",
     "scipy",
     "scikit-learn",
-    "imbalanced-learn",
     "pandas",
     "joblib",
+]
+
+
+[project.optional-dependencies]
+optional = [
+    "imbalanced-learn",
 ]
 
 [tool.setuptools.packages.find]
