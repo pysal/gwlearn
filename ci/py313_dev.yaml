@@ -6,6 +6,8 @@ dependencies:
   - python=3.13
   - git
   - pip
+  # optional
+  - imbalanced-learn
   # testing
   - geodatasets
   - pre-commit
