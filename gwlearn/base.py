@@ -394,11 +394,11 @@ class BaseClassifier:
 
         local_model = model(**model_kwargs)
 
+        X = data.drop(columns=["_y", "_weight"])
+        y = data["_y"]
         if self.undersample:
             rus = RandomUnderSampler()
             X, y = rus.fit_resample(X, y)
-        X = data.drop(columns=["_y", "_weight"])
-        y = data["_y"]
         local_model.fit(
             X=X,
             y=y,
