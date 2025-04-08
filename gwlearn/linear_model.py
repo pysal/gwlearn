@@ -22,6 +22,7 @@ class GWLogisticRegression(BaseClassifier):
         keep_models: bool = False,
         temp_folder: str | None = None,
         batch_size: int | None = None,
+        undersample: bool = False,
         **kwargs,
     ):
         super().__init__(
@@ -36,6 +37,7 @@ class GWLogisticRegression(BaseClassifier):
             keep_models=keep_models,
             temp_folder=temp_folder,
             batch_size=batch_size,
+            undersample=undersample,
             **kwargs,
         )
 

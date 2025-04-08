@@ -10,6 +10,7 @@ from joblib import Parallel, delayed, dump, load
 from libpysal import graph
 from scipy.spatial import KDTree
 from sklearn import metrics
+from imblearn.under_sampling import RandomUnderSampler
 
 # TODO: summary
 # TODO: repr
@@ -122,6 +123,7 @@ class BaseClassifier:
         temp_folder: str | None = None,
         batch_size: int | None = None,
         min_proportion: float = 0.2,
+        undersample: bool = False,
         verbose: bool = False,
         **kwargs,
     ):
@@ -140,6 +142,7 @@ class BaseClassifier:
         self.temp_folder = temp_folder
         self.batch_size = batch_size
         self.min_proportion = min_proportion
+        self.undersample = undersample
         self.verbose = verbose
         self._model_type = None
 
@@ -390,6 +393,10 @@ class BaseClassifier:
             return output
 
         local_model = model(**model_kwargs)
+
+        if self.undersample:
+            rus = RandomUnderSampler()
+            X, y = rus.fit_resample(X, y)
         X = data.drop(columns=["_y", "_weight"])
         y = data["_y"]
         local_model.fit(

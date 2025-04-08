@@ -23,6 +23,7 @@ class GWRandomForestClassifier(BaseClassifier):
         temp_folder: str | None = None,
         batch_size: int | None = None,
         min_proportion: float = 0.2,
+        undersample: bool = False,
         **kwargs,
     ):
         super().__init__(
@@ -38,6 +39,7 @@ class GWRandomForestClassifier(BaseClassifier):
             temp_folder=temp_folder,
             batch_size=batch_size,
             min_proportion=min_proportion,
+            undersample=undersample,
             **kwargs,
         )
 

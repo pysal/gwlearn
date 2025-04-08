@@ -91,6 +91,7 @@ sphinx = ">=8.2.3,<9"
 sphinxcontrib-bibtex = ">=2.6.3,<3"
 sphinx-book-theme = ">=1.1.4,<2"
 ruff = ">=0.11.4,<0.12"
+imbalanced-learn = ">=0.13.0,<0.14"
 
 [tool.pixi.pypi-dependencies]
 gwlearn = { path = ".", editable = true }
