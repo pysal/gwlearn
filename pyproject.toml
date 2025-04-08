@@ -26,6 +26,7 @@ dependencies = [
     "numpy",
     "scipy",
     "scikit-learn",
+    "imbalanced-learn",
     "pandas",
     "joblib",
 ]

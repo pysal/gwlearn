@@ -722,3 +722,136 @@ def test_binary_with_string_values_raises_error(sample_data):
     # This should raise a ValueError due to string values
     with pytest.raises(ValueError, match="Only binary dependent variable is supported"):
         clf.fit(X, y_str, geometry)
+
+
+def test_undersample_boolean(sample_data):
+    """Test fitting with undersample=True option."""
+    X, y, geometry = sample_data
+
+    # Create a classifier with undersample enabled
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+        undersample=True,
+        random_state=42,
+        strict=False,
+        max_iter=500,
+    )
+
+    # Fit should complete successfully
+    clf.fit(X, y, geometry)
+
+    # Check that the model was fit successfully
+    assert hasattr(clf, "score_")
+    assert 0 <= clf.score_ <= 1
+
+
+def test_undersample_ratio(sample_data):
+    """Test fitting with undersample as a float ratio."""
+    X, y, geometry = sample_data
+
+    # Create a classifier with undersample ratio
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+        undersample=0.9,
+        random_state=42,
+        strict=False,
+        max_iter=500,
+    )
+
+    # Fit should complete successfully
+    clf.fit(X, y, geometry)
+
+    # Check that the model was fit successfully
+    assert hasattr(clf, "score_")
+    assert 0 <= clf.score_ <= 1
+
+
+def test_random_state_consistency(sample_data):
+    """Test that same random_state produces consistent results."""
+    X, y, geometry = sample_data
+
+    # Create two classifiers with same random_state
+    clf1 = BaseClassifier(
+        RandomForestClassifier,
+        bandwidth=150000,
+        fixed=True,
+        random_state=42,
+        strict=False,
+    )
+    clf1.fit(X, y, geometry)
+
+    clf2 = BaseClassifier(
+        RandomForestClassifier,
+        bandwidth=150000,
+        fixed=True,
+        random_state=42,
+        strict=False,
+    )
+    clf2.fit(X, y, geometry)
+
+    # Results should be identical
+    pd.testing.assert_frame_equal(clf1.focal_proba_, clf2.focal_proba_)
+    assert clf1.score_ == clf2.score_
+
+
+def test_different_random_states(sample_data):
+    """Test that different random_states produce different results."""
+    X, y, geometry = sample_data
+
+    # Create two classifiers with different random_states
+    clf1 = BaseClassifier(
+        RandomForestClassifier,
+        bandwidth=10,
+        fixed=False,
+        random_state=42,
+        strict=False,
+    )
+    clf1.fit(X, y, geometry)
+
+    clf2 = BaseClassifier(
+        RandomForestClassifier,
+        bandwidth=10,
+        fixed=False,
+        random_state=99,
+        strict=False,
+    )
+    clf2.fit(X, y, geometry)
+
+    # Results should be different
+    assert not clf1.focal_proba_.equals(clf2.focal_proba_)
+
+
+def test_random_state_with_undersample(sample_data):
+    """Test that random_state affects undersample consistently."""
+    X, y, geometry = sample_data
+
+    # Create two classifiers with same random_state and undersample
+    clf1 = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+        undersample=True,
+        random_state=42,
+        strict=False,
+        max_iter=500,
+    )
+    clf1.fit(X, y, geometry)
+
+    clf2 = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+        undersample=True,
+        random_state=42,
+        strict=False,
+        max_iter=500,
+    )
+    clf2.fit(X, y, geometry)
+
+    # Results should be identical
+    pd.testing.assert_frame_equal(clf1.focal_proba_, clf2.focal_proba_)
+    assert clf1.score_ == clf2.score_

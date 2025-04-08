@@ -6,11 +6,11 @@ from pathlib import Path
 import geopandas as gpd
 import numpy as np
 import pandas as pd
+from imblearn.under_sampling import RandomUnderSampler
 from joblib import Parallel, delayed, dump, load
 from libpysal import graph
 from scipy.spatial import KDTree
 from sklearn import metrics
-from imblearn.under_sampling import RandomUnderSampler
 
 # TODO: summary
 # TODO: repr
@@ -124,6 +124,7 @@ class BaseClassifier:
         batch_size: int | None = None,
         min_proportion: float = 0.2,
         undersample: bool = False,
+        random_state: int | None = None,
         verbose: bool = False,
         **kwargs,
     ):
@@ -143,6 +144,7 @@ class BaseClassifier:
         self.batch_size = batch_size
         self.min_proportion = min_proportion
         self.undersample = undersample
+        self.random_state = random_state
         self.verbose = verbose
         self._model_type = None
 
@@ -392,12 +394,17 @@ class BaseClassifier:
                 output.append(None)
             return output
 
-        local_model = model(**model_kwargs)
+        local_model = model(random_state=self.random_state, **model_kwargs)
 
         if self.undersample:
-            rus = RandomUnderSampler()
+            if isinstance(self.undersample, float):
+                rus = RandomUnderSampler(
+                    sampling_strategy=self.undersample, random_state=self.random_state
+                )
+            else:
+                rus = RandomUnderSampler(random_state=self.random_state)
             data, _ = rus.fit_resample(data, data["_y"])
-            
+
         X = data.drop(columns=["_y", "_weight"])
         y = data["_y"]
 
