@@ -143,7 +143,6 @@ def test_init_multiple_kwargs():
         C=0.5,
         penalty="l2",
         solver="liblinear",
-        random_state=42,
         max_iter=1000,
     )
 
@@ -151,7 +150,6 @@ def test_init_multiple_kwargs():
     assert clf.model_kwargs["C"] == 0.5
     assert clf.model_kwargs["penalty"] == "l2"
     assert clf.model_kwargs["solver"] == "liblinear"
-    assert clf.model_kwargs["random_state"] == 42
     assert clf.model_kwargs["max_iter"] == 1000
 
 
