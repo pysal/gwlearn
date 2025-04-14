@@ -93,6 +93,8 @@ class BandwidthSearch:
             **self.model_kwargs,
         ).fit(X=X, y=y, geometry=geometry)
         mask = (gwm._n_labels < 2) | np.isnan(gwm.focal_proba_).any(axis=1)
+        if mask.all():
+            return np.inf
         log_likelihood = -metrics.log_loss(y[~mask], gwm.focal_proba_[~mask])
         n, k = X[~mask].shape
 
