@@ -84,7 +84,7 @@ class BaseClassifier:
     fixed : bool, optional
         True for distance based bandwidth and False for adaptive (nearest neighbor)
         bandwidth, by default False
-    kernel : str, optional
+    kernel : str | Callable, optional
         type of kernel function used to weight observations, by default "bisquare"
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors
@@ -92,18 +92,31 @@ class BaseClassifier:
     fit_global_model : bool, optional
         Determines if the global baseline model shall be fitted alognside
         the geographically weighted, by default True
+    measure_performance : bool, optional
+        Calculate performance metrics for the model, by default True
     strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``,
-        by default None. None is treated as False but provides a warning if there are
+        by default False. None is treated as False but provides a warning if there are
         invariant models.
     keep_models : bool | str | Path, optional
         Keep all local models (required for prediction), by default False. Note that
         for some models, like random forests, the objects can be large. If string or
         Path is provided, the local models are not held in memory but serialized to
         the disk from which they are loaded in prediction.
-    temp_folder : str, optional
+    temp_folder : str | None, optional
         Folder to be used by the pool for memmapping large arrays for sharing memory
-        with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``.
+        with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default
+        None
+    batch_size : int | None, optional
+        Number of models to process in each batch, by default None
+    min_proportion : float, optional
+        Minimum proportion of minority class for a model to be fitted, by default 0.2
+    undersample : bool, optional
+        Whether to apply random undersampling to balance classes, by default False
+    random_state : int | None, optional
+        Random seed for reproducibility, by default None
+    verbose : bool, optional
+        Whether to print progress information, by default False
     **kwargs
         Additional keyword arguments passed to ``model`` initialisation
     """
@@ -208,38 +221,37 @@ class BaseClassifier:
             self.keep_models.mkdir(exist_ok=True)
 
         self._global_classes = np.unique(y)
+
         # fit the models
-        data = X.copy()
-        data["_y"] = y
-        data = data.loc[weights._adjacency.index.get_level_values(1)]
-        data["_weight"] = weights._adjacency.values
-        grouper = data.groupby(weights._adjacency.index.get_level_values(0))
-
-        invariant = (
-            data["_y"].groupby(weights._adjacency.index.get_level_values(0)).nunique()
-            == 1
-        )
-        if invariant.any():
-            if self.strict:
-                raise ValueError(
-                    f"y at locations {invariant.index[invariant]} is invariant."
-                )
-            elif self.strict is None:
-                warnings.warn(
-                    f"y at locations {invariant.index[invariant]} is invariant.",
-                    stacklevel=3,
-                )
-
         if self.batch_size:
             training_output = []
-            num_groups = len(list(grouper))
+            num_groups = len(geometry)
             indices = np.arange(num_groups)
             for i in range(0, num_groups, self.batch_size):
                 batch_indices = indices[i : i + self.batch_size]
-                batch_grouper = [
-                    item for j, item in enumerate(grouper) if j in batch_indices
-                ]
-                batch_X = X.values[batch_indices]
+                subset_weights = weights._adjacency.loc[batch_indices, :]
+                data = X.copy()
+                data["_y"] = y
+                data = data.loc[subset_weights.index.get_level_values(1)]
+                data["_weight"] = subset_weights.values
+                grouper = data.groupby(subset_weights.index.get_level_values(0))
+
+                invariant = (
+                    data["_y"]
+                    .groupby(subset_weights.index.get_level_values(0))
+                    .nunique()
+                    == 1
+                )
+                if invariant.any():
+                    if self.strict:
+                        raise ValueError(
+                            f"y at locations {invariant.index[invariant]} is invariant."
+                        )
+                    elif self.strict is None:
+                        warnings.warn(
+                            f"y at locations {invariant.index[invariant]} is invariant.",
+                            stacklevel=3,
+                        )
 
                 if self.verbose:
                     print(
@@ -257,11 +269,34 @@ class BaseClassifier:
                         self.model_kwargs,
                     )
                     for (name, group), focal_x in zip(
-                        batch_grouper, batch_X, strict=False
+                        grouper, X.values[batch_indices], strict=False
                     )
                 )
                 training_output.extend(batch_training_output)
         else:
+            data = X.copy()
+            data["_y"] = y
+            data = data.loc[weights._adjacency.index.get_level_values(1)]
+            data["_weight"] = weights._adjacency.values
+            grouper = data.groupby(weights._adjacency.index.get_level_values(0))
+
+            invariant = (
+                data["_y"]
+                .groupby(weights._adjacency.index.get_level_values(0))
+                .nunique()
+                == 1
+            )
+            if invariant.any():
+                if self.strict:
+                    raise ValueError(
+                        f"y at locations {invariant.index[invariant]} is invariant."
+                    )
+                elif self.strict is None:
+                    warnings.warn(
+                        f"y at locations {invariant.index[invariant]} is invariant.",
+                        stacklevel=3,
+                    )
+
             training_output = Parallel(
                 n_jobs=self.n_jobs, temp_folder=self.temp_folder
             )(
