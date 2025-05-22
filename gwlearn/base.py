@@ -108,7 +108,8 @@ class BaseClassifier:
         with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default
         None
     batch_size : int | None, optional
-        Number of models to process in each batch, by default None
+        Number of models to process in each batch. Specify batch_size fi your models do
+        not fit into memory. By default None
     min_proportion : float, optional
         Minimum proportion of minority class for a model to be fitted, by default 0.2
     undersample : bool, optional
@@ -228,87 +229,28 @@ class BaseClassifier:
             num_groups = len(geometry)
             indices = np.arange(num_groups)
             for i in range(0, num_groups, self.batch_size):
-                batch_indices = indices[i : i + self.batch_size]
-                subset_weights = weights._adjacency.loc[batch_indices, :]
-                data = X.copy()
-                data["_y"] = y
-                data = data.loc[subset_weights.index.get_level_values(1)]
-                data["_weight"] = subset_weights.values
-                grouper = data.groupby(subset_weights.index.get_level_values(0))
-
-                invariant = (
-                    data["_y"]
-                    .groupby(subset_weights.index.get_level_values(0))
-                    .nunique()
-                    == 1
-                )
-                if invariant.any():
-                    if self.strict:
-                        raise ValueError(
-                            f"y at locations {invariant.index[invariant]} is invariant."
-                        )
-                    elif self.strict is None:
-                        warnings.warn(
-                            f"y at locations {invariant.index[invariant]} is invariant.",
-                            stacklevel=3,
-                        )
 
                 if self.verbose:
                     print(
                         f"Processing batch {i // self.batch_size + 1} "
                         f"out of {(num_groups // self.batch_size) + 1}."
                     )
-                batch_training_output = Parallel(
-                    n_jobs=self.n_jobs, temp_folder=self.temp_folder
-                )(
-                    delayed(self._fit_local)(
-                        self.model,
-                        group,
-                        name,
-                        focal_x,
-                        self.model_kwargs,
-                    )
-                    for (name, group), focal_x in zip(
-                        grouper, X.values[batch_indices], strict=False
-                    )
-                )
+
+                batch_indices = indices[i : i + self.batch_size]
+                subset_weights = weights._adjacency.loc[batch_indices, :]
+
+                index = subset_weights.index
+                _weight = subset_weights.values
+                X_focals = X.values[batch_indices]
+
+                batch_training_output = self._batch_fit(X, y, index, _weight, X_focals)
                 training_output.extend(batch_training_output)
         else:
-            data = X.copy()
-            data["_y"] = y
-            data = data.loc[weights._adjacency.index.get_level_values(1)]
-            data["_weight"] = weights._adjacency.values
-            grouper = data.groupby(weights._adjacency.index.get_level_values(0))
+            index = weights._adjacency.index
+            _weight = weights._adjacency.values
+            X_focals = X.values
 
-            invariant = (
-                data["_y"]
-                .groupby(weights._adjacency.index.get_level_values(0))
-                .nunique()
-                == 1
-            )
-            if invariant.any():
-                if self.strict:
-                    raise ValueError(
-                        f"y at locations {invariant.index[invariant]} is invariant."
-                    )
-                elif self.strict is None:
-                    warnings.warn(
-                        f"y at locations {invariant.index[invariant]} is invariant.",
-                        stacklevel=3,
-                    )
-
-            training_output = Parallel(
-                n_jobs=self.n_jobs, temp_folder=self.temp_folder
-            )(
-                delayed(self._fit_local)(
-                    self.model,
-                    group,
-                    name,
-                    focal_x,
-                    self.model_kwargs,
-                )
-                for (name, group), focal_x in zip(grouper, X.values, strict=False)
-            )
+            training_output = self._batch_fit(X, y, index, _weight, X_focals)
 
         if self.keep_models:
             (
@@ -371,12 +313,70 @@ class BaseClassifier:
 
         return self
 
+    def _batch_fit(
+        self,
+        X: pd.DataFrame,
+        y: pd.Series,
+        index: pd.MultiIndex,
+        _weight: np.ndarray,
+        X_focals: np.ndarray,
+    ) -> list:
+        """Fit a batch of local models
+
+        Parameters
+        ----------
+        X : pandas.DataFrame
+            Feature matrix containing the predictor variables.
+        y : pandas.Series or numpy.ndarray
+            Target variable to be predicted.
+        index : pandas.MultiIndex
+            Two-level index where the first level identifies groups and the second level
+            identifies observations within groups.
+        _weight : pandas.Series or numpy.ndarray
+            Observation weights to be used in the local model fitting.
+        X_focals : list of pandas.DataFrame
+            List of focal points for each group at which to evaluate the local model.
+
+        Returns
+        -------
+        _type_
+            _description_
+        """
+        data = X.copy()
+        data["_y"] = y
+        data = data.loc[index.get_level_values(1)]
+        data["_weight"] = _weight
+        grouper = data.groupby(index.get_level_values(0))
+
+        invariant = data["_y"].groupby(index.get_level_values(0)).nunique() == 1
+        if invariant.any():
+            if self.strict:
+                raise ValueError(
+                    f"y at locations {invariant.index[invariant]} is invariant."
+                )
+            elif self.strict is None:
+                warnings.warn(
+                    f"y at locations {invariant.index[invariant]} is invariant.",
+                    stacklevel=3,
+                )
+
+        return Parallel(n_jobs=self.n_jobs, temp_folder=self.temp_folder)(
+            delayed(self._fit_local)(
+                self.model,
+                group,
+                name,
+                focal_x,
+                self.model_kwargs,
+            )
+            for (name, group), focal_x in zip(grouper, X_focals, strict=False)
+        )
+
     def _fit_local(
         self,
         model,
         data: pd.DataFrame,
         name: Hashable,
-        focal_x,
+        focal_x: np.ndarray,
         model_kwargs: dict,
     ) -> tuple:
         """Fit individual local model
