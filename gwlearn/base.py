@@ -2,6 +2,7 @@ import inspect
 import warnings
 from collections.abc import Callable, Hashable
 from pathlib import Path
+from typing import Literal
 
 import geopandas as gpd
 import numpy as np
@@ -20,37 +21,37 @@ from sklearn import metrics
 __all__ = ["BaseClassifier"]
 
 
-def _triangular(distances, bandwidth):
+def _triangular(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
     u = np.clip(distances / bandwidth, 0, 1)
     return 1 - u
 
 
-def _parabolic(distances, bandwidth):
+def _parabolic(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
     u = np.clip(distances / bandwidth, 0, 1)
     return 0.75 * (1 - u**2)
 
 
-def _gaussian(distances, bandwidth):
+def _gaussian(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
     u = distances / bandwidth
     return np.exp(-((u / 2) ** 2)) / (np.sqrt(2) * np.pi)
 
 
-def _bisquare(distances, bandwidth):
+def _bisquare(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
     u = np.clip(distances / bandwidth, 0, 1)
     return (15 / 16) * (1 - u**2) ** 2
 
 
-def _cosine(distances, bandwidth):
+def _cosine(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
     u = np.clip(distances / bandwidth, 0, 1)
     return (np.pi / 4) * np.cos(np.pi / 2 * u)
 
 
-def _exponential(distances, bandwidth):
+def _exponential(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
     u = distances / bandwidth
     return np.exp(-u)
 
 
-def _boxcar(distances, bandwidth):
+def _boxcar(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
     r = (distances < bandwidth).astype(int)
     return r
 
@@ -125,9 +126,19 @@ class BaseClassifier:
     def __init__(
         self,
         model,
-        bandwidth: int | float,
+        *,
+        bandwidth: float,
         fixed: bool = False,
-        kernel: str | Callable = "bisquare",
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            "gaussian",
+            "bisquare",
+            "cosine",
+            "boxcar",
+            "exponential",
+        ]
+        | Callable = "bisquare",
         n_jobs: int = -1,
         fit_global_model: bool = True,
         measure_performance: bool = True,
@@ -169,7 +180,9 @@ class BaseClassifier:
                     "imbalance-learn is required for undersampling."
                 ) from err
 
-    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
+    def fit(
+        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries
+    ) -> "BaseClassifier":
         """Fit the geographically weighted model
 
         Parameters
@@ -580,7 +593,13 @@ class BaseClassifier:
 
         return pd.DataFrame(probabilities, columns=self._global_classes, index=X.index)
 
-    def _predict_proba(self, x_, models_, distances_, columns):
+    def _predict_proba(
+        self,
+        x_: np.ndarray,
+        models_: np.ndarray,
+        distances_: np.ndarray,
+        columns: pd.Index,
+    ) -> pd.Series:
         x_ = pd.DataFrame(np.array(x_).reshape(1, -1), columns=columns)
         pred = []
         for i in models_:
@@ -615,13 +634,13 @@ class BaseClassifier:
         weighted = weighted / weighted.sum()
         return pd.Series(weighted, index=pred.columns)
 
-    def predict(self, X, geometry):
+    def predict(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.Series:
         proba = self.predict_proba(X, geometry)
 
         return proba.idxmax(axis=1)
 
 
-def _scores(y_true, y_pred):
+def _scores(y_true: np.ndarray, y_pred: np.ndarray) -> tuple:
     if y_true.shape[0] == 0:
         return np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan
 

@@ -1,4 +1,6 @@
 from collections.abc import Callable
+from pathlib import Path
+from typing import Literal
 
 import geopandas as gpd
 import numpy as np
@@ -10,20 +12,85 @@ from .base import BaseClassifier, _scores
 
 
 class GWRandomForestClassifier(BaseClassifier):
+    """Generic geographically weighted random forest classifier
+
+    NOTE: local models leave out focal, unlike in traditional approaches. This allows
+    assessment of geographically weighted metrics on unseen data without a need for
+    train/test split, hence providing value for all samples. This is needed for
+    futher spatial analysis of the model performance (and generalises to models
+    that do not support OOB scoring).
+
+    Parameters
+    ----------
+    bandwidth : int | float
+        bandwidth value consisting of either a distance or N nearest neighbors
+    fixed : bool, optional
+        True for distance based bandwidth and False for adaptive (nearest neighbor)
+        bandwidth, by default False
+    kernel : str | Callable, optional
+        type of kernel function used to weight observations, by default "bisquare"
+    n_jobs : int, optional
+        The number of jobs to run in parallel. ``-1`` means using all processors
+        by default ``-1``
+    fit_global_model : bool, optional
+        Determines if the global baseline model shall be fitted alognside
+        the geographically weighted, by default True
+    measure_performance : bool, optional
+        Calculate performance metrics for the model, by default True
+    strict : bool | None, optional
+        Do not fit any models if at least one neighborhood has invariant ``y``,
+        by default False. None is treated as False but provides a warning if there are
+        invariant models.
+    keep_models : bool | str | Path, optional
+        Keep all local models (required for prediction), by default False. Note that
+        for some models, like random forests, the objects can be large. If string or
+        Path is provided, the local models are not held in memory but serialized to
+        the disk from which they are loaded in prediction.
+    temp_folder : str | None, optional
+        Folder to be used by the pool for memmapping large arrays for sharing memory
+        with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default
+        None
+    batch_size : int | None, optional
+        Number of models to process in each batch. Specify batch_size fi your models do
+        not fit into memory. By default None
+    min_proportion : float, optional
+        Minimum proportion of minority class for a model to be fitted, by default 0.2
+    undersample : bool, optional
+        Whether to apply random undersampling to balance classes, by default False
+    random_state : int | None, optional
+        Random seed for reproducibility, by default None
+    verbose : bool, optional
+        Whether to print progress information, by default False
+    **kwargs
+        Additional keyword arguments passed to ``model`` initialisation
+    """
+
     def __init__(
         self,
-        bandwidth: int | float,
+        *,
+        bandwidth: float,
         fixed: bool = False,
-        kernel: str | Callable = "bisquare",
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            "gaussian",
+            "bisquare",
+            "cosine",
+            "boxcar",
+            "exponential",
+        ]
+        | Callable = "bisquare",
         n_jobs: int = -1,
         fit_global_model: bool = True,
         measure_performance: bool = True,
-        strict: bool = False,
-        keep_models: bool = False,
+        strict: bool | None = False,
+        keep_models: bool | str | Path = False,
         temp_folder: str | None = None,
         batch_size: int | None = None,
         min_proportion: float = 0.2,
         undersample: bool = False,
+        random_state: int | None = None,
+        verbose: bool = False,
         **kwargs,
     ):
         super().__init__(
@@ -40,6 +107,8 @@ class GWRandomForestClassifier(BaseClassifier):
             batch_size=batch_size,
             min_proportion=min_proportion,
             undersample=undersample,
+            random_state=random_state,
+            verbose=verbose,
             **kwargs,
         )
 
@@ -49,7 +118,20 @@ class GWRandomForestClassifier(BaseClassifier):
     def _get_score_data(self, true, pred):
         return true, pred
 
-    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
+    def fit(
+        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries
+    ) -> "GWRandomForestClassifier":
+        """Fit the geographically weighted model
+
+        Parameters
+        ----------
+        X : pd.DataFrame
+            Independent variables
+        y : pd.Series
+            Dependent variable
+        geometry : gpd.GeoSeries
+            Geographic location
+        """
         super().fit(X=X, y=y, geometry=geometry)
 
         if self.measure_performance:
@@ -113,6 +195,59 @@ class GWRandomForestClassifier(BaseClassifier):
 
 
 class GWGradientBoostingClassifier(BaseClassifier):
+    """Generic geographically weighted gradient boosting classifier
+
+    NOTE: local models leave out focal, unlike in traditional approaches. This allows
+    assessment of geographically weighted metrics on unseen data without a need for
+    train/test split, hence providing value for all samples. This is needed for
+    futher spatial analysis of the model performance (and generalises to models
+    that do not support OOB scoring).
+
+    Parameters
+    ----------
+    bandwidth : int | float
+        bandwidth value consisting of either a distance or N nearest neighbors
+    fixed : bool, optional
+        True for distance based bandwidth and False for adaptive (nearest neighbor)
+        bandwidth, by default False
+    kernel : str | Callable, optional
+        type of kernel function used to weight observations, by default "bisquare"
+    n_jobs : int, optional
+        The number of jobs to run in parallel. ``-1`` means using all processors
+        by default ``-1``
+    fit_global_model : bool, optional
+        Determines if the global baseline model shall be fitted alognside
+        the geographically weighted, by default True
+    measure_performance : bool, optional
+        Calculate performance metrics for the model, by default True
+    strict : bool | None, optional
+        Do not fit any models if at least one neighborhood has invariant ``y``,
+        by default False. None is treated as False but provides a warning if there are
+        invariant models.
+    keep_models : bool | str | Path, optional
+        Keep all local models (required for prediction), by default False. Note that
+        for some models, like random forests, the objects can be large. If string or
+        Path is provided, the local models are not held in memory but serialized to
+        the disk from which they are loaded in prediction.
+    temp_folder : str | None, optional
+        Folder to be used by the pool for memmapping large arrays for sharing memory
+        with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default
+        None
+    batch_size : int | None, optional
+        Number of models to process in each batch. Specify batch_size fi your models do
+        not fit into memory. By default None
+    min_proportion : float, optional
+        Minimum proportion of minority class for a model to be fitted, by default 0.2
+    undersample : bool, optional
+        Whether to apply random undersampling to balance classes, by default False
+    random_state : int | None, optional
+        Random seed for reproducibility, by default None
+    verbose : bool, optional
+        Whether to print progress information, by default False
+    **kwargs
+        Additional keyword arguments passed to ``model`` initialisation
+    """
+
     def __init__(
         self,
         bandwidth: int | float,
@@ -144,7 +279,20 @@ class GWGradientBoostingClassifier(BaseClassifier):
 
         self._model_type = "gradient_boosting"
 
-    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
+    def fit(
+        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries
+    ) -> "GWGradientBoostingClassifier":
+        """Fit the geographically weighted model
+
+        Parameters
+        ----------
+        X : pd.DataFrame
+            Independent variables
+        y : pd.Series
+            Dependent variable
+        geometry : gpd.GeoSeries
+            Geographic location
+        """
         super().fit(X=X, y=y, geometry=geometry)
 
         if self.measure_performance:
