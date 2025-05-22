@@ -10,11 +10,9 @@ import pandas as pd
 from joblib import Parallel, delayed, dump, load
 from libpysal import graph
 from scipy.spatial import KDTree
-from sklearn import metrics
+from sklearn import metrics, utils
 
 # TODO: summary
-# TODO: repr
-# TODO: better type hinting (Literal etc)
 # TODO: formal documentation
 # TODO: comments in code
 
@@ -292,8 +290,10 @@ class BaseClassifier:
                 self.model_kwargs["oob_score"] = True
             # fit global model as a baseline
             if "n_jobs" in inspect.signature(self.model).parameters:
-                self.model_kwargs["n_jobs"] = self.n_jobs
-            self.global_model = self.model(**self.model_kwargs)
+                self.global_model = self.model(n_jobs=self.n_jobs, **self.model_kwargs)
+            else:
+                self.global_model = self.model(**self.model_kwargs)
+
             self.global_model.fit(X=X, y=y)
 
         if self.measure_performance:
@@ -638,6 +638,104 @@ class BaseClassifier:
         proba = self.predict_proba(X, geometry)
 
         return proba.idxmax(axis=1)
+
+    def __repr__(self) -> str:
+        """Return a string representation of the BaseClassifier instance"""
+        # Get the class name
+        class_name = self.__class__.__name__
+
+        # Core parameters to display
+        params = []
+
+        # Add model type if available
+        if class_name == "BaseClassifier" and hasattr(self, "model"):
+            if hasattr(self.model, "__name__"):
+                params.append(f"model={self.model.__name__}")
+            else:
+                params.append(f"model={self.model}")
+
+        # Add key parameters
+        params.append(f"bandwidth={self.bandwidth}")
+
+        if self.fixed:
+            params.append("fixed=True")
+
+        if self.kernel != "bisquare":
+            if callable(self.kernel):
+                params.append(f"kernel={self.kernel.__name__}")
+            else:
+                params.append(f"kernel='{self.kernel}'")
+
+        if self.n_jobs != -1:
+            params.append(f"n_jobs={self.n_jobs}")
+
+        if not self.fit_global_model:
+            params.append("fit_global_model=False")
+
+        if not self.measure_performance:
+            params.append("measure_performance=False")
+
+        if self.strict is not False:
+            params.append(f"strict={self.strict}")
+
+        if self.keep_models:
+            if isinstance(self.keep_models, Path):
+                params.append(f"keep_models='{self.keep_models}'")
+            else:
+                params.append("keep_models=True")
+
+        if self.batch_size is not None:
+            params.append(f"batch_size={self.batch_size}")
+
+        if self.min_proportion != 0.2:
+            params.append(f"min_proportion={self.min_proportion}")
+
+        if self.undersample:
+            params.append("undersample=True")
+
+        if self.random_state is not None:
+            params.append(f"random_state={self.random_state}")
+
+        if self.verbose:
+            params.append("verbose=True")
+
+        # Add any additional model kwargs (limit to avoid overly long repr)
+        if self.model_kwargs:
+            # Show only a few key kwargs to keep repr readable
+            important_kwargs = [
+                "max_depth",
+                "n_estimators",
+                "C",
+                "alpha",
+                "learning_rate",
+            ]
+            shown_kwargs = {
+                k: v for k, v in self.model_kwargs.items() if k in important_kwargs
+            }
+            if len(self.model_kwargs) <= 3:
+                # Show all if there are only a few
+                for k, v in self.model_kwargs.items():
+                    if isinstance(v, str):
+                        params.append(f"{k}='{v}'")
+                    else:
+                        params.append(f"{k}={v}")
+            elif shown_kwargs:
+                for k, v in shown_kwargs.items():
+                    if isinstance(v, str):
+                        params.append(f"{k}='{v}'")
+                    else:
+                        params.append(f"{k}={v}")
+
+        # Join parameters with proper formatting
+        param_str = ",\n".join(f"    {param}" for param in params)
+
+        if len(params) > 3:  # Multi-line format for many parameters
+            return f"{class_name}(\n{param_str}\n)"
+        else:  # Single line for few parameters
+            return f"{class_name}({', '.join(params)})"
+
+    def _repr_html_(self):
+        return utils.estimator_html_repr(self)
 
 
 def _scores(y_true: np.ndarray, y_pred: np.ndarray) -> tuple:
