@@ -229,7 +229,6 @@ class BaseClassifier:
             num_groups = len(geometry)
             indices = np.arange(num_groups)
             for i in range(0, num_groups, self.batch_size):
-
                 if self.verbose:
                     print(
                         f"Processing batch {i // self.batch_size + 1} "
