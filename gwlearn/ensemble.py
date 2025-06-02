@@ -12,13 +12,7 @@ from .base import BaseClassifier, _scores
 
 
 class GWRandomForestClassifier(BaseClassifier):
-    """Generic geographically weighted random forest classifier
-
-    NOTE: local models leave out focal, unlike in traditional approaches. This allows
-    assessment of geographically weighted metrics on unseen data without a need for
-    train/test split, hence providing value for all samples. This is needed for
-    futher spatial analysis of the model performance (and generalises to models
-    that do not support OOB scoring).
+    """Geographically weighted random forest classifier
 
     Parameters
     ----------
@@ -29,6 +23,13 @@ class GWRandomForestClassifier(BaseClassifier):
         bandwidth, by default False
     kernel : str | Callable, optional
         type of kernel function used to weight observations, by default "bisquare"
+    include_focal : bool, optional
+        Include focal in the local model training. Excluding it allows
+        assessment of geographically weighted metrics on unseen data without a need for
+        train/test split, hence providing value for all samples. This is needed for
+        futher spatial analysis of the model performance (and generalises to models
+        that do not support OOB scoring). However, it leaves out the most representative
+        sample. By default False
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
@@ -80,6 +81,7 @@ class GWRandomForestClassifier(BaseClassifier):
             "exponential",
         ]
         | Callable = "bisquare",
+        include_focal: bool = False,
         n_jobs: int = -1,
         fit_global_model: bool = True,
         measure_performance: bool = True,
@@ -98,6 +100,7 @@ class GWRandomForestClassifier(BaseClassifier):
             bandwidth=bandwidth,
             fixed=fixed,
             kernel=kernel,
+            include_focal=include_focal,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
             measure_performance=measure_performance,
@@ -195,13 +198,7 @@ class GWRandomForestClassifier(BaseClassifier):
 
 
 class GWGradientBoostingClassifier(BaseClassifier):
-    """Generic geographically weighted gradient boosting classifier
-
-    NOTE: local models leave out focal, unlike in traditional approaches. This allows
-    assessment of geographically weighted metrics on unseen data without a need for
-    train/test split, hence providing value for all samples. This is needed for
-    futher spatial analysis of the model performance (and generalises to models
-    that do not support OOB scoring).
+    """Geographically weighted gradient boosting classifier
 
     Parameters
     ----------
@@ -212,6 +209,13 @@ class GWGradientBoostingClassifier(BaseClassifier):
         bandwidth, by default False
     kernel : str | Callable, optional
         type of kernel function used to weight observations, by default "bisquare"
+    include_focal : bool, optional
+        Include focal in the local model training. Excluding it allows
+        assessment of geographically weighted metrics on unseen data without a need for
+        train/test split, hence providing value for all samples. This is needed for
+        futher spatial analysis of the model performance (and generalises to models
+        that do not support OOB scoring). However, it leaves out the most representative
+        sample. By default False
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
@@ -253,6 +257,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
         bandwidth: int | float,
         fixed: bool = False,
         kernel: str | Callable = "bisquare",
+        include_focal: bool = False,
         n_jobs: int = -1,
         fit_global_model: bool = True,
         measure_performance: bool = True,
@@ -267,6 +272,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
             bandwidth=bandwidth,
             fixed=fixed,
             kernel=kernel,
+            include_focal=include_focal,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
             measure_performance=measure_performance,

@@ -1081,3 +1081,39 @@ def test_repr_after_fitting(sample_data):
 
     # Should be the same representation
     assert repr_before == repr_after
+
+
+def test_fit_focal_inclusion(sample_data):
+    """Test basic fitting functionality of BaseClassifier."""
+    X, y, geometry = sample_data
+
+    # Create classifier with default params
+    no_focal = BaseClassifier(
+        RandomForestClassifier,
+        bandwidth=10,
+        fixed=False,
+        include_focal=False,
+        random_state=42,  # For reproducibility
+        strict=False,  # To avoid warnings on invariance
+    )
+
+    # Fit the model
+    no_focal = no_focal.fit(X, y, geometry)
+
+    # Create classifier with default params
+    focal = BaseClassifier(
+        RandomForestClassifier,
+        bandwidth=10,
+        fixed=False,
+        include_focal=True,
+        random_state=42,  # For reproducibility
+        strict=False,  # To avoid warnings on invariance
+    )
+
+    # Fit the model
+    focal = focal.fit(X, y, geometry)
+
+    # RF should 'remember' focal
+    assert (no_focal.focal_proba_[True] - no_focal.focal_proba_[False]).abs().mean() < (
+        focal.focal_proba_[True] - focal.focal_proba_[False]
+    ).abs().mean()

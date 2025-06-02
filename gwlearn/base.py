@@ -68,11 +68,6 @@ _kernel_functions = {
 class BaseClassifier:
     """Generic geographically weighted modelling meta-class
 
-    NOTE: local models leave out focal, unlike in traditional approaches. This allows
-    assessment of geographically weighted metrics on unseen data without a need for
-    train/test split, hence providing value for all samples. This is needed for
-    futher spatial analysis of the model performance (and generalises to models
-    that do not support OOB scoring).
 
     Parameters
     ----------
@@ -85,6 +80,13 @@ class BaseClassifier:
         bandwidth, by default False
     kernel : str | Callable, optional
         type of kernel function used to weight observations, by default "bisquare"
+    include_focal : bool, optional
+        Include focal in the local model training. Excluding it allows
+        assessment of geographically weighted metrics on unseen data without a need for
+        train/test split, hence providing value for all samples. This is needed for
+        futher spatial analysis of the model performance (and generalises to models
+        that do not support OOB scoring). However, it leaves out the most representative
+        sample. By default False
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
@@ -137,6 +139,7 @@ class BaseClassifier:
             "exponential",
         ]
         | Callable = "bisquare",
+        include_focal: bool = False,
         n_jobs: int = -1,
         fit_global_model: bool = True,
         measure_performance: bool = True,
@@ -153,6 +156,7 @@ class BaseClassifier:
         self.model = model
         self.bandwidth = bandwidth
         self.kernel = kernel
+        self.include_focal = include_focal
         self.fixed = fixed
         self.model_kwargs = kwargs
         self.n_jobs = n_jobs
@@ -228,6 +232,8 @@ class BaseClassifier:
                 adjacency=_kernel_functions[self.kernel](weights._adjacency, bandwidth),
                 is_sorted=True,
             )
+        if self.include_focal:
+            weights = weights.assign_self_weight(1)
 
         if isinstance(self.keep_models, Path):
             self.keep_models.mkdir(exist_ok=True)
