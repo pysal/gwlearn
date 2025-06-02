@@ -31,7 +31,7 @@ def _parabolic(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarr
 
 def _gaussian(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
     u = distances / bandwidth
-    return np.exp(-((u / 2) ** 2)) / (np.sqrt(2) * np.pi)
+    return np.exp(-((u / 2) ** 2)) / (np.sqrt(2 * np.pi))
 
 
 def _bisquare(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
