@@ -173,6 +173,7 @@ def test_adaptive_bandwidth_search(sample_data):  # noqa: F811
         verbose=False,
         random_state=42,
         max_iter=500,
+        include_focal=False,
     )
 
     # Fit the bandwidth search
