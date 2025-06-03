@@ -40,6 +40,7 @@ def test_gwlogistic_fit_basic(sample_data):  # noqa: F811
         strict=False,  # To avoid warnings on invariance
         max_iter=500,
         n_jobs=1,
+        include_focal=False,
     )
 
     fitted_model = model.fit(X, y, geometry)
@@ -119,6 +120,7 @@ def test_gwlogistic_prediction_metrics(sample_data):  # noqa: F811
         random_state=42,
         strict=False,
         max_iter=500,
+        include_focal=False,
     )
 
     model.fit(X, y, geometry)
@@ -150,6 +152,7 @@ def test_gwlogistic_local_prediction_metrics(sample_data):  # noqa: F811
         random_state=42,
         strict=False,
         max_iter=500,
+        include_focal=False,
     )
 
     model.fit(X, y, geometry)
