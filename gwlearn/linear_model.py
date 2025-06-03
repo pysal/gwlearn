@@ -4,9 +4,9 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 from sklearn import metrics
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LinearRegression, LogisticRegression
 
-from .base import BaseClassifier, _scores
+from .base import BaseClassifier, BaseRegressor, _scores
 
 
 class GWLogisticRegression(BaseClassifier):
@@ -109,3 +109,34 @@ class GWLogisticRegression(BaseClassifier):
             self.local_pred_f1_weighted_ = local_score["pred_F1_weighted"]
 
         return self
+
+
+class GWLinearRegression(BaseRegressor):
+    def __init__(
+        self,
+        bandwidth: int | float,
+        fixed: bool = False,
+        kernel: str | Callable = "bisquare",
+        n_jobs: int = -1,
+        fit_global_model: bool = True,
+        measure_performance: bool = True,
+        keep_models: bool = False,
+        temp_folder: str | None = None,
+        batch_size: int | None = None,
+        **kwargs,
+    ):
+        super().__init__(
+            model=LinearRegression,
+            bandwidth=bandwidth,
+            fixed=fixed,
+            kernel=kernel,
+            n_jobs=n_jobs,
+            fit_global_model=fit_global_model,
+            measure_performance=measure_performance,
+            keep_models=keep_models,
+            temp_folder=temp_folder,
+            batch_size=batch_size,
+            **kwargs,
+        )
+
+        self._model_type = "linear"
