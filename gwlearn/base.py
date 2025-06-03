@@ -65,9 +65,282 @@ _kernel_functions = {
 }
 
 
-class BaseClassifier:
-    """Generic geographically weighted modelling meta-class
+class _BaseModel:
+    """Base class for geographically weighted models"""
 
+    def __init__(
+        self,
+        model,
+        *,
+        bandwidth: float,
+        fixed: bool = False,
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            "gaussian",
+            "bisquare",
+            "cosine",
+            "boxcar",
+            "exponential",
+        ]
+        | Callable = "bisquare",
+        include_focal: bool = False,
+        n_jobs: int = -1,
+        fit_global_model: bool = True,
+        measure_performance: bool = True,
+        keep_models: bool | str | Path = False,
+        temp_folder: str | None = None,
+        batch_size: int | None = None,
+        verbose: bool = False,
+        **kwargs,
+    ):
+        self.model = model
+        self.bandwidth = bandwidth
+        self.kernel = kernel
+        self.include_focal = include_focal
+        self.fixed = fixed
+        self.model_kwargs = kwargs
+        self.n_jobs = n_jobs
+        self.fit_global_model = fit_global_model
+        self.measure_performance = measure_performance
+        if isinstance(keep_models, str):
+            keep_models = Path(keep_models)
+        self.keep_models = keep_models
+        self.temp_folder = temp_folder
+        self.batch_size = batch_size
+        self.verbose = verbose
+        self._model_type = None
+
+    def _validate_geometry(self, geometry: gpd.GeoSeries):
+        """Validate that geometry contains only Point geometries"""
+        if not (geometry.geom_type == "Point").all():
+            raise ValueError(
+                "Unsupported geometry type. Only point geometry is allowed."
+            )
+
+    def _build_weights(self, geometry: gpd.GeoSeries) -> graph.Graph:
+        """Build spatial weights graph"""
+        if self.fixed:  # fixed distance
+            weights = graph.Graph.build_kernel(
+                geometry,
+                kernel=_kernel_functions[self.kernel],
+                bandwidth=self.bandwidth,
+            )
+        else:  # adaptive KNN
+            weights = graph.Graph.build_kernel(
+                geometry,
+                kernel="identity",
+                k=self.bandwidth - 1 if self.include_focal else self.bandwidth,
+            )
+            # post-process identity weights by the selected kernel
+            # and kernel bandwidth derived from each neighborhood
+            # the epsilon comes from MGWR to avoid division by zero
+            bandwidth = weights._adjacency.groupby(level=0).transform("max") * 1.0000001
+            weights = graph.Graph(
+                adjacency=_kernel_functions[self.kernel](weights._adjacency, bandwidth),
+                is_sorted=True,
+            )
+        if self.include_focal:
+            weights = weights.assign_self_weight(1)
+        return weights
+
+    def _setup_model_storage(self):
+        """Setup model storage directory if needed"""
+        if isinstance(self.keep_models, Path):
+            self.keep_models.mkdir(exist_ok=True)
+
+    def _fit_models_batch(
+        self,
+        X: pd.DataFrame,
+        y: pd.Series,
+        weights: graph.Graph,
+        geometry: gpd.GeoSeries,
+    ) -> list:
+        """Fit models in batches or all at once"""
+        if self.batch_size:
+            training_output = []
+            num_groups = len(geometry)
+            indices = np.arange(num_groups)
+            for i in range(0, num_groups, self.batch_size):
+                if self.verbose:
+                    print(
+                        f"Processing batch {i // self.batch_size + 1} "
+                        f"out of {(num_groups // self.batch_size) + 1}."
+                    )
+
+                batch_indices = indices[i : i + self.batch_size]
+                subset_weights = weights._adjacency.loc[batch_indices, :]
+
+                index = subset_weights.index
+                _weight = subset_weights.values
+                X_focals = X.values[batch_indices]
+
+                batch_training_output = self._batch_fit(X, y, index, _weight, X_focals)
+                training_output.extend(batch_training_output)
+        else:
+            index = weights._adjacency.index
+            _weight = weights._adjacency.values
+            X_focals = X.values
+
+            training_output = self._batch_fit(X, y, index, _weight, X_focals)
+
+        return training_output
+
+    def _batch_fit(
+        self,
+        X: pd.DataFrame,
+        y: pd.Series,
+        index: pd.MultiIndex,
+        _weight: np.ndarray,
+        X_focals: np.ndarray,
+    ) -> list:
+        """Fit a batch of local models"""
+        data = X.copy()
+        data["_y"] = y
+        data = data.loc[index.get_level_values(1)]
+        data["_weight"] = _weight
+        grouper = data.groupby(index.get_level_values(0))
+
+        return Parallel(n_jobs=self.n_jobs, temp_folder=self.temp_folder)(
+            delayed(self._fit_local)(
+                self.model,
+                group,
+                name,
+                focal_x,
+                self.model_kwargs,
+            )
+            for (name, group), focal_x in zip(grouper, X_focals, strict=False)
+        )
+
+    def _fit_global_model(self, X: pd.DataFrame, y: pd.Series):
+        """Fit global baseline model"""
+        if self._model_type == "random_forest":
+            self.model_kwargs["oob_score"] = True
+        # fit global model as a baseline
+        if "n_jobs" in inspect.signature(self.model).parameters:
+            self.global_model = self.model(n_jobs=self.n_jobs, **self.model_kwargs)
+        else:
+            self.global_model = self.model(**self.model_kwargs)
+
+        self.global_model.fit(X=X, y=y)
+
+    def _store_model(self, local_model, name: Hashable):
+        """Store or serialize local model"""
+        if self.keep_models is True:  # if True, models are kept in memory
+            return local_model
+        elif isinstance(self.keep_models, Path):  # if Path, models are saved to disk
+            p = f"{self.keep_models.joinpath(f'{name}.joblib')}"
+            with open(p, "wb") as f:
+                dump(local_model, f, protocol=5)
+            del local_model
+            return p
+        else:
+            del local_model
+            return None
+
+    def __repr__(self) -> str:
+        """Return a string representation of the instance"""
+        # Get the class name
+        class_name = self.__class__.__name__
+
+        # Core parameters to display
+        params = []
+
+        # Add model type if available
+        if hasattr(self, "model"):
+            if hasattr(self.model, "__name__"):
+                params.append(f"model={self.model.__name__}")
+            else:
+                params.append(f"model={self.model}")
+
+        # Add key parameters
+        params.append(f"bandwidth={self.bandwidth}")
+
+        if self.fixed:
+            params.append("fixed=True")
+
+        if self.kernel != "bisquare":
+            if callable(self.kernel):
+                params.append(f"kernel={self.kernel.__name__}")
+            else:
+                params.append(f"kernel='{self.kernel}'")
+
+        if self.n_jobs != -1:
+            params.append(f"n_jobs={self.n_jobs}")
+
+        if not self.fit_global_model:
+            params.append("fit_global_model=False")
+
+        if not self.measure_performance:
+            params.append("measure_performance=False")
+
+        if self.keep_models:
+            if isinstance(self.keep_models, Path):
+                params.append(f"keep_models='{self.keep_models}'")
+            else:
+                params.append("keep_models=True")
+
+        if self.batch_size is not None:
+            params.append(f"batch_size={self.batch_size}")
+
+        if self.verbose:
+            params.append("verbose=True")
+
+        # Add any additional model kwargs (limit to avoid overly long repr)
+        if self.model_kwargs:
+            # Show only a few key kwargs to keep repr readable
+            important_kwargs = [
+                "max_depth",
+                "n_estimators",
+                "C",
+                "alpha",
+                "learning_rate",
+            ]
+            shown_kwargs = {
+                k: v for k, v in self.model_kwargs.items() if k in important_kwargs
+            }
+            if len(self.model_kwargs) <= 3:
+                # Show all if there are only a few
+                for k, v in self.model_kwargs.items():
+                    if isinstance(v, str):
+                        params.append(f"{k}='{v}'")
+                    else:
+                        params.append(f"{k}={v}")
+            elif shown_kwargs:
+                for k, v in shown_kwargs.items():
+                    if isinstance(v, str):
+                        params.append(f"{k}='{v}'")
+                    else:
+                        params.append(f"{k}={v}")
+
+        # Join parameters with proper formatting
+        param_str = ",\n".join(f"    {param}" for param in params)
+
+        if len(params) > 3:  # Multi-line format for many parameters
+            return f"{class_name}(\n{param_str}\n)"
+        else:  # Single line for few parameters
+            return f"{class_name}({', '.join(params)})"
+
+    def _repr_html_(self):
+        return utils.estimator_html_repr(self)
+
+    # Abstract methods that subclasses must implement
+    def _fit_local(
+        self,
+        model,
+        data: pd.DataFrame,
+        name: Hashable,
+        focal_x: np.ndarray,
+        model_kwargs: dict,
+    ) -> tuple:
+        raise NotImplementedError("Subclasses must implement _fit_local")
+
+    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
+        raise NotImplementedError("Subclasses must implement fit")
+
+
+class BaseClassifier(_BaseModel):
+    """Generic geographically weighted classification meta-class
 
     Parameters
     ----------
@@ -153,26 +426,25 @@ class BaseClassifier:
         verbose: bool = False,
         **kwargs,
     ):
-        self.model = model
-        self.bandwidth = bandwidth
-        self.kernel = kernel
-        self.include_focal = include_focal
-        self.fixed = fixed
-        self.model_kwargs = kwargs
-        self.n_jobs = n_jobs
-        self.fit_global_model = fit_global_model
-        self.measure_performance = measure_performance
+        super().__init__(
+            model=model,
+            bandwidth=bandwidth,
+            fixed=fixed,
+            kernel=kernel,
+            include_focal=include_focal,
+            n_jobs=n_jobs,
+            fit_global_model=fit_global_model,
+            measure_performance=measure_performance,
+            keep_models=keep_models,
+            temp_folder=temp_folder,
+            batch_size=batch_size,
+            verbose=verbose,
+            **kwargs,
+        )
         self.strict = strict
-        if isinstance(keep_models, str):
-            keep_models = Path(keep_models)
-        self.keep_models = keep_models
-        self.temp_folder = temp_folder
-        self.batch_size = batch_size
         self.min_proportion = min_proportion
         self.undersample = undersample
         self.random_state = random_state
-        self.verbose = verbose
-        self._model_type = None
 
         if undersample:
             try:
@@ -208,65 +480,18 @@ class BaseClassifier:
             # Check for 0, 1 encoding
             return bool(unique_values.issubset({0, 1}))
 
-        if not (geometry.geom_type == "Point").all():
-            raise ValueError(
-                "Unsupported geometry type. Only point geometry is allowed."
-            )
+        self._validate_geometry(geometry)
 
         if not _is_binary(y):
             raise ValueError("Only binary dependent variable is supported.")
 
-        # build graph
-        if self.fixed:  # fixed distance
-            weights = graph.Graph.build_kernel(
-                geometry, kernel=self.kernel, bandwidth=self.bandwidth
-            )
-        else:  # adaptive KNN
-            weights = graph.Graph.build_kernel(
-                geometry, kernel="identity", k=self.bandwidth
-            )
-            # post-process identity weights by the selected kernel
-            # and kernel bandwidth derived from each neighborhood
-            bandwidth = weights._adjacency.groupby(level=0).transform("max")
-            weights = graph.Graph(
-                adjacency=_kernel_functions[self.kernel](weights._adjacency, bandwidth),
-                is_sorted=True,
-            )
-        if self.include_focal:
-            weights = weights.assign_self_weight(1)
-
-        if isinstance(self.keep_models, Path):
-            self.keep_models.mkdir(exist_ok=True)
+        weights = self._build_weights(geometry)
+        self._setup_model_storage()
 
         self._global_classes = np.unique(y)
 
         # fit the models
-        if self.batch_size:
-            training_output = []
-            num_groups = len(geometry)
-            indices = np.arange(num_groups)
-            for i in range(0, num_groups, self.batch_size):
-                if self.verbose:
-                    print(
-                        f"Processing batch {i // self.batch_size + 1} "
-                        f"out of {(num_groups // self.batch_size) + 1}."
-                    )
-
-                batch_indices = indices[i : i + self.batch_size]
-                subset_weights = weights._adjacency.loc[batch_indices, :]
-
-                index = subset_weights.index
-                _weight = subset_weights.values
-                X_focals = X.values[batch_indices]
-
-                batch_training_output = self._batch_fit(X, y, index, _weight, X_focals)
-                training_output.extend(batch_training_output)
-        else:
-            index = weights._adjacency.index
-            _weight = weights._adjacency.values
-            X_focals = X.values
-
-            training_output = self._batch_fit(X, y, index, _weight, X_focals)
+        training_output = self._fit_models_batch(X, y, weights, geometry)
 
         if self.keep_models:
             (
@@ -292,15 +517,7 @@ class BaseClassifier:
         self.focal_proba_ = pd.DataFrame(focal_proba, index=self._names)
 
         if self.fit_global_model:
-            if self._model_type == "random_forest":
-                self.model_kwargs["oob_score"] = True
-            # fit global model as a baseline
-            if "n_jobs" in inspect.signature(self.model).parameters:
-                self.global_model = self.model(n_jobs=self.n_jobs, **self.model_kwargs)
-            else:
-                self.global_model = self.model(**self.model_kwargs)
-
-            self.global_model.fit(X=X, y=y)
+            self._fit_global_model(X, y)
 
         if self.measure_performance:
             # support both bool and 0, 1 encoding of binary variable
@@ -339,27 +556,7 @@ class BaseClassifier:
         _weight: np.ndarray,
         X_focals: np.ndarray,
     ) -> list:
-        """Fit a batch of local models
-
-        Parameters
-        ----------
-        X : pandas.DataFrame
-            Feature matrix containing the predictor variables.
-        y : pandas.Series or numpy.ndarray
-            Target variable to be predicted.
-        index : pandas.MultiIndex
-            Two-level index where the first level identifies groups and the second level
-            identifies observations within groups.
-        _weight : pandas.Series or numpy.ndarray
-            Observation weights to be used in the local model fitting.
-        X_focals : list of pandas.DataFrame
-            List of focal points for each group at which to evaluate the local model.
-
-        Returns
-        -------
-        _type_
-            _description_
-        """
+        """Fit a batch of local models"""
         data = X.copy()
         data["_y"] = y
         data = data.loc[index.get_level_values(1)]
@@ -397,27 +594,7 @@ class BaseClassifier:
         focal_x: np.ndarray,
         model_kwargs: dict,
     ) -> tuple:
-        """Fit individual local model
-
-        In case of an invariant y, model is not fitted and empty placeholder output
-        is returned.
-
-        Parameters
-        ----------
-        model : model class
-            Scikit-learn model class
-        data : pd.DataFrame
-            data for training
-        name : Hashable
-            group name, matching the index of the focal geometry
-        model_kwargs : dict
-            additional keyword arguments for the model init
-
-        Returns
-        -------
-        tuple
-            name, fitted model
-        """
+        """Fit individual local model"""
         if self.undersample:
             from imblearn.under_sampling import RandomUnderSampler
 
@@ -512,46 +689,17 @@ class BaseClassifier:
             focal_proba,
         ]
 
-        if self.keep_models is True:  # if True, models are kept in memory
-            output.append(local_model)
-        elif isinstance(self.keep_models, Path):  # if Path, models are saved to disk
-            p = f"{self.keep_models.joinpath(f'{name}.joblib')}"
-            with open(p, "wb") as f:
-                dump(local_model, f, protocol=5)
-            output.append(p)
-
-            del local_model
+        if self.keep_models:
+            output.append(self._store_model(local_model, name))
         else:
             del local_model
 
         return output
 
     def predict_proba(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.DataFrame:
-        """Predict probabiliies using the ensemble of local models
+        """Predict probabiliies using the ensemble of local models"""
+        self._validate_geometry(geometry)
 
-        For any given location, this uses the
-
-        Parameters
-        ----------
-        X : pd.DataFrame
-            _description_
-        geometry : gpd.GeoSeries
-            _description_
-
-        Returns
-        -------
-        pd.DataFrame
-            _description_
-
-        Raises
-        ------
-        NotImplementedError
-            _description_
-        """
-        if not (geometry.geom_type == "Point").all():
-            raise ValueError(
-                "Unsupported geometry type. Only point geometry is allowed."
-            )
         if self.fixed:
             input_ids, local_ids = self._geometry.sindex.query(
                 geometry, predicate="dwithin", distance=self.bandwidth
@@ -590,9 +738,6 @@ class BaseClassifier:
         for x_, models_, distances_ in zip(
             data, local_model_ids, distances, strict=True
         ):
-            # there are likely ways of speeding this up using parallel processing
-            # but I failed to do so efficiently. We are hitting GIL due to accessing
-            # same local models many times so iterative loop is in the end faster
             probabilities.append(
                 self._predict_proba(x_, models_, distances_, X.columns)
             )
@@ -642,106 +787,32 @@ class BaseClassifier:
 
     def predict(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.Series:
         proba = self.predict_proba(X, geometry)
-
         return proba.idxmax(axis=1)
 
     def __repr__(self) -> str:
         """Return a string representation of the BaseClassifier instance"""
-        # Get the class name
-        class_name = self.__class__.__name__
+        # Get the base representation
+        base_repr = super().__repr__()
 
-        # Core parameters to display
-        params = []
+        # If we need to add classifier-specific params, we can modify the string here
+        # For now, the classifier-specific params are handled in the constructor
+        # and passed to the parent class
+        if hasattr(self, "strict") and self.strict is not False:
+            # Insert strict parameter if non-default
+            base_repr = base_repr.replace(")", f", strict={self.strict})")
 
-        # Add model type if available
-        if class_name == "BaseClassifier" and hasattr(self, "model"):
-            if hasattr(self.model, "__name__"):
-                params.append(f"model={self.model.__name__}")
-            else:
-                params.append(f"model={self.model}")
+        if hasattr(self, "min_proportion") and self.min_proportion != 0.2:
+            base_repr = base_repr.replace(
+                ")", f", min_proportion={self.min_proportion})"
+            )
 
-        # Add key parameters
-        params.append(f"bandwidth={self.bandwidth}")
+        if hasattr(self, "undersample") and self.undersample:
+            base_repr = base_repr.replace(")", ", undersample=True)")
 
-        if self.fixed:
-            params.append("fixed=True")
+        if hasattr(self, "random_state") and self.random_state is not None:
+            base_repr = base_repr.replace(")", f", random_state={self.random_state})")
 
-        if self.kernel != "bisquare":
-            if callable(self.kernel):
-                params.append(f"kernel={self.kernel.__name__}")
-            else:
-                params.append(f"kernel='{self.kernel}'")
-
-        if self.n_jobs != -1:
-            params.append(f"n_jobs={self.n_jobs}")
-
-        if not self.fit_global_model:
-            params.append("fit_global_model=False")
-
-        if not self.measure_performance:
-            params.append("measure_performance=False")
-
-        if self.strict is not False:
-            params.append(f"strict={self.strict}")
-
-        if self.keep_models:
-            if isinstance(self.keep_models, Path):
-                params.append(f"keep_models='{self.keep_models}'")
-            else:
-                params.append("keep_models=True")
-
-        if self.batch_size is not None:
-            params.append(f"batch_size={self.batch_size}")
-
-        if self.min_proportion != 0.2:
-            params.append(f"min_proportion={self.min_proportion}")
-
-        if self.undersample:
-            params.append("undersample=True")
-
-        if self.random_state is not None:
-            params.append(f"random_state={self.random_state}")
-
-        if self.verbose:
-            params.append("verbose=True")
-
-        # Add any additional model kwargs (limit to avoid overly long repr)
-        if self.model_kwargs:
-            # Show only a few key kwargs to keep repr readable
-            important_kwargs = [
-                "max_depth",
-                "n_estimators",
-                "C",
-                "alpha",
-                "learning_rate",
-            ]
-            shown_kwargs = {
-                k: v for k, v in self.model_kwargs.items() if k in important_kwargs
-            }
-            if len(self.model_kwargs) <= 3:
-                # Show all if there are only a few
-                for k, v in self.model_kwargs.items():
-                    if isinstance(v, str):
-                        params.append(f"{k}='{v}'")
-                    else:
-                        params.append(f"{k}={v}")
-            elif shown_kwargs:
-                for k, v in shown_kwargs.items():
-                    if isinstance(v, str):
-                        params.append(f"{k}='{v}'")
-                    else:
-                        params.append(f"{k}={v}")
-
-        # Join parameters with proper formatting
-        param_str = ",\n".join(f"    {param}" for param in params)
-
-        if len(params) > 3:  # Multi-line format for many parameters
-            return f"{class_name}(\n{param_str}\n)"
-        else:  # Single line for few parameters
-            return f"{class_name}({', '.join(params)})"
-
-    def _repr_html_(self):
-        return utils.estimator_html_repr(self)
+        return base_repr
 
 
 def _scores(y_true: np.ndarray, y_pred: np.ndarray) -> tuple:
@@ -759,112 +830,19 @@ def _scores(y_true: np.ndarray, y_pred: np.ndarray) -> tuple:
     )
 
 
-class BaseRegressor:
-    def __init__(
-        self,
-        model,
-        *,
-        bandwidth: float,
-        fixed: bool = False,
-        kernel: Literal[
-            "triangular",
-            "parabolic",
-            "gaussian",
-            "bisquare",
-            "cosine",
-            "boxcar",
-            "exponential",
-        ]
-        | Callable = "bisquare",
-        include_focal: bool = False,
-        n_jobs: int = -1,
-        fit_global_model: bool = True,
-        measure_performance: bool = True,
-        keep_models: bool | str | Path = False,
-        temp_folder: str | None = None,
-        batch_size: int | None = None,
-        verbose: bool = False,
-        **kwargs,
-    ):
-        self.model = model
-        self.bandwidth = bandwidth
-        self.kernel = kernel
-        self.include_focal = include_focal
-        self.fixed = fixed
-        self.model_kwargs = kwargs
-        self.n_jobs = n_jobs
-        self.fit_global_model = fit_global_model
-        self.measure_performance = measure_performance
-        if isinstance(keep_models, str):
-            keep_models = Path(keep_models)
-        self.keep_models = keep_models
-        self.temp_folder = temp_folder
-        self.batch_size = batch_size
-        self.verbose = verbose
-        self._model_type = None
+class BaseRegressor(_BaseModel):
+    """Generic geographically weighted regression meta-class"""
 
     def fit(
         self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries
     ) -> "BaseRegressor":
-        if not (geometry.geom_type == "Point").all():
-            raise ValueError(
-                "Unsupported geometry type. Only point geometry is allowed."
-            )
+        self._validate_geometry(geometry)
 
-        # build graph
-        if self.fixed:  # fixed distance
-            weights = graph.Graph.build_kernel(
-                geometry,
-                kernel=_kernel_functions[self.kernel],
-                bandwidth=self.bandwidth,
-            )
-        else:  # adaptive KNN
-            weights = graph.Graph.build_kernel(
-                geometry,
-                kernel="identity",
-                k=self.bandwidth - 1 if self.include_focal else self.bandwidth,
-            )
-            # post-process identity weights by the selected kernel
-            # and kernel bandwidth derived from each neighborhood
-            # the epsilon comes from MGWR to avoid division by zero
-            bandwidth = weights._adjacency.groupby(level=0).transform("max") * 1.0000001
-            weights = graph.Graph(
-                adjacency=_kernel_functions[self.kernel](weights._adjacency, bandwidth),
-                is_sorted=True,
-            )
-        if self.include_focal:
-            weights = weights.assign_self_weight(1)
-
-        if isinstance(self.keep_models, Path):
-            self.keep_models.mkdir(exist_ok=True)
+        weights = self._build_weights(geometry)
+        self._setup_model_storage()
 
         # fit the models
-        if self.batch_size:
-            training_output = []
-            num_groups = len(geometry)
-            indices = np.arange(num_groups)
-            for i in range(0, num_groups, self.batch_size):
-                if self.verbose:
-                    print(
-                        f"Processing batch {i // self.batch_size + 1} "
-                        f"out of {(num_groups // self.batch_size) + 1}."
-                    )
-
-                batch_indices = indices[i : i + self.batch_size]
-                subset_weights = weights._adjacency.loc[batch_indices, :]
-
-                index = subset_weights.index
-                _weight = subset_weights.values
-                X_focals = X.values[batch_indices]
-
-                batch_training_output = self._batch_fit(X, y, index, _weight, X_focals)
-                training_output.extend(batch_training_output)
-        else:
-            index = weights._adjacency.index
-            _weight = weights._adjacency.values
-            X_focals = X.values
-
-            training_output = self._batch_fit(X, y, index, _weight, X_focals)
+        training_output = self._fit_models_batch(X, y, weights, geometry)
 
         if self.keep_models:
             (
@@ -896,40 +874,9 @@ class BaseRegressor:
         self.local_r2_ = (self.TSS_ - self.RSS_) / self.TSS_
 
         if self.fit_global_model:
-            if self._model_type == "random_forest":
-                self.model_kwargs["oob_score"] = True
-            # fit global model as a baseline
-            if "n_jobs" in inspect.signature(self.model).parameters:
-                self.global_model = self.model(n_jobs=self.n_jobs, **self.model_kwargs)
-            else:
-                self.global_model = self.model(**self.model_kwargs)
+            self._fit_global_model(X, y)
 
-            self.global_model.fit(X=X, y=y)
-
-    def _batch_fit(
-        self,
-        X: pd.DataFrame,
-        y: pd.Series,
-        index: pd.MultiIndex,
-        _weight: np.ndarray,
-        X_focals: np.ndarray,
-    ) -> list:
-        data = X.copy()
-        data["_y"] = y
-        data = data.loc[index.get_level_values(1)]
-        data["_weight"] = _weight
-        grouper = data.groupby(index.get_level_values(0))
-
-        return Parallel(n_jobs=self.n_jobs, temp_folder=self.temp_folder)(
-            delayed(self._fit_local)(
-                self.model,
-                group,
-                name,
-                focal_x,
-                self.model_kwargs,
-            )
-            for (name, group), focal_x in zip(grouper, X_focals, strict=False)
-        )
+        return self
 
     def _fit_local(
         self,
@@ -961,30 +908,18 @@ class BaseRegressor:
 
         output = [name, focal_pred, y_bar, tss]
 
-        if self.keep_models is True:  # if True, models are kept in memory
-            output.append(local_model)
-        elif isinstance(self.keep_models, Path):  # if Path, models are saved to disk
-            p = f"{self.keep_models.joinpath(f'{name}.joblib')}"
-            with open(p, "wb") as f:
-                dump(local_model, f, protocol=5)
-            output.append(p)
-
-            del local_model
+        if self.keep_models:
+            output.append(self._store_model(local_model, name))
         else:
             del local_model
 
         return output
 
     def _y_bar(self, y, w_i):
-        """
-        weighted mean of y
-        """
-
+        """weighted mean of y"""
         sum_yw = np.sum(y * w_i)
         return sum_yw / np.sum(w_i)
 
     def _tss(self, y, y_bar, w_i):
-        """
-        geographically weighted total sum of squares
-        """
+        """geographically weighted total sum of squares"""
         return np.sum(w_i * (y - y_bar) ** 2)

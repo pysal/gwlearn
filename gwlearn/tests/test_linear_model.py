@@ -60,7 +60,7 @@ def test_gwlogistic_fit_basic(sample_data):  # noqa: F811
     pd.testing.assert_series_equal(
         model.local_coef_.mean(),
         pd.Series(
-            [-0.000421280677240649, -0.06094205797063275, 0.06581666557051737],
+            [-0.0004301675501645129, -0.0620546230731815, 0.06715275989171457],
             index=["Crm_prs", "Litercy", "Wealth"],
         ),
         check_exact=False,
@@ -70,7 +70,7 @@ def test_gwlogistic_fit_basic(sample_data):  # noqa: F811
     # Check structure of intercepts
     assert isinstance(model.local_intercept_, pd.Series)
     assert len(model.local_intercept_) == len(X)
-    assert pytest.approx(7.662016468, abs=0.01) == model.local_intercept_.mean()
+    assert pytest.approx(7.873588522, abs=0.01) == model.local_intercept_.mean()
 
 
 def test_gwlogistic_coefficients_structure(sample_data):  # noqa: F811
