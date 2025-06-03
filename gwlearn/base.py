@@ -247,7 +247,7 @@ class _BaseModel:
         params = []
 
         # Add model type if available
-        if hasattr(self, "model"):
+        if class_name in ["BaseClassifier", "BaseRegressor"] and hasattr(self, "model"):
             if hasattr(self.model, "__name__"):
                 params.append(f"model={self.model.__name__}")
             else:
