@@ -88,6 +88,7 @@ class _BaseModel:
         n_jobs: int = -1,
         fit_global_model: bool = True,
         measure_performance: bool = True,
+        strict: bool | None = False,
         keep_models: bool | str | Path = False,
         temp_folder: str | None = None,
         batch_size: int | None = None,
@@ -103,6 +104,7 @@ class _BaseModel:
         self.n_jobs = n_jobs
         self.fit_global_model = fit_global_model
         self.measure_performance = measure_performance
+        self.strict = strict
         if isinstance(keep_models, str):
             keep_models = Path(keep_models)
         self.keep_models = keep_models
@@ -200,6 +202,18 @@ class _BaseModel:
         data = data.loc[index.get_level_values(1)]
         data["_weight"] = _weight
         grouper = data.groupby(index.get_level_values(0))
+
+        invariant = grouper["_y"].nunique() == 1
+        if invariant.any():
+            if self.strict:
+                raise ValueError(
+                    f"y at locations {invariant.index[invariant]} is invariant."
+                )
+            elif self.strict is None:
+                warnings.warn(
+                    f"y at locations {invariant.index[invariant]} is invariant.",
+                    stacklevel=3,
+                )
 
         return Parallel(n_jobs=self.n_jobs, temp_folder=self.temp_folder)(
             delayed(self._fit_local)(
@@ -435,16 +449,18 @@ class BaseClassifier(_BaseModel):
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
             measure_performance=measure_performance,
+            strict=strict,
             keep_models=keep_models,
             temp_folder=temp_folder,
             batch_size=batch_size,
             verbose=verbose,
             **kwargs,
         )
-        self.strict = strict
         self.min_proportion = min_proportion
         self.undersample = undersample
         self.random_state = random_state
+        self._empty_score_data = None
+        self._empty_feature_imp = None
 
         if undersample:
             try:
@@ -548,44 +564,6 @@ class BaseClassifier(_BaseModel):
 
         return self
 
-    def _batch_fit(
-        self,
-        X: pd.DataFrame,
-        y: pd.Series,
-        index: pd.MultiIndex,
-        _weight: np.ndarray,
-        X_focals: np.ndarray,
-    ) -> list:
-        """Fit a batch of local models"""
-        data = X.copy()
-        data["_y"] = y
-        data = data.loc[index.get_level_values(1)]
-        data["_weight"] = _weight
-        grouper = data.groupby(index.get_level_values(0))
-
-        invariant = data["_y"].groupby(index.get_level_values(0)).nunique() == 1
-        if invariant.any():
-            if self.strict:
-                raise ValueError(
-                    f"y at locations {invariant.index[invariant]} is invariant."
-                )
-            elif self.strict is None:
-                warnings.warn(
-                    f"y at locations {invariant.index[invariant]} is invariant.",
-                    stacklevel=3,
-                )
-
-        return Parallel(n_jobs=self.n_jobs, temp_folder=self.temp_folder)(
-            delayed(self._fit_local)(
-                self.model,
-                group,
-                name,
-                focal_x,
-                self.model_kwargs,
-            )
-            for (name, group), focal_x in zip(grouper, X_focals, strict=False)
-        )
-
     def _fit_local(
         self,
         model,
@@ -604,25 +582,8 @@ class BaseClassifier(_BaseModel):
         if n_labels > 1:
             skip = (vc.iloc[1] / vc.iloc[0]) < self.min_proportion
         if skip:
-            if self._model_type in ["random_forest", "gradient_boosting"]:
-                if self._model_type == "random_forest":
-                    score_data = (np.array([]).reshape(-1, 1), np.array([]))
-                else:
-                    score_data = np.nan
-                feature_imp = np.array([np.nan] * (data.shape[1] - 2))
-            elif self._model_type == "logistic":
-                score_data = (
-                    np.array([]),  # true
-                    np.array([]),  # pred
-                    pd.Series(
-                        np.nan, index=data.columns.drop(["_y", "_weight"])
-                    ),  # local coefficients
-                    np.array([np.nan]),  # intercept
-                )
-                feature_imp = None
-            else:
-                score_data = None
-                feature_imp = None
+            score_data = self._empty_score_data
+            feature_imp = self._empty_feature_imp
             output = [
                 name,
                 n_labels,
@@ -662,29 +623,10 @@ class BaseClassifier(_BaseModel):
             local_model.predict_proba(focal_x).flatten(), index=local_model.classes_
         )
 
-        local_proba = pd.DataFrame(
-            local_model.predict_proba(X), columns=local_model.classes_
-        )
-
-        if self._model_type == "random_forest":
-            score_data = local_model.oob_score_
-        elif self._model_type == "logistic":
-            score_data = (
-                y,
-                local_proba.idxmax(axis=1),
-                pd.Series(
-                    local_model.coef_.flatten(),
-                    index=local_model.feature_names_in_,
-                ),  # coefficients
-                local_model.intercept_,  # intercept
-            )
-        else:
-            score_data = np.nan
-
         output = [
             name,
             n_labels,
-            score_data,
+            self._get_score_data(local_model, X, y),
             getattr(local_model, "feature_importances_", None),
             focal_proba,
         ]
@@ -695,6 +637,10 @@ class BaseClassifier(_BaseModel):
             del local_model
 
         return output
+
+    def _get_score_data(self, local_model, X, y):  # noqa: ARG002
+        """Subclasses should implement custom function"""
+        return np.nan
 
     def predict_proba(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.DataFrame:
         """Predict probabiliies using the ensemble of local models"""

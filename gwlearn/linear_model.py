@@ -100,6 +100,13 @@ class GWLogisticRegression(BaseClassifier):
         self._model_type = "logistic"
 
     def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
+        self._empty_score_data = (
+            np.array([]),  # true
+            np.array([]),  # pred
+            pd.Series(np.nan, index=X.columns),  # local coefficients
+            np.array([np.nan]),
+        )  # intercept
+
         super().fit(X=X, y=y, geometry=geometry)
 
         self.local_coef_ = pd.concat(
@@ -165,6 +172,20 @@ class GWLogisticRegression(BaseClassifier):
             self.local_pred_f1_weighted_ = local_score["pred_F1_weighted"]
 
         return self
+
+    def _get_score_data(self, local_model, X, y):
+        local_proba = pd.DataFrame(
+            local_model.predict_proba(X), columns=local_model.classes_
+        )
+        return (
+            y,
+            local_proba.idxmax(axis=1),
+            pd.Series(
+                local_model.coef_.flatten(),
+                index=local_model.feature_names_in_,
+            ),  # coefficients
+            local_model.intercept_,  # intercept
+        )
 
 
 class GWLinearRegression(BaseRegressor):
