@@ -16,7 +16,7 @@ from sklearn import metrics, utils
 # TODO: formal documentation
 # TODO: comments in code
 
-__all__ = ["BaseClassifier"]
+__all__ = ["BaseClassifier", "BaseRegressor"]
 
 
 def _triangular(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
@@ -776,6 +776,7 @@ class BaseRegressor:
             "exponential",
         ]
         | Callable = "bisquare",
+        include_focal: bool = False,
         n_jobs: int = -1,
         fit_global_model: bool = True,
         measure_performance: bool = True,
@@ -788,6 +789,7 @@ class BaseRegressor:
         self.model = model
         self.bandwidth = bandwidth
         self.kernel = kernel
+        self.include_focal = include_focal
         self.fixed = fixed
         self.model_kwargs = kwargs
         self.n_jobs = n_jobs
@@ -812,19 +814,26 @@ class BaseRegressor:
         # build graph
         if self.fixed:  # fixed distance
             weights = graph.Graph.build_kernel(
-                geometry, kernel=self.kernel, bandwidth=self.bandwidth
-            ).assign_self_weight(1)
+                geometry,
+                kernel=_kernel_functions[self.kernel],
+                bandwidth=self.bandwidth,
+            )
         else:  # adaptive KNN
             weights = graph.Graph.build_kernel(
-                geometry, kernel="identity", k=self.bandwidth
+                geometry,
+                kernel="identity",
+                k=self.bandwidth - 1 if self.include_focal else self.bandwidth,
             )
             # post-process identity weights by the selected kernel
             # and kernel bandwidth derived from each neighborhood
+            # the epsilon comes from MGWR to avoid division by zero
             bandwidth = weights._adjacency.groupby(level=0).transform("max") * 1.0000001
             weights = graph.Graph(
                 adjacency=_kernel_functions[self.kernel](weights._adjacency, bandwidth),
                 is_sorted=True,
-            ).assign_self_weight(1)
+            )
+        if self.include_focal:
+            weights = weights.assign_self_weight(1)
 
         if isinstance(self.keep_models, Path):
             self.keep_models.mkdir(exist_ok=True)
@@ -861,8 +870,8 @@ class BaseRegressor:
             (
                 self._names,
                 focal_pred,
-                self.y_bar,
-                self.tss,
+                y_bar,
+                tss,
                 models,
             ) = zip(*training_output, strict=False)
             self.local_models = pd.Series(models, index=self._names)
@@ -881,10 +890,10 @@ class BaseRegressor:
             weights.adjacency.values
             * self.resid_.loc[weights.adjacency.index.get_level_values(1)] ** 2
         )
-        self.RSS = resids_.groupby(weights.adjacency.index.get_level_values(0)).sum()
-        self.TSS = pd.Series(tss, index=self._names)
-        self.y_bar = pd.Series(y_bar, index=self._names)
-        self.local_r2_ = (self.TSS - self.RSS) / self.TSS
+        self.RSS_ = resids_.groupby(weights.adjacency.index.get_level_values(0)).sum()
+        self.TSS_ = pd.Series(tss, index=self._names)
+        self.y_bar_ = pd.Series(y_bar, index=self._names)
+        self.local_r2_ = (self.TSS_ - self.RSS_) / self.TSS_
 
         if self.fit_global_model:
             if self._model_type == "random_forest":
