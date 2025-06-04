@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from geodatasets import get_path
-from numpy.testing import assert_array_almost_equal
+from numpy.testing import assert_almost_equal, assert_array_almost_equal
 from sklearn.linear_model import LinearRegression, LogisticRegression
 
 from gwlearn.linear_model import GWLinearRegression, GWLogisticRegression
@@ -358,3 +358,4 @@ def test_against_mgwr():
     assert_array_almost_equal(gwlr.focal_pred_, res.predy.flatten())
     assert_array_almost_equal(gwlr.TSS_, res.TSS.flatten())
     assert_array_almost_equal(gwlr.RSS_, res.RSS.flatten())
+    assert_almost_equal(gwlr.focal_r2_, res.R2)

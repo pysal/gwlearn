@@ -827,6 +827,10 @@ class BaseRegressor(_BaseModel):
         self.TSS_ = pd.Series(tss, index=self._names)
         self.y_bar_ = pd.Series(y_bar, index=self._names)
         self.local_r2_ = (self.TSS_ - self.RSS_) / self.TSS_
+        self.focal_r2_ = 1 - (
+            np.sum((self.focal_pred_ - y) ** 2) / np.sum((y - y.mean()) ** 2)
+        )
+        self.score_ = self.focal_r2_
 
         if self.fit_global_model:
             self._fit_global_model(X, y)
