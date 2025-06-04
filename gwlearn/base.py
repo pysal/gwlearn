@@ -796,6 +796,7 @@ class BaseRegressor(_BaseModel):
                 focal_pred,
                 y_bar,
                 tss,
+                self._score_data,
                 models,
             ) = zip(*training_output, strict=False)
             self.local_models = pd.Series(models, index=self._names)
@@ -806,6 +807,7 @@ class BaseRegressor(_BaseModel):
                 focal_pred,
                 y_bar,
                 tss,
+                self._score_data,
             ) = zip(*training_output, strict=False)
 
         self.focal_pred_ = pd.Series(focal_pred, index=self._names)
@@ -852,7 +854,13 @@ class BaseRegressor(_BaseModel):
         y_bar = self._y_bar(y, data["_weight"])
         tss = self._tss(y, y_bar, data["_weight"])
 
-        output = [name, focal_pred, y_bar, tss]
+        output = [
+            name,
+            focal_pred,
+            y_bar,
+            tss,
+            self._get_score_data(local_model, X, y),
+        ]
 
         if self.keep_models:
             output.append(self._store_model(local_model, name))
@@ -869,3 +877,11 @@ class BaseRegressor(_BaseModel):
     def _tss(self, y, y_bar, w_i):
         """geographically weighted total sum of squares"""
         return np.sum(w_i * (y - y_bar) ** 2)
+
+
+# local_coeff
+# local_intercept
+# r2, adj_r2
+# degrees of freedom???
+# resid
+# tvalues & adj_alpha & critical_t val

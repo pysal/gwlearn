@@ -226,18 +226,18 @@ def test_gwlinear_fit_basic(sample_regression_data):
     # Test that fitting works and returns self
     assert fitted_model is model
 
-    # TODO: Test specific attributes of GWLinearRegression
-    # assert hasattr(model, "local_coef_")
-    # assert hasattr(model, "local_intercept_")
+    # Test specific attributes of GWLinearRegression
+    assert hasattr(model, "local_coef_")
+    assert hasattr(model, "local_intercept_")
 
-    # TODO: Check structure of coefficients
-    # assert isinstance(model.local_coef_, pd.DataFrame)
-    # assert model.local_coef_.shape[0] == len(X)
-    # assert model.local_coef_.shape[1] == X.shape[1]
+    # Check structure of coefficients
+    assert isinstance(model.local_coef_, pd.DataFrame)
+    assert model.local_coef_.shape[0] == len(X)
+    assert model.local_coef_.shape[1] == X.shape[1]
 
-    # TODO: Check structure of intercepts
-    # assert isinstance(model.local_intercept_, pd.Series)
-    # assert len(model.local_intercept_) == len(X)
+    # Check structure of intercepts
+    assert isinstance(model.local_intercept_, pd.Series)
+    assert len(model.local_intercept_) == len(X)
 
 
 # def test_gwlinear_coefficients_structure(sample_regression_data):
