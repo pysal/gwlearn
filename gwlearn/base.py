@@ -352,6 +352,10 @@ class _BaseModel:
     def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
         raise NotImplementedError("Subclasses must implement fit")
 
+    def _get_score_data(self, local_model, X, y):  # noqa: ARG002
+        """Subclasses should implement custom function"""
+        return np.nan
+
 
 class BaseClassifier(_BaseModel):
     """Generic geographically weighted classification meta-class
@@ -637,10 +641,6 @@ class BaseClassifier(_BaseModel):
             del local_model
 
         return output
-
-    def _get_score_data(self, local_model, X, y):  # noqa: ARG002
-        """Subclasses should implement custom function"""
-        return np.nan
 
     def predict_proba(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.DataFrame:
         """Predict probabiliies using the ensemble of local models"""
