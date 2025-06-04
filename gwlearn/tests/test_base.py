@@ -14,38 +14,6 @@ from sklearn.linear_model import LinearRegression, LogisticRegression
 from gwlearn.base import BaseClassifier, BaseRegressor, _kernel_functions
 
 
-@pytest.fixture
-def sample_data():
-    """Return sample data from geoda.guerry dataset."""
-    gdf = gpd.read_file(get_path("geoda.guerry"))
-    # Create point geometries from polygon centroids
-    gdf = gdf.set_geometry(gdf.centroid)
-    # Create binary target variable
-    gdf["binary_target"] = gdf["Donatns"] > gdf["Donatns"].median()
-
-    # Select features
-    X = gdf[["Crm_prs", "Litercy", "Wealth"]]
-    y = gdf["binary_target"]
-    geometry = gdf.geometry
-
-    return X, y, geometry
-
-
-@pytest.fixture
-def sample_regression_data():
-    """Return sample regression data from geoda.guerry dataset."""
-    gdf = gpd.read_file(get_path("geoda.guerry"))
-    # Create point geometries from polygon centroids
-    gdf = gdf.set_geometry(gdf.centroid)
-
-    # Select features and continuous target
-    X = gdf[["Crm_prs", "Litercy", "Wealth"]]
-    y = gdf["Donatns"]  # Continuous target for regression
-    geometry = gdf.geometry
-
-    return X, y, geometry
-
-
 def test_init_default_parameters():
     """Test BaseClassifier initialization with default parameters."""
     clf = BaseClassifier(LogisticRegression, bandwidth=100)
