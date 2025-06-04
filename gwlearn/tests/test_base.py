@@ -8,27 +8,10 @@ import numpy as np
 import pandas as pd
 import pytest
 from geodatasets import get_path
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.linear_model import LinearRegression, LogisticRegression
 
-from gwlearn.base import BaseClassifier, _kernel_functions
-
-
-@pytest.fixture
-def sample_data():
-    """Return sample data from geoda.guerry dataset."""
-    gdf = gpd.read_file(get_path("geoda.guerry"))
-    # Create point geometries from polygon centroids
-    gdf = gdf.set_geometry(gdf.centroid)
-    # Create binary target variable
-    gdf["binary_target"] = gdf["Donatns"] > gdf["Donatns"].median()
-
-    # Select features
-    X = gdf[["Crm_prs", "Litercy", "Wealth"]]
-    y = gdf["binary_target"]
-    geometry = gdf.geometry
-
-    return X, y, geometry
+from gwlearn.base import BaseClassifier, BaseRegressor, _kernel_functions
 
 
 def test_init_default_parameters():
@@ -1117,3 +1100,508 @@ def test_fit_focal_inclusion(sample_data):
     assert (no_focal.focal_proba_[True] - no_focal.focal_proba_[False]).abs().mean() < (
         focal.focal_proba_[True] - focal.focal_proba_[False]
     ).abs().mean()
+
+
+# ------------regression tests----------------
+
+
+def test_regressor_init_default_parameters():
+    """Test BaseRegressor initialization with default parameters."""
+    reg = BaseRegressor(LinearRegression, bandwidth=100)
+
+    assert reg.model == LinearRegression
+    assert reg.bandwidth == 100
+    assert reg.fixed is False
+    assert reg.kernel == "bisquare"
+    assert reg.n_jobs == -1
+    assert reg.fit_global_model is True
+    assert reg.measure_performance is True
+    assert reg.strict is False
+    assert reg.keep_models is False
+    assert reg.temp_folder is None
+    assert reg.batch_size is None
+    assert isinstance(reg.model_kwargs, dict)
+    assert len(reg.model_kwargs) == 0
+
+
+def test_regressor_init_custom_parameters():
+    """Test BaseRegressor initialization with custom parameters."""
+    reg = BaseRegressor(
+        LinearRegression,
+        bandwidth=50,
+        fixed=True,
+        kernel="gaussian",
+        n_jobs=2,
+        fit_global_model=False,
+        measure_performance=False,
+        strict=True,
+        keep_models=True,
+        temp_folder="/tmp",
+        batch_size=10,
+        fit_intercept=False,  # A LinearRegression parameter
+    )
+
+    assert reg.model == LinearRegression
+    assert reg.bandwidth == 50
+    assert reg.fixed is True
+    assert reg.kernel == "gaussian"
+    assert reg.n_jobs == 2
+    assert reg.fit_global_model is False
+    assert reg.measure_performance is False
+    assert reg.strict is True
+    assert reg.keep_models is True
+    assert reg.temp_folder == "/tmp"
+    assert reg.batch_size == 10
+    assert "fit_intercept" in reg.model_kwargs
+    assert reg.model_kwargs["fit_intercept"] is False
+
+
+def test_regressor_fit_basic_functionality(sample_regression_data):
+    """Test basic fitting functionality of BaseRegressor."""
+    X, y, geometry = sample_regression_data
+
+    # Create regressor with default params
+    reg = BaseRegressor(
+        RandomForestRegressor,
+        bandwidth=10,
+        fixed=False,
+        random_state=42,  # For reproducibility
+    )
+
+    # Fit the model
+    fitted_reg = reg.fit(X, y, geometry)
+
+    # Test that fitting works and returns self
+    assert fitted_reg is reg
+
+    # Test that the global model was fitted
+    assert hasattr(reg, "global_model")
+    assert isinstance(reg.global_model, RandomForestRegressor)
+
+    # TODO: Test that performance metrics were calculated
+    # assert hasattr(reg, "score_")
+    # assert hasattr(reg, "mae_")
+    # assert hasattr(reg, "mse_")
+    # assert hasattr(reg, "rmse_")
+
+
+def test_regressor_fit_with_keep_models(sample_regression_data):
+    """Test fitting with keep_models=True to retain local models."""
+    X, y, geometry = sample_regression_data
+
+    reg = BaseRegressor(
+        LinearRegression,
+        bandwidth=10,
+        fixed=False,
+        keep_models=True,
+        n_jobs=1,
+    )
+
+    reg.fit(X, y, geometry)
+
+    # Check that local models were kept
+    assert hasattr(reg, "local_models")
+    assert isinstance(reg.local_models, pd.Series)
+    assert len(reg.local_models) > 0
+
+    # Check that each local model is a fitted LinearRegression
+    for model in reg.local_models:
+        assert isinstance(model, LinearRegression | None)
+        # Check that the model has been fitted by ensuring it has a coef_ attribute
+        assert hasattr(model, "coef_") if isinstance(model, LinearRegression) else True
+
+
+def test_regressor_fit_with_keep_models_path(sample_regression_data):
+    """Test fitting with keep_models as a Path to save models to disk."""
+    X, y, geometry = sample_regression_data
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create a regressor with keep_models as a path
+        reg = BaseRegressor(
+            RandomForestRegressor,
+            bandwidth=10,
+            fixed=False,
+            keep_models=temp_dir,
+            random_state=42,
+            n_jobs=1,
+        )
+
+        reg.fit(X, y, geometry)
+
+        # Check that models were serialized to disk
+        model_files = list(Path(temp_dir).glob("*"))
+        assert len(model_files) > 0
+
+
+@pytest.mark.parametrize("kernel", _kernel_functions)
+def test_regressor_fit_different_kernels(sample_regression_data, kernel):
+    """Test fitting with different kernel functions."""
+    X, y, geometry = sample_regression_data
+
+    reg = BaseRegressor(
+        RandomForestRegressor,
+        bandwidth=10,
+        fixed=False,
+        kernel=kernel,
+        random_state=42,
+    )
+
+    reg.fit(X, y, geometry)
+
+    # Check that the model was fit successfully
+    assert hasattr(reg, "local_r2_")
+
+
+def test_regressor_fit_fixed_bandwidth(sample_regression_data):
+    """Test fitting with fixed bandwidth."""
+    X, y, geometry = sample_regression_data
+
+    reg = BaseRegressor(
+        RandomForestRegressor,
+        bandwidth=100_000,
+        fixed=True,  # Fixed bandwidth
+        random_state=42,
+    )
+
+    reg.fit(X, y, geometry)
+
+    # Check that the model was fit successfully
+    assert hasattr(reg, "local_r2_")
+
+
+def test_regressor_fit_without_global_model(sample_regression_data):
+    """Test fitting without computing a global model."""
+    X, y, geometry = sample_regression_data
+
+    reg = BaseRegressor(
+        LinearRegression,
+        bandwidth=150_000,
+        fixed=True,
+        fit_global_model=False,
+    )
+
+    reg.fit(X, y, geometry)
+
+    # Check that global model was not fitted
+    assert not hasattr(reg, "global_model")
+
+    # But local results should still be available
+    assert hasattr(reg, "focal_pred_")
+
+
+def test_regressor_fit_without_performance_metrics(sample_regression_data):
+    """Test fitting without computing performance metrics."""
+    X, y, geometry = sample_regression_data
+
+    reg = BaseRegressor(
+        LinearRegression,
+        bandwidth=150000,
+        fixed=True,
+        measure_performance=False,
+        strict=False,  # To avoid warnings on invariance
+    )
+
+    reg.fit(X, y, geometry)
+
+    # Check that performance metrics were not computed
+    assert not hasattr(reg, "score_")
+    assert not hasattr(reg, "mae_")
+
+    # But focal predictions should still be available
+    assert hasattr(reg, "focal_pred_")
+
+
+def test_regressor_fit_with_batch_processing(sample_regression_data):
+    """Test fitting with batch processing enabled."""
+    X, y, geometry = sample_regression_data
+
+    # Create a regressor with a small batch size
+    batch_size = 5
+    reg = BaseRegressor(
+        LinearRegression,
+        bandwidth=150000,
+        fixed=True,
+        batch_size=batch_size,  # Process in small batches
+        verbose=True,
+    )
+
+    # Capture print output to verify batch processing messages
+    f = io.StringIO()
+    with redirect_stdout(f):
+        reg.fit(X, y, geometry)
+
+    # Get the captured output
+    output = f.getvalue()
+
+    # Test that batch processing messages were printed
+    expected_batches = ((len(X) + batch_size - 1) // batch_size) + 1  # Ceiling division
+    assert f"Processing batch 1 out of {expected_batches}" in output
+
+    # Check that the model was fit successfully
+    assert hasattr(reg, "focal_pred_")
+    assert hasattr(reg, "local_r2_")
+
+
+# def test_regressor_predict_basic(sample_regression_data):
+#     """Test basic functionality of predict method."""
+#     X, y, geometry = sample_regression_data
+
+#     # Create and fit regressor with keep_models=True (required for prediction)
+#     reg = BaseRegressor(
+#         LinearRegression,
+#         bandwidth=150000,
+#         fixed=True,
+#         keep_models=True,
+#     )
+#     reg.fit(X, y, geometry)
+
+#     # Predict values for first 5 samples
+#     pred = reg.predict(X.iloc[:5], geometry.iloc[:5])
+
+#     # Check output format
+#     assert isinstance(pred, pd.Series)
+#     assert len(pred) == 5
+
+#     # Check all predicted values are numeric
+#     assert pd.api.types.is_numeric_dtype(pred)
+
+
+# def test_regressor_predict_adaptive(sample_regression_data):
+#     """Test basic functionality of predict method using adaptive kernel."""
+#     X, y, geometry = sample_regression_data
+
+#     # Create and fit regressor with keep_models=True (required for prediction)
+#     reg = BaseRegressor(
+#         LinearRegression,
+#         bandwidth=7,
+#         fixed=False,
+#         keep_models=True,
+#         strict=False,  # To avoid warnings on invariance
+#     )
+#     reg.fit(X, y, geometry)
+
+#     # Predict values for first 5 samples
+#     pred = reg.predict(X.iloc[:5], geometry.iloc[:5])
+
+#     # Check output format
+#     assert isinstance(pred, pd.Series)
+#     assert len(pred) == 5
+
+#     # Check all predicted values are numeric
+#     assert pd.api.types.is_numeric_dtype(pred)
+
+
+# def test_regressor_predict_with_models_on_disk(sample_regression_data):
+#     """Test prediction with models stored on disk."""
+#     X, y, geometry = sample_regression_data
+
+#     with tempfile.TemporaryDirectory() as temp_dir:
+#         # Create and fit regressor with keep_models as a path
+#         reg = BaseRegressor(
+#             LinearRegression,
+#             bandwidth=150000,
+#             fixed=True,
+#             keep_models=temp_dir,
+#             strict=False,  # To avoid warnings on invariance
+#         )
+#         reg.fit(X, y, geometry)
+
+#         # Predict values
+#         pred = reg.predict(X.iloc[:5], geometry.iloc[:5])
+
+#         # Check output
+#         assert isinstance(pred, pd.Series)
+#         assert len(pred) == 5
+
+
+# def test_regressor_predict_comparison_with_focal_pred(sample_regression_data):
+#     """Test that prediction for training data matches focal predictions."""
+#     X, y, geometry = sample_regression_data
+
+#     # Create and fit regressor
+#     reg = BaseRegressor(
+#         LinearRegression,
+#         bandwidth=150000,
+#         fixed=True,
+#         keep_models=True,
+#         strict=False,  # To avoid warnings on invariance
+#     )
+#     reg.fit(X, y, geometry)
+
+#     # Get predictions for the same data used for training
+#     predicted_values = reg.predict(X, geometry)
+
+#     # Compare with focal_pred_ (should be very similar but not identical
+#     # because focal_pred_ is calculated during training without using the focal point)
+#     pd.testing.assert_series_equal(
+#         predicted_values.loc[[2]],
+#         reg.focal_pred_.loc[[2]],
+#         check_exact=False,
+#         atol=0.1,  # Allow some tolerance because they're not identical
+#     )
+
+
+def test_regressor_random_state_consistency(sample_regression_data):
+    """Test that same random_state produces consistent results."""
+    X, y, geometry = sample_regression_data
+
+    # Create two regressors with same random_state
+    reg1 = BaseRegressor(
+        RandomForestRegressor,
+        bandwidth=150000,
+        fixed=True,
+        random_state=42,
+        strict=False,
+    )
+    reg1.fit(X, y, geometry)
+
+    reg2 = BaseRegressor(
+        RandomForestRegressor,
+        bandwidth=150000,
+        fixed=True,
+        random_state=42,
+        strict=False,
+    )
+    reg2.fit(X, y, geometry)
+
+    # Results should be identical
+    pd.testing.assert_series_equal(reg1.focal_pred_, reg2.focal_pred_)
+
+
+def test_regressor_n_jobs_consistency(sample_regression_data):
+    """Test that parallel processing gives the same results as sequential (n_jobs=1)."""
+    X, y, geometry = sample_regression_data
+
+    # Create a regressor with n_jobs=1 (sequential)
+    reg_sequential = BaseRegressor(
+        LinearRegression,
+        bandwidth=150000,
+        fixed=True,
+        n_jobs=1,
+    )
+    reg_sequential.fit(X, y, geometry)
+
+    # Create a regressor with n_jobs=-1 (parallel)
+    reg_parallel = BaseRegressor(
+        LinearRegression,
+        bandwidth=150000,
+        fixed=True,
+        n_jobs=-1,
+    )
+    reg_parallel.fit(X, y, geometry)
+
+    # Check that the results are the same regardless of parallelization
+    pd.testing.assert_series_equal(
+        reg_sequential.focal_pred_,
+        reg_parallel.focal_pred_,
+        check_exact=False,
+        rtol=1e-5,
+    )
+    pd.testing.assert_series_equal(
+        reg_sequential.local_r2_,
+        reg_parallel.local_r2_,
+        check_exact=False,
+        rtol=1e-5,
+    )
+
+    # TODO: Check that performance metrics are also equal
+    # assert reg_sequential.score_ == pytest.approx(reg_parallel.score_)
+    # assert reg_sequential.mae_ == pytest.approx(reg_parallel.mae_)
+    # assert reg_sequential.mse_ == pytest.approx(reg_parallel.mse_)
+
+    # Check that global models have the same coefficients
+    np.testing.assert_allclose(
+        reg_sequential.global_model.coef_,
+        reg_parallel.global_model.coef_,
+        rtol=1e-5,
+    )
+
+
+def test_regressor_repr_basic():
+    """Test basic __repr__ functionality."""
+    reg = BaseRegressor(LinearRegression, bandwidth=100)
+    repr_str = repr(reg)
+
+    # Check that it contains the class name
+    assert "BaseRegressor" in repr_str
+
+    # Check that it contains the model name
+    assert "LinearRegression" in repr_str
+
+    # Check that it contains the bandwidth
+    assert "bandwidth=100" in repr_str
+
+
+def test_regressor_repr_multiline_format():
+    """Test __repr__ with many parameters uses multi-line format."""
+    reg = BaseRegressor(
+        LinearRegression,
+        bandwidth=50,
+        fixed=True,
+        kernel="gaussian",
+        n_jobs=2,
+        keep_models=True,
+        verbose=True,
+        fit_intercept=False,
+    )
+    repr_str = repr(reg)
+
+    # Should be multi-line
+    assert "\n" in repr_str
+    assert repr_str.startswith("BaseRegressor(\n")
+    assert repr_str.endswith("\n)")
+
+    # Check key parameters are present
+    assert "bandwidth=50" in repr_str
+    assert "fixed=True" in repr_str  # non-default value
+    assert "kernel='gaussian'" in repr_str  # non-default value
+    assert "fit_intercept=False" in repr_str  # model kwarg
+
+
+def test_regressor_repr_html_basic():
+    """Test basic _repr_html_ functionality."""
+    reg = BaseRegressor(LinearRegression, bandwidth=100)
+    html_str = reg._repr_html_()
+
+    # Should return HTML string
+    assert isinstance(html_str, str)
+
+    # Should contain HTML tags
+    assert "<" in html_str and ">" in html_str
+
+    # Should contain the class name
+    assert "BaseRegressor" in html_str
+
+
+def test_regressor_fit_focal_inclusion(sample_regression_data):
+    """Test fitting functionality with focal inclusion parameter."""
+    X, y, geometry = sample_regression_data
+
+    # Create regressor with focal exclusion
+    no_focal = BaseRegressor(
+        RandomForestRegressor,
+        bandwidth=10,
+        fixed=False,
+        include_focal=False,
+        random_state=42,  # For reproducibility
+        strict=False,  # To avoid warnings on invariance
+    )
+
+    # Fit the model
+    no_focal = no_focal.fit(X, y, geometry)
+
+    # Create regressor with focal inclusion
+    focal = BaseRegressor(
+        RandomForestRegressor,
+        bandwidth=10,
+        fixed=False,
+        include_focal=True,
+        random_state=42,  # For reproducibility
+        strict=False,  # To avoid warnings on invariance
+    )
+
+    # Fit the model
+    focal = focal.fit(X, y, geometry)
+
+    # RF should 'remember' focal point when included
+    assert (y - no_focal.focal_pred_).mean() > (y - focal.focal_pred_).mean()

@@ -2,7 +2,6 @@ import pandas as pd
 import pytest
 
 from gwlearn.ensemble import GWGradientBoostingClassifier, GWRandomForestClassifier
-from gwlearn.tests.test_base import sample_data  # noqa: F401
 
 
 def test_gwrf_init():

@@ -116,9 +116,11 @@ class GWRandomForestClassifier(BaseClassifier):
         )
 
         self._model_type = "random_forest"
-        self.model_kwargs["oob_score"] = self._get_score_data
+        self.model_kwargs["oob_score"] = self._get_oob_score_data
 
-    def _get_score_data(self, true, pred):
+        self._empty_score_data = (np.array([]).reshape(-1, 1), np.array([]))
+
+    def _get_oob_score_data(self, true, pred):
         return true, pred
 
     def fit(
@@ -135,6 +137,7 @@ class GWRandomForestClassifier(BaseClassifier):
         geometry : gpd.GeoSeries
             Geographic location
         """
+        self._empty_feature_imp = np.array([np.nan] * (X.shape[1]))
         super().fit(X=X, y=y, geometry=geometry)
 
         if self.measure_performance:
@@ -195,6 +198,9 @@ class GWRandomForestClassifier(BaseClassifier):
         )
 
         return self
+
+    def _get_score_data(self, local_model, X, y):  # noqa: ARG002
+        return local_model.oob_score_
 
 
 class GWGradientBoostingClassifier(BaseClassifier):
@@ -284,6 +290,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
         )
 
         self._model_type = "gradient_boosting"
+        self._empty_score_data = np.nan
 
     def fit(
         self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries
@@ -299,6 +306,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
         geometry : gpd.GeoSeries
             Geographic location
         """
+        self._empty_feature_imp = np.array([np.nan] * (X.shape[1]))
         super().fit(X=X, y=y, geometry=geometry)
 
         if self.measure_performance:

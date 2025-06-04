@@ -10,6 +10,7 @@ dependencies:
   - imbalanced-learn
   # testing
   - geodatasets
+  - mgwr
   - pre-commit
   - pytest
   - pytest-cov
