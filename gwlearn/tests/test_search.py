@@ -7,7 +7,6 @@ import pytest
 
 from gwlearn.linear_model import GWLogisticRegression
 from gwlearn.search import BandwidthSearch
-from gwlearn.tests.test_base import sample_data  # noqa: F401
 
 
 def test_bandwidth_search_init():
