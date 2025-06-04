@@ -777,7 +777,14 @@ def _scores(y_true: np.ndarray, y_pred: np.ndarray) -> tuple:
 
 
 class BaseRegressor(_BaseModel):
-    """Generic geographically weighted regression meta-class"""
+    """Generic geographically weighted regression meta-class
+    TODO:
+        - r2, adj_r2
+        - degrees of freedom???
+        - tvalues & adj_alpha & critical_t val
+        - predict
+        - performance measurements
+    """
 
     def fit(
         self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries
@@ -877,11 +884,3 @@ class BaseRegressor(_BaseModel):
     def _tss(self, y, y_bar, w_i):
         """geographically weighted total sum of squares"""
         return np.sum(w_i * (y - y_bar) ** 2)
-
-
-# local_coeff
-# local_intercept
-# r2, adj_r2
-# degrees of freedom???
-# resid
-# tvalues & adj_alpha & critical_t val
