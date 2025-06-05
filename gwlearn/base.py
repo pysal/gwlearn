@@ -778,17 +778,78 @@ def _scores(y_true: np.ndarray, y_pred: np.ndarray) -> tuple:
 
 class BaseRegressor(_BaseModel):
     """Generic geographically weighted regression meta-class
+
     TODO:
-        - r2, adj_r2
+        - adj_r2
         - degrees of freedom???
         - tvalues & adj_alpha & critical_t val
         - predict
         - performance measurements
+
+    Parameters
+    ----------
+    model :  model class
+        Scikit-learn model class
+    bandwidth : int | float
+        bandwidth value consisting of either a distance or N nearest neighbors
+    fixed : bool, optional
+        True for distance based bandwidth and False for adaptive (nearest neighbor)
+        bandwidth, by default False
+    kernel : str | Callable, optional
+        type of kernel function used to weight observations, by default "bisquare"
+    include_focal : bool, optional
+        Include focal in the local model training. Excluding it allows
+        assessment of geographically weighted metrics on unseen data without a need for
+        train/test split, hence providing value for all samples. This is needed for
+        futher spatial analysis of the model performance (and generalises to models
+        that do not support OOB scoring). However, it leaves out the most representative
+        sample. By default False
+    n_jobs : int, optional
+        The number of jobs to run in parallel. ``-1`` means using all processors
+        by default ``-1``
+    fit_global_model : bool, optional
+        Determines if the global baseline model shall be fitted alognside
+        the geographically weighted, by default True
+    measure_performance : bool, optional
+        Calculate performance metrics for the model, by default True
+    strict : bool | None, optional
+        Do not fit any models if at least one neighborhood has invariant ``y``,
+        by default False. None is treated as False but provides a warning if there are
+        invariant models.
+    keep_models : bool | str | Path, optional
+        Keep all local models (required for prediction), by default False. Note that
+        for some models, like random forests, the objects can be large. If string or
+        Path is provided, the local models are not held in memory but serialized to
+        the disk from which they are loaded in prediction.
+    temp_folder : str | None, optional
+        Folder to be used by the pool for memmapping large arrays for sharing memory
+        with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default
+        None
+    batch_size : int | None, optional
+        Number of models to process in each batch. Specify batch_size fi your models do
+        not fit into memory. By default None
+    random_state : int | None, optional
+        Random seed for reproducibility, by default None
+    verbose : bool, optional
+        Whether to print progress information, by default False
+    **kwargs
+        Additional keyword arguments passed to ``model`` initialisation
     """
 
     def fit(
         self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries
     ) -> "BaseRegressor":
+        """Fit the geographically weighted model
+
+        Parameters
+        ----------
+        X : pd.DataFrame
+            Independent variables
+        y : pd.Series
+            Dependent variable
+        geometry : gpd.GeoSeries
+            Geographic location
+        """
         self._validate_geometry(geometry)
 
         weights = self._build_weights(geometry)

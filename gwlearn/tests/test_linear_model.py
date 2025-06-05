@@ -359,3 +359,5 @@ def test_against_mgwr():
     assert_array_almost_equal(gwlr.TSS_, res.TSS.flatten())
     assert_array_almost_equal(gwlr.RSS_, res.RSS.flatten())
     assert_almost_equal(gwlr.focal_r2_, res.R2)
+    assert_array_almost_equal(gwlr.local_intercept_, res.params[:, 0])
+    assert_array_almost_equal(gwlr.local_coef_, res.params[:, 1:])
