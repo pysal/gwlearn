@@ -26,12 +26,12 @@ def _triangular(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndar
 
 def _parabolic(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
     u = np.clip(distances / bandwidth, 0, 1)
-    return 0.75 * (1 - u**2)
+    return 1 - u**2
 
 
 def _gaussian(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
     u = distances / bandwidth
-    return np.exp(-((u / 2) ** 2)) / (np.sqrt(2 * np.pi))
+    return np.exp(-((u / 2) ** 2))
 
 
 def _bisquare(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
@@ -41,7 +41,7 @@ def _bisquare(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarra
 
 def _cosine(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
     u = np.clip(distances / bandwidth, 0, 1)
-    return (np.pi / 4) * np.cos(np.pi / 2 * u)
+    return np.cos(np.pi / 2 * u)
 
 
 def _exponential(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
@@ -54,14 +54,20 @@ def _boxcar(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
     return r
 
 
+def _tricube(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
+    u = np.clip(distances / bandwidth, 0, 1)
+    return (1 - u**3) ** 3
+
+
 _kernel_functions = {
     "triangular": _triangular,
     "parabolic": _parabolic,
-    "gaussian": _gaussian,
+    # "gaussian": _gaussian,
     "bisquare": _bisquare,
+    "tricube": _tricube,
     "cosine": _cosine,
     "boxcar": _boxcar,
-    "exponential": _exponential,
+    # "exponential": _exponential,
 }
 
 
@@ -77,11 +83,12 @@ class _BaseModel:
         kernel: Literal[
             "triangular",
             "parabolic",
-            "gaussian",
+            # "gaussian",
             "bisquare",
+            "tricube",
             "cosine",
             "boxcar",
-            "exponential",
+            # "exponential",
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
@@ -423,11 +430,12 @@ class BaseClassifier(_BaseModel):
         kernel: Literal[
             "triangular",
             "parabolic",
-            "gaussian",
+            # "gaussian",
             "bisquare",
+            "tricube",
             "cosine",
             "boxcar",
-            "exponential",
+            # "exponential",
         ]
         | Callable = "bisquare",
         include_focal: bool = False,

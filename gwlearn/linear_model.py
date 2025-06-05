@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from typing import Literal
 
 import geopandas as gpd
 import numpy as np
@@ -68,7 +69,17 @@ class GWLogisticRegression(BaseClassifier):
         self,
         bandwidth: int | float,
         fixed: bool = False,
-        kernel: str | Callable = "bisquare",
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            # "gaussian",
+            "bisquare",
+            "tricube",
+            "cosine",
+            "boxcar",
+            # "exponential",
+        ]
+        | Callable = "bisquare",
         include_focal: bool = True,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -240,7 +251,17 @@ class GWLinearRegression(BaseRegressor):
         self,
         bandwidth: int | float,
         fixed: bool = False,
-        kernel: str | Callable = "bisquare",
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            # "gaussian",
+            "bisquare",
+            "tricube",
+            "cosine",
+            "boxcar",
+            # "exponential",
+        ]
+        | Callable = "bisquare",
         include_focal: bool = True,
         n_jobs: int = -1,
         fit_global_model: bool = True,

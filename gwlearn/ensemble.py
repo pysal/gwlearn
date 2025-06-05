@@ -74,11 +74,12 @@ class GWRandomForestClassifier(BaseClassifier):
         kernel: Literal[
             "triangular",
             "parabolic",
-            "gaussian",
+            # "gaussian",
             "bisquare",
+            "tricube",
             "cosine",
             "boxcar",
-            "exponential",
+            # "exponential",
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
@@ -262,7 +263,17 @@ class GWGradientBoostingClassifier(BaseClassifier):
         self,
         bandwidth: int | float,
         fixed: bool = False,
-        kernel: str | Callable = "bisquare",
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            # "gaussian",
+            "bisquare",
+            "tricube",
+            "cosine",
+            "boxcar",
+            # "exponential",
+        ]
+        | Callable = "bisquare",
         include_focal: bool = False,
         n_jobs: int = -1,
         fit_global_model: bool = True,
