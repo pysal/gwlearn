@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>gwlearn.ensemble.GWGradientBoostingClassifier &#8212; gwlearn 0.1.dev54+gac3cf79 documentation</title>
+    <title>gwlearn.base.BaseRegressor &#8212; gwlearn 0.1.dev54+gac3cf79 documentation</title>
   
   
   
@@ -45,11 +45,10 @@
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'generated/gwlearn.ensemble.GWGradientBoostingClassifier';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'generated/gwlearn.base.BaseRegressor';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="gwlearn.search.BandwidthSearch" href="gwlearn.search.BandwidthSearch.html" />
-    <link rel="prev" title="gwlearn.ensemble.GWRandomForestClassifier" href="gwlearn.ensemble.GWRandomForestClassifier.html" />
+    <link rel="prev" title="gwlearn.base.BaseClassifier" href="gwlearn.base.BaseClassifier.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -159,10 +158,10 @@
 <li class="toctree-l2"><a class="reference internal" href="gwlearn.linear_model.GWLinearRegression.html">gwlearn.linear_model.GWLinearRegression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gwlearn.linear_model.GWLogisticRegression.html">gwlearn.linear_model.GWLogisticRegression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gwlearn.ensemble.GWRandomForestClassifier.html">gwlearn.ensemble.GWRandomForestClassifier</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">gwlearn.ensemble.GWGradientBoostingClassifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gwlearn.ensemble.GWGradientBoostingClassifier.html">gwlearn.ensemble.GWGradientBoostingClassifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gwlearn.search.BandwidthSearch.html">gwlearn.search.BandwidthSearch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gwlearn.base.BaseClassifier.html">gwlearn.base.BaseClassifier</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gwlearn.base.BaseRegressor.html">gwlearn.base.BaseRegressor</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">gwlearn.base.BaseRegressor</a></li>
 </ul>
 </details></li>
 </ul>
@@ -223,7 +222,7 @@
       
       
       
-      <li><a href="../_sources/generated/gwlearn.ensemble.GWGradientBoostingClassifier.rst" target="_blank"
+      <li><a href="../_sources/generated/gwlearn.base.BaseRegressor.rst" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -307,7 +306,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>gwlearn.ensemble.GWGradientBoostingClassifier</h1>
+    <h1>gwlearn.base.BaseRegressor</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -317,9 +316,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.ensemble.GWGradientBoostingClassifier"><code class="docutils literal notranslate"><span class="pre">GWGradientBoostingClassifier</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.ensemble.GWGradientBoostingClassifier.__init__"><code class="docutils literal notranslate"><span class="pre">GWGradientBoostingClassifier.__init__()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.ensemble.GWGradientBoostingClassifier.fit"><code class="docutils literal notranslate"><span class="pre">GWGradientBoostingClassifier.fit()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.base.BaseRegressor"><code class="docutils literal notranslate"><span class="pre">BaseRegressor</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.base.BaseRegressor.__init__"><code class="docutils literal notranslate"><span class="pre">BaseRegressor.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.base.BaseRegressor.fit"><code class="docutils literal notranslate"><span class="pre">BaseRegressor.fit()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -333,15 +332,27 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="gwlearn-ensemble-gwgradientboostingclassifier">
-<h1>gwlearn.ensemble.GWGradientBoostingClassifier<a class="headerlink" href="#gwlearn-ensemble-gwgradientboostingclassifier" title="Link to this heading">#</a></h1>
+  <section id="gwlearn-base-baseregressor">
+<h1>gwlearn.base.BaseRegressor<a class="headerlink" href="#gwlearn-base-baseregressor" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="gwlearn.ensemble.GWGradientBoostingClassifier">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gwlearn.ensemble.</span></span><span class="sig-name descname"><span class="pre">GWGradientBoostingClassifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bisquare'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_focal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_global_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_performance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/ensemble.html#GWGradientBoostingClassifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingClassifier" title="Link to this definition">#</a></dt>
-<dd><p>Geographically weighted gradient boosting classifier</p>
+<dt class="sig sig-object py" id="gwlearn.base.BaseRegressor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gwlearn.base.</span></span><span class="sig-name descname"><span class="pre">BaseRegressor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bisquare'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_focal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_global_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_performance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/base.html#BaseRegressor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.base.BaseRegressor" title="Link to this definition">#</a></dt>
+<dd><p>Generic geographically weighted regression meta-class</p>
+<dl class="simple">
+<dt>TODO:</dt><dd><ul class="simple">
+<li><p>adj_r2</p></li>
+<li><p>degrees of freedom???</p></li>
+<li><p>tvalues &amp; adj_alpha &amp; critical_t val</p></li>
+<li><p>predict</p></li>
+<li><p>performance measurements</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
+<dt><strong>model</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">class</span></code></span></dt><dd><p>Scikit-learn model class</p>
+</dd>
 <dt><strong>bandwidth</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>bandwidth value consisting of either a distance or N nearest neighbors</p>
 </dd>
 <dt><strong>fixed</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>True for distance based bandwidth and False for adaptive (nearest neighbor)
@@ -380,10 +391,6 @@ None</p>
 <dt><strong>batch_size</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Number of models to process in each batch. Specify batch_size fi your models do
 not fit into memory. By default None</p>
 </dd>
-<dt><strong>min_proportion</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Minimum proportion of minority class for a model to be fitted, by default 0.2</p>
-</dd>
-<dt><strong>undersample</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Whether to apply random undersampling to balance classes, by default False</p>
-</dd>
 <dt><strong>random_state</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Random seed for reproducibility, by default None</p>
 </dd>
 <dt><strong>verbose</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Whether to print progress information, by default False</p>
@@ -394,31 +401,25 @@ not fit into memory. By default None</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="gwlearn.ensemble.GWGradientBoostingClassifier.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bisquare'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_focal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_global_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_performance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/ensemble.html#GWGradientBoostingClassifier.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingClassifier.__init__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gwlearn.base.BaseRegressor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bisquare'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_focal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_global_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_performance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwlearn.base.BaseRegressor.__init__" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <p class="rubric">Methods</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gwlearn.ensemble.GWGradientBoostingClassifier.__init__" title="gwlearn.ensemble.GWGradientBoostingClassifier.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(bandwidth[, fixed, kernel, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gwlearn.base.BaseRegressor.__init__" title="gwlearn.base.BaseRegressor.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(model, *, bandwidth[, fixed, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gwlearn.ensemble.GWGradientBoostingClassifier.fit" title="gwlearn.ensemble.GWGradientBoostingClassifier.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, y, geometry)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gwlearn.base.BaseRegressor.fit" title="gwlearn.base.BaseRegressor.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, y, geometry)</p></td>
 <td><p>Fit the geographically weighted model</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(X, geometry)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code>(X, geometry)</p></td>
-<td><p>Predict probabiliies using the ensemble of local models</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <dl class="py method">
-<dt class="sig sig-object py" id="gwlearn.ensemble.GWGradientBoostingClassifier.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/ensemble.html#GWGradientBoostingClassifier.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingClassifier.fit" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gwlearn.base.BaseRegressor.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/base.html#BaseRegressor.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.base.BaseRegressor.fit" title="Link to this definition">#</a></dt>
 <dd><p>Fit the geographically weighted model</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -450,22 +451,13 @@ not fit into memory. By default None</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="gwlearn.ensemble.GWRandomForestClassifier.html"
+       href="gwlearn.base.BaseClassifier.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">gwlearn.ensemble.GWRandomForestClassifier</p>
+        <p class="prev-next-title">gwlearn.base.BaseClassifier</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="gwlearn.search.BandwidthSearch.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">gwlearn.search.BandwidthSearch</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -483,9 +475,9 @@ not fit into memory. By default None</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.ensemble.GWGradientBoostingClassifier"><code class="docutils literal notranslate"><span class="pre">GWGradientBoostingClassifier</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.ensemble.GWGradientBoostingClassifier.__init__"><code class="docutils literal notranslate"><span class="pre">GWGradientBoostingClassifier.__init__()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.ensemble.GWGradientBoostingClassifier.fit"><code class="docutils literal notranslate"><span class="pre">GWGradientBoostingClassifier.fit()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.base.BaseRegressor"><code class="docutils literal notranslate"><span class="pre">BaseRegressor</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.base.BaseRegressor.__init__"><code class="docutils literal notranslate"><span class="pre">BaseRegressor.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.base.BaseRegressor.fit"><code class="docutils literal notranslate"><span class="pre">BaseRegressor.fit()</span></code></a></li>
 </ul>
 </li>
 </ul>

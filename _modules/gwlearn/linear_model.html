@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.linear_model &#8212; gwlearn 0.1.dev53+g1b0738a documentation</title>
+    <title>gwlearn.linear_model &#8212; gwlearn 0.1.dev54+gac3cf79 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=40b742d2"></script>
+    <script src="../../_static/documentation_options.js?v=2e46da95"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev53+g1b0738a documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev54+gac3cf79 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -155,11 +155,13 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api.html">API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/gwlearn.linear_model.GWLinearRegression.html">gwlearn.linear_model.GWLinearRegression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/gwlearn.linear_model.GWLogisticRegression.html">gwlearn.linear_model.GWLogisticRegression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/gwlearn.ensemble.GWRandomForestClassifier.html">gwlearn.ensemble.GWRandomForestClassifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/gwlearn.ensemble.GWGradientBoostingClassifier.html">gwlearn.ensemble.GWGradientBoostingClassifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/gwlearn.search.BandwidthSearch.html">gwlearn.search.BandwidthSearch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/gwlearn.base.BaseClassifier.html">gwlearn.base.BaseClassifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/gwlearn.base.BaseRegressor.html">gwlearn.base.BaseRegressor</a></li>
 </ul>
 </details></li>
 </ul>
@@ -468,6 +470,8 @@ document.write(`
 
 
 
+<div class="viewcode-block" id="GWLinearRegression">
+<a class="viewcode-back" href="../../generated/gwlearn.linear_model.GWLinearRegression.html#gwlearn.linear_model.GWLinearRegression">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GWLinearRegression</span><span class="p">(</span><span class="n">BaseRegressor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Geographically weighted linear regression</span>
 
@@ -516,6 +520,8 @@ document.write(`
 <span class="sd">        initialisation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+<div class="viewcode-block" id="GWLinearRegression.__init__">
+<a class="viewcode-back" href="../../generated/gwlearn.linear_model.GWLinearRegression.html#gwlearn.linear_model.GWLinearRegression.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">bandwidth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span>
@@ -545,7 +551,8 @@ document.write(`
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_model_type</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_type</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span></div>
+
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_score_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>  <span class="c1"># noqa: ARG002</span>
         <span class="k">return</span> <span class="p">(</span>
@@ -556,6 +563,8 @@ document.write(`
             <span class="n">local_model</span><span class="o">.</span><span class="n">intercept_</span><span class="p">,</span>  <span class="c1"># intercept</span>
         <span class="p">)</span>
 
+<div class="viewcode-block" id="GWLinearRegression.fit">
+<a class="viewcode-back" href="../../generated/gwlearn.linear_model.GWLinearRegression.html#gwlearn.linear_model.GWLinearRegression.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_empty_score_data</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span>  <span class="c1"># local coefficients</span>
@@ -571,7 +580,9 @@ document.write(`
             <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score_data</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span>
         <span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+</div>
+
 </pre></div>
 
                 </article>

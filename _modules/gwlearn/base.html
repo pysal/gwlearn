@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.base &#8212; gwlearn 0.1.dev53+g1b0738a documentation</title>
+    <title>gwlearn.base &#8212; gwlearn 0.1.dev54+gac3cf79 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=40b742d2"></script>
+    <script src="../../_static/documentation_options.js?v=2e46da95"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev53+g1b0738a documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev54+gac3cf79 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -155,11 +155,13 @@
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api.html">API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/gwlearn.linear_model.GWLinearRegression.html">gwlearn.linear_model.GWLinearRegression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/gwlearn.linear_model.GWLogisticRegression.html">gwlearn.linear_model.GWLogisticRegression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/gwlearn.ensemble.GWRandomForestClassifier.html">gwlearn.ensemble.GWRandomForestClassifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/gwlearn.ensemble.GWGradientBoostingClassifier.html">gwlearn.ensemble.GWGradientBoostingClassifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/gwlearn.search.BandwidthSearch.html">gwlearn.search.BandwidthSearch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../generated/gwlearn.base.BaseClassifier.html">gwlearn.base.BaseClassifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../generated/gwlearn.base.BaseRegressor.html">gwlearn.base.BaseRegressor</a></li>
 </ul>
 </details></li>
 </ul>
@@ -1062,19 +1064,84 @@ document.write(`
     <span class="p">)</span>
 
 
+<div class="viewcode-block" id="BaseRegressor">
+<a class="viewcode-back" href="../../generated/gwlearn.base.BaseRegressor.html#gwlearn.base.BaseRegressor">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BaseRegressor</span><span class="p">(</span><span class="n">_BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic geographically weighted regression meta-class</span>
+
 <span class="sd">    TODO:</span>
-<span class="sd">        - r2, adj_r2</span>
+<span class="sd">        - adj_r2</span>
 <span class="sd">        - degrees of freedom???</span>
 <span class="sd">        - tvalues &amp; adj_alpha &amp; critical_t val</span>
 <span class="sd">        - predict</span>
 <span class="sd">        - performance measurements</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model :  model class</span>
+<span class="sd">        Scikit-learn model class</span>
+<span class="sd">    bandwidth : int | float</span>
+<span class="sd">        bandwidth value consisting of either a distance or N nearest neighbors</span>
+<span class="sd">    fixed : bool, optional</span>
+<span class="sd">        True for distance based bandwidth and False for adaptive (nearest neighbor)</span>
+<span class="sd">        bandwidth, by default False</span>
+<span class="sd">    kernel : str | Callable, optional</span>
+<span class="sd">        type of kernel function used to weight observations, by default &quot;bisquare&quot;</span>
+<span class="sd">    include_focal : bool, optional</span>
+<span class="sd">        Include focal in the local model training. Excluding it allows</span>
+<span class="sd">        assessment of geographically weighted metrics on unseen data without a need for</span>
+<span class="sd">        train/test split, hence providing value for all samples. This is needed for</span>
+<span class="sd">        futher spatial analysis of the model performance (and generalises to models</span>
+<span class="sd">        that do not support OOB scoring). However, it leaves out the most representative</span>
+<span class="sd">        sample. By default False</span>
+<span class="sd">    n_jobs : int, optional</span>
+<span class="sd">        The number of jobs to run in parallel. ``-1`` means using all processors</span>
+<span class="sd">        by default ``-1``</span>
+<span class="sd">    fit_global_model : bool, optional</span>
+<span class="sd">        Determines if the global baseline model shall be fitted alognside</span>
+<span class="sd">        the geographically weighted, by default True</span>
+<span class="sd">    measure_performance : bool, optional</span>
+<span class="sd">        Calculate performance metrics for the model, by default True</span>
+<span class="sd">    strict : bool | None, optional</span>
+<span class="sd">        Do not fit any models if at least one neighborhood has invariant ``y``,</span>
+<span class="sd">        by default False. None is treated as False but provides a warning if there are</span>
+<span class="sd">        invariant models.</span>
+<span class="sd">    keep_models : bool | str | Path, optional</span>
+<span class="sd">        Keep all local models (required for prediction), by default False. Note that</span>
+<span class="sd">        for some models, like random forests, the objects can be large. If string or</span>
+<span class="sd">        Path is provided, the local models are not held in memory but serialized to</span>
+<span class="sd">        the disk from which they are loaded in prediction.</span>
+<span class="sd">    temp_folder : str | None, optional</span>
+<span class="sd">        Folder to be used by the pool for memmapping large arrays for sharing memory</span>
+<span class="sd">        with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default</span>
+<span class="sd">        None</span>
+<span class="sd">    batch_size : int | None, optional</span>
+<span class="sd">        Number of models to process in each batch. Specify batch_size fi your models do</span>
+<span class="sd">        not fit into memory. By default None</span>
+<span class="sd">    random_state : int | None, optional</span>
+<span class="sd">        Random seed for reproducibility, by default None</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Whether to print progress information, by default False</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Additional keyword arguments passed to ``model`` initialisation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+<div class="viewcode-block" id="BaseRegressor.fit">
+<a class="viewcode-back" href="../../generated/gwlearn.base.BaseRegressor.html#gwlearn.base.BaseRegressor.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseRegressor&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the geographically weighted model</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : pd.DataFrame</span>
+<span class="sd">            Independent variables</span>
+<span class="sd">        y : pd.Series</span>
+<span class="sd">            Dependent variable</span>
+<span class="sd">        geometry : gpd.GeoSeries</span>
+<span class="sd">            Geographic location</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
 
         <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_weights</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
@@ -1121,7 +1188,8 @@ document.write(`
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_global_model</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_fit_global_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_fit_local</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1173,7 +1241,8 @@ document.write(`
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_tss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_bar</span><span class="p">,</span> <span class="n">w_i</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;geographically weighted total sum of squares&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w_i</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_bar</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w_i</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_bar</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
+
 </pre></div>
 
                 </article>
