@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.base &#8212; gwlearn 0.1.dev54+gac3cf79 documentation</title>
+    <title>gwlearn.base &#8212; gwlearn 0.1.dev55+gd0ffe7d documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=2e46da95"></script>
+    <script src="../../_static/documentation_options.js?v=7a31345a"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev54+gac3cf79 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev55+gd0ffe7d documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -299,12 +299,12 @@ document.write(`
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_parabolic</span><span class="p">(</span><span class="n">distances</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">distances</span> <span class="o">/</span> <span class="n">bandwidth</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="mf">0.75</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">u</span><span class="o">**</span><span class="mi">2</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_gaussian</span><span class="p">(</span><span class="n">distances</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">u</span> <span class="o">=</span> <span class="n">distances</span> <span class="o">/</span> <span class="n">bandwidth</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">u</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">u</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_bisquare</span><span class="p">(</span><span class="n">distances</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -314,7 +314,7 @@ document.write(`
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_cosine</span><span class="p">(</span><span class="n">distances</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">distances</span> <span class="o">/</span> <span class="n">bandwidth</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">u</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">u</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_exponential</span><span class="p">(</span><span class="n">distances</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -327,14 +327,20 @@ document.write(`
     <span class="k">return</span> <span class="n">r</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_tricube</span><span class="p">(</span><span class="n">distances</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">distances</span> <span class="o">/</span> <span class="n">bandwidth</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">u</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span>
+
+
 <span class="n">_kernel_functions</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;triangular&quot;</span><span class="p">:</span> <span class="n">_triangular</span><span class="p">,</span>
     <span class="s2">&quot;parabolic&quot;</span><span class="p">:</span> <span class="n">_parabolic</span><span class="p">,</span>
-    <span class="s2">&quot;gaussian&quot;</span><span class="p">:</span> <span class="n">_gaussian</span><span class="p">,</span>
+    <span class="c1"># &quot;gaussian&quot;: _gaussian,</span>
     <span class="s2">&quot;bisquare&quot;</span><span class="p">:</span> <span class="n">_bisquare</span><span class="p">,</span>
+    <span class="s2">&quot;tricube&quot;</span><span class="p">:</span> <span class="n">_tricube</span><span class="p">,</span>
     <span class="s2">&quot;cosine&quot;</span><span class="p">:</span> <span class="n">_cosine</span><span class="p">,</span>
     <span class="s2">&quot;boxcar&quot;</span><span class="p">:</span> <span class="n">_boxcar</span><span class="p">,</span>
-    <span class="s2">&quot;exponential&quot;</span><span class="p">:</span> <span class="n">_exponential</span><span class="p">,</span>
+    <span class="c1"># &quot;exponential&quot;: _exponential,</span>
 <span class="p">}</span>
 
 
@@ -350,11 +356,12 @@ document.write(`
         <span class="n">kernel</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
             <span class="s2">&quot;triangular&quot;</span><span class="p">,</span>
             <span class="s2">&quot;parabolic&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;gaussian&quot;</span><span class="p">,</span>
+            <span class="c1"># &quot;gaussian&quot;,</span>
             <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tricube&quot;</span><span class="p">,</span>
             <span class="s2">&quot;cosine&quot;</span><span class="p">,</span>
             <span class="s2">&quot;boxcar&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;exponential&quot;</span><span class="p">,</span>
+            <span class="c1"># &quot;exponential&quot;,</span>
         <span class="p">]</span>
         <span class="o">|</span> <span class="n">Callable</span> <span class="o">=</span> <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
         <span class="n">include_focal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -700,11 +707,12 @@ document.write(`
         <span class="n">kernel</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
             <span class="s2">&quot;triangular&quot;</span><span class="p">,</span>
             <span class="s2">&quot;parabolic&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;gaussian&quot;</span><span class="p">,</span>
+            <span class="c1"># &quot;gaussian&quot;,</span>
             <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tricube&quot;</span><span class="p">,</span>
             <span class="s2">&quot;cosine&quot;</span><span class="p">,</span>
             <span class="s2">&quot;boxcar&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;exponential&quot;</span><span class="p">,</span>
+            <span class="c1"># &quot;exponential&quot;,</span>
         <span class="p">]</span>
         <span class="o">|</span> <span class="n">Callable</span> <span class="o">=</span> <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
         <span class="n">include_focal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>

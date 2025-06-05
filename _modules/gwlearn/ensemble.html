@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.ensemble &#8212; gwlearn 0.1.dev54+gac3cf79 documentation</title>
+    <title>gwlearn.ensemble &#8212; gwlearn 0.1.dev55+gd0ffe7d documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=2e46da95"></script>
+    <script src="../../_static/documentation_options.js?v=7a31345a"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev54+gac3cf79 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev55+gd0ffe7d documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -351,11 +351,12 @@ document.write(`
         <span class="n">kernel</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
             <span class="s2">&quot;triangular&quot;</span><span class="p">,</span>
             <span class="s2">&quot;parabolic&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;gaussian&quot;</span><span class="p">,</span>
+            <span class="c1"># &quot;gaussian&quot;,</span>
             <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tricube&quot;</span><span class="p">,</span>
             <span class="s2">&quot;cosine&quot;</span><span class="p">,</span>
             <span class="s2">&quot;boxcar&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;exponential&quot;</span><span class="p">,</span>
+            <span class="c1"># &quot;exponential&quot;,</span>
         <span class="p">]</span>
         <span class="o">|</span> <span class="n">Callable</span> <span class="o">=</span> <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
         <span class="n">include_focal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -548,7 +549,17 @@ document.write(`
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">bandwidth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">fixed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">kernel</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Callable</span> <span class="o">=</span> <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
+        <span class="n">kernel</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
+            <span class="s2">&quot;triangular&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;parabolic&quot;</span><span class="p">,</span>
+            <span class="c1"># &quot;gaussian&quot;,</span>
+            <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tricube&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cosine&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;boxcar&quot;</span><span class="p">,</span>
+            <span class="c1"># &quot;exponential&quot;,</span>
+        <span class="p">]</span>
+        <span class="o">|</span> <span class="n">Callable</span> <span class="o">=</span> <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
         <span class="n">include_focal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">fit_global_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
