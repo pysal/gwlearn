@@ -788,8 +788,6 @@ class BaseRegressor(_BaseModel):
     """Generic geographically weighted regression meta-class
 
     TODO:
-        - adj_r2
-        - degrees of freedom???
         - tvalues & adj_alpha & critical_t val
         - predict
         - performance measurements
@@ -872,6 +870,7 @@ class BaseRegressor(_BaseModel):
                 focal_pred,
                 y_bar,
                 tss,
+                hat_values,  # Add this
                 self._score_data,
                 models,
             ) = zip(*training_output, strict=False)
@@ -883,6 +882,7 @@ class BaseRegressor(_BaseModel):
                 focal_pred,
                 y_bar,
                 tss,
+                hat_values,  # Add this
                 self._score_data,
             ) = zip(*training_output, strict=False)
 
@@ -903,6 +903,24 @@ class BaseRegressor(_BaseModel):
 
         if self.fit_global_model:
             self._fit_global_model(X, y)
+
+        # Store hat values
+        self.hat_values_ = pd.Series(hat_values, index=self._names)
+        # Compute effective degrees of freedom (trace of hat matrix)
+        self.effective_df_ = np.nansum(self.hat_values_)
+
+        # adjusted R2
+        n = len(self.focal_pred_)
+        if not np.isnan(self.focal_r2_) and not np.isnan(self.effective_df_):
+            if n - self.effective_df_ - 1 > 0:
+                self.focal_adj_r2_ = 1 - (
+                    (1 - self.focal_r2_) * (n - 1) / (n - self.effective_df_ - 1)
+                )
+            else:
+                self.focal_adj_r2_ = np.nan
+
+        self.log_likelihood_ = self._compute_global_log_likelihood()
+        self._compute_information_criteria()
 
         return self
 
@@ -934,11 +952,15 @@ class BaseRegressor(_BaseModel):
         y_bar = self._y_bar(y, data["_weight"])
         tss = self._tss(y, y_bar, data["_weight"])
 
+        # Compute hat value for this location
+        hat_value = self._compute_hat_value(X, data["_weight"], focal_x.values)
+
         output = [
             name,
             focal_pred,
             y_bar,
             tss,
+            hat_value,  # Add hat value to output
             self._get_score_data(local_model, X, y),
         ]
 
@@ -948,6 +970,109 @@ class BaseRegressor(_BaseModel):
             del local_model
 
         return output
+
+    def _compute_hat_value(
+        self, X: pd.DataFrame, weights: np.ndarray, focal_x: np.ndarray
+    ) -> float:
+        """
+        Compute the hat value (leverage) for the focal point
+
+        Parameters:
+        -----------
+        X : pd.DataFrame
+            Design matrix of the local neighborhood
+        weights : np.ndarray
+            Spatial weights for the neighborhood
+        focal_x : np.ndarray
+            Feature vector of the focal point
+
+        Returns:
+        --------
+        float : hat value for the focal point
+        """
+        try:
+            # Add intercept if not present
+            if not (X.iloc[:, 0] == 1).all():
+                X_with_intercept = np.column_stack([np.ones(len(X)), X.values])
+                focal_with_intercept = np.concatenate([[1], focal_x.flatten()])
+            else:
+                X_with_intercept = X.values
+                focal_with_intercept = focal_x.flatten()
+
+            # Compute (X^T W X)^(-1)
+            XtWX = X_with_intercept.T @ np.diag(weights) @ X_with_intercept
+            XtWX_inv = np.linalg.pinv(
+                XtWX
+            )  # Use pseudo-inverse for numerical stability
+
+            # Hat value: h_ii = x_i^T (X^T W X)^(-1) x_i * w_i
+            hat_value = focal_with_intercept.T @ XtWX_inv @ focal_with_intercept
+
+            return hat_value
+
+        except (np.linalg.LinAlgError, ValueError):
+            # Return NaN if computation fails (singular matrix, etc.)
+            return np.nan
+
+    def _compute_global_log_likelihood(self) -> float:
+        """
+        Compute the global log likelihood for the entire GWR model
+
+        Parameters:
+        -----------
+        y : pd.Series
+            Original target values
+
+        Returns:
+        --------
+        float : Global log likelihood value for the entire GWR model
+        """
+        residuals = self.resid_
+        n = len(residuals)
+
+        # Estimate sigma from the residuals
+        sigma = np.sqrt(np.sum(residuals**2) / n)
+
+        if sigma <= 0:
+            return np.nan
+
+        # Global log likelihood assuming Gaussian errors
+        log_likelihood = (
+            -n / 2 * np.log(2 * np.pi)
+            - n * np.log(sigma)
+            - np.sum(residuals**2) / (2 * sigma**2)
+        )
+
+        return log_likelihood
+
+    def _compute_information_criteria(self):
+        """Compute AIC, BIC, and AICc using the global log likelihood"""
+        n = len(self.focal_pred_)
+
+        # Use effective degrees of freedom as the number of parameters
+        k = self.effective_df_
+
+        if not np.isnan(self.log_likelihood_) and not np.isnan(k):
+            # Akaike Information Criterion
+            self.aic_ = 2 * (k + 1) - 2 * self.log_likelihood_
+
+            # Bayesian Information Criterion
+            self.bic_ = np.log(n) * (k + 1) - 2 * self.log_likelihood_
+
+            # Corrected AIC for small samples
+            if n - k - 1 > 0:
+                self.aicc_ = self.aic_ + (2 * k * (k + 1)) / (n - k - 1)
+                # the implementation below matches MGWR but the formula above is
+                # typical AICc implementation. The difference is minor.
+                # self.aicc_ = -2.0 * self.log_likelihood_ + 2.0 * n * (k + 1.0) / (
+                #     n - k - 2.0
+                # )
+            else:
+                self.aicc_ = np.nan
+        else:
+            self.aic_ = np.nan
+            self.bic_ = np.nan
+            self.aicc_ = np.nan
 
     def _y_bar(self, y, w_i):
         """weighted mean of y"""

@@ -4,7 +4,8 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 from scipy.spatial.distance import pdist
-from sklearn import metrics
+
+from .base import BaseClassifier, BaseRegressor
 
 
 class BandwidthSearch:
@@ -92,20 +93,37 @@ class BandwidthSearch:
             verbose=self.verbose == 2,
             **self.model_kwargs,
         ).fit(X=X, y=y, geometry=geometry)
-        mask = (gwm._n_labels < 2) | np.isnan(gwm.focal_proba_).any(axis=1)
-        y_masked = y[~mask]
-        if mask.all() or (np.unique(y_masked).shape[0] == 1):
-            return np.inf
-        log_likelihood = -metrics.log_loss(y_masked, gwm.focal_proba_[~mask])
-        n, k = X[~mask].shape
+        if isinstance(self.model, BaseClassifier):
+            log_likelihood, n, k = self._categorical_ll(gwm, X, y)
 
-        match self.criterion:
-            case "aic":
-                return self._aic(k, n, log_likelihood)
-            case "bic":
-                return self._bic(k, n, log_likelihood)
-            case "aicc":
-                return self._aicc(k, n, log_likelihood)
+            match self.criterion:
+                case "aic":
+                    return self._aic(k, n, log_likelihood)
+                case "bic":
+                    return self._bic(k, n, log_likelihood)
+                case "aicc":
+                    return self._aicc(k, n, log_likelihood)
+
+        elif isinstance(self.model, BaseRegressor):
+            match self.criterion:
+                case "aic":
+                    return gwm.aic_
+                case "bic":
+                    return gwm.bic_
+                case "aicc":
+                    return gwm.aicc_
+        else:
+            raise ValueError("Unsupported model.")
+
+    def _ll(self, gwm, X, y):
+        n = len(y)
+        sigma = np.sqrt(np.sum(gwm.resid_**2) / n)
+        log_likelihood = (
+            -n / 2 * np.log(2 * np.pi)
+            - n * np.log(sigma)
+            - np.sum(gwm.resid_**2) / (2 * sigma**2)
+        )
+        return log_likelihood, n, X.shape[1]
 
     def _interval(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries) -> None:
         """Fit models using the equal interval search.
