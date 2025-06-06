@@ -4,9 +4,6 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 from scipy.spatial.distance import pdist
-from sklearn import metrics
-
-from .base import BaseClassifier, BaseRegressor
 
 
 class BandwidthSearch:
@@ -94,37 +91,14 @@ class BandwidthSearch:
             verbose=self.verbose == 2,
             **self.model_kwargs,
         ).fit(X=X, y=y, geometry=geometry)
-        if isinstance(gwm, BaseClassifier):
-            log_likelihood, n, k = self._ll(gwm, X, y)
 
-            match self.criterion:
-                case "aic":
-                    return self._aic(k, n, log_likelihood)
-                case "bic":
-                    return self._bic(k, n, log_likelihood)
-                case "aicc":
-                    return self._aicc(k, n, log_likelihood)
-
-        elif isinstance(gwm, BaseRegressor):
-            match self.criterion:
-                case "aic":
-                    return gwm.aic_
-                case "bic":
-                    return gwm.bic_
-                case "aicc":
-                    return gwm.aicc_
-        else:
-            raise ValueError("Unsupported model.")
-
-    def _ll(self, gwm, X, y):
-        mask = (gwm._n_labels < 2) | np.isnan(gwm.focal_proba_).any(axis=1)
-        y_masked = y[~mask]
-        if mask.all() or (np.unique(y_masked).shape[0] == 1):
-            return np.inf
-        log_likelihood = -metrics.log_loss(y_masked, gwm.focal_proba_[~mask])
-        n, k = X[~mask].shape
-
-        return log_likelihood, n, k
+        match self.criterion:
+            case "aic":
+                return gwm.aic_
+            case "bic":
+                return gwm.bic_
+            case "aicc":
+                return gwm.aicc_
 
     def _interval(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries) -> None:
         """Fit models using the equal interval search.
@@ -217,12 +191,3 @@ class BandwidthSearch:
             diff = np.abs(score_b - score_d)
 
         self.scores_ = pd.Series(scores, name="oob_score")
-
-    def _aic(self, k, _, log_likelihood):
-        return 2 * k - 2 * log_likelihood
-
-    def _bic(self, k, n, log_likelihood):
-        return -2 * log_likelihood + k * np.log(n)
-
-    def _aicc(self, k, n, log_likelihood):
-        return self._aic(k, n, log_likelihood) + 2 * k * (k + 1) / (n - k - 1)
