@@ -349,7 +349,10 @@ class _BaseModel:
         self, X: pd.DataFrame, weights: np.ndarray, focal_x: np.ndarray
     ) -> float:
         """
-        Compute the hat value (leverage) for the focal point
+        Compute the hat value (leverage) for the focal point.
+
+        For classification problems, this is an approximation rather than an ideal
+        solution but it should be good enough for bandwidth search.
 
         Parameters:
         -----------
