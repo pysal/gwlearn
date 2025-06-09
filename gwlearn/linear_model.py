@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from time import time
 from typing import Literal
 
 import geopandas as gpd
@@ -204,6 +205,9 @@ class GWLogisticRegression(BaseClassifier):
         )
 
         if self.measure_performance:
+            if self.verbose:
+                print(f"{(time() - self._start):.2f}s: Measuring pooled performance")
+
             true = [x[0] for x in self._score_data]
             pred = [x[1] for x in self._score_data]
 
@@ -233,6 +237,11 @@ class GWLogisticRegression(BaseClassifier):
                 all_true, all_pred, average="weighted", zero_division=0
             )
 
+            if self.verbose:
+                print(
+                    f"{(time() - self._start):.2f}s: Measuring local pooled performance"
+                )
+
             # local pred scores
             local_score = pd.DataFrame(
                 [
@@ -257,6 +266,9 @@ class GWLogisticRegression(BaseClassifier):
             self.local_pooled_f1_macro_ = local_score["pred_F1_macro"]
             self.local_pooled_f1_micro_ = local_score["pred_F1_micro"]
             self.local_pooled_f1_weighted_ = local_score["pred_F1_weighted"]
+
+            if self.verbose:
+                print(f"{(time() - self._start):.2f}s: Finished")
 
         return self
 

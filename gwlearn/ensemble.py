@@ -1,5 +1,6 @@
 from collections.abc import Callable
 from pathlib import Path
+from time import time
 from typing import Literal
 
 import geopandas as gpd
@@ -211,6 +212,8 @@ class GWRandomForestClassifier(BaseClassifier):
         super().fit(X=X, y=y, geometry=geometry)
 
         if self.measure_performance:
+            if self.verbose:
+                print(f"{(time() - self._start):.2f}s: Measuring pooled performance")
             # OOB accuracy for RF can be measured both local and global
             true, pred = zip(*self._score_data, strict=False)
             del self._score_data
@@ -236,6 +239,11 @@ class GWRandomForestClassifier(BaseClassifier):
             self.oob_f1_weighted_ = metrics.f1_score(
                 all_true, all_pred, average="weighted", zero_division=0
             )
+
+            if self.verbose:
+                print(
+                    f"{(time() - self._start):.2f}s: Measuring local pooled performance"
+                )
 
             # local OOB scores
             local_score = pd.DataFrame(
@@ -266,6 +274,9 @@ class GWRandomForestClassifier(BaseClassifier):
         self.feature_importances_ = pd.DataFrame(
             self._feature_importances, index=self._names, columns=X.columns
         )
+
+        if self.verbose:
+            print(f"{(time() - self._start):.2f}s: Finished")
 
         return self
 
@@ -437,5 +448,8 @@ class GWGradientBoostingClassifier(BaseClassifier):
         self.feature_importances_ = pd.DataFrame(
             self._feature_importances, index=self._names, columns=X.columns
         )
+
+        if self.verbose:
+            print(f"{(time() - self._start):.2f}s: Finished")
 
         return self
