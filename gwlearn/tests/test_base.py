@@ -194,12 +194,12 @@ def test_fit_with_keep_models(sample_data):
     clf.fit(X, y, geometry)
 
     # Check that local models were kept
-    assert hasattr(clf, "local_models")
-    assert isinstance(clf.local_models, pd.Series)
-    assert len(clf.local_models) > 0
+    assert hasattr(clf, "_local_models")
+    assert isinstance(clf._local_models, pd.Series)
+    assert len(clf._local_models) > 0
 
     # Check that each local model is a fitted LogisticRegression
-    for model in clf.local_models:
+    for model in clf._local_models:
         assert isinstance(model, LogisticRegression | None)
         # Check that the model has been fitted by ensuring it has a coef_ attribute
         assert (
@@ -290,7 +290,7 @@ def test_fit_without_global_model(sample_data):
     assert not hasattr(clf, "global_model")
 
     # But local results should still be available
-    assert hasattr(clf, "focal_proba_")
+    assert hasattr(clf, "proba_")
 
 
 def test_fit_without_performance_metrics(sample_data):
@@ -313,7 +313,7 @@ def test_fit_without_performance_metrics(sample_data):
     assert not hasattr(clf, "f1_macro_")
 
     # But focal probabilities should still be available
-    assert hasattr(clf, "focal_proba_")
+    assert hasattr(clf, "proba_")
 
 
 def test_fit_with_strict_option(sample_data):
@@ -407,7 +407,7 @@ def test_fit_with_batch_processing(sample_data):
     assert f"Processing batch 1 out of {expected_batches}" in output
 
     # Check that the model was fit successfully
-    assert hasattr(clf, "focal_proba_")
+    assert hasattr(clf, "proba_")
     assert hasattr(clf, "score_")
     assert 0 <= clf.score_ <= 1
 
@@ -419,7 +419,7 @@ def test_fit_with_batch_processing(sample_data):
 
     # Results should be similar regardless of batching
     pd.testing.assert_frame_equal(
-        clf.focal_proba_, clf_no_batch.focal_proba_, check_exact=False, rtol=1e-5
+        clf.proba_, clf_no_batch.proba_, check_exact=False, rtol=1e-5
     )
 
 
@@ -453,8 +453,8 @@ def test_fit_n_jobs_consistency(sample_data):
 
     # Check that the results are the same regardless of parallelization
     pd.testing.assert_frame_equal(
-        clf_sequential.focal_proba_,
-        clf_parallel.focal_proba_,
+        clf_sequential.proba_,
+        clf_parallel.proba_,
         check_exact=False,
         rtol=1e-5,
     )
@@ -628,11 +628,11 @@ def test_predict_comparison_with_focal_proba(sample_data):
     # Get predictions for the same data used for training
     predicted_proba = clf.predict_proba(X, geometry)
 
-    # Compare with focal_proba_ (should be very similar but not identical
-    # because focal_proba_ is calculated during training without using the focal point)
+    # Compare with proba_ (should be very similar but not identical
+    # because proba_ is calculated during training without using the focal point)
     pd.testing.assert_series_equal(
         predicted_proba.loc[2],
-        clf.focal_proba_.loc[2],
+        clf.proba_.loc[2],
         check_exact=False,
         atol=0.05,  # Allow some tolerance because they're not identical
     )
@@ -662,7 +662,7 @@ def test_binary_target_zero_one(sample_data):
     assert 0 <= clf.score_ <= 1
 
     # propagation to prediction
-    pd.testing.assert_index_equal(clf.focal_proba_.columns, pd.Index([0, 1]))
+    pd.testing.assert_index_equal(clf.proba_.columns, pd.Index([0, 1]))
 
 
 def test_non_binary_target_raises_error(sample_data):
@@ -775,7 +775,7 @@ def test_random_state_consistency(sample_data):
     clf2.fit(X, y, geometry)
 
     # Results should be identical
-    pd.testing.assert_frame_equal(clf1.focal_proba_, clf2.focal_proba_)
+    pd.testing.assert_frame_equal(clf1.proba_, clf2.proba_)
     assert clf1.score_ == clf2.score_
 
 
@@ -803,7 +803,7 @@ def test_different_random_states(sample_data):
     clf2.fit(X, y, geometry)
 
     # Results should be different
-    assert not clf1.focal_proba_.equals(clf2.focal_proba_)
+    assert not clf1.proba_.equals(clf2.proba_)
 
 
 def test_random_state_with_undersample(sample_data):
@@ -834,7 +834,7 @@ def test_random_state_with_undersample(sample_data):
     clf2.fit(X, y, geometry)
 
     # Results should be identical
-    pd.testing.assert_frame_equal(clf1.focal_proba_, clf2.focal_proba_)
+    pd.testing.assert_frame_equal(clf1.proba_, clf2.proba_)
     assert clf1.score_ == clf2.score_
 
 
@@ -1097,8 +1097,8 @@ def test_fit_focal_inclusion(sample_data):
     focal = focal.fit(X, y, geometry)
 
     # RF should 'remember' focal
-    assert (no_focal.focal_proba_[True] - no_focal.focal_proba_[False]).abs().mean() < (
-        focal.focal_proba_[True] - focal.focal_proba_[False]
+    assert (no_focal.proba_[True] - no_focal.proba_[False]).abs().mean() < (
+        focal.proba_[True] - focal.proba_[False]
     ).abs().mean()
 
 
@@ -1200,12 +1200,12 @@ def test_regressor_fit_with_keep_models(sample_regression_data):
     reg.fit(X, y, geometry)
 
     # Check that local models were kept
-    assert hasattr(reg, "local_models")
-    assert isinstance(reg.local_models, pd.Series)
-    assert len(reg.local_models) > 0
+    assert hasattr(reg, "_local_models")
+    assert isinstance(reg._local_models, pd.Series)
+    assert len(reg._local_models) > 0
 
     # Check that each local model is a fitted LinearRegression
-    for model in reg.local_models:
+    for model in reg._local_models:
         assert isinstance(model, LinearRegression | None)
         # Check that the model has been fitted by ensuring it has a coef_ attribute
         assert hasattr(model, "coef_") if isinstance(model, LinearRegression) else True
@@ -1286,7 +1286,7 @@ def test_regressor_fit_without_global_model(sample_regression_data):
     assert not hasattr(reg, "global_model")
 
     # But local results should still be available
-    assert hasattr(reg, "focal_pred_")
+    assert hasattr(reg, "pred_")
 
 
 def test_regressor_fit_without_performance_metrics(sample_regression_data):
@@ -1308,7 +1308,7 @@ def test_regressor_fit_without_performance_metrics(sample_regression_data):
     assert not hasattr(reg, "mae_")
 
     # But focal predictions should still be available
-    assert hasattr(reg, "focal_pred_")
+    assert hasattr(reg, "pred_")
 
 
 def test_regressor_fit_with_batch_processing(sample_regression_data):
@@ -1338,7 +1338,7 @@ def test_regressor_fit_with_batch_processing(sample_regression_data):
     assert f"Processing batch 1 out of {expected_batches}" in output
 
     # Check that the model was fit successfully
-    assert hasattr(reg, "focal_pred_")
+    assert hasattr(reg, "pred_")
     assert hasattr(reg, "local_r2_")
 
 
@@ -1431,11 +1431,11 @@ def test_regressor_fit_with_batch_processing(sample_regression_data):
 #     # Get predictions for the same data used for training
 #     predicted_values = reg.predict(X, geometry)
 
-#     # Compare with focal_pred_ (should be very similar but not identical
-#     # because focal_pred_ is calculated during training without using the focal point)
+#     # Compare with pred_ (should be very similar but not identical
+#     # because pred_ is calculated during training without using the focal point)
 #     pd.testing.assert_series_equal(
 #         predicted_values.loc[[2]],
-#         reg.focal_pred_.loc[[2]],
+#         reg.pred_.loc[[2]],
 #         check_exact=False,
 #         atol=0.1,  # Allow some tolerance because they're not identical
 #     )
@@ -1465,7 +1465,7 @@ def test_regressor_random_state_consistency(sample_regression_data):
     reg2.fit(X, y, geometry)
 
     # Results should be identical
-    pd.testing.assert_series_equal(reg1.focal_pred_, reg2.focal_pred_)
+    pd.testing.assert_series_equal(reg1.pred_, reg2.pred_)
 
 
 def test_regressor_n_jobs_consistency(sample_regression_data):
@@ -1492,8 +1492,8 @@ def test_regressor_n_jobs_consistency(sample_regression_data):
 
     # Check that the results are the same regardless of parallelization
     pd.testing.assert_series_equal(
-        reg_sequential.focal_pred_,
-        reg_parallel.focal_pred_,
+        reg_sequential.pred_,
+        reg_parallel.pred_,
         check_exact=False,
         rtol=1e-5,
     )
@@ -1604,4 +1604,4 @@ def test_regressor_fit_focal_inclusion(sample_regression_data):
     focal = focal.fit(X, y, geometry)
 
     # RF should 'remember' focal point when included
-    assert (y - no_focal.focal_pred_).mean() > (y - focal.focal_pred_).mean()
+    assert (y - no_focal.pred_).mean() > (y - focal.pred_).mean()

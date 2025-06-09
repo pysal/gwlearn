@@ -24,29 +24,32 @@ class GWRandomForestClassifier(BaseClassifier):
     kernel : str | Callable, optional
         type of kernel function used to weight observations, by default "bisquare"
     include_focal : bool, optional
-        Include focal in the local model training. Excluding it allows
-        assessment of geographically weighted metrics on unseen data without a need for
-        train/test split, hence providing value for all samples. This is needed for
-        futher spatial analysis of the model performance (and generalises to models
-        that do not support OOB scoring). However, it leaves out the most representative
-        sample. By default False
+        Include focal in the local model training. Excluding it allows assessment of
+        geographically weighted metrics on unseen data without a need for train/test
+        split, hence providing value for all samples. This is needed for futher spatial
+        analysis of the model performance (and generalises to models that do not support
+        OOB scoring). However, it leaves out the most representative sample. By default
+        False
     n_jobs : int, optional
-        The number of jobs to run in parallel. ``-1`` means using all processors
-        by default ``-1``
+        The number of jobs to run in parallel. ``-1`` means using all processors by
+        default ``-1``
     fit_global_model : bool, optional
-        Determines if the global baseline model shall be fitted alognside
-        the geographically weighted, by default True
+        Determines if the global baseline model shall be fitted alognside the
+        geographically weighted, by default True
     measure_performance : bool, optional
-        Calculate performance metrics for the model, by default True
+        Calculate performance metrics for the model. If True, measures accurace score,
+        precision, recall, balanced accuracy, and F1 scores (based on focal prediction,
+        pooled local out-of-bag predictions and individual local out-of-bag
+        predictions). By default True
     strict : bool | None, optional
-        Do not fit any models if at least one neighborhood has invariant ``y``,
-        by default False. None is treated as False but provides a warning if there are
+        Do not fit any models if at least one neighborhood has invariant ``y``, by
+        default False. None is treated as False but provides a warning if there are
         invariant models.
     keep_models : bool | str | Path, optional
-        Keep all local models (required for prediction), by default False. Note that
-        for some models, like random forests, the objects can be large. If string or
-        Path is provided, the local models are not held in memory but serialized to
-        the disk from which they are loaded in prediction.
+        Keep all local models (required for prediction), by default False. Note that for
+        some models, like random forests, the objects can be large. If string or Path is
+        provided, the local models are not held in memory but serialized to the disk
+        from which they are loaded in prediction.
     temp_folder : str | None, optional
         Folder to be used by the pool for memmapping large arrays for sharing memory
         with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default
@@ -64,6 +67,72 @@ class GWRandomForestClassifier(BaseClassifier):
         Whether to print progress information, by default False
     **kwargs
         Additional keyword arguments passed to ``model`` initialisation
+
+    Attributes
+    ----------
+    proba_ : pd.DataFrame
+        Probability predictions for focal locations based on a local model trained
+        around the point itself.
+    pred_ : pd.Series
+        Binary predictions for focal locations based on a local model trained around the
+        location itself.
+    hat_values_ : pd.Series
+        Hat values for each location (diagonal elements of hat matrix)
+    effective_df_ : float
+        Effective degrees of freedom (sum of hat values)
+    score_ : float
+        Accuracy score of the model based on ``pred_``.
+    precision_ : float
+        Precision score of the model based on ``pred_``.
+    recall_ : float
+        Recall score of the model based on ``pred_``.
+    balanced_accuracy_ : float
+        Balanced accuracy score of the model based on ``pred_``.
+    f1_macro_ : float
+        F1 score with macro averaging based on ``pred_``.
+    f1_micro_ : float
+        F1 score with micro averaging based on ``pred_``.
+    f1_weighted_ : float
+        F1 score with weighted averaging based on ``pred_``.
+    log_likelihood_ : float
+        Global log likelihood of the model
+    aic_ : float
+        Akaike inofrmation criterion of the model
+    aicc_ : float
+        Corrected Akaike information criterion to account to account for model
+        complexity (smaller bandwidths)
+    bic_ : float
+        Bayesian information criterion
+    oob_score_ : float
+        Out-of-bag accuracy score based on pooled OOB predictions
+    oob_precision_ : float
+        Out-of-bag precision score based on pooled OOB predictions
+    oob_recall_ : float
+        Out-of-bag recall score based on pooled OOB predictions
+    oob_balanced_accuracy_ : float
+        Out-of-bag balanced accuracy score based on pooled OOB predictions
+    oob_f1_macro_ : float
+        Out-of-bag F1 score with macro averaging based on pooled OOB predictions
+    oob_f1_micro_ : float
+        Out-of-bag F1 score with micro averaging based on pooled OOB predictions
+    oob_f1_weighted_ : float
+        Out-of-bag F1 score with weighted averaging based on pooled OOB predictions
+    local_oob_score_ : pd.Series
+        Out-of-bag accuracy score for each local model
+    local_oob_precision_ : pd.Series
+        Out-of-bag precision score for each local model
+    local_oob_recall_ : pd.Series
+        Out-of-bag recall score for each local model
+    local_oob_balanced_accuracy_ : pd.Series
+        Out-of-bag balanced accuracy score for each local model
+    local_oob_f1_macro_ : pd.Series
+        Out-of-bag F1 score with macro averaging for each local model
+    local_oob_f1_micro_ : pd.Series
+        Out-of-bag F1 score with micro averaging for each local model
+    local_oob_f1_weighted_ : pd.Series
+        Out-of-bag F1 score with weighted averaging for each local model
+    feature_importances_ : pd.DataFrame
+        Feature importance values for each local model
     """
 
     def __init__(
@@ -257,6 +326,44 @@ class GWGradientBoostingClassifier(BaseClassifier):
         Whether to print progress information, by default False
     **kwargs
         Additional keyword arguments passed to ``model`` initialisation
+
+    Attributes
+    ----------
+    proba_ : pd.DataFrame
+        Probability predictions for focal locations based on a local model trained
+        around the point itself.
+    pred_ : pd.Series
+        Binary predictions for focal locations based on a local model trained around the
+        location itself.
+    hat_values_ : pd.Series
+        Hat values for each location (diagonal elements of hat matrix)
+    effective_df_ : float
+        Effective degrees of freedom (sum of hat values)
+    score_ : float
+        Accuracy score of the model based on ``pred_``.
+    precision_ : float
+        Precision score of the model based on ``pred_``.
+    recall_ : float
+        Recall score of the model based on ``pred_``.
+    balanced_accuracy_ : float
+        Balanced accuracy score of the model based on ``pred_``.
+    f1_macro_ : float
+        F1 score with macro averaging based on ``pred_``.
+    f1_micro_ : float
+        F1 score with micro averaging based on ``pred_``.
+    f1_weighted_ : float
+        F1 score with weighted averaging based on ``pred_``.
+    log_likelihood_ : float
+        Global log likelihood of the model
+    aic_ : float
+        Akaike inofrmation criterion of the model
+    aicc_ : float
+        Corrected Akaike information criterion to account to account for model
+        complexity (smaller bandwidths)
+    bic_ : float
+        Bayesian information criterion
+    feature_importances_ : pd.DataFrame
+        Feature importance values for each local model
     """
 
     def __init__(

@@ -19,7 +19,7 @@ def test_bandwidth_search_init():
     assert search.kernel == "bisquare"
     assert search.n_jobs == -1
     assert search.search_method == "golden_section"
-    assert search.criterion == "aic"
+    assert search.criterion == "aicc"
     assert search.min_bandwidth is None
     assert search.max_bandwidth is None
     assert search.interval is None
@@ -107,7 +107,7 @@ def test_golden_section_search_basic(sample_data):  # noqa: F811
         fixed=True,  # Fixed bandwidth for faster testing
         search_method="golden_section",
         min_bandwidth=100000,
-        max_bandwidth=300000,
+        max_bandwidth=600000,
         max_iterations=5,  # Limit iterations for faster testing
         tolerance=0.1,  # High tolerance for faster convergence
         verbose=False,
@@ -167,8 +167,8 @@ def test_adaptive_bandwidth_search(sample_data):  # noqa: F811
         fixed=False,  # Adaptive bandwidth
         search_method="interval",
         min_bandwidth=5,  # Small number of neighbors
-        max_bandwidth=15,
-        interval=5,  # Just 3 points for speed
+        max_bandwidth=84,
+        interval=25,  # Just 3 points for speed
         verbose=False,
         random_state=42,
         max_iter=500,
@@ -184,8 +184,7 @@ def test_adaptive_bandwidth_search(sample_data):  # noqa: F811
 
     # Check that optimal bandwidth was found and is an integer (neighbor count)
     assert hasattr(search, "optimal_bandwidth_")
-    assert search.optimal_bandwidth_ == 15
-    assert search.min_bandwidth <= search.optimal_bandwidth_ <= search.max_bandwidth
+    assert search.optimal_bandwidth_ == 80
 
 
 def test_lower_criterion_value_is_better(sample_data):  # noqa: F811

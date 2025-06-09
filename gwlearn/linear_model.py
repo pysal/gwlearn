@@ -63,6 +63,82 @@ class GWLogisticRegression(BaseClassifier):
         Whether to print progress information, by default False
     **kwargs
         Additional keyword arguments passed to ``model`` initialisation
+
+    Attributes
+    ----------
+    proba_ : pd.DataFrame
+        Probability predictions for focal locations based on a local model trained
+        around the point itself.
+    pred_ : pd.Series
+        Binary predictions for focal locations based on a local model trained around
+        the location itself.
+    hat_values_ : pd.Series
+        Hat values for each location (diagonal elements of hat matrix)
+    effective_df_ : float
+        Effective degrees of freedom (sum of hat values)
+    score_ : float
+        Accuracy score of the model based on ``pred_``.
+    precision_ : float
+        Precision score of the model based on ``pred_``.
+    recall_ : float
+        Recall score of the model based on ``pred_``.
+    balanced_accuracy_ : float
+        Balanced accuracy score of the model based on ``pred_``.
+    f1_macro_ : float
+        F1 score with macro averaging based on ``pred_``.
+    f1_micro_ : float
+        F1 score with micro averaging based on ``pred_``.
+    f1_weighted_ : float
+        F1 score with weighted averaging based on ``pred_``.
+    log_likelihood_ : float
+        Global log likelihood of the model
+    aic_ : float
+        Akaike inofrmation criterion of the model
+    aicc_ : float
+        Corrected Akaike information criterion to account to account for model
+        complexity (smaller bandwidths)
+    bic_ : float
+        Bayesian information criterion
+    local_coef_ : pd.DataFrame
+        Local coefficient of the features in the decision function for each feature at
+        each location
+    local_intercept_ : pd.Series
+        Local intercept values at each location
+    pooled_score_ : float
+        Accuracy score of pooled predictions from local models
+    pooled_precision_ : float
+        Precision score of pooled predictions from local models
+    pooled_recall_ : float
+        Recall score of pooled predictions from local models
+    pooled_balanced_accuracy_ : float
+        Balanced accuracy score of pooled predictions from local models
+    pooled_f1_macro_ : float
+        F1 score with macro averaging for pooled predictions from local models
+    pooled_f1_micro_ : float
+        F1 score with micro averaging for pooled predictions from local models
+    pooled_f1_weighted_ : float
+        F1 score with weighted averaging for pooled predictions from local models
+    local_pooled_score_ : pd.Series
+        Local accuracy scores for each location based on all samples used in each local
+        model
+    local_pooled_precision_ : pd.Series
+        Local precision scores for each location based on all samples used in each local
+        model
+    local_pooled_recall_ : pd.Series
+        Local recall scores for each location based on all samples used in each local
+        model
+    local_pooled_balanced_accuracy_ : pd.Series
+        Local balanced accuracy scores for each location based on all samples used in
+        each local model
+    local_pooled_f1_macro_ : pd.Series
+        Local F1 scores with macro averaging for each location based on all samples used
+        in each local model
+    local_pooled_f1_micro_ : pd.Series
+        Local F1 scores with micro averaging for each location based on all samples used
+        in each local model
+    local_pooled_f1_weighted_ : pd.Series
+        Local F1 scores with weighted averaging for each location based on all samples
+        used in each local model
     """
 
     def __init__(
@@ -137,23 +213,23 @@ class GWLogisticRegression(BaseClassifier):
             all_pred = np.concat(pred)
 
             # global pred scores
-            self.pred_score_ = metrics.accuracy_score(all_true, all_pred)
-            self.pred_precision_ = metrics.precision_score(
+            self.pooled_score_ = metrics.accuracy_score(all_true, all_pred)
+            self.pooled_precision_ = metrics.precision_score(
                 all_true, all_pred, zero_division=0
             )
-            self.pred_recall_ = metrics.recall_score(
+            self.pooled_recall_ = metrics.recall_score(
                 all_true, all_pred, zero_division=0
             )
-            self.pred_f1_macropred_balanced_accuracy_ = metrics.balanced_accuracy_score(
-                all_true, all_pred
+            self.pred_f1_macropooled_balanced_accuracy_ = (
+                metrics.balanced_accuracy_score(all_true, all_pred)
             )
-            self.pred_f1_macro_ = metrics.f1_score(
+            self.pooled_f1_macro_ = metrics.f1_score(
                 all_true, all_pred, average="macro", zero_division=0
             )
-            self.pred_f1_micro_ = metrics.f1_score(
+            self.pooled_f1_micro_ = metrics.f1_score(
                 all_true, all_pred, average="micro", zero_division=0
             )
-            self.pred_f1_weighted_ = metrics.f1_score(
+            self.pooled_f1_weighted_ = metrics.f1_score(
                 all_true, all_pred, average="weighted", zero_division=0
             )
 
@@ -174,13 +250,13 @@ class GWLogisticRegression(BaseClassifier):
                     "pred_F1_weighted",
                 ],
             )
-            self.local_pred_score_ = local_score["pred_score"]
-            self.local_pred_precision_ = local_score["pred_precision"]
-            self.local_pred_recall_ = local_score["pred_recall"]
-            self.local_pred_balanced_accuracy_ = local_score["pred_balanced_accuracy"]
-            self.local_pred_f1_macro_ = local_score["pred_F1_macro"]
-            self.local_pred_f1_micro_ = local_score["pred_F1_micro"]
-            self.local_pred_f1_weighted_ = local_score["pred_F1_weighted"]
+            self.local_pooled_score_ = local_score["pred_score"]
+            self.local_pooled_precision_ = local_score["pred_precision"]
+            self.local_pooled_recall_ = local_score["pred_recall"]
+            self.local_pooled_balanced_accuracy_ = local_score["pred_balanced_accuracy"]
+            self.local_pooled_f1_macro_ = local_score["pred_F1_macro"]
+            self.local_pooled_f1_micro_ = local_score["pred_F1_micro"]
+            self.local_pooled_f1_weighted_ = local_score["pred_F1_weighted"]
 
         return self
 
@@ -225,7 +301,9 @@ class GWLinearRegression(BaseRegressor):
         Determines if the global baseline model shall be fitted alognside
         the geographically weighted, by default True
     measure_performance : bool, optional
-        Calculate performance metrics for the model, by default True
+        Calculate performance metrics for the model. If True, measures accurace score,
+        precision, recall, balanced accuracy, and F1 scores (based on focal prediction,
+        pooled local predictions and individual local predictions). By default True
     strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``,
         by default False. None is treated as False but provides a warning if there are

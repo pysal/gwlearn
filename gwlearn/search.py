@@ -37,7 +37,7 @@ class BandwidthSearch:
         kernel: str | Callable = "bisquare",
         n_jobs: int = -1,
         search_method: str = "golden_section",
-        criterion: str = "aic",
+        criterion: str = "aicc",
         min_bandwidth: int | float | None = None,
         max_bandwidth: int | float | None = None,
         interval: int | float | None = None,

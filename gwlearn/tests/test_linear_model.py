@@ -102,8 +102,8 @@ def test_gwlogistic_coefficients_structure(sample_data):  # noqa: F811
 
     # Pick a sample location and check consistency between local_coef_
     # and the stored model
-    sample_loc = model.local_models.index[0]
-    local_model = model.local_models[sample_loc]
+    sample_loc = model._local_models.index[0]
+    local_model = model._local_models[sample_loc]
 
     if local_model is not None:  # Some models might be None due to invariance
         # Compare coefficients from stored model with the ones in local_coef_
@@ -135,20 +135,20 @@ def test_gwlogistic_prediction_metrics(sample_data):  # noqa: F811
     model.fit(X, y, geometry)
 
     # Check the prediction metrics attributes
-    assert hasattr(model, "pred_score_")
-    assert hasattr(model, "pred_precision_")
-    assert hasattr(model, "pred_recall_")
-    assert hasattr(model, "pred_f1_macro_")
-    assert hasattr(model, "pred_f1_micro_")
-    assert hasattr(model, "pred_f1_weighted_")
+    assert hasattr(model, "pooled_score_")
+    assert hasattr(model, "pooled_precision_")
+    assert hasattr(model, "pooled_recall_")
+    assert hasattr(model, "pooled_f1_macro_")
+    assert hasattr(model, "pooled_f1_micro_")
+    assert hasattr(model, "pooled_f1_weighted_")
 
     # Check that values are as expected
-    assert pytest.approx(0.859778597) == model.pred_score_
-    assert pytest.approx(0.859437751) == model.pred_precision_
-    assert pytest.approx(0.839215686) == model.pred_recall_
-    assert pytest.approx(0.859085933) == model.pred_f1_macro_
-    assert pytest.approx(0.859778597) == model.pred_f1_micro_
-    assert pytest.approx(0.859669229) == model.pred_f1_weighted_
+    assert pytest.approx(0.859778597) == model.pooled_score_
+    assert pytest.approx(0.859437751) == model.pooled_precision_
+    assert pytest.approx(0.839215686) == model.pooled_recall_
+    assert pytest.approx(0.859085933) == model.pooled_f1_macro_
+    assert pytest.approx(0.859778597) == model.pooled_f1_micro_
+    assert pytest.approx(0.859669229) == model.pooled_f1_weighted_
 
 
 def test_gwlogistic_local_prediction_metrics(sample_data):  # noqa: F811
@@ -167,26 +167,26 @@ def test_gwlogistic_local_prediction_metrics(sample_data):  # noqa: F811
     model.fit(X, y, geometry)
 
     # Check local prediction metrics attributes
-    assert hasattr(model, "local_pred_score_")
-    assert hasattr(model, "local_pred_precision_")
-    assert hasattr(model, "local_pred_recall_")
-    assert hasattr(model, "local_pred_f1_macro_")
-    assert hasattr(model, "local_pred_f1_micro_")
-    assert hasattr(model, "local_pred_f1_weighted_")
+    assert hasattr(model, "local_pooled_score_")
+    assert hasattr(model, "local_pooled_precision_")
+    assert hasattr(model, "local_pooled_recall_")
+    assert hasattr(model, "local_pooled_f1_macro_")
+    assert hasattr(model, "local_pooled_f1_micro_")
+    assert hasattr(model, "local_pooled_f1_weighted_")
 
     # Check structure and values
-    assert isinstance(model.local_pred_score_, pd.Series)
-    assert len(model.local_pred_score_) == len(X)
-    assert (model.local_pred_score_.dropna() >= 0).all()
-    assert (model.local_pred_score_.dropna() <= 1).all()
+    assert isinstance(model.local_pooled_score_, pd.Series)
+    assert len(model.local_pooled_score_) == len(X)
+    assert (model.local_pooled_score_.dropna() >= 0).all()
+    assert (model.local_pooled_score_.dropna() <= 1).all()
 
     # Check that values are as expected
-    assert pytest.approx(0.879587166) == model.local_pred_score_.mean()
-    assert pytest.approx(0.889862351) == model.local_pred_precision_.mean()
-    assert pytest.approx(0.849844990) == model.local_pred_recall_.mean()
-    assert pytest.approx(0.859829075) == model.local_pred_f1_macro_.mean()
-    assert pytest.approx(0.879587166) == model.local_pred_f1_micro_.mean()
-    assert pytest.approx(0.877102172) == model.local_pred_f1_weighted_.mean()
+    assert pytest.approx(0.879587166) == model.local_pooled_score_.mean()
+    assert pytest.approx(0.889862351) == model.local_pooled_precision_.mean()
+    assert pytest.approx(0.849844990) == model.local_pooled_recall_.mean()
+    assert pytest.approx(0.859829075) == model.local_pooled_f1_macro_.mean()
+    assert pytest.approx(0.879587166) == model.local_pooled_f1_micro_.mean()
+    assert pytest.approx(0.877102172) == model.local_pooled_f1_weighted_.mean()
 
 
 def test_gwlinear_init():
@@ -355,7 +355,7 @@ def test_against_mgwr():
     res = gwr.fit()
 
     assert_array_almost_equal(gwlr.local_r2_, res.localR2.flatten())
-    assert_array_almost_equal(gwlr.focal_pred_, res.predy.flatten())
+    assert_array_almost_equal(gwlr.pred_, res.predy.flatten())
     assert_array_almost_equal(gwlr.TSS_, res.TSS.flatten())
     assert_array_almost_equal(gwlr.RSS_, res.RSS.flatten())
     assert_almost_equal(gwlr.focal_r2_, res.R2)
