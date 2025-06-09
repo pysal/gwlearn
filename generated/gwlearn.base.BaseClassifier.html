@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>gwlearn.base.BaseClassifier &#8212; gwlearn 0.1.dev56+gc046993 documentation</title>
+    <title>gwlearn.base.BaseClassifier &#8212; gwlearn 0.1.dev57+gd625a94 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=359ea8f1"></script>
+    <script src="../_static/documentation_options.js?v=bac75cd9"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev56+gc046993 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev57+gd625a94 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -366,7 +366,8 @@ by default <code class="docutils literal notranslate"><span class="pre">-1</span
 <dt><strong>fit_global_model</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Determines if the global baseline model shall be fitted alognside
 the geographically weighted, by default True</p>
 </dd>
-<dt><strong>measure_performance</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Calculate performance metrics for the model, by default True</p>
+<dt><strong>measure_performance</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Calculate performance metrics for the model. If True, measures accurace score,
+precision, recall, balanced accuracy, and F1 scores. By default True</p>
 </dd>
 <dt><strong>strict</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Do not fit any models if at least one neighborhood has invariant <code class="docutils literal notranslate"><span class="pre">y</span></code>,
 by default False. None is treated as False but provides a warning if there are
@@ -393,6 +394,43 @@ not fit into memory. By default None</p>
 <dt><strong>verbose</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Whether to print progress information, by default False</p>
 </dd>
 <dt><strong>**kwargs</strong></dt><dd><p>Additional keyword arguments passed to <code class="docutils literal notranslate"><span class="pre">model</span></code> initialisation</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>proba_</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pd.DataFrame</span></code></span></dt><dd><p>Probability predictions for focal locations based on a local model trained
+around the point itself.</p>
+</dd>
+<dt><strong>pred_</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pd.Series</span></code></span></dt><dd><p>Binary predictions for focal locations based on a local model trained around
+the location itself.</p>
+</dd>
+<dt><strong>hat_values_</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pd.Series</span></code></span></dt><dd><p>Hat values for each location (diagonal elements of hat matrix)</p>
+</dd>
+<dt><strong>effective_df_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Effective degrees of freedom (sum of hat values)</p>
+</dd>
+<dt><strong>score_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Accuracy score of the model based on <code class="docutils literal notranslate"><span class="pre">pred_</span></code>.</p>
+</dd>
+<dt><strong>precision_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Precision score of the model based on <code class="docutils literal notranslate"><span class="pre">pred_</span></code>.</p>
+</dd>
+<dt><strong>recall_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Recall score of the model based on <code class="docutils literal notranslate"><span class="pre">pred_</span></code>.</p>
+</dd>
+<dt><strong>balanced_accuracy_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Balanced accuracy score of the model based on <code class="docutils literal notranslate"><span class="pre">pred_</span></code>.</p>
+</dd>
+<dt><strong>f1_macro_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>F1 score with macro averaging based on <code class="docutils literal notranslate"><span class="pre">pred_</span></code>.</p>
+</dd>
+<dt><strong>f1_micro_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>F1 score with micro averaging based on <code class="docutils literal notranslate"><span class="pre">pred_</span></code>.</p>
+</dd>
+<dt><strong>f1_weighted_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>F1 score with weighted averaging based on <code class="docutils literal notranslate"><span class="pre">pred_</span></code>.</p>
+</dd>
+<dt><strong>log_likelihood_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Global log likelihood of the model</p>
+</dd>
+<dt><strong>aic_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Akaike inofrmation criterion of the model</p>
+</dd>
+<dt><strong>aicc_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Corrected Akaike information criterion to account to account for model
+complexity (smaller bandwidths)</p>
+</dd>
+<dt><strong>bic_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Bayesian information criterion</p>
 </dd>
 </dl>
 </dd>

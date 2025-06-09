@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.base &#8212; gwlearn 0.1.dev56+gc046993 documentation</title>
+    <title>gwlearn.base &#8212; gwlearn 0.1.dev57+gd625a94 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=359ea8f1"></script>
+    <script src="../../_static/documentation_options.js?v=bac75cd9"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev56+gc046993 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev57+gd625a94 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -666,7 +666,7 @@ document.write(`
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_compute_information_criteria</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute AIC, BIC, and AICc using the global log likelihood&quot;&quot;&quot;</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">)</span>
 
         <span class="c1"># Use effective degrees of freedom as the number of parameters</span>
         <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span>
@@ -742,7 +742,8 @@ document.write(`
 <span class="sd">        Determines if the global baseline model shall be fitted alognside</span>
 <span class="sd">        the geographically weighted, by default True</span>
 <span class="sd">    measure_performance : bool, optional</span>
-<span class="sd">        Calculate performance metrics for the model, by default True</span>
+<span class="sd">        Calculate performance metrics for the model. If True, measures accurace score,</span>
+<span class="sd">        precision, recall, balanced accuracy, and F1 scores. By default True</span>
 <span class="sd">    strict : bool | None, optional</span>
 <span class="sd">        Do not fit any models if at least one neighborhood has invariant ``y``,</span>
 <span class="sd">        by default False. None is treated as False but provides a warning if there are</span>
@@ -769,6 +770,42 @@ document.write(`
 <span class="sd">        Whether to print progress information, by default False</span>
 <span class="sd">    **kwargs</span>
 <span class="sd">        Additional keyword arguments passed to ``model`` initialisation</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    proba_ : pd.DataFrame</span>
+<span class="sd">        Probability predictions for focal locations based on a local model trained</span>
+<span class="sd">        around the point itself.</span>
+<span class="sd">    pred_ : pd.Series</span>
+<span class="sd">        Binary predictions for focal locations based on a local model trained around</span>
+<span class="sd">        the location itself.</span>
+<span class="sd">    hat_values_ : pd.Series</span>
+<span class="sd">        Hat values for each location (diagonal elements of hat matrix)</span>
+<span class="sd">    effective_df_ : float</span>
+<span class="sd">        Effective degrees of freedom (sum of hat values)</span>
+<span class="sd">    score_ : float</span>
+<span class="sd">        Accuracy score of the model based on ``pred_``.</span>
+<span class="sd">    precision_ : float</span>
+<span class="sd">        Precision score of the model based on ``pred_``.</span>
+<span class="sd">    recall_ : float</span>
+<span class="sd">        Recall score of the model based on ``pred_``.</span>
+<span class="sd">    balanced_accuracy_ : float</span>
+<span class="sd">        Balanced accuracy score of the model based on ``pred_``.</span>
+<span class="sd">    f1_macro_ : float</span>
+<span class="sd">        F1 score with macro averaging based on ``pred_``.</span>
+<span class="sd">    f1_micro_ : float</span>
+<span class="sd">        F1 score with micro averaging based on ``pred_``.</span>
+<span class="sd">    f1_weighted_ : float</span>
+<span class="sd">        F1 score with weighted averaging based on ``pred_``.</span>
+<span class="sd">    log_likelihood_ : float</span>
+<span class="sd">        Global log likelihood of the model</span>
+<span class="sd">    aic_ : float</span>
+<span class="sd">        Akaike inofrmation criterion of the model</span>
+<span class="sd">    aicc_ : float</span>
+<span class="sd">        Corrected Akaike information criterion to account to account for model</span>
+<span class="sd">        complexity (smaller bandwidths)</span>
+<span class="sd">    bic_ : float</span>
+<span class="sd">        Bayesian information criterion</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BaseClassifier.__init__">
@@ -886,7 +923,7 @@ document.write(`
                 <span class="n">hat_values</span><span class="p">,</span>  <span class="c1"># Add hat values</span>
                 <span class="n">models</span><span class="p">,</span>
             <span class="p">)</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">training_output</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">local_models</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_local_models</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">geometry</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="p">(</span>
@@ -899,41 +936,39 @@ document.write(`
             <span class="p">)</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">training_output</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_n_labels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_labels</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">focal_proba_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">focal_proba</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proba_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">focal_proba</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
 
         <span class="c1"># Store hat values and compute effective degrees of freedom</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hat_values_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">hat_values</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hat_values_</span><span class="p">)</span>
 
         <span class="c1"># support both bool and 0, 1 encoding of binary variable</span>
-        <span class="n">col</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="kc">True</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_proba_</span><span class="o">.</span><span class="n">columns</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="kc">True</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="o">.</span><span class="n">columns</span> <span class="k">else</span> <span class="mi">1</span>
         <span class="c1"># global GW accuracy</span>
-        <span class="n">nan_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_proba_</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_proba_</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="o">~</span><span class="n">nan_mask</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
+        <span class="n">nan_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="o">~</span><span class="n">nan_mask</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_global_model</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_fit_global_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span><span class="p">:</span>
             <span class="n">masked_y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">nan_mask</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">score_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">score_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">precision_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">precision_score</span><span class="p">(</span>
-                <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
+                <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">recall_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">recall_score</span><span class="p">(</span>
-                <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
-            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">recall_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">recall_score</span><span class="p">(</span><span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">balanced_accuracy_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">balanced_accuracy_score</span><span class="p">(</span>
-                <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span>
+                <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">f1_macro_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
-                <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
+                <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">f1_micro_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
-                <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;micro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
+                <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;micro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">f1_weighted_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
-                <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;weighted&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
+                <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;weighted&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
             <span class="p">)</span>
 
         <span class="c1"># Compute global log likelihood and information criteria</span>
@@ -1026,13 +1061,13 @@ document.write(`
 <span class="sd">        Compute global log likelihood for classification</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Get valid predictions (non-NaN)</span>
-        <span class="n">mask</span> <span class="o">=</span> <span class="o">~</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_proba_</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="o">~</span><span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">mask</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
         <span class="n">y_valid</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
-        <span class="n">proba_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_proba_</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="n">proba_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
 
         <span class="c1"># Handle both boolean and 0/1 encoding</span>
         <span class="k">if</span> <span class="kc">True</span> <span class="ow">in</span> <span class="n">proba_valid</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
@@ -1110,7 +1145,7 @@ document.write(`
         <span class="n">x_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
         <span class="n">pred</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">models_</span><span class="p">:</span>
-            <span class="n">local_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_models</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">local_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_local_models</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">local_model</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_model</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="n">local_model</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -1284,7 +1319,7 @@ document.write(`
                 <span class="bp">self</span><span class="o">.</span><span class="n">_score_data</span><span class="p">,</span>
                 <span class="n">models</span><span class="p">,</span>
             <span class="p">)</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">training_output</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">local_models</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_local_models</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">geometry</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="p">(</span>
@@ -1296,8 +1331,8 @@ document.write(`
                 <span class="bp">self</span><span class="o">.</span><span class="n">_score_data</span><span class="p">,</span>
             <span class="p">)</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">training_output</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">focal_pred</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">resid_</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">focal_pred</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resid_</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span>
         <span class="n">resids_</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">weights</span><span class="o">.</span><span class="n">adjacency</span><span class="o">.</span><span class="n">values</span>
             <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">resid_</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">weights</span><span class="o">.</span><span class="n">adjacency</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span> <span class="o">**</span> <span class="mi">2</span>
@@ -1307,7 +1342,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">y_bar_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">y_bar</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">local_r2_</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TSS_</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">RSS_</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">TSS_</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">focal_r2_</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">pred_</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">score_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_r2_</span>
 
@@ -1320,7 +1355,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hat_values_</span><span class="p">)</span>
 
         <span class="c1"># adjusted R2</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_r2_</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">n</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">focal_adj_r2_</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span>

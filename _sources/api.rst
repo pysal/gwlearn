@@ -17,7 +17,7 @@ Linear models:
    GWLinearRegression
 
 Classification modelling
------------------------
+------------------------
 
 Linear models:
 

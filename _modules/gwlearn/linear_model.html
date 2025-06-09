@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.linear_model &#8212; gwlearn 0.1.dev56+gc046993 documentation</title>
+    <title>gwlearn.linear_model &#8212; gwlearn 0.1.dev57+gd625a94 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=359ea8f1"></script>
+    <script src="../../_static/documentation_options.js?v=bac75cd9"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev56+gc046993 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev57+gd625a94 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -338,6 +338,82 @@ document.write(`
 <span class="sd">        Whether to print progress information, by default False</span>
 <span class="sd">    **kwargs</span>
 <span class="sd">        Additional keyword arguments passed to ``model`` initialisation</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    proba_ : pd.DataFrame</span>
+<span class="sd">        Probability predictions for focal locations based on a local model trained</span>
+<span class="sd">        around the point itself.</span>
+<span class="sd">    pred_ : pd.Series</span>
+<span class="sd">        Binary predictions for focal locations based on a local model trained around</span>
+<span class="sd">        the location itself.</span>
+<span class="sd">    hat_values_ : pd.Series</span>
+<span class="sd">        Hat values for each location (diagonal elements of hat matrix)</span>
+<span class="sd">    effective_df_ : float</span>
+<span class="sd">        Effective degrees of freedom (sum of hat values)</span>
+<span class="sd">    score_ : float</span>
+<span class="sd">        Accuracy score of the model based on ``pred_``.</span>
+<span class="sd">    precision_ : float</span>
+<span class="sd">        Precision score of the model based on ``pred_``.</span>
+<span class="sd">    recall_ : float</span>
+<span class="sd">        Recall score of the model based on ``pred_``.</span>
+<span class="sd">    balanced_accuracy_ : float</span>
+<span class="sd">        Balanced accuracy score of the model based on ``pred_``.</span>
+<span class="sd">    f1_macro_ : float</span>
+<span class="sd">        F1 score with macro averaging based on ``pred_``.</span>
+<span class="sd">    f1_micro_ : float</span>
+<span class="sd">        F1 score with micro averaging based on ``pred_``.</span>
+<span class="sd">    f1_weighted_ : float</span>
+<span class="sd">        F1 score with weighted averaging based on ``pred_``.</span>
+<span class="sd">    log_likelihood_ : float</span>
+<span class="sd">        Global log likelihood of the model</span>
+<span class="sd">    aic_ : float</span>
+<span class="sd">        Akaike inofrmation criterion of the model</span>
+<span class="sd">    aicc_ : float</span>
+<span class="sd">        Corrected Akaike information criterion to account to account for model</span>
+<span class="sd">        complexity (smaller bandwidths)</span>
+<span class="sd">    bic_ : float</span>
+<span class="sd">        Bayesian information criterion</span>
+<span class="sd">    local_coef_ : pd.DataFrame</span>
+<span class="sd">        Local coefficient of the features in the decision function for each feature at</span>
+<span class="sd">        each location</span>
+<span class="sd">    local_intercept_ : pd.Series</span>
+<span class="sd">        Local intercept values at each location</span>
+<span class="sd">    pooled_score_ : float</span>
+<span class="sd">        Accuracy score of pooled predictions from local models</span>
+<span class="sd">    pooled_precision_ : float</span>
+<span class="sd">        Precision score of pooled predictions from local models</span>
+<span class="sd">    pooled_recall_ : float</span>
+<span class="sd">        Recall score of pooled predictions from local models</span>
+<span class="sd">    pooled_balanced_accuracy_ : float</span>
+<span class="sd">        Balanced accuracy score of pooled predictions from local models</span>
+<span class="sd">    pooled_f1_macro_ : float</span>
+<span class="sd">        F1 score with macro averaging for pooled predictions from local models</span>
+<span class="sd">    pooled_f1_micro_ : float</span>
+<span class="sd">        F1 score with micro averaging for pooled predictions from local models</span>
+<span class="sd">    pooled_f1_weighted_ : float</span>
+<span class="sd">        F1 score with weighted averaging for pooled predictions from local models</span>
+<span class="sd">    local_pooled_score_ : pd.Series</span>
+<span class="sd">        Local accuracy scores for each location based on all samples used in each local</span>
+<span class="sd">        model</span>
+<span class="sd">    local_pooled_precision_ : pd.Series</span>
+<span class="sd">        Local precision scores for each location based on all samples used in each local</span>
+<span class="sd">        model</span>
+<span class="sd">    local_pooled_recall_ : pd.Series</span>
+<span class="sd">        Local recall scores for each location based on all samples used in each local</span>
+<span class="sd">        model</span>
+<span class="sd">    local_pooled_balanced_accuracy_ : pd.Series</span>
+<span class="sd">        Local balanced accuracy scores for each location based on all samples used in</span>
+<span class="sd">        each local model</span>
+<span class="sd">    local_pooled_f1_macro_ : pd.Series</span>
+<span class="sd">        Local F1 scores with macro averaging for each location based on all samples used</span>
+<span class="sd">        in each local model</span>
+<span class="sd">    local_pooled_f1_micro_ : pd.Series</span>
+<span class="sd">        Local F1 scores with micro averaging for each location based on all samples used</span>
+<span class="sd">        in each local model</span>
+<span class="sd">    local_pooled_f1_weighted_ : pd.Series</span>
+<span class="sd">        Local F1 scores with weighted averaging for each location based on all samples</span>
+<span class="sd">        used in each local model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GWLogisticRegression.__init__">
@@ -417,23 +493,23 @@ document.write(`
             <span class="n">all_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
 
             <span class="c1"># global pred scores</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pred_score_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pred_precision_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">precision_score</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pooled_score_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pooled_precision_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">precision_score</span><span class="p">(</span>
                 <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pred_recall_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">recall_score</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pooled_recall_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">recall_score</span><span class="p">(</span>
                 <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pred_f1_macropred_balanced_accuracy_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">balanced_accuracy_score</span><span class="p">(</span>
-                <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pred_f1_macropooled_balanced_accuracy_</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">metrics</span><span class="o">.</span><span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">)</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pred_f1_macro_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pooled_f1_macro_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
                 <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pred_f1_micro_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pooled_f1_micro_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
                 <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;micro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pred_f1_weighted_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pooled_f1_weighted_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
                 <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;weighted&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
             <span class="p">)</span>
 
@@ -454,13 +530,13 @@ document.write(`
                     <span class="s2">&quot;pred_F1_weighted&quot;</span><span class="p">,</span>
                 <span class="p">],</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">local_pred_score_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pred_score&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">local_pred_precision_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pred_precision&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">local_pred_recall_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pred_recall&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">local_pred_balanced_accuracy_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pred_balanced_accuracy&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">local_pred_f1_macro_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pred_F1_macro&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">local_pred_f1_micro_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pred_F1_micro&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">local_pred_f1_weighted_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pred_F1_weighted&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">local_pooled_score_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pred_score&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">local_pooled_precision_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pred_precision&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">local_pooled_recall_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pred_recall&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">local_pooled_balanced_accuracy_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pred_balanced_accuracy&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">local_pooled_f1_macro_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pred_F1_macro&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">local_pooled_f1_micro_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pred_F1_micro&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">local_pooled_f1_weighted_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pred_F1_weighted&quot;</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
@@ -509,7 +585,9 @@ document.write(`
 <span class="sd">        Determines if the global baseline model shall be fitted alognside</span>
 <span class="sd">        the geographically weighted, by default True</span>
 <span class="sd">    measure_performance : bool, optional</span>
-<span class="sd">        Calculate performance metrics for the model, by default True</span>
+<span class="sd">        Calculate performance metrics for the model. If True, measures accurace score,</span>
+<span class="sd">        precision, recall, balanced accuracy, and F1 scores (based on focal prediction,</span>
+<span class="sd">        pooled local predictions and individual local predictions). By default True</span>
 <span class="sd">    strict : bool | None, optional</span>
 <span class="sd">        Do not fit any models if at least one neighborhood has invariant ``y``,</span>
 <span class="sd">        by default False. None is treated as False but provides a warning if there are</span>

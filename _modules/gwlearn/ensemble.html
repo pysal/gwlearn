@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.ensemble &#8212; gwlearn 0.1.dev56+gc046993 documentation</title>
+    <title>gwlearn.ensemble &#8212; gwlearn 0.1.dev57+gd625a94 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=359ea8f1"></script>
+    <script src="../../_static/documentation_options.js?v=bac75cd9"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev56+gc046993 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev57+gd625a94 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -299,29 +299,32 @@ document.write(`
 <span class="sd">    kernel : str | Callable, optional</span>
 <span class="sd">        type of kernel function used to weight observations, by default &quot;bisquare&quot;</span>
 <span class="sd">    include_focal : bool, optional</span>
-<span class="sd">        Include focal in the local model training. Excluding it allows</span>
-<span class="sd">        assessment of geographically weighted metrics on unseen data without a need for</span>
-<span class="sd">        train/test split, hence providing value for all samples. This is needed for</span>
-<span class="sd">        futher spatial analysis of the model performance (and generalises to models</span>
-<span class="sd">        that do not support OOB scoring). However, it leaves out the most representative</span>
-<span class="sd">        sample. By default False</span>
+<span class="sd">        Include focal in the local model training. Excluding it allows assessment of</span>
+<span class="sd">        geographically weighted metrics on unseen data without a need for train/test</span>
+<span class="sd">        split, hence providing value for all samples. This is needed for futher spatial</span>
+<span class="sd">        analysis of the model performance (and generalises to models that do not support</span>
+<span class="sd">        OOB scoring). However, it leaves out the most representative sample. By default</span>
+<span class="sd">        False</span>
 <span class="sd">    n_jobs : int, optional</span>
-<span class="sd">        The number of jobs to run in parallel. ``-1`` means using all processors</span>
-<span class="sd">        by default ``-1``</span>
+<span class="sd">        The number of jobs to run in parallel. ``-1`` means using all processors by</span>
+<span class="sd">        default ``-1``</span>
 <span class="sd">    fit_global_model : bool, optional</span>
-<span class="sd">        Determines if the global baseline model shall be fitted alognside</span>
-<span class="sd">        the geographically weighted, by default True</span>
+<span class="sd">        Determines if the global baseline model shall be fitted alognside the</span>
+<span class="sd">        geographically weighted, by default True</span>
 <span class="sd">    measure_performance : bool, optional</span>
-<span class="sd">        Calculate performance metrics for the model, by default True</span>
+<span class="sd">        Calculate performance metrics for the model. If True, measures accurace score,</span>
+<span class="sd">        precision, recall, balanced accuracy, and F1 scores (based on focal prediction,</span>
+<span class="sd">        pooled local out-of-bag predictions and individual local out-of-bag</span>
+<span class="sd">        predictions). By default True</span>
 <span class="sd">    strict : bool | None, optional</span>
-<span class="sd">        Do not fit any models if at least one neighborhood has invariant ``y``,</span>
-<span class="sd">        by default False. None is treated as False but provides a warning if there are</span>
+<span class="sd">        Do not fit any models if at least one neighborhood has invariant ``y``, by</span>
+<span class="sd">        default False. None is treated as False but provides a warning if there are</span>
 <span class="sd">        invariant models.</span>
 <span class="sd">    keep_models : bool | str | Path, optional</span>
-<span class="sd">        Keep all local models (required for prediction), by default False. Note that</span>
-<span class="sd">        for some models, like random forests, the objects can be large. If string or</span>
-<span class="sd">        Path is provided, the local models are not held in memory but serialized to</span>
-<span class="sd">        the disk from which they are loaded in prediction.</span>
+<span class="sd">        Keep all local models (required for prediction), by default False. Note that for</span>
+<span class="sd">        some models, like random forests, the objects can be large. If string or Path is</span>
+<span class="sd">        provided, the local models are not held in memory but serialized to the disk</span>
+<span class="sd">        from which they are loaded in prediction.</span>
 <span class="sd">    temp_folder : str | None, optional</span>
 <span class="sd">        Folder to be used by the pool for memmapping large arrays for sharing memory</span>
 <span class="sd">        with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default</span>
@@ -339,6 +342,72 @@ document.write(`
 <span class="sd">        Whether to print progress information, by default False</span>
 <span class="sd">    **kwargs</span>
 <span class="sd">        Additional keyword arguments passed to ``model`` initialisation</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    proba_ : pd.DataFrame</span>
+<span class="sd">        Probability predictions for focal locations based on a local model trained</span>
+<span class="sd">        around the point itself.</span>
+<span class="sd">    pred_ : pd.Series</span>
+<span class="sd">        Binary predictions for focal locations based on a local model trained around the</span>
+<span class="sd">        location itself.</span>
+<span class="sd">    hat_values_ : pd.Series</span>
+<span class="sd">        Hat values for each location (diagonal elements of hat matrix)</span>
+<span class="sd">    effective_df_ : float</span>
+<span class="sd">        Effective degrees of freedom (sum of hat values)</span>
+<span class="sd">    score_ : float</span>
+<span class="sd">        Accuracy score of the model based on ``pred_``.</span>
+<span class="sd">    precision_ : float</span>
+<span class="sd">        Precision score of the model based on ``pred_``.</span>
+<span class="sd">    recall_ : float</span>
+<span class="sd">        Recall score of the model based on ``pred_``.</span>
+<span class="sd">    balanced_accuracy_ : float</span>
+<span class="sd">        Balanced accuracy score of the model based on ``pred_``.</span>
+<span class="sd">    f1_macro_ : float</span>
+<span class="sd">        F1 score with macro averaging based on ``pred_``.</span>
+<span class="sd">    f1_micro_ : float</span>
+<span class="sd">        F1 score with micro averaging based on ``pred_``.</span>
+<span class="sd">    f1_weighted_ : float</span>
+<span class="sd">        F1 score with weighted averaging based on ``pred_``.</span>
+<span class="sd">    log_likelihood_ : float</span>
+<span class="sd">        Global log likelihood of the model</span>
+<span class="sd">    aic_ : float</span>
+<span class="sd">        Akaike inofrmation criterion of the model</span>
+<span class="sd">    aicc_ : float</span>
+<span class="sd">        Corrected Akaike information criterion to account to account for model</span>
+<span class="sd">        complexity (smaller bandwidths)</span>
+<span class="sd">    bic_ : float</span>
+<span class="sd">        Bayesian information criterion</span>
+<span class="sd">    oob_score_ : float</span>
+<span class="sd">        Out-of-bag accuracy score based on pooled OOB predictions</span>
+<span class="sd">    oob_precision_ : float</span>
+<span class="sd">        Out-of-bag precision score based on pooled OOB predictions</span>
+<span class="sd">    oob_recall_ : float</span>
+<span class="sd">        Out-of-bag recall score based on pooled OOB predictions</span>
+<span class="sd">    oob_balanced_accuracy_ : float</span>
+<span class="sd">        Out-of-bag balanced accuracy score based on pooled OOB predictions</span>
+<span class="sd">    oob_f1_macro_ : float</span>
+<span class="sd">        Out-of-bag F1 score with macro averaging based on pooled OOB predictions</span>
+<span class="sd">    oob_f1_micro_ : float</span>
+<span class="sd">        Out-of-bag F1 score with micro averaging based on pooled OOB predictions</span>
+<span class="sd">    oob_f1_weighted_ : float</span>
+<span class="sd">        Out-of-bag F1 score with weighted averaging based on pooled OOB predictions</span>
+<span class="sd">    local_oob_score_ : pd.Series</span>
+<span class="sd">        Out-of-bag accuracy score for each local model</span>
+<span class="sd">    local_oob_precision_ : pd.Series</span>
+<span class="sd">        Out-of-bag precision score for each local model</span>
+<span class="sd">    local_oob_recall_ : pd.Series</span>
+<span class="sd">        Out-of-bag recall score for each local model</span>
+<span class="sd">    local_oob_balanced_accuracy_ : pd.Series</span>
+<span class="sd">        Out-of-bag balanced accuracy score for each local model</span>
+<span class="sd">    local_oob_f1_macro_ : pd.Series</span>
+<span class="sd">        Out-of-bag F1 score with macro averaging for each local model</span>
+<span class="sd">    local_oob_f1_micro_ : pd.Series</span>
+<span class="sd">        Out-of-bag F1 score with micro averaging for each local model</span>
+<span class="sd">    local_oob_f1_weighted_ : pd.Series</span>
+<span class="sd">        Out-of-bag F1 score with weighted averaging for each local model</span>
+<span class="sd">    feature_importances_ : pd.DataFrame</span>
+<span class="sd">        Feature importance values for each local model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GWRandomForestClassifier.__init__">
@@ -541,6 +610,44 @@ document.write(`
 <span class="sd">        Whether to print progress information, by default False</span>
 <span class="sd">    **kwargs</span>
 <span class="sd">        Additional keyword arguments passed to ``model`` initialisation</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    proba_ : pd.DataFrame</span>
+<span class="sd">        Probability predictions for focal locations based on a local model trained</span>
+<span class="sd">        around the point itself.</span>
+<span class="sd">    pred_ : pd.Series</span>
+<span class="sd">        Binary predictions for focal locations based on a local model trained around the</span>
+<span class="sd">        location itself.</span>
+<span class="sd">    hat_values_ : pd.Series</span>
+<span class="sd">        Hat values for each location (diagonal elements of hat matrix)</span>
+<span class="sd">    effective_df_ : float</span>
+<span class="sd">        Effective degrees of freedom (sum of hat values)</span>
+<span class="sd">    score_ : float</span>
+<span class="sd">        Accuracy score of the model based on ``pred_``.</span>
+<span class="sd">    precision_ : float</span>
+<span class="sd">        Precision score of the model based on ``pred_``.</span>
+<span class="sd">    recall_ : float</span>
+<span class="sd">        Recall score of the model based on ``pred_``.</span>
+<span class="sd">    balanced_accuracy_ : float</span>
+<span class="sd">        Balanced accuracy score of the model based on ``pred_``.</span>
+<span class="sd">    f1_macro_ : float</span>
+<span class="sd">        F1 score with macro averaging based on ``pred_``.</span>
+<span class="sd">    f1_micro_ : float</span>
+<span class="sd">        F1 score with micro averaging based on ``pred_``.</span>
+<span class="sd">    f1_weighted_ : float</span>
+<span class="sd">        F1 score with weighted averaging based on ``pred_``.</span>
+<span class="sd">    log_likelihood_ : float</span>
+<span class="sd">        Global log likelihood of the model</span>
+<span class="sd">    aic_ : float</span>
+<span class="sd">        Akaike inofrmation criterion of the model</span>
+<span class="sd">    aicc_ : float</span>
+<span class="sd">        Corrected Akaike information criterion to account to account for model</span>
+<span class="sd">        complexity (smaller bandwidths)</span>
+<span class="sd">    bic_ : float</span>
+<span class="sd">        Bayesian information criterion</span>
+<span class="sd">    feature_importances_ : pd.DataFrame</span>
+<span class="sd">        Feature importance values for each local model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GWGradientBoostingClassifier.__init__">
