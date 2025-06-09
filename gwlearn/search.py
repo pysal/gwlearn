@@ -155,21 +155,17 @@ class BandwidthSearch:
             if b in scores:
                 score_b = scores[b]
             else:
-                if self.verbose:
-                    print(f"Fitting bandwidth: {f'{b:.2f}'.rstrip('0').rstrip('.')}")
                 score_b = self._score(X=X, y=y, geometry=geometry, bw=b)
                 if self.verbose:
                     print(
                         f"Bandwidth: {f'{b:.2f}'.rstrip('0').rstrip('.')}, "
-                        f"Score: {score_b:.3f}"
+                        f"score: {score_b:.3f}"
                     )
                 scores[b] = score_b
 
             if d in scores:
                 score_d = scores[d]
             else:
-                if self.verbose:
-                    print(f"Fitting bandwidth: {f'{d:.2f}'.rstrip('0').rstrip('.')}")
                 score_d = self._score(X=X, y=y, geometry=geometry, bw=d)
                 if self.verbose:
                     print(
