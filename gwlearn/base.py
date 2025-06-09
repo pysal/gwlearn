@@ -393,7 +393,7 @@ class _BaseModel:
 
     def _compute_information_criteria(self):
         """Compute AIC, BIC, and AICc using the global log likelihood"""
-        n = len(self.focal_pred_)
+        n = len(self.pred_)
 
         # Use effective degrees of freedom as the number of parameters
         k = self.effective_df_
@@ -467,7 +467,8 @@ class BaseClassifier(_BaseModel):
         Determines if the global baseline model shall be fitted alognside
         the geographically weighted, by default True
     measure_performance : bool, optional
-        Calculate performance metrics for the model, by default True
+        Calculate performance metrics for the model. If True, measures accurace score,
+        precision, recall, balanced accuracy, and F1 scores. By default True
     strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``,
         by default False. None is treated as False but provides a warning if there are
@@ -494,6 +495,42 @@ class BaseClassifier(_BaseModel):
         Whether to print progress information, by default False
     **kwargs
         Additional keyword arguments passed to ``model`` initialisation
+
+    Attributes
+    ----------
+    proba_ : pd.DataFrame
+        Probability predictions for focal locations based on a local model trained
+        around the point itself.
+    pred_ : pd.Series
+        Binary predictions for focal locations based on a local model trained around
+        the location itself.
+    hat_values_ : pd.Series
+        Hat values for each location (diagonal elements of hat matrix)
+    effective_df_ : float
+        Effective degrees of freedom (sum of hat values)
+    score_ : float
+        Accuracy score of the model based on ``pred_``.
+    precision_ : float
+        Precision score of the model based on ``pred_``.
+    recall_ : float
+        Recall score of the model based on ``pred_``.
+    balanced_accuracy_ : float
+        Balanced accuracy score of the model based on ``pred_``.
+    f1_macro_ : float
+        F1 score with macro averaging based on ``pred_``.
+    f1_micro_ : float
+        F1 score with micro averaging based on ``pred_``.
+    f1_weighted_ : float
+        F1 score with weighted averaging based on ``pred_``.
+    log_likelihood_ : float
+        Global log likelihood of the model
+    aic_ : float
+        Akaike inofrmation criterion of the model
+    aicc_ : float
+        Corrected Akaike information criterion to account to account for model
+        complexity (smaller bandwidths)
+    bic_ : float
+        Bayesian information criterion
     """
 
     def __init__(
@@ -606,7 +643,7 @@ class BaseClassifier(_BaseModel):
                 hat_values,  # Add hat values
                 models,
             ) = zip(*training_output, strict=False)
-            self.local_models = pd.Series(models, index=self._names)
+            self._local_models = pd.Series(models, index=self._names)
             self._geometry = geometry
         else:
             (
@@ -619,41 +656,39 @@ class BaseClassifier(_BaseModel):
             ) = zip(*training_output, strict=False)
 
         self._n_labels = pd.Series(self._n_labels, index=self._names)
-        self.focal_proba_ = pd.DataFrame(focal_proba, index=self._names)
+        self.proba_ = pd.DataFrame(focal_proba, index=self._names)
 
         # Store hat values and compute effective degrees of freedom
         self.hat_values_ = pd.Series(hat_values, index=self._names)
         self.effective_df_ = np.nansum(self.hat_values_)
 
         # support both bool and 0, 1 encoding of binary variable
-        col = True if True in self.focal_proba_.columns else 1
+        col = True if True in self.proba_.columns else 1
         # global GW accuracy
-        nan_mask = self.focal_proba_[col].isna()
-        self.focal_pred_ = self.focal_proba_[col][~nan_mask] > 0.5
+        nan_mask = self.proba_[col].isna()
+        self.pred_ = self.proba_[col][~nan_mask] > 0.5
 
         if self.fit_global_model:
             self._fit_global_model(X, y)
 
         if self.measure_performance:
             masked_y = y[~nan_mask]
-            self.score_ = metrics.accuracy_score(masked_y, self.focal_pred_)
+            self.score_ = metrics.accuracy_score(masked_y, self.pred_)
             self.precision_ = metrics.precision_score(
-                masked_y, self.focal_pred_, zero_division=0
+                masked_y, self.pred_, zero_division=0
             )
-            self.recall_ = metrics.recall_score(
-                masked_y, self.focal_pred_, zero_division=0
-            )
+            self.recall_ = metrics.recall_score(masked_y, self.pred_, zero_division=0)
             self.balanced_accuracy_ = metrics.balanced_accuracy_score(
-                masked_y, self.focal_pred_
+                masked_y, self.pred_
             )
             self.f1_macro_ = metrics.f1_score(
-                masked_y, self.focal_pred_, average="macro", zero_division=0
+                masked_y, self.pred_, average="macro", zero_division=0
             )
             self.f1_micro_ = metrics.f1_score(
-                masked_y, self.focal_pred_, average="micro", zero_division=0
+                masked_y, self.pred_, average="micro", zero_division=0
             )
             self.f1_weighted_ = metrics.f1_score(
-                masked_y, self.focal_pred_, average="weighted", zero_division=0
+                masked_y, self.pred_, average="weighted", zero_division=0
             )
 
         # Compute global log likelihood and information criteria
@@ -745,13 +780,13 @@ class BaseClassifier(_BaseModel):
         Compute global log likelihood for classification
         """
         # Get valid predictions (non-NaN)
-        mask = ~self.focal_proba_.isna().any(axis=1)
+        mask = ~self.proba_.isna().any(axis=1)
 
         if not mask.any():
             return np.nan
 
         y_valid = y[mask]
-        proba_valid = self.focal_proba_[mask]
+        proba_valid = self.proba_[mask]
 
         # Handle both boolean and 0/1 encoding
         if True in proba_valid.columns:
@@ -826,7 +861,7 @@ class BaseClassifier(_BaseModel):
         x_ = pd.DataFrame(np.array(x_).reshape(1, -1), columns=columns)
         pred = []
         for i in models_:
-            local_model = self.local_models[i]
+            local_model = self._local_models[i]
             if isinstance(local_model, str):
                 with open(local_model, "rb") as f:
                     local_model = load(f)
@@ -992,7 +1027,7 @@ class BaseRegressor(_BaseModel):
                 self._score_data,
                 models,
             ) = zip(*training_output, strict=False)
-            self.local_models = pd.Series(models, index=self._names)
+            self._local_models = pd.Series(models, index=self._names)
             self._geometry = geometry
         else:
             (
@@ -1004,8 +1039,8 @@ class BaseRegressor(_BaseModel):
                 self._score_data,
             ) = zip(*training_output, strict=False)
 
-        self.focal_pred_ = pd.Series(focal_pred, index=self._names)
-        self.resid_ = y - self.focal_pred_
+        self.pred_ = pd.Series(focal_pred, index=self._names)
+        self.resid_ = y - self.pred_
         resids_ = (
             weights.adjacency.values
             * self.resid_.loc[weights.adjacency.index.get_level_values(1)] ** 2
@@ -1015,7 +1050,7 @@ class BaseRegressor(_BaseModel):
         self.y_bar_ = pd.Series(y_bar, index=self._names)
         self.local_r2_ = (self.TSS_ - self.RSS_) / self.TSS_
         self.focal_r2_ = 1 - (
-            np.sum((self.focal_pred_ - y) ** 2) / np.sum((y - y.mean()) ** 2)
+            np.sum((self.pred_ - y) ** 2) / np.sum((y - y.mean()) ** 2)
         )
         self.score_ = self.focal_r2_
 
@@ -1028,7 +1063,7 @@ class BaseRegressor(_BaseModel):
         self.effective_df_ = np.nansum(self.hat_values_)
 
         # adjusted R2
-        n = len(self.focal_pred_)
+        n = len(self.pred_)
         if not np.isnan(self.focal_r2_) and not np.isnan(self.effective_df_):
             if n - self.effective_df_ - 1 > 0:
                 self.focal_adj_r2_ = 1 - (
