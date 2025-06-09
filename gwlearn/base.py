@@ -2,6 +2,7 @@ import inspect
 import warnings
 from collections.abc import Callable, Hashable
 from pathlib import Path
+from time import time
 from typing import Literal
 
 import geopandas as gpd
@@ -259,53 +260,52 @@ class _BaseModel:
             del local_model
             return None
 
-    def __repr__(self) -> str:
-        """Return a string representation of the instance"""
+    def _get_repr_params(self):
         # Get the class name
         class_name = self.__class__.__name__
 
         # Core parameters to display
-        params = []
+        self._repr_params = set()
 
         # Add model type if available
         if class_name in ["BaseClassifier", "BaseRegressor"] and hasattr(self, "model"):
             if hasattr(self.model, "__name__"):
-                params.append(f"model={self.model.__name__}")
+                self._repr_params.add(f"model={self.model.__name__}")
             else:
-                params.append(f"model={self.model}")
+                self._repr_params.add(f"model={self.model}")
 
         # Add key parameters
-        params.append(f"bandwidth={self.bandwidth}")
+        self._repr_params.add(f"bandwidth={self.bandwidth}")
 
         if self.fixed:
-            params.append("fixed=True")
+            self._repr_params.add("fixed=True")
 
         if self.kernel != "bisquare":
             if callable(self.kernel):
-                params.append(f"kernel={self.kernel.__name__}")
+                self._repr_params.add(f"kernel={self.kernel.__name__}")
             else:
-                params.append(f"kernel='{self.kernel}'")
+                self._repr_params.add(f"kernel='{self.kernel}'")
 
         if self.n_jobs != -1:
-            params.append(f"n_jobs={self.n_jobs}")
+            self._repr_params.add(f"n_jobs={self.n_jobs}")
 
         if not self.fit_global_model:
-            params.append("fit_global_model=False")
+            self._repr_params.add("fit_global_model=False")
 
         if not self.measure_performance:
-            params.append("measure_performance=False")
+            self._repr_params.add("measure_performance=False")
 
         if self.keep_models:
             if isinstance(self.keep_models, Path):
-                params.append(f"keep_models='{self.keep_models}'")
+                self._repr_params.add(f"keep_models='{self.keep_models}'")
             else:
-                params.append("keep_models=True")
+                self._repr_params.add("keep_models=True")
 
         if self.batch_size is not None:
-            params.append(f"batch_size={self.batch_size}")
+            self._repr_params.add(f"batch_size={self.batch_size}")
 
         if self.verbose:
-            params.append("verbose=True")
+            self._repr_params.add("verbose=True")
 
         # Add any additional model kwargs (limit to avoid overly long repr)
         if self.model_kwargs:
@@ -324,23 +324,33 @@ class _BaseModel:
                 # Show all if there are only a few
                 for k, v in self.model_kwargs.items():
                     if isinstance(v, str):
-                        params.append(f"{k}='{v}'")
+                        self._repr_params.add(f"{k}='{v}'")
                     else:
-                        params.append(f"{k}={v}")
+                        self._repr_params.add(f"{k}={v}")
             elif shown_kwargs:
                 for k, v in shown_kwargs.items():
                     if isinstance(v, str):
-                        params.append(f"{k}='{v}'")
+                        self._repr_params.add(f"{k}='{v}'")
                     else:
-                        params.append(f"{k}={v}")
+                        self._repr_params.add(f"{k}={v}")
+
+    def _get_repr(self):
+        class_name = self.__class__.__name__
 
         # Join parameters with proper formatting
-        param_str = ",\n".join(f"    {param}" for param in params)
+        param_str = ",\n".join(f"    {param}" for param in self._repr_params)
 
-        if len(params) > 3:  # Multi-line format for many parameters
+        if len(self._repr_params) > 3:  # Multi-line format for many parameters
             return f"{class_name}(\n{param_str}\n)"
         else:  # Single line for few parameters
-            return f"{class_name}({', '.join(params)})"
+            return f"{class_name}({', '.join(self._repr_params)})"
+
+    def __repr__(self) -> str:
+        """Return a string representation of the instance"""
+
+        self._get_repr_params()
+
+        return self._get_repr()
 
     def _repr_html_(self):
         return utils.estimator_html_repr(self)
@@ -608,6 +618,7 @@ class BaseClassifier(_BaseModel):
         geometry : gpd.GeoSeries
             Geographic location
         """
+        self._start = time()
 
         def _is_binary(series: pd.Series) -> bool:
             """Check if a pandas Series encodes a binary variable (bool or 0/1)."""
@@ -625,13 +636,22 @@ class BaseClassifier(_BaseModel):
         if not _is_binary(y):
             raise ValueError("Only binary dependent variable is supported.")
 
+        if self.verbose:
+            print(f"{(time() - self._start):.2f}s: Building weights")
         weights = self._build_weights(geometry)
+        if self.verbose:
+            print(f"{(time() - self._start):.2f}s: Weights ready")
         self._setup_model_storage()
 
         self._global_classes = np.unique(y)
 
         # fit the models
+        if self.verbose:
+            print(f"{(time() - self._start):.2f}s: Fitting the models")
         training_output = self._fit_models_batch(X, y, weights, geometry)
+
+        if self.verbose:
+            print(f"{(time() - self._start):.2f}s: Models fitted")
 
         if self.keep_models:
             (
@@ -669,9 +689,13 @@ class BaseClassifier(_BaseModel):
         self.pred_ = self.proba_[col][~nan_mask] > 0.5
 
         if self.fit_global_model:
+            if self.verbose:
+                print(f"{(time() - self._start):.2f}s: Fitting global model")
             self._fit_global_model(X, y)
 
         if self.measure_performance:
+            if self.verbose:
+                print(f"{(time() - self._start):.2f}s: Measuring focal performance")
             masked_y = y[~nan_mask]
             self.score_ = metrics.accuracy_score(masked_y, self.pred_)
             self.precision_ = metrics.precision_score(
@@ -692,7 +716,12 @@ class BaseClassifier(_BaseModel):
             )
 
         # Compute global log likelihood and information criteria
+        if self.verbose:
+            print(f"{(time() - self._start):.2f}s: Computing global likelihood")
         self.log_likelihood_ = self._compute_global_log_likelihood(y)
+
+        if self.verbose:
+            print(f"{(time() - self._start):.2f}s: Computing information criteria")
         self._compute_information_criteria()
 
         return self
@@ -898,28 +927,25 @@ class BaseClassifier(_BaseModel):
 
     def __repr__(self) -> str:
         """Return a string representation of the BaseClassifier instance"""
-        # Get the base representation
-        base_repr = super().__repr__()
+
+        self._get_repr_params()
 
         # If we need to add classifier-specific params, we can modify the string here
         # For now, the classifier-specific params are handled in the constructor
         # and passed to the parent class
-        if hasattr(self, "strict") and self.strict is not False:
-            # Insert strict parameter if non-default
-            base_repr = base_repr.replace(")", f", strict={self.strict})")
+        if self.strict is not False:
+            self._repr_params.add(f"strict={self.strict}")
 
-        if hasattr(self, "min_proportion") and self.min_proportion != 0.2:
-            base_repr = base_repr.replace(
-                ")", f", min_proportion={self.min_proportion})"
-            )
+        if self.min_proportion != 0.2:
+            self._repr_params.add(f"min_proportion={self.min_proportion}")
 
-        if hasattr(self, "undersample") and self.undersample:
-            base_repr = base_repr.replace(")", ", undersample=True)")
+        if self.undersample:
+            self._repr_params.add("undersample=True")
 
-        if hasattr(self, "random_state") and self.random_state is not None:
-            base_repr = base_repr.replace(")", f", random_state={self.random_state})")
+        if self.random_state is not None:
+            self._repr_params.add(f"random_state={self.random_state}")
 
-        return base_repr
+        return self._get_repr()
 
 
 def _scores(y_true: np.ndarray, y_pred: np.ndarray) -> tuple:
