@@ -716,10 +716,12 @@ class BaseClassifier(_BaseModel):
             )
 
         # Compute global log likelihood and information criteria
-        print(f"{(time() - self._start):.2f}s: Computing global likelihood")
+        if self.verbose:
+            print(f"{(time() - self._start):.2f}s: Computing global likelihood")
         self.log_likelihood_ = self._compute_global_log_likelihood(y)
 
-        print(f"{(time() - self._start):.2f}s: Computing information criteria")
+        if self.verbose:
+            print(f"{(time() - self._start):.2f}s: Computing information criteria")
         self._compute_information_criteria()
 
         return self
