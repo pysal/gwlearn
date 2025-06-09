@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Exploration of geographically weighted random forest classification modelling &#8212; gwlearn 0.1.dev55+gd0ffe7d documentation</title>
+    <title>Exploration of geographically weighted random forest classification modelling &#8212; gwlearn 0.1.dev56+gc046993 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=7a31345a"></script>
+    <script src="_static/documentation_options.js?v=359ea8f1"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev55+gd0ffe7d documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev56+gc046993 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -1323,10 +1323,10 @@ Name: oob_score, dtype: float64
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">search_method</span><span class="o">=</span><span class="s2">&quot;interval&quot;</span><span class="p">,</span>
-    <span class="n">min_bandwidth</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-    <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">3084</span><span class="p">,</span>
-    <span class="n">interval</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-    <span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;aic&quot;</span><span class="p">,</span>
+    <span class="n">min_bandwidth</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">interval</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;aicc&quot;</span><span class="p">,</span>
     <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>  <span class="c1"># passed to log regr</span>
 <span class="p">)</span>
@@ -1341,35 +1341,19 @@ Name: oob_score, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.629958586572012 1859 6
-Bandwidth: 10.00, score: 13.260
--0.47203824378599535 2630 6
-Bandwidth: 510.00, score: 12.944
--0.43719177935367515 3085 6
-Bandwidth: 1010.00, score: 12.874
--0.4368025610351277 3085 6
-Bandwidth: 1510.00, score: 12.874
--0.43719306283176784 3085 6
-Bandwidth: 2010.00, score: 12.874
--0.4395445591990635 3085 6
-Bandwidth: 2510.00, score: 12.879
--0.44646119305842685 3085 6
-Bandwidth: 3010.00, score: 12.893
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bandwidth: 50.00, score: 3496.602
+Bandwidth: 150.00, score: 2590.608
+Bandwidth: 250.00, score: 2470.417
+Bandwidth: 350.00, score: 2467.736
+Bandwidth: 450.00, score: 2507.082
+Bandwidth: 550.00, score: 2522.316
+Bandwidth: 650.00, score: 2543.729
+Bandwidth: 750.00, score: 2612.469
+Bandwidth: 850.00, score: 2655.850
+Bandwidth: 950.00, score: 2712.442
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;gwlearn.search.BandwidthSearch at 0x1764b7390&gt;
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search</span><span class="o">.</span><span class="n">scores_</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(1510)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;gwlearn.search.BandwidthSearch at 0x111a48050&gt;
 </pre></div>
 </div>
 </div>
@@ -1384,7 +1368,7 @@ Bandwidth: 3010.00, score: 12.893
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/587a6a7f203e0fba320342830fd2951df44c161abdd7ee990c4de7045daea7a2.png" src="_images/587a6a7f203e0fba320342830fd2951df44c161abdd7ee990c4de7045daea7a2.png" />
+<img alt="_images/7fb1dcb2351b02d29e5d8b201d404102b30e84d36078704e55ffeba7ce498e25.png" src="_images/7fb1dcb2351b02d29e5d8b201d404102b30e84d36078704e55ffeba7ce498e25.png" />
 </div>
 </div>
 <p>Get the optimal one.</p>
@@ -1395,7 +1379,7 @@ Bandwidth: 3010.00, score: 12.893
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(1510)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(350)
 </pre></div>
 </div>
 </div>

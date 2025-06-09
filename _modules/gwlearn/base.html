@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.base &#8212; gwlearn 0.1.dev55+gd0ffe7d documentation</title>
+    <title>gwlearn.base &#8212; gwlearn 0.1.dev56+gc046993 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=7a31345a"></script>
+    <script src="../../_static/documentation_options.js?v=359ea8f1"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev55+gd0ffe7d documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev56+gc046993 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -618,6 +618,81 @@ document.write(`
     <span class="k">def</span><span class="w"> </span><span class="nf">_repr_html_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">estimator_html_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_hat_value</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">focal_x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the hat value (leverage) for the focal point.</span>
+
+<span class="sd">        For classification problems, this is an approximation rather than an ideal</span>
+<span class="sd">        solution but it should be good enough for bandwidth search.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        X : pd.DataFrame</span>
+<span class="sd">            Design matrix of the local neighborhood</span>
+<span class="sd">        weights : np.ndarray</span>
+<span class="sd">            Spatial weights for the neighborhood</span>
+<span class="sd">        focal_x : np.ndarray</span>
+<span class="sd">            Feature vector of the focal point</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        float : hat value for the focal point</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Add intercept if not present</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="n">X_with_intercept</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span> <span class="n">X</span><span class="o">.</span><span class="n">values</span><span class="p">])</span>
+                <span class="n">focal_with_intercept</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="n">focal_x</span><span class="o">.</span><span class="n">flatten</span><span class="p">()])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">X_with_intercept</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">values</span>
+                <span class="n">focal_with_intercept</span> <span class="o">=</span> <span class="n">focal_x</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+            <span class="c1"># Compute (X^T W X)^(-1)</span>
+            <span class="n">XtWX</span> <span class="o">=</span> <span class="n">X_with_intercept</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">@</span> <span class="n">X_with_intercept</span>
+            <span class="n">XtWX_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span>
+                <span class="n">XtWX</span>
+            <span class="p">)</span>  <span class="c1"># Use pseudo-inverse for numerical stability</span>
+
+            <span class="c1"># Hat value: h_ii = x_i^T (X^T W X)^(-1) x_i * w_i</span>
+            <span class="n">hat_value</span> <span class="o">=</span> <span class="n">focal_with_intercept</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">XtWX_inv</span> <span class="o">@</span> <span class="n">focal_with_intercept</span>
+
+            <span class="k">return</span> <span class="n">hat_value</span>
+
+        <span class="k">except</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="c1"># Return NaN if computation fails (singular matrix, etc.)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_information_criteria</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute AIC, BIC, and AICc using the global log likelihood&quot;&quot;&quot;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span><span class="p">)</span>
+
+        <span class="c1"># Use effective degrees of freedom as the number of parameters</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_likelihood_</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+            <span class="c1"># Akaike Information Criterion</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">aic_</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_likelihood_</span>
+
+            <span class="c1"># Bayesian Information Criterion</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bic_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_likelihood_</span>
+
+            <span class="c1"># Corrected AIC for small samples</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="o">-</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">aicc_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aic_</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="c1"># the implementation below matches MGWR but the formula above is</span>
+                <span class="c1"># typical AICc implementation. The difference is minor.</span>
+                <span class="c1"># self.aicc_ = -2.0 * self.log_likelihood_ + 2.0 * n * (k + 1.0) / (</span>
+                <span class="c1">#     n - k - 2.0</span>
+                <span class="c1"># )</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">aicc_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">aic_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bic_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">aicc_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
     <span class="c1"># Abstract methods that subclasses must implement</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_fit_local</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -808,6 +883,7 @@ document.write(`
                 <span class="bp">self</span><span class="o">.</span><span class="n">_score_data</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_feature_importances</span><span class="p">,</span>
                 <span class="n">focal_proba</span><span class="p">,</span>
+                <span class="n">hat_values</span><span class="p">,</span>  <span class="c1"># Add hat values</span>
                 <span class="n">models</span><span class="p">,</span>
             <span class="p">)</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">training_output</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">local_models</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
@@ -819,20 +895,26 @@ document.write(`
                 <span class="bp">self</span><span class="o">.</span><span class="n">_score_data</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_feature_importances</span><span class="p">,</span>
                 <span class="n">focal_proba</span><span class="p">,</span>
+                <span class="n">hat_values</span><span class="p">,</span>  <span class="c1"># Add hat values</span>
             <span class="p">)</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">training_output</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_n_labels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_labels</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">focal_proba_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">focal_proba</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
 
+        <span class="c1"># Store hat values and compute effective degrees of freedom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hat_values_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">hat_values</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hat_values_</span><span class="p">)</span>
+
+        <span class="c1"># support both bool and 0, 1 encoding of binary variable</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="kc">True</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_proba_</span><span class="o">.</span><span class="n">columns</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="c1"># global GW accuracy</span>
+        <span class="n">nan_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_proba_</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_proba_</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="o">~</span><span class="n">nan_mask</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_global_model</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_fit_global_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span><span class="p">:</span>
-            <span class="c1"># support both bool and 0, 1 encoding of binary variable</span>
-            <span class="n">col</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="kc">True</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_proba_</span><span class="o">.</span><span class="n">columns</span> <span class="k">else</span> <span class="mi">1</span>
-            <span class="c1"># global GW accuracy</span>
-            <span class="n">nan_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_proba_</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_proba_</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="o">~</span><span class="n">nan_mask</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
             <span class="n">masked_y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">nan_mask</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">score_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">precision_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">precision_score</span><span class="p">(</span>
@@ -853,6 +935,10 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">f1_weighted_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
                 <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;weighted&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
             <span class="p">)</span>
+
+        <span class="c1"># Compute global log likelihood and information criteria</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_likelihood_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_global_log_likelihood</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_compute_information_criteria</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
@@ -883,6 +969,7 @@ document.write(`
                 <span class="n">score_data</span><span class="p">,</span>
                 <span class="n">feature_imp</span><span class="p">,</span>
                 <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_global_classes</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
             <span class="p">]</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_models</span><span class="p">:</span>
                 <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
@@ -916,12 +1003,15 @@ document.write(`
             <span class="n">local_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">focal_x</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">index</span><span class="o">=</span><span class="n">local_model</span><span class="o">.</span><span class="n">classes_</span>
         <span class="p">)</span>
 
+        <span class="n">hat_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_hat_value</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;_weight&quot;</span><span class="p">],</span> <span class="n">focal_x</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
         <span class="n">output</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">name</span><span class="p">,</span>
             <span class="n">n_labels</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_get_score_data</span><span class="p">(</span><span class="n">local_model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
             <span class="nb">getattr</span><span class="p">(</span><span class="n">local_model</span><span class="p">,</span> <span class="s2">&quot;feature_importances_&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
             <span class="n">focal_proba</span><span class="p">,</span>
+            <span class="n">hat_value</span><span class="p">,</span>
         <span class="p">]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_models</span><span class="p">:</span>
@@ -930,6 +1020,34 @@ document.write(`
             <span class="k">del</span> <span class="n">local_model</span>
 
         <span class="k">return</span> <span class="n">output</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_global_log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute global log likelihood for classification</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get valid predictions (non-NaN)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="o">~</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_proba_</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">mask</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+        <span class="n">y_valid</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="n">proba_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_proba_</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+
+        <span class="c1"># Handle both boolean and 0/1 encoding</span>
+        <span class="k">if</span> <span class="kc">True</span> <span class="ow">in</span> <span class="n">proba_valid</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">proba_valid</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span>
+            <span class="n">y_binary</span> <span class="o">=</span> <span class="n">y_valid</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="k">if</span> <span class="n">y_valid</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">bool</span> <span class="k">else</span> <span class="n">y_valid</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">proba_valid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">y_binary</span> <span class="o">=</span> <span class="n">y_valid</span>
+
+        <span class="c1"># Clip probabilities to avoid log(0)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mf">1e-15</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="mf">1e-15</span><span class="p">)</span>
+
+        <span class="n">log_likelihood</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_binary</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y_binary</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">log_likelihood</span>
 
 <div class="viewcode-block" id="BaseClassifier.predict_proba">
 <a class="viewcode-back" href="../../generated/gwlearn.base.BaseClassifier.html#gwlearn.base.BaseClassifier.predict_proba">[docs]</a>
@@ -1078,8 +1196,6 @@ document.write(`
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic geographically weighted regression meta-class</span>
 
 <span class="sd">    TODO:</span>
-<span class="sd">        - adj_r2</span>
-<span class="sd">        - degrees of freedom???</span>
 <span class="sd">        - tvalues &amp; adj_alpha &amp; critical_t val</span>
 <span class="sd">        - predict</span>
 <span class="sd">        - performance measurements</span>
@@ -1164,6 +1280,7 @@ document.write(`
                 <span class="n">focal_pred</span><span class="p">,</span>
                 <span class="n">y_bar</span><span class="p">,</span>
                 <span class="n">tss</span><span class="p">,</span>
+                <span class="n">hat_values</span><span class="p">,</span>  <span class="c1"># Add this</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_score_data</span><span class="p">,</span>
                 <span class="n">models</span><span class="p">,</span>
             <span class="p">)</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">training_output</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1175,6 +1292,7 @@ document.write(`
                 <span class="n">focal_pred</span><span class="p">,</span>
                 <span class="n">y_bar</span><span class="p">,</span>
                 <span class="n">tss</span><span class="p">,</span>
+                <span class="n">hat_values</span><span class="p">,</span>  <span class="c1"># Add this</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_score_data</span><span class="p">,</span>
             <span class="p">)</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">training_output</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
@@ -1195,6 +1313,24 @@ document.write(`
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_global_model</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_fit_global_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+        <span class="c1"># Store hat values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hat_values_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">hat_values</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
+        <span class="c1"># Compute effective degrees of freedom (trace of hat matrix)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hat_values_</span><span class="p">)</span>
+
+        <span class="c1"># adjusted R2</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_pred_</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_r2_</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">focal_adj_r2_</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_r2_</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">focal_adj_r2_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_likelihood_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_global_log_likelihood</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_compute_information_criteria</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
@@ -1227,11 +1363,15 @@ document.write(`
         <span class="n">y_bar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_bar</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;_weight&quot;</span><span class="p">])</span>
         <span class="n">tss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tss</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_bar</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;_weight&quot;</span><span class="p">])</span>
 
+        <span class="c1"># Compute hat value for this location</span>
+        <span class="n">hat_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_hat_value</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;_weight&quot;</span><span class="p">],</span> <span class="n">focal_x</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
         <span class="n">output</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">name</span><span class="p">,</span>
             <span class="n">focal_pred</span><span class="p">,</span>
             <span class="n">y_bar</span><span class="p">,</span>
             <span class="n">tss</span><span class="p">,</span>
+            <span class="n">hat_value</span><span class="p">,</span>  <span class="c1"># Add hat value to output</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_get_score_data</span><span class="p">(</span><span class="n">local_model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
         <span class="p">]</span>
 
@@ -1241,6 +1381,37 @@ document.write(`
             <span class="k">del</span> <span class="n">local_model</span>
 
         <span class="k">return</span> <span class="n">output</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_global_log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the global log likelihood for the entire GWR model</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        y : pd.Series</span>
+<span class="sd">            Original target values</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        float : Global log likelihood value for the entire GWR model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">residuals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resid_</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">residuals</span><span class="p">)</span>
+
+        <span class="c1"># Estimate sigma from the residuals</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sigma</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+        <span class="c1"># Global log likelihood assuming Gaussian errors</span>
+        <span class="n">log_likelihood</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+            <span class="o">-</span> <span class="n">n</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
+            <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">log_likelihood</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_y_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w_i</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;weighted mean of y&quot;&quot;&quot;</span>
