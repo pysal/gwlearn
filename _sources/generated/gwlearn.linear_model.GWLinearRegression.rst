@@ -15,6 +15,12 @@
    
       ~GWLinearRegression.__init__
       ~GWLinearRegression.fit
+      ~GWLinearRegression.get_metadata_routing
+      ~GWLinearRegression.get_params
+      ~GWLinearRegression.score
+      ~GWLinearRegression.set_fit_request
+      ~GWLinearRegression.set_params
+      ~GWLinearRegression.set_score_request
    
    
 
