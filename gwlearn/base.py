@@ -11,7 +11,8 @@ import pandas as pd
 from joblib import Parallel, delayed, dump, load
 from libpysal import graph
 from scipy.spatial import KDTree
-from sklearn import metrics, utils
+from sklearn import metrics
+from sklearn.base import BaseEstimator
 
 # TODO: summary
 # TODO: formal documentation
@@ -72,7 +73,7 @@ _kernel_functions = {
 }
 
 
-class _BaseModel:
+class _BaseModel(BaseEstimator):
     """Base class for geographically weighted models"""
 
     def __init__(
@@ -259,101 +260,6 @@ class _BaseModel:
         else:
             del local_model
             return None
-
-    def _get_repr_params(self):
-        # Get the class name
-        class_name = self.__class__.__name__
-
-        # Core parameters to display
-        self._repr_params = set()
-
-        # Add model type if available
-        if class_name in ["BaseClassifier", "BaseRegressor"] and hasattr(self, "model"):
-            if hasattr(self.model, "__name__"):
-                self._repr_params.add(f"model={self.model.__name__}")
-            else:
-                self._repr_params.add(f"model={self.model}")
-
-        # Add key parameters
-        self._repr_params.add(f"bandwidth={self.bandwidth}")
-
-        if self.fixed:
-            self._repr_params.add("fixed=True")
-
-        if self.kernel != "bisquare":
-            if callable(self.kernel):
-                self._repr_params.add(f"kernel={self.kernel.__name__}")
-            else:
-                self._repr_params.add(f"kernel='{self.kernel}'")
-
-        if self.n_jobs != -1:
-            self._repr_params.add(f"n_jobs={self.n_jobs}")
-
-        if not self.fit_global_model:
-            self._repr_params.add("fit_global_model=False")
-
-        if not self.measure_performance:
-            self._repr_params.add("measure_performance=False")
-
-        if self.keep_models:
-            if isinstance(self.keep_models, Path):
-                self._repr_params.add(f"keep_models='{self.keep_models}'")
-            else:
-                self._repr_params.add("keep_models=True")
-
-        if self.batch_size is not None:
-            self._repr_params.add(f"batch_size={self.batch_size}")
-
-        if self.verbose:
-            self._repr_params.add("verbose=True")
-
-        # Add any additional model kwargs (limit to avoid overly long repr)
-        if self.model_kwargs:
-            # Show only a few key kwargs to keep repr readable
-            important_kwargs = [
-                "max_depth",
-                "n_estimators",
-                "C",
-                "alpha",
-                "learning_rate",
-            ]
-            shown_kwargs = {
-                k: v for k, v in self.model_kwargs.items() if k in important_kwargs
-            }
-            if len(self.model_kwargs) <= 3:
-                # Show all if there are only a few
-                for k, v in self.model_kwargs.items():
-                    if isinstance(v, str):
-                        self._repr_params.add(f"{k}='{v}'")
-                    else:
-                        self._repr_params.add(f"{k}={v}")
-            elif shown_kwargs:
-                for k, v in shown_kwargs.items():
-                    if isinstance(v, str):
-                        self._repr_params.add(f"{k}='{v}'")
-                    else:
-                        self._repr_params.add(f"{k}={v}")
-
-    def _get_repr(self):
-        class_name = self.__class__.__name__
-
-        # Join parameters with proper formatting
-        param_str = ",\n".join(f"    {param}" for param in self._repr_params)
-
-        if len(self._repr_params) > 3:  # Multi-line format for many parameters
-            return f"{class_name}(\n{param_str}\n)"
-        else:  # Single line for few parameters
-            return f"{class_name}({', '.join(self._repr_params)})"
-
-    def __repr__(self) -> str:
-        """Return a string representation of the instance"""
-
-        self._get_repr_params()
-
-        return self._get_repr()
-
-    def _repr_html_(self):
-        return utils.estimator_html_repr(self)
 
     def _compute_hat_value(
         self, X: pd.DataFrame, weights: np.ndarray, focal_x: np.ndarray
@@ -924,28 +830,6 @@ class BaseClassifier(_BaseModel):
     def predict(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.Series:
         proba = self.predict_proba(X, geometry)
         return proba.idxmax(axis=1)
-
-    def __repr__(self) -> str:
-        """Return a string representation of the BaseClassifier instance"""
-
-        self._get_repr_params()
-
-        # If we need to add classifier-specific params, we can modify the string here
-        # For now, the classifier-specific params are handled in the constructor
-        # and passed to the parent class
-        if self.strict is not False:
-            self._repr_params.add(f"strict={self.strict}")
-
-        if self.min_proportion != 0.2:
-            self._repr_params.add(f"min_proportion={self.min_proportion}")
-
-        if self.undersample:
-            self._repr_params.add("undersample=True")
-
-        if self.random_state is not None:
-            self._repr_params.add(f"random_state={self.random_state}")
-
-        return self._get_repr()
 
 
 def _scores(y_true: np.ndarray, y_pred: np.ndarray) -> tuple:
