@@ -187,7 +187,7 @@ class GWRandomForestClassifier(BaseClassifier):
         )
 
         self._model_type = "random_forest"
-        self.model_kwargs["oob_score"] = self._get_oob_score_data
+        self._model_kwargs["oob_score"] = self._get_oob_score_data
 
         self._empty_score_data = (np.array([]).reshape(-1, 1), np.array([]))
 

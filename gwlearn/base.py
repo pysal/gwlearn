@@ -109,7 +109,7 @@ class _BaseModel(BaseEstimator):
         self.kernel = kernel
         self.include_focal = include_focal
         self.fixed = fixed
-        self.model_kwargs = kwargs
+        self._model_kwargs = kwargs
         self.n_jobs = n_jobs
         self.fit_global_model = fit_global_model
         self.measure_performance = measure_performance
@@ -230,7 +230,7 @@ class _BaseModel(BaseEstimator):
                 group,
                 name,
                 focal_x,
-                self.model_kwargs,
+                self._model_kwargs,
             )
             for (name, group), focal_x in zip(grouper, X_focals, strict=False)
         )
@@ -238,12 +238,12 @@ class _BaseModel(BaseEstimator):
     def _fit_global_model(self, X: pd.DataFrame, y: pd.Series):
         """Fit global baseline model"""
         if self._model_type == "random_forest":
-            self.model_kwargs["oob_score"] = True
+            self._model_kwargs["oob_score"] = True
         # fit global model as a baseline
         if "n_jobs" in inspect.signature(self.model).parameters:
-            self.global_model = self.model(n_jobs=self.n_jobs, **self.model_kwargs)
+            self.global_model = self.model(n_jobs=self.n_jobs, **self._model_kwargs)
         else:
-            self.global_model = self.model(**self.model_kwargs)
+            self.global_model = self.model(**self._model_kwargs)
 
         self.global_model.fit(X=X, y=y)
 
