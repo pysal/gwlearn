@@ -21,8 +21,8 @@ def test_gwrf_init():
     assert model.bandwidth == 50
     assert model.fixed is True
     assert model.kernel == "gaussian"
-    assert model.model_kwargs["n_estimators"] == 100
-    assert model.model_kwargs["max_depth"] == 5
+    assert model._model_kwargs["n_estimators"] == 100
+    assert model._model_kwargs["max_depth"] == 5
 
 
 def test_gwrf_fit_basic(sample_data):  # noqa: F811
@@ -156,9 +156,9 @@ def test_gwgb_init():
     assert model.bandwidth == 50
     assert model.fixed is True
     assert model.kernel == "gaussian"
-    assert model.model_kwargs["n_estimators"] == 100
-    assert model.model_kwargs["learning_rate"] == 0.1
-    assert model.model_kwargs["subsample"] == 0.8
+    assert model._model_kwargs["n_estimators"] == 100
+    assert model._model_kwargs["learning_rate"] == 0.1
+    assert model._model_kwargs["subsample"] == 0.8
 
 
 def test_gwgb_fit_basic(sample_data):  # noqa: F811

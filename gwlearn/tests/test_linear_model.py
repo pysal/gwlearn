@@ -34,8 +34,8 @@ def test_gwlogistic_init():
     assert model.bandwidth == 50
     assert model.fixed is True
     assert model.kernel == "gaussian"
-    assert model.model_kwargs["C"] == 0.5
-    assert model.model_kwargs["max_iter"] == 200
+    assert model._model_kwargs["C"] == 0.5
+    assert model._model_kwargs["max_iter"] == 200
 
 
 def test_gwlogistic_fit_basic(sample_data):  # noqa: F811
@@ -207,7 +207,7 @@ def test_gwlinear_init():
     assert model.bandwidth == 50
     assert model.fixed is True
     assert model.kernel == "gaussian"
-    assert model.model_kwargs["fit_intercept"] is False
+    assert model._model_kwargs["fit_intercept"] is False
 
 
 def test_gwlinear_fit_basic(sample_regression_data):

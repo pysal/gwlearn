@@ -37,8 +37,8 @@ def test_init_default_parameters():
     assert clf.temp_folder is None
     assert clf.batch_size is None
     assert clf.min_proportion == 0.2
-    assert isinstance(clf.model_kwargs, dict)
-    assert len(clf.model_kwargs) == 0
+    assert isinstance(clf._model_kwargs, dict)
+    assert len(clf._model_kwargs) == 0
 
 
 def test_init_custom_parameters():
@@ -71,8 +71,8 @@ def test_init_custom_parameters():
     assert clf.temp_folder == "/tmp"
     assert clf.batch_size == 10
     assert clf.min_proportion == 0.3
-    assert "max_iter" in clf.model_kwargs
-    assert clf.model_kwargs["max_iter"] == 200
+    assert "max_iter" in clf._model_kwargs
+    assert clf._model_kwargs["max_iter"] == 200
 
 
 def test_init_keep_models_path():
@@ -137,10 +137,10 @@ def test_init_multiple_kwargs():
     )
 
     # Check that all kwargs are passed to model_kwargs
-    assert clf.model_kwargs["C"] == 0.5
-    assert clf.model_kwargs["penalty"] == "l2"
-    assert clf.model_kwargs["solver"] == "liblinear"
-    assert clf.model_kwargs["max_iter"] == 1000
+    assert clf._model_kwargs["C"] == 0.5
+    assert clf._model_kwargs["penalty"] == "l2"
+    assert clf._model_kwargs["solver"] == "liblinear"
+    assert clf._model_kwargs["max_iter"] == 1000
 
 
 def test_init_preserve_model_class():
@@ -981,8 +981,8 @@ def test_regressor_init_default_parameters():
     assert reg.keep_models is False
     assert reg.temp_folder is None
     assert reg.batch_size is None
-    assert isinstance(reg.model_kwargs, dict)
-    assert len(reg.model_kwargs) == 0
+    assert isinstance(reg._model_kwargs, dict)
+    assert len(reg._model_kwargs) == 0
 
 
 def test_regressor_init_custom_parameters():
@@ -1013,8 +1013,8 @@ def test_regressor_init_custom_parameters():
     assert reg.keep_models is True
     assert reg.temp_folder == "/tmp"
     assert reg.batch_size == 10
-    assert "fit_intercept" in reg.model_kwargs
-    assert reg.model_kwargs["fit_intercept"] is False
+    assert "fit_intercept" in reg._model_kwargs
+    assert reg._model_kwargs["fit_intercept"] is False
 
 
 def test_regressor_fit_basic_functionality(sample_regression_data):
