@@ -12,7 +12,7 @@ from joblib import Parallel, delayed, dump, load
 from libpysal import graph
 from scipy.spatial import KDTree
 from sklearn import metrics
-from sklearn.base import BaseEstimator
+from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 
 # TODO: summary
 # TODO: formal documentation
@@ -354,8 +354,12 @@ class _BaseModel(BaseEstimator):
         """Subclasses should implement custom function"""
         return np.nan
 
+    # def __sklearn_tags__(self):
+    #     tags = super().__sklearn_tags__(self)
+    #     return tags
 
-class BaseClassifier(_BaseModel):
+
+class BaseClassifier(_BaseModel, ClassifierMixin):
     """Generic geographically weighted classification meta-class
 
     Parameters
@@ -847,7 +851,7 @@ def _scores(y_true: np.ndarray, y_pred: np.ndarray) -> tuple:
     )
 
 
-class BaseRegressor(_BaseModel):
+class BaseRegressor(_BaseModel, RegressorMixin):
     """Generic geographically weighted regression meta-class
 
     TODO:
