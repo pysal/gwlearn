@@ -37,6 +37,8 @@ jobs:
             os: macos-latest  # Apple Silicon
           - environment-file: py313_latest
             os: windows-latest
+          - environment-file: py313_min
+            os: ubuntu-latest
       fail-fast: false
 
     defaults:

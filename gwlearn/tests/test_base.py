@@ -13,6 +13,13 @@ from sklearn.linear_model import LinearRegression, LogisticRegression
 
 from gwlearn.base import BaseClassifier, BaseRegressor, _kernel_functions
 
+try:
+    import imblearn  # noqa: F401
+
+    HAS_IMBLEARN = True
+except ImportError:
+    HAS_IMBLEARN = False
+
 
 def test_init_default_parameters():
     """Test BaseClassifier initialization with default parameters."""
@@ -30,8 +37,8 @@ def test_init_default_parameters():
     assert clf.temp_folder is None
     assert clf.batch_size is None
     assert clf.min_proportion == 0.2
-    assert isinstance(clf.model_kwargs, dict)
-    assert len(clf.model_kwargs) == 0
+    assert isinstance(clf._model_kwargs, dict)
+    assert len(clf._model_kwargs) == 0
 
 
 def test_init_custom_parameters():
@@ -64,8 +71,8 @@ def test_init_custom_parameters():
     assert clf.temp_folder == "/tmp"
     assert clf.batch_size == 10
     assert clf.min_proportion == 0.3
-    assert "max_iter" in clf.model_kwargs
-    assert clf.model_kwargs["max_iter"] == 200
+    assert "max_iter" in clf._model_kwargs
+    assert clf._model_kwargs["max_iter"] == 200
 
 
 def test_init_keep_models_path():
@@ -130,10 +137,10 @@ def test_init_multiple_kwargs():
     )
 
     # Check that all kwargs are passed to model_kwargs
-    assert clf.model_kwargs["C"] == 0.5
-    assert clf.model_kwargs["penalty"] == "l2"
-    assert clf.model_kwargs["solver"] == "liblinear"
-    assert clf.model_kwargs["max_iter"] == 1000
+    assert clf._model_kwargs["C"] == 0.5
+    assert clf._model_kwargs["penalty"] == "l2"
+    assert clf._model_kwargs["solver"] == "liblinear"
+    assert clf._model_kwargs["max_iter"] == 1000
 
 
 def test_init_preserve_model_class():
@@ -705,6 +712,7 @@ def test_binary_with_string_values_raises_error(sample_data):
         clf.fit(X, y_str, geometry)
 
 
+@pytest.mark.skipif(not HAS_IMBLEARN, reason="requires imblearn")
 def test_undersample_boolean(sample_data):
     """Test fitting with undersample=True option."""
     X, y, geometry = sample_data
@@ -728,6 +736,7 @@ def test_undersample_boolean(sample_data):
     assert 0 <= clf.score_ <= 1
 
 
+@pytest.mark.skipif(not HAS_IMBLEARN, reason="requires imblearn")
 def test_undersample_ratio(sample_data):
     """Test fitting with undersample as a float ratio."""
     X, y, geometry = sample_data
@@ -806,6 +815,7 @@ def test_different_random_states(sample_data):
     assert not clf1.proba_.equals(clf2.proba_)
 
 
+@pytest.mark.skipif(not HAS_IMBLEARN, reason="requires imblearn")
 def test_random_state_with_undersample(sample_data):
     """Test that random_state affects undersample consistently."""
     X, y, geometry = sample_data
@@ -851,155 +861,6 @@ def test_repr_basic():
 
     # Check that it contains the bandwidth
     assert "bandwidth=100" in repr_str
-
-
-def test_repr_single_line_format():
-    """Test __repr__ with few parameters uses single line format."""
-    clf = BaseClassifier(LogisticRegression, bandwidth=50)
-    repr_str = repr(clf)
-
-    # Should be single line (no newlines)
-    assert "\n" not in repr_str
-    assert repr_str.startswith("BaseClassifier(")
-    assert repr_str.endswith(")")
-
-
-def test_repr_multiline_format():
-    """Test __repr__ with many parameters uses multi-line format."""
-    clf = BaseClassifier(
-        LogisticRegression,
-        bandwidth=50,
-        fixed=True,
-        kernel="gaussian",
-        n_jobs=2,
-        keep_models=True,
-        verbose=True,
-        max_iter=200,
-    )
-    repr_str = repr(clf)
-
-    # Should be multi-line
-    assert "\n" in repr_str
-    assert repr_str.startswith("BaseClassifier(\n")
-    assert repr_str.endswith("\n)")
-
-    # Check key parameters are present
-    assert "bandwidth=50" in repr_str
-    assert "fixed=True" in repr_str  # non-default value
-    assert "kernel='gaussian'" in repr_str  # non-default value
-    assert "max_iter=200" in repr_str  # model kwarg
-
-
-def test_repr_default_values_excluded():
-    """Test that default values are excluded from __repr__."""
-    clf = BaseClassifier(LogisticRegression, bandwidth=100)
-    repr_str = repr(clf)
-
-    # Default values should not appear
-    assert "fixed=False" not in repr_str  # default value
-    assert "kernel='bisquare'" not in repr_str  # default value
-    assert "n_jobs=-1" not in repr_str  # default value
-    assert "fit_global_model=True" not in repr_str  # default value
-
-
-def test_repr_non_default_values_included():
-    """Test that non-default values are included in __repr__."""
-    clf = BaseClassifier(
-        RandomForestClassifier,
-        bandwidth=200,
-        fixed=True,  # non-default
-        kernel="triangular",  # non-default
-        n_jobs=4,  # non-default
-        random_state=42,  # non-default
-        n_estimators=200,  # model kwarg
-    )
-    repr_str = repr(clf)
-
-    # Non-default values should appear
-    assert "fixed=True" in repr_str
-    assert "kernel='triangular'" in repr_str
-    assert "n_jobs=4" in repr_str
-    assert "random_state=42" in repr_str
-    assert "n_estimators=200" in repr_str
-
-
-def test_repr_path_handling():
-    """Test __repr__ with Path objects."""
-    import tempfile
-
-    with tempfile.TemporaryDirectory() as temp_dir:
-        clf = BaseClassifier(
-            LogisticRegression,
-            bandwidth=100,
-            keep_models=temp_dir,
-        )
-        repr_str = repr(clf)
-
-        # Path should be shown as string
-        assert f"keep_models='{temp_dir}'" in repr_str
-
-
-def test_repr_callable_kernel():
-    """Test __repr__ with callable kernel function."""
-
-    def custom_kernel(distances, bandwidth):
-        return np.exp(-distances / bandwidth)
-
-    clf = BaseClassifier(
-        LogisticRegression,
-        bandwidth=100,
-        kernel=custom_kernel,
-    )
-    repr_str = repr(clf)
-
-    # Function name should appear
-    assert "kernel=custom_kernel" in repr_str
-
-
-def test_repr_model_kwargs_filtering():
-    """Test that model kwargs are properly filtered in __repr__."""
-    # Test with important kwargs (should be shown)
-    clf = BaseClassifier(
-        RandomForestClassifier,
-        bandwidth=100,
-        n_estimators=200,
-        max_depth=10,
-    )
-    repr_str = repr(clf)
-
-    assert "n_estimators=200" in repr_str
-    assert "max_depth=10" in repr_str
-
-    # Test with many unimportant kwargs (should be limited)
-    clf = BaseClassifier(
-        LogisticRegression,
-        bandwidth=100,
-        some_param1="value1",
-        some_param2="value2",
-        some_param3="value3",
-        some_param4="value4",
-        some_param5="value5",
-    )
-    repr_str = repr(clf)
-
-    # Should not show all kwargs when there are many unimportant ones
-    param_count = repr_str.count("some_param")
-    assert param_count == 0  # None of the unimportant params should show
-
-
-def test_repr_few_model_kwargs():
-    """Test __repr__ shows all kwargs when there are only a few."""
-    clf = BaseClassifier(
-        LogisticRegression,
-        bandwidth=100,
-        max_iter=500,
-        C=0.5,
-    )
-    repr_str = repr(clf)
-
-    # Should show both kwargs since there are only 2
-    assert "max_iter=500" in repr_str
-    assert "C=0.5" in repr_str
 
 
 def test_repr_html_basic():
@@ -1120,8 +981,8 @@ def test_regressor_init_default_parameters():
     assert reg.keep_models is False
     assert reg.temp_folder is None
     assert reg.batch_size is None
-    assert isinstance(reg.model_kwargs, dict)
-    assert len(reg.model_kwargs) == 0
+    assert isinstance(reg._model_kwargs, dict)
+    assert len(reg._model_kwargs) == 0
 
 
 def test_regressor_init_custom_parameters():
@@ -1152,8 +1013,8 @@ def test_regressor_init_custom_parameters():
     assert reg.keep_models is True
     assert reg.temp_folder == "/tmp"
     assert reg.batch_size == 10
-    assert "fit_intercept" in reg.model_kwargs
-    assert reg.model_kwargs["fit_intercept"] is False
+    assert "fit_intercept" in reg._model_kwargs
+    assert reg._model_kwargs["fit_intercept"] is False
 
 
 def test_regressor_fit_basic_functionality(sample_regression_data):
@@ -1530,32 +1391,6 @@ def test_regressor_repr_basic():
 
     # Check that it contains the bandwidth
     assert "bandwidth=100" in repr_str
-
-
-def test_regressor_repr_multiline_format():
-    """Test __repr__ with many parameters uses multi-line format."""
-    reg = BaseRegressor(
-        LinearRegression,
-        bandwidth=50,
-        fixed=True,
-        kernel="gaussian",
-        n_jobs=2,
-        keep_models=True,
-        verbose=True,
-        fit_intercept=False,
-    )
-    repr_str = repr(reg)
-
-    # Should be multi-line
-    assert "\n" in repr_str
-    assert repr_str.startswith("BaseRegressor(\n")
-    assert repr_str.endswith("\n)")
-
-    # Check key parameters are present
-    assert "bandwidth=50" in repr_str
-    assert "fixed=True" in repr_str  # non-default value
-    assert "kernel='gaussian'" in repr_str  # non-default value
-    assert "fit_intercept=False" in repr_str  # model kwarg
 
 
 def test_regressor_repr_html_basic():

@@ -49,7 +49,7 @@ class BandwidthSearch:
         self.model = model
         self.kernel = kernel
         self.fixed = fixed
-        self.model_kwargs = kwargs
+        self._model_kwargs = kwargs
         self.n_jobs = n_jobs
         self.search_method = search_method
         self.criterion = criterion
@@ -89,7 +89,7 @@ class BandwidthSearch:
             measure_performance=False,
             strict=False,
             verbose=self.verbose == 2,
-            **self.model_kwargs,
+            **self._model_kwargs,
         ).fit(X=X, y=y, geometry=geometry)
 
         match self.criterion:

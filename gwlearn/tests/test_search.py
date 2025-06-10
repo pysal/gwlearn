@@ -59,7 +59,7 @@ def test_bandwidth_search_init_custom_params():
     assert search.max_iterations == 50
     assert search.tolerance == 1e-3
     assert search.verbose is True
-    assert search.model_kwargs["max_iter"] == 200
+    assert search._model_kwargs["max_iter"] == 200
 
 
 def test_interval_search_basic(sample_data):  # noqa: F811
@@ -279,7 +279,7 @@ def test_bandwidth_search_accepts_model_params(sample_data):  # noqa: F811
 
     # Check that parameters were stored correctly
     for param, value in custom_params.items():
-        assert search.model_kwargs[param] == value
+        assert search._model_kwargs[param] == value
 
     # Fit to ensure parameters are passed to model instances
     search.fit(X, y, geometry)
