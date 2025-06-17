@@ -94,6 +94,7 @@ class _BaseModel(BaseEstimator):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
+        graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
         measure_performance: bool = True,
@@ -108,6 +109,7 @@ class _BaseModel(BaseEstimator):
         self.bandwidth = bandwidth
         self.kernel = kernel
         self.include_focal = include_focal
+        self.graph = graph
         self.fixed = fixed
         self._model_kwargs = kwargs
         self.n_jobs = n_jobs
@@ -380,6 +382,10 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
         futher spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default False
+    graph : Graph, optional
+        Custom libpysal.graph.Graph object encoding the spatial interaction between
+        observations. If given, it is used directly and `bandwidth`, `fixed`, `kernel`,
+        and `include_focal` keywords are ignored.
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
@@ -471,6 +477,7 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
+        graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
         measure_performance: bool = True,
@@ -490,6 +497,7 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
+            graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
             measure_performance=measure_performance,
@@ -548,7 +556,11 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
 
         if self.verbose:
             print(f"{(time() - self._start):.2f}s: Building weights")
-        weights = self._build_weights(geometry)
+
+        if self.graph is not None:
+            weights = self.graph
+        else:
+            weights = self._build_weights(geometry)
         if self.verbose:
             print(f"{(time() - self._start):.2f}s: Weights ready")
         self._setup_model_storage()
@@ -877,6 +889,10 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         futher spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default False
+    graph : Graph, optional
+        Custom libpysal.graph.Graph object encoding the spatial interaction between
+        observations. If given, it is used directly and `bandwidth`, `fixed`, `kernel`,
+        and `include_focal` keywords are ignored.
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
@@ -925,7 +941,10 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         """
         self._validate_geometry(geometry)
 
-        weights = self._build_weights(geometry)
+        if self.graph is not None:
+            weights = self.graph
+        else:
+            weights = self._build_weights(geometry)
         self._setup_model_storage()
 
         # fit the models
