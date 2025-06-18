@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from geodatasets import get_path
+from libpysal.graph import Graph
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.linear_model import LinearRegression, LogisticRegression
 
@@ -1440,3 +1441,49 @@ def test_regressor_fit_focal_inclusion(sample_regression_data):
 
     # RF should 'remember' focal point when included
     assert (y - no_focal.pred_).mean() > (y - focal.pred_).mean()
+
+
+def test_custom_graph_baseregressor(sample_regression_data):
+    """Test BaseRegressor with a custom graph object."""
+    X, y, geometry = sample_regression_data
+
+    # Create a fixed distance weights graph
+    g = Graph.build_distance_band(geometry, threshold=150000, binary=False)
+
+    # Create regressor with custom graph
+    reg = BaseRegressor(
+        LinearRegression,
+        bandwidth=100,  # This should be ignored when custom graph is provided
+        fixed=False,  # This should be ignored when custom graph is provided
+        graph=g,
+    )
+
+    # Fit the model
+    reg.fit(X, y, geometry)
+
+    # Check that the model was fit successfully
+    assert hasattr(reg, "pred_")
+    assert hasattr(reg, "local_r2_")
+
+
+def test_custom_graph_baseclassifier(sample_data):
+    """Test BaseClassifier with a custom graph object."""
+    X, y, geometry = sample_data
+
+    # Create a fixed distance weights graph
+    g = Graph.build_distance_band(geometry, threshold=150000, binary=False)
+    # Create classifier with custom graph
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=100,  # This should be ignored when custom graph is provided
+        fixed=True,  # This should be ignored when custom graph is provided
+        graph=g,
+        max_iter=500,
+    )
+
+    # Fit the model
+    clf.fit(X, y, geometry)
+
+    # Check that the model was fit successfully
+    assert hasattr(clf, "proba_")
+    assert hasattr(clf, "score_")
