@@ -6,6 +6,7 @@ from typing import Literal
 import geopandas as gpd
 import numpy as np
 import pandas as pd
+from libpysal import graph
 from sklearn import metrics
 from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 
@@ -31,6 +32,10 @@ class GWRandomForestClassifier(BaseClassifier):
         analysis of the model performance (and generalises to models that do not support
         OOB scoring). However, it leaves out the most representative sample. By default
         False
+    graph : Graph, optional
+        Custom libpysal.graph.Graph object encoding the spatial interaction between
+        observations. If given, it is used directly and `bandwidth`, `fixed`, `kernel`,
+        and `include_focal` keywords are ignored.
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors by
         default ``-1``
@@ -153,6 +158,7 @@ class GWRandomForestClassifier(BaseClassifier):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
+        graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
         measure_performance: bool = True,
@@ -172,6 +178,7 @@ class GWRandomForestClassifier(BaseClassifier):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
+            graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
             measure_performance=measure_performance,
@@ -303,6 +310,10 @@ class GWGradientBoostingClassifier(BaseClassifier):
         futher spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default False
+    graph : Graph, optional
+        Custom libpysal.graph.Graph object encoding the spatial interaction between
+        observations. If given, it is used directly and `bandwidth`, `fixed`, `kernel`,
+        and `include_focal` keywords are ignored.
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
@@ -393,6 +404,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
+        graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
         measure_performance: bool = True,
@@ -408,6 +420,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
+            graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
             measure_performance=measure_performance,
