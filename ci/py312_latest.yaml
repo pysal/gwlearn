@@ -7,7 +7,6 @@ dependencies:
   - geopandas
   - libpysal
   - numpy
-  - packaging
   - scipy
   - scikit-learn
   - joblib

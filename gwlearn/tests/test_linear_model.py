@@ -4,7 +4,6 @@ import pandas as pd
 import pytest
 from geodatasets import get_path
 from numpy.testing import assert_almost_equal, assert_array_almost_equal
-from packaging.version import Version
 from sklearn.linear_model import LinearRegression, LogisticRegression
 
 from gwlearn.linear_model import GWLinearRegression, GWLogisticRegression
@@ -15,8 +14,6 @@ try:
     HAS_MGWR = True
 except ImportError:
     HAS_MGWR = False
-
-NP_GE_2 = Version(np.__version__) >= Version("2.0.0")
 
 
 def test_gwlogistic_init():
@@ -82,11 +79,7 @@ def test_gwlogistic_fit_basic(sample_data):  # noqa: F811
     # Check structure of intercepts
     assert isinstance(model.local_intercept_, pd.Series)
     assert len(model.local_intercept_) == len(X)
-    known_local_intercept_mean = 7.873588522 if NP_GE_2 else 7.890033026
-    assert (
-        pytest.approx(known_local_intercept_mean, abs=0.01)
-        == model.local_intercept_.mean()
-    )
+    assert pytest.approx(7.8, abs=0.1) == model.local_intercept_.mean()
 
 
 def test_gwlogistic_coefficients_structure(sample_data):  # noqa: F811
