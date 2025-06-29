@@ -315,7 +315,7 @@ def test_bandwidth_search_verbosity(sample_data):  # noqa: F811
     # Check that bandwidth and score information is printed
     assert "Bandwidth: 100000" in output
     assert "Bandwidth: 200000" in output
-    assert "score:" in output
+    assert "aicc:" in output
 
     # Check with verbose=False (should not produce output)
     search_quiet = BandwidthSearch(

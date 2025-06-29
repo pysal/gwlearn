@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from typing import Literal
 
 import geopandas as gpd
 import numpy as np
@@ -9,7 +10,14 @@ from scipy.spatial.distance import pdist
 class BandwidthSearch:
     """Optimal bandwidth search for geographically-weighted models
 
-    Minimises one of AIC, AICc, BIC based on prediction probability on focal geometries.
+    Reports information criteria and (optionally) other scores from multiple models with
+    varying bandwidth. When using golden section search, minimises one of
+    AIC, AICc, BIC based on prediction probability on focal geometries.
+
+    When using classification models with a defined ``min_proportion``, keep in mind
+    that some locations may be excluded from the final model. In such a case, the
+    information criteria are typically not comparable across models with different
+    bandwidths and shall not be used to determine the optimal one.
 
     Parameters
     ----------
@@ -18,31 +26,61 @@ class BandwidthSearch:
     fixed : bool, optional
         True for distance based bandwidth and False for adaptive (nearest neighbor)
         bandwidth, by default False
-    kernel : str, optional
-        type of kernel function used to weight observations, by default "bisquare"
+    kernel : str | Callable, optional
+        Type of kernel function used to weight observations, by default "bisquare"
     n_jobs : int, optional
-        The number of jobs to run in parallel. ``-1`` means using all processors
+        The number of jobs to run in parallel. ``-1`` means using all processors,
         by default ``-1``
-    fit_global_model : bool, optional
-        Determines if the global baseline model shall be fitted alognside the g
-        eographically weighted.
+    search_method : str, optional
+        Method used to search for optimal bandwidth. When using ``"golden_section"``,
+        the Golden section optimisation is used to find the optimal bandwidth while
+        attempting to minimize ``criterion``. When using ``"interval"``, fits all models
+        within the specified bandwidths at a set interval without any attempt to
+        optimize the selection. By default "golden_section".
+    criterion : str, optional
+        Information criterion used to select optimal bandwidth. Could be one of
+        ``{"aicc", "aic", "bic"}``, by default "aicc"
+    min_bandwidth : int | float | None, optional
+        Minimum bandwidth to consider, by default None
+    max_bandwidth : int | float | None, optional
+        Maximum bandwidth to consider, by default None
+    interval : int | float | None, optional
+        Interval for bandwidth search when using "interval" method, by default None
+    max_iterations : int, optional
+        Maximum number of iterations for golden section search, by default 100
+    tolerance : float, optional
+        Tolerance for convergence in golden section search, by default 1e-2
+    verbose : bool | int, optional
+        Verbosity level, by default False
     **kwargs
-        Additional keyword arguments passed to ``model`` initialisation
+        Additional keyword arguments passed to ``model`` initialization
     """
 
     def __init__(
         self,
         model,
+        *,
         fixed: bool = False,
-        kernel: str | Callable = "bisquare",
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            # "gaussian",
+            "bisquare",
+            "tricube",
+            "cosine",
+            "boxcar",
+            # "exponential",
+        ]
+        | Callable = "bisquare",
         n_jobs: int = -1,
-        search_method: str = "golden_section",
-        criterion: str = "aicc",
+        search_method: Literal["golden_section", "interval"] = "golden_section",
+        criterion: Literal["aicc", "aic", "bic"] = "aicc",
         min_bandwidth: int | float | None = None,
         max_bandwidth: int | float | None = None,
         interval: int | float | None = None,
         max_iterations: int = 100,
         tolerance: float = 1e-2,
+        metrics: list | None = None,
         verbose: bool | int = False,
         **kwargs,
     ) -> None:
@@ -58,6 +96,7 @@ class BandwidthSearch:
         self.interval = interval
         self.max_iterations = max_iterations
         self.tolerance = tolerance
+        self.metrics = metrics
         self.verbose = verbose
 
     def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries) -> None:
@@ -117,7 +156,7 @@ class BandwidthSearch:
         while bw <= self.max_bandwidth:
             scores[bw] = self._score(X=X, y=y, geometry=geometry, bw=bw)
             if self.verbose:
-                print(f"Bandwidth: {bw:.2f}, score: {scores[bw]:.3f}")
+                print(f"Bandwidth: {bw:.2f}, {self.criterion}: {scores[bw]:.3f}")
             bw += self.interval
         self.scores_ = pd.Series(scores, name=self.criterion)
 
