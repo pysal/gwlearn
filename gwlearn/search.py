@@ -40,6 +40,10 @@ class BandwidthSearch:
     criterion : str, optional
         Information criterion used to select optimal bandwidth. Could be one of
         ``{"aicc", "aic", "bic"}``, by default "aicc"
+    metrics : list, optional
+        List of additional metrics beyond ``criterion`` to be reported. Has to be
+        a metric supported by ``model``, passable to ``measure_performance`` argument
+        of model's intialization.
     min_bandwidth : int | float | None, optional
         Minimum bandwidth to consider, by default None
     max_bandwidth : int | float | None, optional
@@ -75,12 +79,12 @@ class BandwidthSearch:
         n_jobs: int = -1,
         search_method: Literal["golden_section", "interval"] = "golden_section",
         criterion: Literal["aicc", "aic", "bic"] = "aicc",
+        metrics: list | None = None,
         min_bandwidth: int | float | None = None,
         max_bandwidth: int | float | None = None,
         interval: int | float | None = None,
         max_iterations: int = 100,
         tolerance: float = 1e-2,
-        metrics: list | None = None,
         verbose: bool | int = False,
         **kwargs,
     ) -> None:
@@ -125,19 +129,25 @@ class BandwidthSearch:
             kernel=self.kernel,
             n_jobs=self.n_jobs,
             fit_global_model=False,
-            measure_performance=False,
+            measure_performance=self.metrics,
             strict=False,
             verbose=self.verbose == 2,
             **self._model_kwargs,
         ).fit(X=X, y=y, geometry=geometry)
 
+        additional_metrics = []
+        for m in self.metrics:
+            if m == "accuracy":
+                m = "score"
+            additional_metrics.append(getattr(gwm, m + "_"))
+
         match self.criterion:
             case "aic":
-                return gwm.aic_
+                return gwm.aic_, additional_metrics
             case "bic":
-                return gwm.bic_
+                return gwm.bic_, additional_metrics
             case "aicc":
-                return gwm.aicc_
+                return gwm.aicc_, additional_metrics
 
     def _interval(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries) -> None:
         """Fit models using the equal interval search.
@@ -152,13 +162,17 @@ class BandwidthSearch:
             Geographic location
         """
         scores = {}
+        metrics = {}
         bw = self.min_bandwidth
         while bw <= self.max_bandwidth:
-            scores[bw] = self._score(X=X, y=y, geometry=geometry, bw=bw)
+            score, metric = self._score(X=X, y=y, geometry=geometry, bw=bw)
+            scores[bw] = score
+            metrics[bw] = metric
             if self.verbose:
                 print(f"Bandwidth: {bw:.2f}, {self.criterion}: {scores[bw]:.3f}")
             bw += self.interval
         self.scores_ = pd.Series(scores, name=self.criterion)
+        self.metrics_ = pd.DataFrame(metrics, index=self.metrics).T
 
     def _golden_section(
         self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries, tolerance: float
@@ -186,6 +200,7 @@ class BandwidthSearch:
         diff = 1.0e9
         iters = 0
         scores = {}
+        metrics = {}
         while diff > tolerance and iters < self.max_iterations and a != np.inf:
             if not self.fixed:  # ensure we use int as possible bandwidth
                 b = int(b)
@@ -194,24 +209,26 @@ class BandwidthSearch:
             if b in scores:
                 score_b = scores[b]
             else:
-                score_b = self._score(X=X, y=y, geometry=geometry, bw=b)
+                score_b, metric_b = self._score(X=X, y=y, geometry=geometry, bw=b)
                 if self.verbose:
                     print(
                         f"Bandwidth: {f'{b:.2f}'.rstrip('0').rstrip('.')}, "
                         f"score: {score_b:.3f}"
                     )
                 scores[b] = score_b
+                metrics[b] = metric_b
 
             if d in scores:
                 score_d = scores[d]
             else:
-                score_d = self._score(X=X, y=y, geometry=geometry, bw=d)
+                score_d, metric_d = self._score(X=X, y=y, geometry=geometry, bw=d)
                 if self.verbose:
                     print(
                         f"Bandwidth: {f'{d:.2f}'.rstrip('0').rstrip('.')}, "
                         f"score: {score_d:.3f}"
                     )
                 scores[d] = score_d
+                metrics[d] = metric_d
 
             if score_b <= score_d:
                 c = d
@@ -226,3 +243,4 @@ class BandwidthSearch:
             diff = np.abs(score_b - score_d)
 
         self.scores_ = pd.Series(scores, name="oob_score")
+        self.metrics_ = pd.DataFrame(metrics, index=self.metrics).T
