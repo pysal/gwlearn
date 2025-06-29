@@ -458,6 +458,9 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
         complexity (smaller bandwidths)
     bic_ : float
         Bayesian information criterion
+    prediction_rate_ : float
+        Proportion of models that are fitted, where the rest is skipped due to not
+        fulfiilling ``min_proportion``.
     """
 
     def __init__(
@@ -610,6 +613,8 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
         # global GW accuracy
         nan_mask = self.proba_[col].isna()
         self.pred_ = self.proba_[col][~nan_mask] > 0.5
+
+        self.prediction_rate_ = 1 - (nan_mask.sum() / nan_mask.shape[0])
 
         if self.fit_global_model:
             if self.verbose:

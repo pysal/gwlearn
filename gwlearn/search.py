@@ -43,7 +43,7 @@ class BandwidthSearch:
     metrics : list, optional
         List of additional metrics beyond ``criterion`` to be reported. Has to be
         a metric supported by ``model``, passable to ``measure_performance`` argument
-        of model's intialization.
+        of model's intialization or 'prediction_rate'.
     min_bandwidth : int | float | None, optional
         Minimum bandwidth to consider, by default None
     max_bandwidth : int | float | None, optional
