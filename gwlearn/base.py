@@ -97,7 +97,7 @@ class _BaseModel(BaseEstimator):
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
-        measure_performance: bool = True,
+        measure_performance: bool | list = True,
         strict: bool | None = False,
         keep_models: bool | str | Path = False,
         temp_folder: str | None = None,
@@ -392,9 +392,10 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
     fit_global_model : bool, optional
         Determines if the global baseline model shall be fitted alognside
         the geographically weighted, by default True
-    measure_performance : bool, optional
+    measure_performance : bool | str, optional
         Calculate performance metrics for the model. If True, measures accurace score,
-        precision, recall, balanced accuracy, and F1 scores. By default True
+        precision, recall, balanced accuracy, and F1 scores. A subset of these can
+        be specified by passing a list of strings. By default True
     strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``,
         by default False. None is treated as False but provides a warning if there are
@@ -616,26 +617,54 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
             self._fit_global_model(X, y)
 
         if self.measure_performance:
+            if self.measure_performance is True:
+                metrics_to_measure = [
+                    "accuracy",
+                    "precision",
+                    "recall",
+                    "balanced_accuracy",
+                    "f1_macro",
+                    "f1_micro",
+                    "f1_weighted",
+                ]
+            else:
+                metrics_to_measure = self.measure_performance
             if self.verbose:
                 print(f"{(time() - self._start):.2f}s: Measuring focal performance")
             masked_y = y[~nan_mask]
-            self.score_ = metrics.accuracy_score(masked_y, self.pred_)
-            self.precision_ = metrics.precision_score(
-                masked_y, self.pred_, zero_division=0
-            )
-            self.recall_ = metrics.recall_score(masked_y, self.pred_, zero_division=0)
-            self.balanced_accuracy_ = metrics.balanced_accuracy_score(
-                masked_y, self.pred_
-            )
-            self.f1_macro_ = metrics.f1_score(
-                masked_y, self.pred_, average="macro", zero_division=0
-            )
-            self.f1_micro_ = metrics.f1_score(
-                masked_y, self.pred_, average="micro", zero_division=0
-            )
-            self.f1_weighted_ = metrics.f1_score(
-                masked_y, self.pred_, average="weighted", zero_division=0
-            )
+
+            if "accuracy" in metrics_to_measure:
+                self.score_ = metrics.accuracy_score(masked_y, self.pred_)
+
+            if "precision" in metrics_to_measure:
+                self.precision_ = metrics.precision_score(
+                    masked_y, self.pred_, zero_division=0
+                )
+
+            if "recall" in metrics_to_measure:
+                self.recall_ = metrics.recall_score(
+                    masked_y, self.pred_, zero_division=0
+                )
+
+            if "balanced_accuracy" in metrics_to_measure:
+                self.balanced_accuracy_ = metrics.balanced_accuracy_score(
+                    masked_y, self.pred_
+                )
+
+            if "f1_macro" in metrics_to_measure:
+                self.f1_macro_ = metrics.f1_score(
+                    masked_y, self.pred_, average="macro", zero_division=0
+                )
+
+            if "f1_micro" in metrics_to_measure:
+                self.f1_micro_ = metrics.f1_score(
+                    masked_y, self.pred_, average="micro", zero_division=0
+                )
+
+            if "f1_weighted" in metrics_to_measure:
+                self.f1_weighted_ = metrics.f1_score(
+                    masked_y, self.pred_, average="weighted", zero_division=0
+                )
 
         # Compute global log likelihood and information criteria
         if self.verbose:
