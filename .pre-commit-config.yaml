@@ -1,9 +1,9 @@
 ---
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.11.4"
+    rev: "v0.12.1"
     hooks:
-      - id: ruff
+      - id: ruff-check
         files: "gwlearn\/|doc\/"
       - id: ruff-format
         files: "gwlearn\/|doc\/"
