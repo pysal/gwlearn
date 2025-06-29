@@ -7,10 +7,13 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 from libpysal import graph
+from packaging.version import Version
 from sklearn import metrics
 from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 
 from .base import BaseClassifier, _scores
+
+NP_GE_2 = Version(np.__version__) >= Version("2.0.0")
 
 
 class GWRandomForestClassifier(BaseClassifier):
@@ -225,8 +228,9 @@ class GWRandomForestClassifier(BaseClassifier):
             true, pred = zip(*self._score_data, strict=False)
             del self._score_data
 
-            all_true = np.concat(true)
-            all_pred = np.concat(pred)
+            concat = np.concat if NP_GE_2 else np.concatenate
+            all_true = concat(true)
+            all_pred = concat(pred)
 
             # global OOB scores
             self.oob_score_ = metrics.accuracy_score(all_true, all_pred)

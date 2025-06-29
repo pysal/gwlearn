@@ -177,3 +177,6 @@ cython_debug/
 pixi.lock
 
 docs/source/generated
+
+# macOS stuff
+*.DS_Store

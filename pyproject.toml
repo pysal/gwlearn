@@ -21,19 +21,19 @@ classifiers = [
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "geopandas",
-    "libpysal",
-    "numpy",
-    "scipy",
-    "scikit-learn",
-    "pandas",
-    "joblib",
+    "geopandas>=0.14.0",
+    "joblib>=1.4.0",
+    "libpysal>=4.12",
+    "numpy>=1.26.0",
+    "scipy>=1.12.0",
+    "scikit-learn>=1.4.0",
+    "pandas>=2.1.0",
 ]
 
 
 [project.optional-dependencies]
 optional = [
-    "imbalanced-learn",
+    "imbalanced-learn>=0.12.0",
 ]
 
 [tool.setuptools.packages.find]
