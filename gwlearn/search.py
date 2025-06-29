@@ -135,8 +135,10 @@ class BandwidthSearch:
             **self._model_kwargs,
         ).fit(X=X, y=y, geometry=geometry)
 
+        met = [] if self.metrics is None else self.metrics
+
         additional_metrics = []
-        for m in self.metrics:
+        for m in met:
             if m == "accuracy":
                 m = "score"
             additional_metrics.append(getattr(gwm, m + "_"))
