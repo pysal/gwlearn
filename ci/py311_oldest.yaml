@@ -4,8 +4,7 @@ channels:
   - conda-forge
 dependencies:
   - python=3.11
-  - fiona<1.10
-  - geopandas=0.14.0
+  - geopandas=1.0.0
   - joblib=1.4.0
   - libpysal=4.12
   - numpy=1.26.0
