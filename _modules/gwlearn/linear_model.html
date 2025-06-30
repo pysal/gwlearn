@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.linear_model &#8212; gwlearn 0.1.dev60+g2251609 documentation</title>
+    <title>gwlearn.linear_model &#8212; gwlearn 0.1.dev61+g8c13b44 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=c686dbf6"></script>
+    <script src="../../_static/documentation_options.js?v=8e1109dc"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev60+g2251609 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev61+g8c13b44 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -500,8 +500,8 @@ document.write(`
 
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score_data</span>
 
-            <span class="n">all_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
-            <span class="n">all_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+            <span class="n">all_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
+            <span class="n">all_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
 
             <span class="c1"># global pred scores</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pooled_score_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">)</span>
