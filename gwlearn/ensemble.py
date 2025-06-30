@@ -225,8 +225,8 @@ class GWRandomForestClassifier(BaseClassifier):
             true, pred = zip(*self._score_data, strict=False)
             del self._score_data
 
-            all_true = np.concat(true)
-            all_pred = np.concat(pred)
+            all_true = np.concatenate(true)
+            all_pred = np.concatenate(pred)
 
             # global OOB scores
             self.oob_score_ = metrics.accuracy_score(all_true, all_pred)
