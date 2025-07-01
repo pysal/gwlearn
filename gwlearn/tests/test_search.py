@@ -342,3 +342,49 @@ def test_bandwidth_search_verbosity(sample_data):  # noqa: F811
 
     # Check that both searches produce the same result
     assert search.optimal_bandwidth_ == search_quiet.optimal_bandwidth_
+
+
+@pytest.mark.parametrize("search_method", ["interval", "golden_section"])
+def test_bandwidth_search_metrics(sample_data, search_method):
+    """Test that BandwidthSearch handles custom metrics."""
+    X, y, geometry = sample_data
+
+    # Define custom metrics to track
+    custom_metrics = ["balanced_accuracy", "f1_weighted", "prediction_rate"]
+
+    # Test interval search
+    search = BandwidthSearch(
+        model=GWLogisticRegression,
+        fixed=True,
+        search_method=search_method,
+        min_bandwidth=100000,
+        max_bandwidth=200000,
+        interval=100000,  # Just two points for speed
+        max_iterations=3,  # Limit iterations for faster testing
+        metrics=custom_metrics,
+        verbose=False,
+        random_state=42,
+    )
+
+    # Fit the bandwidth search
+    search.fit(X, y, geometry)
+
+    # Check that metrics were tracked correctly
+    assert hasattr(search, "metrics_")
+    assert isinstance(search.metrics_, pd.DataFrame)
+    assert list(search.metrics_.columns) == custom_metrics
+    assert len(search.metrics_) == len(search.scores_)
+
+    # Verify that metrics contain expected types
+    for metric in custom_metrics:
+        # All metric values should be floats
+        assert search.metrics_[metric].dtype == float
+
+        # Check ranges for specific metrics
+        if metric in ["balanced_accuracy", "f1_weighted"]:
+            assert (search.metrics_[metric] >= 0).all()
+            assert (search.metrics_[metric] <= 1).all()
+
+        if metric == "prediction_rate":
+            assert (search.metrics_[metric] > 0).all()
+            assert (search.metrics_[metric] <= 1).all()

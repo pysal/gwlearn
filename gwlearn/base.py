@@ -459,8 +459,8 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
     bic_ : float
         Bayesian information criterion
     prediction_rate_ : float
-        Proportion of models that are fitted, where the rest is skipped due to not
-        fulfiilling ``min_proportion``.
+        Proportion of models that are fitted, where the rest are skipped due to not
+        fulfilling ``min_proportion``.
     """
 
     def __init__(
