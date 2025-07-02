@@ -366,20 +366,20 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
 
     Parameters
     ----------
-    model :  model class
+    model : model class
         Scikit-learn model class
     bandwidth : int | float
-        bandwidth value consisting of either a distance or N nearest neighbors
+        Bandwidth value consisting of either a distance or N nearest neighbors
     fixed : bool, optional
         True for distance based bandwidth and False for adaptive (nearest neighbor)
         bandwidth, by default False
     kernel : str | Callable, optional
-        type of kernel function used to weight observations, by default "bisquare"
+        Type of kernel function used to weight observations, by default "bisquare"
     include_focal : bool, optional
         Include focal in the local model training. Excluding it allows
         assessment of geographically weighted metrics on unseen data without a need for
         train/test split, hence providing value for all samples. This is needed for
-        futher spatial analysis of the model performance (and generalises to models
+        further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default False
     graph : Graph, optional
@@ -390,12 +390,12 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
     fit_global_model : bool, optional
-        Determines if the global baseline model shall be fitted alognside
+        Determines if the global baseline model shall be fitted alongside
         the geographically weighted, by default True
-    measure_performance : bool | str, optional
-        Calculate performance metrics for the model. If True, measures accurace score,
-        precision, recall, balanced accuracy, and F1 scores. A subset of these can
-        be specified by passing a list of strings. By default True
+    measure_performance : bool | list, optional
+        Calculate performance metrics for the model. If True, measures accuracy score,
+        precision, recall, balanced accuracy, and F1 scores. A subset of these can be
+        specified by passing a list of strings. By default True
     strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``,
         by default False. None is treated as False but provides a warning if there are
@@ -410,7 +410,7 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
         with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default
         None
     batch_size : int | None, optional
-        Number of models to process in each batch. Specify batch_size fi your models do
+        Number of models to process in each batch. Specify batch_size if your models do
         not fit into memory. By default None
     min_proportion : float, optional
         Minimum proportion of minority class for a model to be fitted, by default 0.2
@@ -452,9 +452,9 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
     log_likelihood_ : float
         Global log likelihood of the model
     aic_ : float
-        Akaike inofrmation criterion of the model
+        Akaike information criterion of the model
     aicc_ : float
-        Corrected Akaike information criterion to account to account for model
+        Corrected Akaike information criterion to account for model
         complexity (smaller bandwidths)
     bic_ : float
         Bayesian information criterion
@@ -934,20 +934,20 @@ class BaseRegressor(_BaseModel, RegressorMixin):
 
     Parameters
     ----------
-    model :  model class
+    model : model class
         Scikit-learn model class
     bandwidth : int | float
-        bandwidth value consisting of either a distance or N nearest neighbors
+        Bandwidth value consisting of either a distance or N nearest neighbors
     fixed : bool, optional
         True for distance based bandwidth and False for adaptive (nearest neighbor)
         bandwidth, by default False
     kernel : str | Callable, optional
-        type of kernel function used to weight observations, by default "bisquare"
+        Type of kernel function used to weight observations, by default "bisquare"
     include_focal : bool, optional
         Include focal in the local model training. Excluding it allows
         assessment of geographically weighted metrics on unseen data without a need for
         train/test split, hence providing value for all samples. This is needed for
-        futher spatial analysis of the model performance (and generalises to models
+        further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default False
     graph : Graph, optional
@@ -958,10 +958,11 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
     fit_global_model : bool, optional
-        Determines if the global baseline model shall be fitted alognside
+        Determines if the global baseline model shall be fitted alongside
         the geographically weighted, by default True
     measure_performance : bool, optional
-        Calculate performance metrics for the model, by default True
+        Calculate performance metrics for the model, by default True. If True, measures
+        R2 and adjusted R2.
     strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``,
         by default False. None is treated as False but provides a warning if there are
@@ -976,7 +977,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default
         None
     batch_size : int | None, optional
-        Number of models to process in each batch. Specify batch_size fi your models do
+        Number of models to process in each batch. Specify batch_size if your models do
         not fit into memory. By default None
     random_state : int | None, optional
         Random seed for reproducibility, by default None
@@ -984,6 +985,40 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         Whether to print progress information, by default False
     **kwargs
         Additional keyword arguments passed to ``model`` initialisation
+
+    Attributes
+    ----------
+    pred_ : pd.Series
+        Focal predictions for each location.
+    resid_ : pd.Series
+        Residuals for each location (y - pred_).
+    RSS_ : pd.Series
+        Residual sum of squares for each location.
+    TSS_ : pd.Series
+        Total sum of squares for each location.
+    y_bar_ : pd.Series
+        Weighted mean of y for each location.
+    local_r2_ : pd.Series
+        Local R2 for each location.
+    focal_r2_ : float
+        Global R2 for focal predictions.
+    score_ : float
+        Alias for focal_r2_ (global R2 for focal predictions).
+    focal_adj_r2_ : float
+        Adjusted R2 for focal predictions.
+    hat_values_ : pd.Series
+        Hat values for each location (diagonal elements of hat matrix).
+    effective_df_ : float
+        Effective degrees of freedom (sum of hat values).
+    log_likelihood_ : float
+        Global log likelihood of the model.
+    aic_ : float
+        Akaike information criterion of the model.
+    aicc_ : float
+        Corrected Akaike information criterion to account for model
+        complexity (smaller bandwidths).
+    bic_ : float
+        Bayesian information criterion.
     """
 
     def fit(
