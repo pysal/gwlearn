@@ -9,7 +9,7 @@ from libpysal import graph
 from sklearn import metrics
 from sklearn.linear_model import LinearRegression, LogisticRegression
 
-from .base import BaseClassifier, BaseRegressor, _scores
+from .base import BaseClassifier, BaseRegressor
 
 
 class GWLogisticRegression(BaseClassifier):
@@ -42,7 +42,10 @@ class GWLogisticRegression(BaseClassifier):
         Determines if the global baseline model shall be fitted alognside
         the geographically weighted, by default True
     measure_performance : bool, optional
-        Calculate performance metrics for the model, by default True
+        Calculate performance metrics for the model. If True, measures accurace score,
+        precision, recall, balanced accuracy, and F1 scores. A subset of these can be
+        specified by passing a list of strings.
+        By default True
     strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``,
         by default False. None is treated as False but provides a warning if there are
@@ -145,6 +148,9 @@ class GWLogisticRegression(BaseClassifier):
     local_pooled_f1_weighted_ : pd.Series
         Local F1 scores with weighted averaging for each location based on all samples
         used in each local model
+    prediction_rate_ : float
+        Proportion of models that are fitted, where the rest are skipped due to not
+        fulfilling ``min_proportion``.
     """
 
     def __init__(
@@ -166,7 +172,7 @@ class GWLogisticRegression(BaseClassifier):
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
-        measure_performance: bool = True,
+        measure_performance: bool | list = True,
         strict: bool = False,
         keep_models: bool = False,
         temp_folder: str | None = None,
@@ -212,6 +218,18 @@ class GWLogisticRegression(BaseClassifier):
         )
 
         if self.measure_performance:
+            if self.measure_performance is True:
+                metrics_to_measure = [
+                    "accuracy",
+                    "precision",
+                    "recall",
+                    "balanced_accuracy",
+                    "f1_macro",
+                    "f1_micro",
+                    "f1_weighted",
+                ]
+            else:
+                metrics_to_measure = self.measure_performance
             if self.verbose:
                 print(f"{(time() - self._start):.2f}s: Measuring pooled performance")
 
@@ -224,25 +242,38 @@ class GWLogisticRegression(BaseClassifier):
             all_pred = np.concatenate(pred)
 
             # global pred scores
-            self.pooled_score_ = metrics.accuracy_score(all_true, all_pred)
-            self.pooled_precision_ = metrics.precision_score(
-                all_true, all_pred, zero_division=0
-            )
-            self.pooled_recall_ = metrics.recall_score(
-                all_true, all_pred, zero_division=0
-            )
-            self.pred_f1_macropooled_balanced_accuracy_ = (
-                metrics.balanced_accuracy_score(all_true, all_pred)
-            )
-            self.pooled_f1_macro_ = metrics.f1_score(
-                all_true, all_pred, average="macro", zero_division=0
-            )
-            self.pooled_f1_micro_ = metrics.f1_score(
-                all_true, all_pred, average="micro", zero_division=0
-            )
-            self.pooled_f1_weighted_ = metrics.f1_score(
-                all_true, all_pred, average="weighted", zero_division=0
-            )
+            if "accuracy" in metrics_to_measure:
+                self.pooled_score_ = metrics.accuracy_score(all_true, all_pred)
+
+            if "precision" in metrics_to_measure:
+                self.pooled_precision_ = metrics.precision_score(
+                    all_true, all_pred, zero_division=0
+                )
+
+            if "recall" in metrics_to_measure:
+                self.pooled_recall_ = metrics.recall_score(
+                    all_true, all_pred, zero_division=0
+                )
+
+            if "balanced_accuracy" in metrics_to_measure:
+                self.pred_f1_macropooled_balanced_accuracy_ = (
+                    metrics.balanced_accuracy_score(all_true, all_pred)
+                )
+
+            if "f1_macro" in metrics_to_measure:
+                self.pooled_f1_macro_ = metrics.f1_score(
+                    all_true, all_pred, average="macro", zero_division=0
+                )
+
+            if "f1_micro" in metrics_to_measure:
+                self.pooled_f1_micro_ = metrics.f1_score(
+                    all_true, all_pred, average="micro", zero_division=0
+                )
+
+            if "f1_weighted" in metrics_to_measure:
+                self.pooled_f1_weighted_ = metrics.f1_score(
+                    all_true, all_pred, average="weighted", zero_division=0
+                )
 
             if self.verbose:
                 print(
@@ -252,27 +283,28 @@ class GWLogisticRegression(BaseClassifier):
             # local pred scores
             local_score = pd.DataFrame(
                 [
-                    _scores(y_true, y_false)
+                    self._scores(y_true, y_false)
                     for y_true, y_false in zip(true, pred, strict=True)
                 ],
                 index=self._names,
-                columns=[
-                    "pred_score",
-                    "pred_precision",
-                    "pred_recall",
-                    "pred_balanced_accuracy",
-                    "pred_F1_macro",
-                    "pred_F1_micro",
-                    "pred_F1_weighted",
-                ],
+                columns=["pred_" + c for c in metrics_to_measure],
             )
-            self.local_pooled_score_ = local_score["pred_score"]
-            self.local_pooled_precision_ = local_score["pred_precision"]
-            self.local_pooled_recall_ = local_score["pred_recall"]
-            self.local_pooled_balanced_accuracy_ = local_score["pred_balanced_accuracy"]
-            self.local_pooled_f1_macro_ = local_score["pred_F1_macro"]
-            self.local_pooled_f1_micro_ = local_score["pred_F1_micro"]
-            self.local_pooled_f1_weighted_ = local_score["pred_F1_weighted"]
+            if "accuracy" in metrics_to_measure:
+                self.local_pooled_score_ = local_score["pred_accuracy"]
+            if "precision" in metrics_to_measure:
+                self.local_pooled_precision_ = local_score["pred_precision"]
+            if "recall" in metrics_to_measure:
+                self.local_pooled_recall_ = local_score["pred_recall"]
+            if "balanced_accuracy" in metrics_to_measure:
+                self.local_pooled_balanced_accuracy_ = local_score[
+                    "pred_balanced_accuracy"
+                ]
+            if "f1_macro" in metrics_to_measure:
+                self.local_pooled_f1_macro_ = local_score["pred_f1_macro"]
+            if "f1_micro" in metrics_to_measure:
+                self.local_pooled_f1_micro_ = local_score["pred_f1_micro"]
+            if "f1_weighted" in metrics_to_measure:
+                self.local_pooled_f1_weighted_ = local_score["pred_f1_weighted"]
 
             if self.verbose:
                 print(f"{(time() - self._start):.2f}s: Finished")

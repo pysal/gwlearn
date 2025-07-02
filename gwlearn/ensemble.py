@@ -10,7 +10,7 @@ from libpysal import graph
 from sklearn import metrics
 from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 
-from .base import BaseClassifier, _scores
+from .base import BaseClassifier
 
 
 class GWRandomForestClassifier(BaseClassifier):
@@ -46,7 +46,8 @@ class GWRandomForestClassifier(BaseClassifier):
         Calculate performance metrics for the model. If True, measures accurace score,
         precision, recall, balanced accuracy, and F1 scores (based on focal prediction,
         pooled local out-of-bag predictions and individual local out-of-bag
-        predictions). By default True
+        predictions). A subset of these can be specified by passing a list of strings.
+        By default True
     strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``, by
         default False. None is treated as False but provides a warning if there are
@@ -139,6 +140,9 @@ class GWRandomForestClassifier(BaseClassifier):
         Out-of-bag F1 score with weighted averaging for each local model
     feature_importances_ : pd.DataFrame
         Feature importance values for each local model
+    prediction_rate_ : float
+        Proportion of models that are fitted, where the rest are skipped due to not
+        fulfilling ``min_proportion``.
     """
 
     def __init__(
@@ -161,7 +165,7 @@ class GWRandomForestClassifier(BaseClassifier):
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
-        measure_performance: bool = True,
+        measure_performance: bool | list = True,
         strict: bool | None = False,
         keep_models: bool | str | Path = False,
         temp_folder: str | None = None,
@@ -219,8 +223,21 @@ class GWRandomForestClassifier(BaseClassifier):
         super().fit(X=X, y=y, geometry=geometry)
 
         if self.measure_performance:
+            if self.measure_performance is True:
+                metrics_to_measure = [
+                    "accuracy",
+                    "precision",
+                    "recall",
+                    "balanced_accuracy",
+                    "f1_macro",
+                    "f1_micro",
+                    "f1_weighted",
+                ]
+            else:
+                metrics_to_measure = self.measure_performance
             if self.verbose:
                 print(f"{(time() - self._start):.2f}s: Measuring pooled performance")
+
             # OOB accuracy for RF can be measured both local and global
             true, pred = zip(*self._score_data, strict=False)
             del self._score_data
@@ -229,23 +246,38 @@ class GWRandomForestClassifier(BaseClassifier):
             all_pred = np.concatenate(pred)
 
             # global OOB scores
-            self.oob_score_ = metrics.accuracy_score(all_true, all_pred)
-            self.oob_precision_ = metrics.precision_score(
-                all_true, all_pred, zero_division=0
-            )
-            self.oob_recall_ = metrics.recall_score(all_true, all_pred, zero_division=0)
-            self.oob_balanced_accuracy_ = metrics.balanced_accuracy_score(
-                all_true, all_pred
-            )
-            self.oob_f1_macro_ = metrics.f1_score(
-                all_true, all_pred, average="macro", zero_division=0
-            )
-            self.oob_f1_micro_ = metrics.f1_score(
-                all_true, all_pred, average="micro", zero_division=0
-            )
-            self.oob_f1_weighted_ = metrics.f1_score(
-                all_true, all_pred, average="weighted", zero_division=0
-            )
+            if "accuracy" in metrics_to_measure:
+                self.oob_score_ = metrics.accuracy_score(all_true, all_pred)
+
+            if "precision" in metrics_to_measure:
+                self.oob_precision_ = metrics.precision_score(
+                    all_true, all_pred, zero_division=0
+                )
+
+            if "recall" in metrics_to_measure:
+                self.oob_recall_ = metrics.recall_score(
+                    all_true, all_pred, zero_division=0
+                )
+
+            if "balanced_accuracy" in metrics_to_measure:
+                self.oob_balanced_accuracy_ = metrics.balanced_accuracy_score(
+                    all_true, all_pred
+                )
+
+            if "f1_macro" in metrics_to_measure:
+                self.oob_f1_macro_ = metrics.f1_score(
+                    all_true, all_pred, average="macro", zero_division=0
+                )
+
+            if "f1_micro" in metrics_to_measure:
+                self.oob_f1_micro_ = metrics.f1_score(
+                    all_true, all_pred, average="micro", zero_division=0
+                )
+
+            if "f1_weighted" in metrics_to_measure:
+                self.oob_f1_weighted_ = metrics.f1_score(
+                    all_true, all_pred, average="weighted", zero_division=0
+                )
 
             if self.verbose:
                 print(
@@ -255,27 +287,26 @@ class GWRandomForestClassifier(BaseClassifier):
             # local OOB scores
             local_score = pd.DataFrame(
                 [
-                    _scores(y_true, y_false)
+                    self._scores(y_true, y_false)
                     for y_true, y_false in zip(true, pred, strict=True)
                 ],
                 index=self._names,
-                columns=[
-                    "oob_score",
-                    "oob_precision",
-                    "oob_recall",
-                    "oob_balanced_accuracy",
-                    "oob_F1_macro",
-                    "oob_F1_micro",
-                    "oob_F1_weighted",
-                ],
+                columns=["oob_" + c for c in metrics_to_measure],
             )
-            self.local_oob_score_ = local_score["oob_score"]
-            self.local_oob_precision_ = local_score["oob_precision"]
-            self.local_oob_recall_ = local_score["oob_recall"]
-            self.local_oob_balanced_accuracy_ = local_score["oob_balanced_accuracy"]
-            self.local_oob_f1_macro_ = local_score["oob_F1_macro"]
-            self.local_oob_f1_micro_ = local_score["oob_F1_micro"]
-            self.local_oob_f1_weighted_ = local_score["oob_F1_weighted"]
+            if "accuracy" in metrics_to_measure:
+                self.local_oob_score_ = local_score["oob_accuracy"]
+            if "precision" in metrics_to_measure:
+                self.local_oob_precision_ = local_score["oob_precision"]
+            if "recall" in metrics_to_measure:
+                self.local_oob_recall_ = local_score["oob_recall"]
+            if "balanced_accuracy" in metrics_to_measure:
+                self.local_oob_balanced_accuracy_ = local_score["oob_balanced_accuracy"]
+            if "f1_macro" in metrics_to_measure:
+                self.local_oob_f1_macro_ = local_score["oob_f1_macro"]
+            if "f1_micro" in metrics_to_measure:
+                self.local_oob_f1_micro_ = local_score["oob_f1_micro"]
+            if "f1_weighted" in metrics_to_measure:
+                self.local_oob_f1_weighted_ = local_score["oob_f1_weighted"]
 
         # feature importances
         self.feature_importances_ = pd.DataFrame(
@@ -321,7 +352,9 @@ class GWGradientBoostingClassifier(BaseClassifier):
         Determines if the global baseline model shall be fitted alognside
         the geographically weighted, by default True
     measure_performance : bool, optional
-        Calculate performance metrics for the model, by default True
+        Calculate performance metrics for the model. If True, measures accurace score,
+        precision, recall, balanced accuracy, and F1 scores. A subset of these can
+        be specified by passing a list of strings. By default True
     strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``,
         by default False. None is treated as False but provides a warning if there are
@@ -386,6 +419,9 @@ class GWGradientBoostingClassifier(BaseClassifier):
         Bayesian information criterion
     feature_importances_ : pd.DataFrame
         Feature importance values for each local model
+    prediction_rate_ : float
+        Proportion of models that are fitted, where the rest are skipped due to not
+        fulfilling ``min_proportion``.
     """
 
     def __init__(
@@ -407,7 +443,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
-        measure_performance: bool = True,
+        measure_performance: bool | list = True,
         strict: bool = False,
         keep_models: bool = False,
         temp_folder: str | None = None,
