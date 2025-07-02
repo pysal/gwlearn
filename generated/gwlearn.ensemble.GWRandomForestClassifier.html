@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>gwlearn.ensemble.GWRandomForestClassifier &#8212; gwlearn 0.1.dev61+g8c13b44 documentation</title>
+    <title>gwlearn.ensemble.GWRandomForestClassifier &#8212; gwlearn 0.1.dev62+g557a531 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=8e1109dc"></script>
+    <script src="../_static/documentation_options.js?v=d5423b81"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev61+g8c13b44 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev62+g557a531 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -373,7 +373,8 @@ geographically weighted, by default True</p>
 <dt><strong>measure_performance</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Calculate performance metrics for the model. If True, measures accurace score,
 precision, recall, balanced accuracy, and F1 scores (based on focal prediction,
 pooled local out-of-bag predictions and individual local out-of-bag
-predictions). By default True</p>
+predictions). A subset of these can be specified by passing a list of strings.
+By default True</p>
 </dd>
 <dt><strong>strict</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Do not fit any models if at least one neighborhood has invariant <code class="docutils literal notranslate"><span class="pre">y</span></code>, by
 default False. None is treated as False but provides a warning if there are
@@ -467,6 +468,9 @@ complexity (smaller bandwidths)</p>
 <dt><strong>local_oob_f1_weighted_</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pd.Series</span></code></span></dt><dd><p>Out-of-bag F1 score with weighted averaging for each local model</p>
 </dd>
 <dt><strong>feature_importances_</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pd.DataFrame</span></code></span></dt><dd><p>Feature importance values for each local model</p>
+</dd>
+<dt><strong>prediction_rate_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Proportion of models that are fitted, where the rest are skipped due to not
+fulfilling <code class="docutils literal notranslate"><span class="pre">min_proportion</span></code>.</p>
 </dd>
 </dl>
 </dd>
