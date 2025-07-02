@@ -11,7 +11,7 @@ class BandwidthSearch:
     """Optimal bandwidth search for geographically-weighted models
 
     Reports information criteria and (optionally) other scores from multiple models with
-    varying bandwidth. When using golden section search, minimises one of
+    varying bandwidth. When using golden section search, minimizes one of
     AIC, AICc, BIC based on prediction probability on focal geometries.
 
     When using classification models with a defined ``min_proportion``, keep in mind
@@ -21,8 +21,8 @@ class BandwidthSearch:
 
     Parameters
     ----------
-    model :  model class
-        Scikit-learn model class
+    model : model class
+        Scikit-learn model class or compatible estimator.
     fixed : bool, optional
         True for distance based bandwidth and False for adaptive (nearest neighbor)
         bandwidth, by default False
@@ -31,19 +31,18 @@ class BandwidthSearch:
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors,
         by default ``-1``
-    search_method : str, optional
+    search_method : {"golden_section", "interval"}, optional
         Method used to search for optimal bandwidth. When using ``"golden_section"``,
-        the Golden section optimisation is used to find the optimal bandwidth while
+        the Golden section optimization is used to find the optimal bandwidth while
         attempting to minimize ``criterion``. When using ``"interval"``, fits all models
         within the specified bandwidths at a set interval without any attempt to
         optimize the selection. By default "golden_section".
-    criterion : str, optional
-        Information criterion used to select optimal bandwidth. Could be one of
-        ``{"aicc", "aic", "bic"}``, by default "aicc"
-    metrics : list, optional
+    criterion : {"aicc", "aic", "bic"}, optional
+        Information criterion used to select optimal bandwidth. By default "aicc".
+    metrics : list[str] | None, optional
         List of additional metrics beyond ``criterion`` to be reported. Has to be
         a metric supported by ``model``, passable to ``measure_performance`` argument
-        of model's intialization or 'prediction_rate'.
+        of model's initialization or 'prediction_rate'. By default None.
     min_bandwidth : int | float | None, optional
         Minimum bandwidth to consider, by default None
     max_bandwidth : int | float | None, optional
@@ -58,6 +57,15 @@ class BandwidthSearch:
         Verbosity level, by default False
     **kwargs
         Additional keyword arguments passed to ``model`` initialization
+
+    Attributes
+    ----------
+    scores_ : pd.Series
+        Series of criterion scores for each bandwidth tested (index is bandwidth).
+    metrics_ : pd.DataFrame
+        DataFrame of additional metrics for each bandwidth tested.
+    optimal_bandwidth_ : int | float
+        The optimal bandwidth found by the search method (minimizing the criterion).
     """
 
     def __init__(
