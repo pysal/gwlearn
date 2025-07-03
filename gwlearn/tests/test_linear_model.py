@@ -43,6 +43,7 @@ def test_gwlogistic_fit_basic(sample_data):  # noqa: F811
     X, y, geometry = sample_data
 
     model = GWLogisticRegression(
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -52,7 +53,7 @@ def test_gwlogistic_fit_basic(sample_data):  # noqa: F811
         include_focal=False,
     )
 
-    fitted_model = model.fit(X, y, geometry)
+    fitted_model = model.fit(X, y)
 
     # Test that fitting works and returns self
     assert fitted_model is model
@@ -87,6 +88,7 @@ def test_gwlogistic_coefficients_structure(sample_data):  # noqa: F811
     X, y, geometry = sample_data
 
     model = GWLogisticRegression(
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         keep_models=True,
@@ -95,7 +97,7 @@ def test_gwlogistic_coefficients_structure(sample_data):  # noqa: F811
         max_iter=500,
     )
 
-    model.fit(X, y, geometry)
+    model.fit(X, y)
 
     # Check that coefficient names match feature names
     assert all(col in model.local_coef_.columns for col in X.columns)
@@ -124,6 +126,7 @@ def test_gwlogistic_prediction_metrics(sample_data):  # noqa: F811
     X, y, geometry = sample_data
 
     model = GWLogisticRegression(
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -132,7 +135,7 @@ def test_gwlogistic_prediction_metrics(sample_data):  # noqa: F811
         include_focal=False,
     )
 
-    model.fit(X, y, geometry)
+    model.fit(X, y)
 
     # Check the prediction metrics attributes
     assert hasattr(model, "pooled_score_")
@@ -156,6 +159,7 @@ def test_gwlogistic_local_prediction_metrics(sample_data):  # noqa: F811
     X, y, geometry = sample_data
 
     model = GWLogisticRegression(
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -164,7 +168,7 @@ def test_gwlogistic_local_prediction_metrics(sample_data):  # noqa: F811
         include_focal=False,
     )
 
-    model.fit(X, y, geometry)
+    model.fit(X, y)
 
     # Check local prediction metrics attributes
     assert hasattr(model, "local_pooled_score_")
@@ -215,13 +219,14 @@ def test_gwlinear_fit_basic(sample_regression_data):
     X, y, geometry = sample_regression_data
 
     model = GWLinearRegression(
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         n_jobs=1,
         include_focal=False,
     )
 
-    fitted_model = model.fit(X, y, geometry)
+    fitted_model = model.fit(X, y)
 
     # Test that fitting works and returns self
     assert fitted_model is model
@@ -335,12 +340,16 @@ def test_against_mgwr():
     y = gdf["FH90"]
 
     gwlr = GWLinearRegression(
-        bandwidth=250, fixed=False, n_jobs=1, keep_models=False, kernel="bisquare"
+        bandwidth=250,
+        fixed=False,
+        n_jobs=1,
+        keep_models=False,
+        kernel="bisquare",
+        geometry=gdf.geometry,
     )
     gwlr.fit(
         gdf.iloc[:, 9:15],
         y,
-        gdf.geometry,
     )
 
     gwr = GWR(

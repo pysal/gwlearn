@@ -160,6 +160,7 @@ def test_fit_basic_functionality(sample_data):
     # Create classifier with default params
     clf = BaseClassifier(
         RandomForestClassifier,
+        geometry=geometry,
         bandwidth=10,
         fixed=False,
         random_state=42,  # For reproducibility
@@ -167,7 +168,7 @@ def test_fit_basic_functionality(sample_data):
     )
 
     # Fit the model
-    fitted_clf = clf.fit(X, y, geometry)
+    fitted_clf = clf.fit(X, y)
 
     # Test that fitting works and returns self
     assert fitted_clf is clf
@@ -190,6 +191,7 @@ def test_fit_with_keep_models(sample_data):
 
     clf = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=10,
         fixed=False,
         keep_models=True,
@@ -199,7 +201,7 @@ def test_fit_with_keep_models(sample_data):
         n_jobs=1,
     )
 
-    clf.fit(X, y, geometry)
+    clf.fit(X, y)
 
     # Check that local models were kept
     assert hasattr(clf, "_local_models")
@@ -223,6 +225,7 @@ def test_fit_with_keep_models_path(sample_data):
         # Create a classifier with keep_models as a path
         clf = BaseClassifier(
             RandomForestClassifier,
+            geometry=geometry,
             bandwidth=10,
             fixed=False,
             keep_models=temp_dir,
@@ -231,7 +234,7 @@ def test_fit_with_keep_models_path(sample_data):
             n_jobs=1,
         )
 
-        clf.fit(X, y, geometry)
+        clf.fit(X, y)
 
         # Check that models were serialized to disk
         model_files = list(Path(temp_dir).glob("*"))
@@ -245,6 +248,7 @@ def test_fit_different_kernels(sample_data, kernel):
 
     clf = BaseClassifier(
         RandomForestClassifier,
+        geometry=geometry,
         bandwidth=10,
         fixed=False,
         kernel=kernel,
@@ -252,7 +256,7 @@ def test_fit_different_kernels(sample_data, kernel):
         strict=False,  # To avoid warnings on invariance
     )
 
-    clf.fit(X, y, geometry)
+    clf.fit(X, y)
 
     # Check that the model was fit successfully
     assert hasattr(clf, "score_")
@@ -266,13 +270,14 @@ def test_fit_fixed_bandwidth(sample_data):
     # Use a small k for faster testing
     clf = BaseClassifier(
         RandomForestClassifier,
+        geometry=geometry,
         bandwidth=100_000,  # Use 10 nearest neighbors
         fixed=True,  # Adaptive bandwidth
         random_state=42,
         strict=False,  # To avoid warnings on invariance
     )
 
-    clf.fit(X, y, geometry)
+    clf.fit(X, y)
 
     # Check that the model was fit successfully
     assert hasattr(clf, "score_")
@@ -285,6 +290,7 @@ def test_fit_without_global_model(sample_data):
 
     clf = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=150_000,
         fixed=True,
         fit_global_model=False,
@@ -292,7 +298,7 @@ def test_fit_without_global_model(sample_data):
         strict=False,  # To avoid warnings on invariance
     )
 
-    clf.fit(X, y, geometry)
+    clf.fit(X, y)
 
     # Check that global model was not fitted
     assert not hasattr(clf, "global_model")
@@ -307,6 +313,7 @@ def test_fit_without_performance_metrics(sample_data):
 
     clf = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         measure_performance=False,
@@ -314,7 +321,7 @@ def test_fit_without_performance_metrics(sample_data):
         strict=False,  # To avoid warnings on invariance
     )
 
-    clf.fit(X, y, geometry)
+    clf.fit(X, y)
 
     # Check that performance metrics were not computed
     assert not hasattr(clf, "score_")
@@ -330,6 +337,7 @@ def test_fit_with_strict_option(sample_data):
 
     clf = BaseClassifier(
         RandomForestClassifier,
+        geometry=geometry,
         bandwidth=X.shape[0] - 1,  # global bandwidth
         fixed=False,
         strict=True,  # Raise error if invariant
@@ -338,10 +346,11 @@ def test_fit_with_strict_option(sample_data):
 
     # The fit should complete without error because even with large bandwidth,
     # the target is likely varied enough
-    clf.fit(X, y, geometry)
+    clf.fit(X, y)
 
     clf = BaseClassifier(
         RandomForestClassifier,
+        geometry=geometry,
         bandwidth=5,  # known to produce invariant subsets
         fixed=False,
         strict=True,  # Raise error if invariant
@@ -350,11 +359,12 @@ def test_fit_with_strict_option(sample_data):
 
     # This should raise a ValueError due to invariant y
     with pytest.raises(ValueError, match="y at locations .* is invariant"):
-        clf.fit(X, y, geometry)
+        clf.fit(X, y)
 
     # But with strict=False, it should just warn
     clf = BaseClassifier(
         RandomForestClassifier,
+        geometry=geometry,
         bandwidth=5,
         fixed=False,
         strict=None,  # Just warn if invariant
@@ -363,7 +373,7 @@ def test_fit_with_strict_option(sample_data):
 
     # Should complete with a warning
     with pytest.warns(UserWarning, match="y at locations .* is invariant"):
-        clf.fit(X, y, geometry)
+        clf.fit(X, y)
 
 
 def test_non_point_geometry_raises_error(sample_data):
@@ -376,6 +386,7 @@ def test_non_point_geometry_raises_error(sample_data):
 
     clf = BaseClassifier(
         LogisticRegression,
+        geometry=polygon_geometry,
         bandwidth=50000,
         fixed=True,
         strict=False,  # To avoid warnings on invariance
@@ -383,7 +394,7 @@ def test_non_point_geometry_raises_error(sample_data):
 
     # This should raise a ValueError due to non-point geometries
     with pytest.raises(ValueError, match="Unsupported geometry type"):
-        clf.fit(X, y, polygon_geometry)
+        clf.fit(X, y)
 
 
 def test_fit_with_batch_processing(sample_data):
@@ -394,6 +405,7 @@ def test_fit_with_batch_processing(sample_data):
     batch_size = 5
     clf = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         batch_size=batch_size,  # Process in small batches
@@ -405,7 +417,7 @@ def test_fit_with_batch_processing(sample_data):
     # Capture print output to verify batch processing messages
     f = io.StringIO()
     with redirect_stdout(f):
-        clf.fit(X, y, geometry)
+        clf.fit(X, y)
 
     # Get the captured output
     output = f.getvalue()
@@ -421,9 +433,13 @@ def test_fit_with_batch_processing(sample_data):
 
     # Compare with a model without batching to ensure results are consistent
     clf_no_batch = BaseClassifier(
-        LogisticRegression, bandwidth=150000, fixed=True, random_state=42
+        LogisticRegression,
+        geometry=geometry,
+        bandwidth=150000,
+        fixed=True,
+        random_state=42,
     )
-    clf_no_batch.fit(X, y, geometry)
+    clf_no_batch.fit(X, y)
 
     # Results should be similar regardless of batching
     pd.testing.assert_frame_equal(
@@ -438,6 +454,7 @@ def test_fit_n_jobs_consistency(sample_data):
     # Create a classifier with n_jobs=1 (sequential)
     clf_sequential = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         n_jobs=1,
@@ -445,11 +462,12 @@ def test_fit_n_jobs_consistency(sample_data):
         strict=False,  # To avoid warnings on invariance
         max_iter=500,
     )
-    clf_sequential.fit(X, y, geometry)
+    clf_sequential.fit(X, y)
 
     # Create a classifier with n_jobs=-1 (parallel)
     clf_parallel = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         n_jobs=-1,
@@ -457,7 +475,7 @@ def test_fit_n_jobs_consistency(sample_data):
         strict=False,  # To avoid warnings on invariance
         max_iter=500,
     )
-    clf_parallel.fit(X, y, geometry)
+    clf_parallel.fit(X, y)
 
     # Check that the results are the same regardless of parallelization
     pd.testing.assert_frame_equal(
@@ -485,6 +503,7 @@ def test_predict_proba_basic(sample_data):
     # Create and fit classifier with keep_models=True (required for prediction)
     clf = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         keep_models=True,
@@ -492,7 +511,7 @@ def test_predict_proba_basic(sample_data):
         strict=False,  # To avoid warnings on invariance
         max_iter=500,
     )
-    clf.fit(X, y, geometry)
+    clf.fit(X, y)
 
     # Predict probabilities for first 5 samples
     proba = clf.predict_proba(X.iloc[:5], geometry.iloc[:5])
@@ -515,6 +534,7 @@ def test_predict_proba_adaptive(sample_data):
     # Create and fit classifier with keep_models=True (required for prediction)
     clf = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=7,
         fixed=False,
         keep_models=True,
@@ -522,7 +542,7 @@ def test_predict_proba_adaptive(sample_data):
         strict=False,  # To avoid warnings on invariance
         max_iter=500,
     )
-    clf.fit(X, y, geometry)
+    clf.fit(X, y)
 
     # Predict probabilities for first 5 samples
     proba = clf.predict_proba(X.iloc[:5], geometry.iloc[:5])
@@ -545,13 +565,14 @@ def test_predict_basic(sample_data):
     # Create and fit classifier with keep_models=True (required for prediction)
     clf = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         keep_models=True,
         random_state=42,
         strict=False,  # To avoid warnings on invariance
     )
-    clf.fit(X, y, geometry)
+    clf.fit(X, y)
 
     # Predict classes for first 5 samples
     pred = clf.predict(X.iloc[:5], geometry.iloc[:5])
@@ -572,13 +593,14 @@ def test_predict_with_models_on_disk(sample_data):
         # Create and fit classifier with keep_models as a path
         clf = BaseClassifier(
             LogisticRegression,
+            geometry=geometry,
             bandwidth=150000,
             fixed=True,
             keep_models=temp_dir,
             random_state=42,
             strict=False,  # To avoid warnings on invariance
         )
-        clf.fit(X, y, geometry)
+        clf.fit(X, y)
 
         # Predict probabilities
         proba = clf.predict_proba(X.iloc[:5], geometry.iloc[:5])
@@ -604,13 +626,14 @@ def test_predict_invalid_geometry(sample_data):
     # Create and fit classifier with point geometries
     clf = BaseClassifier(
         LogisticRegression,
+        geometry=sample_data[2],  # Use point geometries for fitting
         bandwidth=150000,
         fixed=True,
         keep_models=True,
         random_state=42,
         strict=False,  # To avoid warnings on invariance
     )
-    clf.fit(X, y, sample_data[2])  # Use point geometries for fitting
+    clf.fit(X, y)
 
     # Attempt to predict with polygon geometries
     with pytest.raises(ValueError, match="Unsupported geometry type"):
@@ -624,6 +647,7 @@ def test_predict_comparison_with_focal_proba(sample_data):
     # Create and fit classifier
     clf = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         keep_models=True,
@@ -631,7 +655,7 @@ def test_predict_comparison_with_focal_proba(sample_data):
         strict=False,  # To avoid warnings on invariance
         max_iter=500,
     )
-    clf.fit(X, y, geometry)
+    clf.fit(X, y)
 
     # Get predictions for the same data used for training
     predicted_proba = clf.predict_proba(X, geometry)
@@ -655,6 +679,7 @@ def test_binary_target_zero_one(sample_data):
 
     clf = BaseClassifier(
         RandomForestClassifier,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -662,7 +687,7 @@ def test_binary_target_zero_one(sample_data):
     )
 
     # Should run without errors
-    fitted_clf = clf.fit(X, y_01, geometry)
+    fitted_clf = clf.fit(X, y_01)
     assert fitted_clf is clf
 
     # Check that performance metrics were calculated
@@ -682,6 +707,7 @@ def test_non_binary_target_raises_error(sample_data):
 
     clf = BaseClassifier(
         RandomForestClassifier,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -690,7 +716,7 @@ def test_non_binary_target_raises_error(sample_data):
 
     # This should raise a ValueError due to non-binary target
     with pytest.raises(ValueError, match="Only binary dependent variable is supported"):
-        clf.fit(X, y_non_binary, geometry)
+        clf.fit(X, y_non_binary)
 
 
 def test_binary_with_string_values_raises_error(sample_data):
@@ -702,6 +728,7 @@ def test_binary_with_string_values_raises_error(sample_data):
 
     clf = BaseClassifier(
         RandomForestClassifier,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -710,7 +737,7 @@ def test_binary_with_string_values_raises_error(sample_data):
 
     # This should raise a ValueError due to string values
     with pytest.raises(ValueError, match="Only binary dependent variable is supported"):
-        clf.fit(X, y_str, geometry)
+        clf.fit(X, y_str)
 
 
 @pytest.mark.skipif(not HAS_IMBLEARN, reason="requires imblearn")
@@ -721,6 +748,7 @@ def test_undersample_boolean(sample_data):
     # Create a classifier with undersample enabled
     clf = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         undersample=True,
@@ -730,7 +758,7 @@ def test_undersample_boolean(sample_data):
     )
 
     # Fit should complete successfully
-    clf.fit(X, y, geometry)
+    clf.fit(X, y)
 
     # Check that the model was fit successfully
     assert hasattr(clf, "score_")
@@ -745,6 +773,7 @@ def test_undersample_ratio(sample_data):
     # Create a classifier with undersample ratio
     clf = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         undersample=0.9,
@@ -754,7 +783,7 @@ def test_undersample_ratio(sample_data):
     )
 
     # Fit should complete successfully
-    clf.fit(X, y, geometry)
+    clf.fit(X, y)
 
     # Check that the model was fit successfully
     assert hasattr(clf, "score_")
@@ -768,21 +797,23 @@ def test_random_state_consistency(sample_data):
     # Create two classifiers with same random_state
     clf1 = BaseClassifier(
         RandomForestClassifier,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
         strict=False,
     )
-    clf1.fit(X, y, geometry)
+    clf1.fit(X, y)
 
     clf2 = BaseClassifier(
         RandomForestClassifier,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
         strict=False,
     )
-    clf2.fit(X, y, geometry)
+    clf2.fit(X, y)
 
     # Results should be identical
     pd.testing.assert_frame_equal(clf1.proba_, clf2.proba_)
@@ -796,21 +827,23 @@ def test_different_random_states(sample_data):
     # Create two classifiers with different random_states
     clf1 = BaseClassifier(
         RandomForestClassifier,
+        geometry=geometry,
         bandwidth=10,
         fixed=False,
         random_state=42,
         strict=False,
     )
-    clf1.fit(X, y, geometry)
+    clf1.fit(X, y)
 
     clf2 = BaseClassifier(
         RandomForestClassifier,
+        geometry=geometry,
         bandwidth=10,
         fixed=False,
         random_state=99,
         strict=False,
     )
-    clf2.fit(X, y, geometry)
+    clf2.fit(X, y)
 
     # Results should be different
     assert not clf1.proba_.equals(clf2.proba_)
@@ -824,6 +857,7 @@ def test_random_state_with_undersample(sample_data):
     # Create two classifiers with same random_state and undersample
     clf1 = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         undersample=True,
@@ -831,10 +865,11 @@ def test_random_state_with_undersample(sample_data):
         strict=False,
         max_iter=500,
     )
-    clf1.fit(X, y, geometry)
+    clf1.fit(X, y)
 
     clf2 = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         undersample=True,
@@ -842,7 +877,7 @@ def test_random_state_with_undersample(sample_data):
         strict=False,
         max_iter=500,
     )
-    clf2.fit(X, y, geometry)
+    clf2.fit(X, y)
 
     # Results should be identical
     pd.testing.assert_frame_equal(clf1.proba_, clf2.proba_)
@@ -885,12 +920,13 @@ def test_repr_html_with_fitted_model(sample_data):
 
     clf = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
         strict=False,
     )
-    clf.fit(X, y, geometry)
+    clf.fit(X, y)
 
     html_str = clf._repr_html_()
 
@@ -906,6 +942,7 @@ def test_repr_after_fitting(sample_data):
 
     clf = BaseClassifier(
         LogisticRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -918,7 +955,7 @@ def test_repr_after_fitting(sample_data):
     assert "BaseClassifier" in repr_before
 
     # Fit the model
-    clf.fit(X, y, geometry)
+    clf.fit(X, y)
 
     # Test repr after fitting (should still work)
     repr_after = repr(clf)
@@ -935,6 +972,7 @@ def test_fit_focal_inclusion(sample_data):
     # Create classifier with default params
     no_focal = BaseClassifier(
         RandomForestClassifier,
+        geometry=geometry,
         bandwidth=10,
         fixed=False,
         include_focal=False,
@@ -943,11 +981,12 @@ def test_fit_focal_inclusion(sample_data):
     )
 
     # Fit the model
-    no_focal = no_focal.fit(X, y, geometry)
+    no_focal = no_focal.fit(X, y)
 
     # Create classifier with default params
     focal = BaseClassifier(
         RandomForestClassifier,
+        geometry=geometry,
         bandwidth=10,
         fixed=False,
         include_focal=True,
@@ -956,7 +995,7 @@ def test_fit_focal_inclusion(sample_data):
     )
 
     # Fit the model
-    focal = focal.fit(X, y, geometry)
+    focal = focal.fit(X, y)
 
     # RF should 'remember' focal
     assert (no_focal.proba_[True] - no_focal.proba_[False]).abs().mean() < (
@@ -1025,13 +1064,14 @@ def test_regressor_fit_basic_functionality(sample_regression_data):
     # Create regressor with default params
     reg = BaseRegressor(
         RandomForestRegressor,
+        geometry=geometry,
         bandwidth=10,
         fixed=False,
         random_state=42,  # For reproducibility
     )
 
     # Fit the model
-    fitted_reg = reg.fit(X, y, geometry)
+    fitted_reg = reg.fit(X, y)
 
     # Test that fitting works and returns self
     assert fitted_reg is reg
@@ -1053,13 +1093,14 @@ def test_regressor_fit_with_keep_models(sample_regression_data):
 
     reg = BaseRegressor(
         LinearRegression,
+        geometry=geometry,
         bandwidth=10,
         fixed=False,
         keep_models=True,
         n_jobs=1,
     )
 
-    reg.fit(X, y, geometry)
+    reg.fit(X, y)
 
     # Check that local models were kept
     assert hasattr(reg, "_local_models")
@@ -1081,6 +1122,7 @@ def test_regressor_fit_with_keep_models_path(sample_regression_data):
         # Create a regressor with keep_models as a path
         reg = BaseRegressor(
             RandomForestRegressor,
+            geometry=geometry,
             bandwidth=10,
             fixed=False,
             keep_models=temp_dir,
@@ -1088,7 +1130,7 @@ def test_regressor_fit_with_keep_models_path(sample_regression_data):
             n_jobs=1,
         )
 
-        reg.fit(X, y, geometry)
+        reg.fit(X, y)
 
         # Check that models were serialized to disk
         model_files = list(Path(temp_dir).glob("*"))
@@ -1102,13 +1144,14 @@ def test_regressor_fit_different_kernels(sample_regression_data, kernel):
 
     reg = BaseRegressor(
         RandomForestRegressor,
+        geometry=geometry,
         bandwidth=10,
         fixed=False,
         kernel=kernel,
         random_state=42,
     )
 
-    reg.fit(X, y, geometry)
+    reg.fit(X, y)
 
     # Check that the model was fit successfully
     assert hasattr(reg, "local_r2_")
@@ -1120,12 +1163,13 @@ def test_regressor_fit_fixed_bandwidth(sample_regression_data):
 
     reg = BaseRegressor(
         RandomForestRegressor,
+        geometry=geometry,
         bandwidth=100_000,
         fixed=True,  # Fixed bandwidth
         random_state=42,
     )
 
-    reg.fit(X, y, geometry)
+    reg.fit(X, y)
 
     # Check that the model was fit successfully
     assert hasattr(reg, "local_r2_")
@@ -1137,12 +1181,13 @@ def test_regressor_fit_without_global_model(sample_regression_data):
 
     reg = BaseRegressor(
         LinearRegression,
+        geometry=geometry,
         bandwidth=150_000,
         fixed=True,
         fit_global_model=False,
     )
 
-    reg.fit(X, y, geometry)
+    reg.fit(X, y)
 
     # Check that global model was not fitted
     assert not hasattr(reg, "global_model")
@@ -1157,13 +1202,14 @@ def test_regressor_fit_without_performance_metrics(sample_regression_data):
 
     reg = BaseRegressor(
         LinearRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         measure_performance=False,
         strict=False,  # To avoid warnings on invariance
     )
 
-    reg.fit(X, y, geometry)
+    reg.fit(X, y)
 
     # Check that performance metrics were not computed
     # assert not hasattr(reg, "score_")
@@ -1181,6 +1227,7 @@ def test_regressor_fit_with_batch_processing(sample_regression_data):
     batch_size = 5
     reg = BaseRegressor(
         LinearRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         batch_size=batch_size,  # Process in small batches
@@ -1190,7 +1237,7 @@ def test_regressor_fit_with_batch_processing(sample_regression_data):
     # Capture print output to verify batch processing messages
     f = io.StringIO()
     with redirect_stdout(f):
-        reg.fit(X, y, geometry)
+        reg.fit(X, y)
 
     # Get the captured output
     output = f.getvalue()
@@ -1215,7 +1262,7 @@ def test_regressor_fit_with_batch_processing(sample_regression_data):
 #         fixed=True,
 #         keep_models=True,
 #     )
-#     reg.fit(X, y, geometry)
+#     reg.fit(X, y)
 
 #     # Predict values for first 5 samples
 #     pred = reg.predict(X.iloc[:5], geometry.iloc[:5])
@@ -1240,7 +1287,7 @@ def test_regressor_fit_with_batch_processing(sample_regression_data):
 #         keep_models=True,
 #         strict=False,  # To avoid warnings on invariance
 #     )
-#     reg.fit(X, y, geometry)
+#     reg.fit(X, y)
 
 #     # Predict values for first 5 samples
 #     pred = reg.predict(X.iloc[:5], geometry.iloc[:5])
@@ -1266,7 +1313,7 @@ def test_regressor_fit_with_batch_processing(sample_regression_data):
 #             keep_models=temp_dir,
 #             strict=False,  # To avoid warnings on invariance
 #         )
-#         reg.fit(X, y, geometry)
+#         reg.fit(X, y)
 
 #         # Predict values
 #         pred = reg.predict(X.iloc[:5], geometry.iloc[:5])
@@ -1288,7 +1335,7 @@ def test_regressor_fit_with_batch_processing(sample_regression_data):
 #         keep_models=True,
 #         strict=False,  # To avoid warnings on invariance
 #     )
-#     reg.fit(X, y, geometry)
+#     reg.fit(X, y)
 
 #     # Get predictions for the same data used for training
 #     predicted_values = reg.predict(X, geometry)
@@ -1310,21 +1357,23 @@ def test_regressor_random_state_consistency(sample_regression_data):
     # Create two regressors with same random_state
     reg1 = BaseRegressor(
         RandomForestRegressor,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
         strict=False,
     )
-    reg1.fit(X, y, geometry)
+    reg1.fit(X, y)
 
     reg2 = BaseRegressor(
         RandomForestRegressor,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
         strict=False,
     )
-    reg2.fit(X, y, geometry)
+    reg2.fit(X, y)
 
     # Results should be identical
     pd.testing.assert_series_equal(reg1.pred_, reg2.pred_)
@@ -1337,20 +1386,22 @@ def test_regressor_n_jobs_consistency(sample_regression_data):
     # Create a regressor with n_jobs=1 (sequential)
     reg_sequential = BaseRegressor(
         LinearRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         n_jobs=1,
     )
-    reg_sequential.fit(X, y, geometry)
+    reg_sequential.fit(X, y)
 
     # Create a regressor with n_jobs=-1 (parallel)
     reg_parallel = BaseRegressor(
         LinearRegression,
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         n_jobs=-1,
     )
-    reg_parallel.fit(X, y, geometry)
+    reg_parallel.fit(X, y)
 
     # Check that the results are the same regardless of parallelization
     pd.testing.assert_series_equal(
@@ -1416,6 +1467,7 @@ def test_regressor_fit_focal_inclusion(sample_regression_data):
     # Create regressor with focal exclusion
     no_focal = BaseRegressor(
         RandomForestRegressor,
+        geometry=geometry,
         bandwidth=10,
         fixed=False,
         include_focal=False,
@@ -1424,11 +1476,12 @@ def test_regressor_fit_focal_inclusion(sample_regression_data):
     )
 
     # Fit the model
-    no_focal = no_focal.fit(X, y, geometry)
+    no_focal = no_focal.fit(X, y)
 
     # Create regressor with focal inclusion
     focal = BaseRegressor(
         RandomForestRegressor,
+        geometry=geometry,
         bandwidth=10,
         fixed=False,
         include_focal=True,
@@ -1437,7 +1490,7 @@ def test_regressor_fit_focal_inclusion(sample_regression_data):
     )
 
     # Fit the model
-    focal = focal.fit(X, y, geometry)
+    focal = focal.fit(X, y)
 
     # RF should 'remember' focal point when included
     assert (y - no_focal.pred_).mean() > (y - focal.pred_).mean()
@@ -1453,13 +1506,14 @@ def test_custom_graph_baseregressor(sample_regression_data):
     # Create regressor with custom graph
     reg = BaseRegressor(
         LinearRegression,
+        geometry=geometry,
         bandwidth=100,  # This should be ignored when custom graph is provided
         fixed=False,  # This should be ignored when custom graph is provided
         graph=g,
     )
 
     # Fit the model
-    reg.fit(X, y, geometry)
+    reg.fit(X, y)
 
     # Check that the model was fit successfully
     assert hasattr(reg, "pred_")
@@ -1482,7 +1536,7 @@ def test_custom_graph_baseclassifier(sample_data):
     )
 
     # Fit the model
-    clf.fit(X, y, geometry)
+    clf.fit(X, y)
 
     # Check that the model was fit successfully
     assert hasattr(clf, "proba_")

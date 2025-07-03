@@ -154,7 +154,7 @@ class GWLogisticRegression(BaseClassifier):
 
     def __init__(
         self,
-        bandwidth: int | float,
+        bandwidth: float | None = None,
         fixed: bool = False,
         kernel: Literal[
             "triangular",
@@ -168,6 +168,7 @@ class GWLogisticRegression(BaseClassifier):
         ]
         | Callable = "bisquare",
         include_focal: bool = True,
+        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -185,6 +186,7 @@ class GWLogisticRegression(BaseClassifier):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
+            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -199,15 +201,18 @@ class GWLogisticRegression(BaseClassifier):
 
         self._model_type = "logistic"
 
-    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
+    def fit(self, X: pd.DataFrame, y: pd.Series):
+        cols = (
+            self.feature_names_in_ if hasattr(self, "feature_names_in_") else X.columns
+        )
         self._empty_score_data = (
             np.array([]),  # true
             np.array([]),  # pred
-            pd.Series(np.nan, index=X.columns),  # local coefficients
+            pd.Series(np.nan, index=cols),  # local coefficients
             np.array([np.nan]),
         )  # intercept
 
-        super().fit(X=X, y=y, geometry=geometry)
+        super().fit(X=X, y=y)
 
         self.local_coef_ = pd.concat(
             [x[2] for x in self._score_data], axis=1, keys=self._names
@@ -405,6 +410,7 @@ class GWLinearRegression(BaseRegressor):
         ]
         | Callable = "bisquare",
         include_focal: bool = True,
+        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -420,6 +426,7 @@ class GWLinearRegression(BaseRegressor):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
+            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -441,13 +448,13 @@ class GWLinearRegression(BaseRegressor):
             local_model.intercept_,  # intercept
         )
 
-    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
+    def fit(self, X: pd.DataFrame, y: pd.Series):
         self._empty_score_data = (
             pd.Series(np.nan, index=X.columns),  # local coefficients
             np.array([np.nan]),
         )  # intercept
 
-        super().fit(X=X, y=y, geometry=geometry)
+        super().fit(X=X, y=y)
 
         self.local_coef_ = pd.concat(
             [x[0] for x in self._score_data], axis=1, keys=self._names

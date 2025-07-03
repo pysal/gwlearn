@@ -30,6 +30,7 @@ def test_gwrf_fit_basic(sample_data):  # noqa: F811
     X, y, geometry = sample_data
 
     model = GWRandomForestClassifier(
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -38,7 +39,7 @@ def test_gwrf_fit_basic(sample_data):  # noqa: F811
         n_jobs=1,
     )
 
-    fitted_model = model.fit(X, y, geometry)
+    fitted_model = model.fit(X, y)
 
     # Test that fitting works and returns self
     assert fitted_model is model
@@ -69,6 +70,7 @@ def test_gwrf_local_oob_metrics(sample_data):  # noqa: F811
     X, y, geometry = sample_data
 
     model = GWRandomForestClassifier(
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -77,7 +79,7 @@ def test_gwrf_local_oob_metrics(sample_data):  # noqa: F811
         oob_score=True,
     )
 
-    model.fit(X, y, geometry)
+    model.fit(X, y)
 
     # Check OOB metrics attributes
     assert hasattr(model, "local_oob_score_")
@@ -107,6 +109,7 @@ def test_gwrf_global_oob_metrics(sample_data):  # noqa: F811
     X, y, geometry = sample_data
 
     model = GWRandomForestClassifier(
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -115,7 +118,7 @@ def test_gwrf_global_oob_metrics(sample_data):  # noqa: F811
         oob_score=True,
     )
 
-    model.fit(X, y, geometry)
+    model.fit(X, y)
 
     # Check global OOB metrics
     assert hasattr(model, "oob_score_")
@@ -166,6 +169,7 @@ def test_gwgb_fit_basic(sample_data):  # noqa: F811
     X, y, geometry = sample_data
 
     model = GWGradientBoostingClassifier(
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -174,7 +178,7 @@ def test_gwgb_fit_basic(sample_data):  # noqa: F811
         n_jobs=1,
     )
 
-    fitted_model = model.fit(X, y, geometry)
+    fitted_model = model.fit(X, y)
 
     # Test that fitting works and returns self
     assert fitted_model is model
@@ -194,6 +198,7 @@ def test_gwgb_with_subsample(sample_data):  # noqa: F811
     X, y, geometry = sample_data
 
     model = GWGradientBoostingClassifier(
+        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -202,7 +207,7 @@ def test_gwgb_with_subsample(sample_data):  # noqa: F811
         subsample=0.8,  # Enable OOB scoring by using subsample < 1.0
     )
 
-    model.fit(X, y, geometry)
+    model.fit(X, y)
 
     # Check local OOB score (only available with subsample < 1.0)
     assert hasattr(model, "local_oob_score_")
