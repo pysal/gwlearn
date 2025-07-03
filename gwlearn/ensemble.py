@@ -32,10 +32,18 @@ class GWRandomForestClassifier(BaseClassifier):
         analysis of the model performance (and generalises to models that do not support
         OOB scoring). However, it leaves out the most representative sample. By default
         False
+    geometry : gpd.GeoSeries, optional
+        Geographic location of the observations in the sample. Used to determine the
+        spatial interaction weight based on specification by `bandwidth`, `fixed`,
+        `kernel`, and `include_focal` keywords.  Either ``geometry`` or ``graph`` need
+        to be specified. To allow prediction, it is required to specify ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
-        observations. If given, it is used directly and `bandwidth`, `fixed`, `kernel`,
-        and `include_focal` keywords are ignored.
+        observations in the sample. If given, it is used directly and `bandwidth`,
+        `fixed`, `kernel`, and `include_focal` keywords are ignored. Either ``geometry``
+        or ``graph`` need to be specified. To allow prediction, it is required to
+        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes
+        spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors by
         default ``-1``
@@ -341,10 +349,18 @@ class GWGradientBoostingClassifier(BaseClassifier):
         futher spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default False
+    geometry : gpd.GeoSeries, optional
+        Geographic location of the observations in the sample. Used to determine the
+        spatial interaction weight based on specification by `bandwidth`, `fixed`,
+        `kernel`, and `include_focal` keywords.  Either ``geometry`` or ``graph`` need
+        to be specified. To allow prediction, it is required to specify ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
-        observations. If given, it is used directly and `bandwidth`, `fixed`, `kernel`,
-        and `include_focal` keywords are ignored.
+        observations in the sample. If given, it is used directly and `bandwidth`,
+        `fixed`, `kernel`, and `include_focal` keywords are ignored. Either ``geometry``
+        or ``graph`` need to be specified. To allow prediction, it is required to
+        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes
+        spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
