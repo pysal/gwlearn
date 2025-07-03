@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.ensemble &#8212; gwlearn 0.1.dev64+gd35e426 documentation</title>
+    <title>gwlearn.ensemble &#8212; gwlearn 0.1.dev65+g5858f2f documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=e8e85b14"></script>
+    <script src="../../_static/documentation_options.js?v=912767f7"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev64+gd35e426 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev65+g5858f2f documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -271,7 +271,8 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for gwlearn.ensemble</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
@@ -310,15 +311,16 @@ document.write(`
 <span class="sd">    geometry : gpd.GeoSeries, optional</span>
 <span class="sd">        Geographic location of the observations in the sample. Used to determine the</span>
 <span class="sd">        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,</span>
-<span class="sd">        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need</span>
-<span class="sd">        to be specified. To allow prediction, it is required to specify ``geometry``.</span>
+<span class="sd">        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``</span>
+<span class="sd">        need to be specified. To allow prediction, it is required to specify</span>
+<span class="sd">        ``geometry``.</span>
 <span class="sd">    graph : Graph, optional</span>
 <span class="sd">        Custom libpysal.graph.Graph object encoding the spatial interaction between</span>
 <span class="sd">        observations in the sample. If given, it is used directly and ``bandwidth``,</span>
-<span class="sd">        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``</span>
-<span class="sd">        or ``graph`` need to be specified. To allow prediction, it is required to</span>
-<span class="sd">        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes</span>
-<span class="sd">        spatial interaction between observations in ``geometry``.</span>
+<span class="sd">        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either</span>
+<span class="sd">        ``geometry`` or ``graph`` need to be specified. To allow prediction, it is</span>
+<span class="sd">        required to specify ``geometry``. Potentially, both can be specified where</span>
+<span class="sd">        ``graph`` encodes spatial interaction between observations in ``geometry``.</span>
 <span class="sd">    n_jobs : int, optional</span>
 <span class="sd">        The number of jobs to run in parallel. ``-1`` means using all processors by</span>
 <span class="sd">        default ``-1``</span>
@@ -511,18 +513,9 @@ document.write(`
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">metrics_to_measure</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="s2">&quot;accuracy&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;precision&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;recall&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;balanced_accuracy&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;f1_macro&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;f1_micro&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;f1_weighted&quot;</span><span class="p">,</span>
-                <span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="n">metrics_to_measure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span>
+
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s: Measuring pooled performance&quot;</span><span class="p">)</span>
 
@@ -533,36 +526,53 @@ document.write(`
             <span class="n">all_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">true</span><span class="p">)</span>
             <span class="n">all_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
 
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_true</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s2">&quot;No models fitted due to inability to fulfil imbalance rules.&quot;</span><span class="p">,</span>
+                    <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span>
+
             <span class="c1"># global OOB scores</span>
-            <span class="k">if</span> <span class="s2">&quot;accuracy&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;oob_score&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">oob_score_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;precision&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="s2">&quot;oob_precision&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+            <span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">oob_precision_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">precision_score</span><span class="p">(</span>
                     <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;recall&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;oob_recall&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">oob_recall_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">recall_score</span><span class="p">(</span>
                     <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;balanced_accuracy&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="s2">&quot;oob_balanced_accuracy&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+            <span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">oob_balanced_accuracy_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">balanced_accuracy_score</span><span class="p">(</span>
                     <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;f1_macro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="s2">&quot;oob_f1_macro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+            <span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">oob_f1_macro_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
                     <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;f1_micro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="s2">&quot;oob_f1_micro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+            <span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">oob_f1_micro_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
                     <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;micro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;f1_weighted&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="s2">&quot;oob_f1_weighted&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+            <span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">oob_f1_weighted_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
                     <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;weighted&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
                 <span class="p">)</span>
@@ -573,28 +583,63 @@ document.write(`
                 <span class="p">)</span>
 
             <span class="c1"># local OOB scores</span>
-            <span class="n">local_score</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-                <span class="p">[</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_scores</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_false</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_false</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">true</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="p">],</span>
-                <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">,</span>
-                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;oob_&quot;</span> <span class="o">+</span> <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">],</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="s2">&quot;accuracy&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">local_oob_score_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;oob_accuracy&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;precision&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">local_oob_precision_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;oob_precision&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;recall&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">local_oob_recall_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;oob_recall&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;balanced_accuracy&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">local_oob_balanced_accuracy_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;oob_balanced_accuracy&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;f1_macro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">local_oob_f1_macro_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;oob_f1_macro&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;f1_micro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">local_oob_f1_micro_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;oob_f1_micro&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;f1_weighted&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">local_oob_f1_weighted_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;oob_f1_weighted&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">local_cols</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="s2">&quot;oob_accuracy&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;oob_precision&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;oob_recall&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;oob_balanced_accuracy&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;oob_f1_macro&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;oob_f1_micro&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;oob_f1_weighted&quot;</span><span class="p">,</span>
+                <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">local_cols</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">c</span><span class="p">[</span><span class="mi">6</span><span class="p">:]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;local_&quot;</span><span class="p">)</span>
+                <span class="p">]</span>
+            <span class="k">if</span> <span class="n">local_cols</span><span class="p">:</span>
+                <span class="n">local_score</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_scores</span><span class="p">(</span>
+                            <span class="n">y_true</span><span class="p">,</span>
+                            <span class="n">y_false</span><span class="p">,</span>
+                            <span class="n">metrics_to_measure</span><span class="o">=</span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">4</span><span class="p">:]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">local_cols</span><span class="p">],</span>
+                        <span class="p">)</span>
+                        <span class="k">for</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">y_false</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">true</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="p">],</span>
+                    <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">,</span>
+                    <span class="n">columns</span><span class="o">=</span><span class="n">local_cols</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
+                    <span class="s2">&quot;local_oob_score&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">local_oob_score_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;oob_accuracy&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
+                    <span class="s2">&quot;local_oob_precision&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">local_oob_precision_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;oob_precision&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
+                    <span class="s2">&quot;local_oob_recall&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">local_oob_recall_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;oob_recall&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
+                    <span class="s2">&quot;local_oob_balanced_accuracy&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">local_oob_balanced_accuracy_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span>
+                        <span class="s2">&quot;oob_balanced_accuracy&quot;</span>
+                    <span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
+                    <span class="s2">&quot;flocal_oob_1_macro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">local_oob_f1_macro_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;oob_f1_macro&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
+                    <span class="s2">&quot;local_oob_f1_micro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">local_oob_f1_micro_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;oob_f1_micro&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
+                    <span class="s2">&quot;f1_weighted&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">local_oob_f1_weighted_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;oob_f1_weighted&quot;</span><span class="p">]</span>
 
         <span class="c1"># feature importances</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_importances_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
@@ -636,15 +681,16 @@ document.write(`
 <span class="sd">    geometry : gpd.GeoSeries, optional</span>
 <span class="sd">        Geographic location of the observations in the sample. Used to determine the</span>
 <span class="sd">        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,</span>
-<span class="sd">        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need</span>
-<span class="sd">        to be specified. To allow prediction, it is required to specify ``geometry``.</span>
+<span class="sd">        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``</span>
+<span class="sd">        need to be specified. To allow prediction, it is required to specify</span>
+<span class="sd">        ``geometry``.</span>
 <span class="sd">    graph : Graph, optional</span>
 <span class="sd">        Custom libpysal.graph.Graph object encoding the spatial interaction between</span>
 <span class="sd">        observations in the sample. If given, it is used directly and ``bandwidth``,</span>
-<span class="sd">        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``</span>
-<span class="sd">        or ``graph`` need to be specified. To allow prediction, it is required to</span>
-<span class="sd">        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes</span>
-<span class="sd">        spatial interaction between observations in ``geometry``.</span>
+<span class="sd">        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either</span>
+<span class="sd">        ``geometry`` or ``graph`` need to be specified. To allow prediction, it is</span>
+<span class="sd">        required to specify ``geometry``. Potentially, both can be specified where</span>
+<span class="sd">        ``graph`` encodes spatial interaction between observations in ``geometry``.</span>
 <span class="sd">    n_jobs : int, optional</span>
 <span class="sd">        The number of jobs to run in parallel. ``-1`` means using all processors</span>
 <span class="sd">        by default ``-1``</span>

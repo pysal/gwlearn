@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>gwlearn.linear_model.GWLinearRegression &#8212; gwlearn 0.1.dev64+gd35e426 documentation</title>
+    <title>gwlearn.linear_model.GWLinearRegression &#8212; gwlearn 0.1.dev65+g5858f2f documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=e8e85b14"></script>
+    <script src="../_static/documentation_options.js?v=912767f7"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev64+gd35e426 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev65+g5858f2f documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -359,18 +359,19 @@ sample. By default True</p>
 </dd>
 <dt><strong>geometry</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gpd.GeoSeries</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Geographic location of the observations in the sample. Used to determine the
 spatial interaction weight based on specification by <code class="docutils literal notranslate"><span class="pre">bandwidth</span></code>, <code class="docutils literal notranslate"><span class="pre">fixed</span></code>,
-<code class="docutils literal notranslate"><span class="pre">kernel</span></code>, and <code class="docutils literal notranslate"><span class="pre">include_focal</span></code> keywords.  Either <code class="docutils literal notranslate"><span class="pre">geometry</span></code> or <code class="docutils literal notranslate"><span class="pre">graph</span></code> need
-to be specified. To allow prediction, it is required to specify <code class="docutils literal notranslate"><span class="pre">geometry</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">kernel</span></code>, and <code class="docutils literal notranslate"><span class="pre">include_focal</span></code> keywords.  Either <code class="docutils literal notranslate"><span class="pre">geometry</span></code> or <code class="docutils literal notranslate"><span class="pre">graph</span></code>
+need to be specified. To allow prediction, it is required to specify
+<code class="docutils literal notranslate"><span class="pre">geometry</span></code>.</p>
 </dd>
 <dt><strong>graph</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Custom libpysal.graph.Graph object encoding the spatial interaction between
 observations in the sample. If given, it is used directly and <code class="docutils literal notranslate"><span class="pre">bandwidth</span></code>,
-<code class="docutils literal notranslate"><span class="pre">fixed</span></code>, <code class="docutils literal notranslate"><span class="pre">kernel</span></code>, and <code class="docutils literal notranslate"><span class="pre">include_focal</span></code> keywords are ignored. Either <code class="docutils literal notranslate"><span class="pre">geometry</span></code>
-or <code class="docutils literal notranslate"><span class="pre">graph</span></code> need to be specified. To allow prediction, it is required to
-specify <code class="docutils literal notranslate"><span class="pre">geometry</span></code>. Potentially, both can be specified where <code class="docutils literal notranslate"><span class="pre">graph</span></code> encodes
-spatial interaction between observations in <code class="docutils literal notranslate"><span class="pre">geometry</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">fixed</span></code>, <code class="docutils literal notranslate"><span class="pre">kernel</span></code>, and <code class="docutils literal notranslate"><span class="pre">include_focal</span></code> keywords are ignored. Either
+<code class="docutils literal notranslate"><span class="pre">geometry</span></code> or <code class="docutils literal notranslate"><span class="pre">graph</span></code> need to be specified. To allow prediction, it is
+required to specify <code class="docutils literal notranslate"><span class="pre">geometry</span></code>. Potentially, both can be specified where
+<code class="docutils literal notranslate"><span class="pre">graph</span></code> encodes spatial interaction between observations in <code class="docutils literal notranslate"><span class="pre">geometry</span></code>.</p>
 </dd>
-<dt><strong>n_jobs</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>The number of jobs to run in parallel. <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors
-by default <code class="docutils literal notranslate"><span class="pre">-1</span></code></p>
+<dt><strong>n_jobs</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>The number of jobs to run in parallel. <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors by
+default <code class="docutils literal notranslate"><span class="pre">-1</span></code></p>
 </dd>
 <dt><strong>fit_global_model</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Determines if the global baseline model shall be fitted alongside
 the geographically weighted, by default True</p>
