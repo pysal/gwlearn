@@ -889,19 +889,25 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         proba = self.predict_proba(X, geometry)
         return proba.idxmax(axis=1)
 
-    def _scores(self, y_true: np.ndarray, y_pred: np.ndarray) -> tuple:
-        if self.measure_performance is True:
-            metrics_to_measure = [
-                "accuracy",
-                "precision",
-                "recall",
-                "balanced_accuracy",
-                "f1_macro",
-                "f1_micro",
-                "f1_weighted",
-            ]
-        else:
-            metrics_to_measure = self.measure_performance
+    def _scores(
+        self,
+        y_true: np.ndarray,
+        y_pred: np.ndarray,
+        metrics_to_measure: list | None = None,
+    ) -> tuple:
+        if metrics_to_measure is None:
+            if self.measure_performance is True:
+                metrics_to_measure = [
+                    "accuracy",
+                    "precision",
+                    "recall",
+                    "balanced_accuracy",
+                    "f1_macro",
+                    "f1_micro",
+                    "f1_weighted",
+                ]
+            else:
+                metrics_to_measure = self.measure_performance
 
         if y_true.shape[0] == 0:
             return (np.nan,) * len(metrics_to_measure)
