@@ -7,8 +7,10 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 import pytest
+import sklearn
 from geodatasets import get_path
 from libpysal.graph import Graph
+from packaging.version import Version
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.linear_model import LinearRegression, LogisticRegression
 
@@ -914,6 +916,10 @@ def test_repr_html_basic():
     assert "BaseClassifier" in html_str
 
 
+@pytest.mark.skipif(
+    Version(sklearn.__version__) == Version("1.7.0"),
+    reason="https://github.com/scikit-learn/scikit-learn/pull/31528",
+)
 def test_repr_html_with_fitted_model(sample_data):
     """Test _repr_html_ with a fitted model."""
     X, y, geometry = sample_data
