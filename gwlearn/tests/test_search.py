@@ -69,6 +69,7 @@ def test_interval_search_basic(sample_data):  # noqa: F811
     # Use a very small range for faster testing
     search = BandwidthSearch(
         model=GWLogisticRegression,
+        geometry=geometry,
         fixed=True,  # Fixed bandwidth for faster testing
         search_method="interval",
         min_bandwidth=100000,
@@ -80,7 +81,7 @@ def test_interval_search_basic(sample_data):  # noqa: F811
     )
 
     # Fit the bandwidth search
-    search.fit(X, y, geometry)
+    search.fit(X, y)
 
     # Check that the search was performed
     assert hasattr(search, "scores_")
@@ -104,6 +105,7 @@ def test_golden_section_search_basic(sample_data):  # noqa: F811
     # Configure for a quick golden section search
     search = BandwidthSearch(
         model=GWLogisticRegression,
+        geometry=geometry,
         fixed=True,  # Fixed bandwidth for faster testing
         search_method="golden_section",
         min_bandwidth=100000,
@@ -116,7 +118,7 @@ def test_golden_section_search_basic(sample_data):  # noqa: F811
     )
 
     # Fit the bandwidth search
-    search.fit(X, y, geometry)
+    search.fit(X, y)
 
     # Check that the search was performed
     assert hasattr(search, "scores_")
@@ -138,6 +140,7 @@ def test_different_criteria(sample_data, criterion):  # noqa: F811
     # Configure for a quick search
     search = BandwidthSearch(
         model=GWLogisticRegression,
+        geometry=geometry,
         fixed=True,
         search_method="interval",
         min_bandwidth=100000,
@@ -150,7 +153,7 @@ def test_different_criteria(sample_data, criterion):  # noqa: F811
     )
 
     # Fit the bandwidth search
-    search.fit(X, y, geometry)
+    search.fit(X, y)
 
     # Check that the search was performed
     assert hasattr(search, "scores_")
@@ -164,6 +167,7 @@ def test_adaptive_bandwidth_search(sample_data):  # noqa: F811
     # Configure for a quick adaptive bandwidth search
     search = BandwidthSearch(
         model=GWLogisticRegression,
+        geometry=geometry,
         fixed=False,  # Adaptive bandwidth
         search_method="interval",
         min_bandwidth=5,  # Small number of neighbors
@@ -176,7 +180,7 @@ def test_adaptive_bandwidth_search(sample_data):  # noqa: F811
     )
 
     # Fit the bandwidth search
-    search.fit(X, y, geometry)
+    search.fit(X, y)
 
     # Check that the search was performed
     assert hasattr(search, "scores_")
@@ -194,6 +198,7 @@ def test_lower_criterion_value_is_better(sample_data):  # noqa: F811
     # Configure for a controlled test with just two bandwidth values
     search = BandwidthSearch(
         model=GWLogisticRegression,
+        geometry=geometry,
         fixed=True,
         search_method="interval",
         min_bandwidth=100000,
@@ -205,7 +210,7 @@ def test_lower_criterion_value_is_better(sample_data):  # noqa: F811
     )
 
     # Fit the bandwidth search
-    search.fit(X, y, geometry)
+    search.fit(X, y)
 
     # Check that the optimal bandwidth is the one with lower criterion value
     min_score_bw = search.scores_.idxmin()
@@ -218,14 +223,18 @@ def test_model_invariant_y_returns_inf(sample_data):  # noqa: F811
 
     # Create a search instance
     search = BandwidthSearch(
-        model=GWLogisticRegression, fixed=True, search_method="interval", verbose=False
+        model=GWLogisticRegression,
+        geometry=geometry,
+        fixed=True,
+        search_method="interval",
+        verbose=False,
     )
 
     # Mock a dataset with invariant y
     y_invariant = pd.Series([True] * len(y))
 
     # Call the internal _score method directly
-    score = search._score(X, y_invariant, geometry, bw=100000)
+    score = search._score(X, y_invariant, bw=100000)
 
     # Check that the score is np.inf for invariant y
     assert score == np.inf
@@ -238,6 +247,7 @@ def test_bandwidth_search_returns_self(sample_data):  # noqa: F811
     # Configure for a quick search
     search = BandwidthSearch(
         model=GWLogisticRegression,
+        geometry=geometry,
         fixed=True,
         search_method="interval",
         min_bandwidth=100000,
@@ -248,7 +258,7 @@ def test_bandwidth_search_returns_self(sample_data):  # noqa: F811
     )
 
     # Fit and check return value
-    result = search.fit(X, y, geometry)
+    result = search.fit(X, y)
     assert result is search
 
 
@@ -268,6 +278,7 @@ def test_bandwidth_search_accepts_model_params(sample_data):  # noqa: F811
     # Create search with model parameters
     search = BandwidthSearch(
         model=GWLogisticRegression,
+        geometry=geometry,
         fixed=True,
         search_method="interval",
         min_bandwidth=100000,
@@ -282,7 +293,7 @@ def test_bandwidth_search_accepts_model_params(sample_data):  # noqa: F811
         assert search._model_kwargs[param] == value
 
     # Fit to ensure parameters are passed to model instances
-    search.fit(X, y, geometry)
+    search.fit(X, y)
 
     # Since model instances aren't kept, we just check that fit completes without errors
     assert hasattr(search, "optimal_bandwidth_")
@@ -295,6 +306,7 @@ def test_bandwidth_search_verbosity(sample_data):  # noqa: F811
     # Configure for a quick search with verbose=True
     search = BandwidthSearch(
         model=GWLogisticRegression,
+        geometry=geometry,
         fixed=True,
         search_method="interval",
         min_bandwidth=100000,
@@ -307,7 +319,7 @@ def test_bandwidth_search_verbosity(sample_data):  # noqa: F811
     # Capture standard output
     f = io.StringIO()
     with redirect_stdout(f):
-        search.fit(X, y, geometry)
+        search.fit(X, y)
 
     # Get the captured output
     output = f.getvalue()
@@ -320,6 +332,7 @@ def test_bandwidth_search_verbosity(sample_data):  # noqa: F811
     # Check with verbose=False (should not produce output)
     search_quiet = BandwidthSearch(
         model=GWLogisticRegression,
+        geometry=geometry,
         fixed=True,
         search_method="interval",
         min_bandwidth=100000,
@@ -331,7 +344,7 @@ def test_bandwidth_search_verbosity(sample_data):  # noqa: F811
 
     f_quiet = io.StringIO()
     with redirect_stdout(f_quiet):
-        search_quiet.fit(X, y, geometry)
+        search_quiet.fit(X, y)
 
     # Get the captured output (should be minimal)
     output_quiet = f_quiet.getvalue()
@@ -355,6 +368,7 @@ def test_bandwidth_search_metrics(sample_data, search_method):
     # Test interval search
     search = BandwidthSearch(
         model=GWLogisticRegression,
+        geometry=geometry,
         fixed=True,
         search_method=search_method,
         min_bandwidth=100000,
@@ -367,7 +381,7 @@ def test_bandwidth_search_metrics(sample_data, search_method):
     )
 
     # Fit the bandwidth search
-    search.fit(X, y, geometry)
+    search.fit(X, y)
 
     # Check that metrics were tracked correctly
     assert hasattr(search, "metrics_")
