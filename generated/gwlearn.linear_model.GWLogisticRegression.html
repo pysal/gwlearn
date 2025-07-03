@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>gwlearn.linear_model.GWLogisticRegression &#8212; gwlearn 0.1.dev63+g80e3a6b documentation</title>
+    <title>gwlearn.linear_model.GWLogisticRegression &#8212; gwlearn 0.1.dev64+gd35e426 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=0737b15b"></script>
+    <script src="../_static/documentation_options.js?v=e8e85b14"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev63+g80e3a6b documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev64+gd35e426 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -320,7 +320,6 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.linear_model.GWLogisticRegression"><code class="docutils literal notranslate"><span class="pre">GWLogisticRegression</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.linear_model.GWLogisticRegression.__init__"><code class="docutils literal notranslate"><span class="pre">GWLogisticRegression.__init__()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.linear_model.GWLogisticRegression.fit"><code class="docutils literal notranslate"><span class="pre">GWLogisticRegression.fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.linear_model.GWLogisticRegression.set_fit_request"><code class="docutils literal notranslate"><span class="pre">GWLogisticRegression.set_fit_request()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.linear_model.GWLogisticRegression.set_predict_proba_request"><code class="docutils literal notranslate"><span class="pre">GWLogisticRegression.set_predict_proba_request()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.linear_model.GWLogisticRegression.set_predict_request"><code class="docutils literal notranslate"><span class="pre">GWLogisticRegression.set_predict_request()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.linear_model.GWLogisticRegression.set_score_request"><code class="docutils literal notranslate"><span class="pre">GWLogisticRegression.set_score_request()</span></code></a></li>
@@ -341,7 +340,7 @@ document.write(`
 <h1>gwlearn.linear_model.GWLogisticRegression<a class="headerlink" href="#gwlearn-linear-model-gwlogisticregression" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="gwlearn.linear_model.GWLogisticRegression">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gwlearn.linear_model.</span></span><span class="sig-name descname"><span class="pre">GWLogisticRegression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bisquare'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_focal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_global_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_performance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undersample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/linear_model.html#GWLogisticRegression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.linear_model.GWLogisticRegression" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gwlearn.linear_model.</span></span><span class="sig-name descname"><span class="pre">GWLogisticRegression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bisquare'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_focal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_global_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_performance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undersample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/linear_model.html#GWLogisticRegression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.linear_model.GWLogisticRegression" title="Link to this definition">#</a></dt>
 <dd><p>Geographically weighted logistic regression</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -360,9 +359,17 @@ further spatial analysis of the model performance (and generalises to models
 that do not support OOB scoring). However, it leaves out the most representative
 sample. By default True</p>
 </dd>
+<dt><strong>geometry</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gpd.GeoSeries</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Geographic location of the observations in the sample. Used to determine the
+spatial interaction weight based on specification by <code class="docutils literal notranslate"><span class="pre">bandwidth</span></code>, <code class="docutils literal notranslate"><span class="pre">fixed</span></code>,
+<code class="docutils literal notranslate"><span class="pre">kernel</span></code>, and <code class="docutils literal notranslate"><span class="pre">include_focal</span></code> keywords.  Either <code class="docutils literal notranslate"><span class="pre">geometry</span></code> or <code class="docutils literal notranslate"><span class="pre">graph</span></code> need
+to be specified. To allow prediction, it is required to specify <code class="docutils literal notranslate"><span class="pre">geometry</span></code>.</p>
+</dd>
 <dt><strong>graph</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Custom libpysal.graph.Graph object encoding the spatial interaction between
-observations. If given, it is used directly and <cite>bandwidth</cite>, <cite>fixed</cite>, <cite>kernel</cite>,
-and <cite>include_focal</cite> keywords are ignored.</p>
+observations in the sample. If given, it is used directly and <code class="docutils literal notranslate"><span class="pre">bandwidth</span></code>,
+<code class="docutils literal notranslate"><span class="pre">fixed</span></code>, <code class="docutils literal notranslate"><span class="pre">kernel</span></code>, and <code class="docutils literal notranslate"><span class="pre">include_focal</span></code> keywords are ignored. Either <code class="docutils literal notranslate"><span class="pre">geometry</span></code>
+or <code class="docutils literal notranslate"><span class="pre">graph</span></code> need to be specified. To allow prediction, it is required to
+specify <code class="docutils literal notranslate"><span class="pre">geometry</span></code>. Potentially, both can be specified where <code class="docutils literal notranslate"><span class="pre">graph</span></code> encodes
+spatial interaction between observations in <code class="docutils literal notranslate"><span class="pre">geometry</span></code>.</p>
 </dd>
 <dt><strong>n_jobs</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>The number of jobs to run in parallel. <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors
 by default <code class="docutils literal notranslate"><span class="pre">-1</span></code></p>
@@ -485,16 +492,16 @@ fulfilling <code class="docutils literal notranslate"><span class="pre">min_prop
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="gwlearn.linear_model.GWLogisticRegression.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bisquare'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_focal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_global_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_performance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undersample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/linear_model.html#GWLogisticRegression.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.linear_model.GWLogisticRegression.__init__" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bisquare'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_focal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_global_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measure_performance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">undersample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/linear_model.html#GWLogisticRegression.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.linear_model.GWLogisticRegression.__init__" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <p class="rubric">Methods</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gwlearn.linear_model.GWLogisticRegression.__init__" title="gwlearn.linear_model.GWLogisticRegression.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(bandwidth[, fixed, kernel, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gwlearn.linear_model.GWLogisticRegression.__init__" title="gwlearn.linear_model.GWLogisticRegression.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([bandwidth, fixed, kernel, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gwlearn.linear_model.GWLogisticRegression.fit" title="gwlearn.linear_model.GWLogisticRegression.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, y, geometry)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gwlearn.linear_model.GWLogisticRegression.fit" title="gwlearn.linear_model.GWLogisticRegression.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, y)</p></td>
 <td><p>Fit the geographically weighted model</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_metadata_routing</span></code>()</p></td>
@@ -512,7 +519,7 @@ fulfilling <code class="docutils literal notranslate"><span class="pre">min_prop
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(X, y[, sample_weight])</p></td>
 <td><p>Return the mean accuracy on the given test data and labels.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gwlearn.linear_model.GWLogisticRegression.set_fit_request" title="gwlearn.linear_model.GWLogisticRegression.set_fit_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_fit_request</span></code></a>(*[, geometry])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_fit_request</span></code>(*[, geometry])</p></td>
 <td><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
@@ -532,7 +539,7 @@ fulfilling <code class="docutils literal notranslate"><span class="pre">min_prop
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="gwlearn.linear_model.GWLogisticRegression.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/linear_model.html#GWLogisticRegression.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.linear_model.GWLogisticRegression.fit" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/linear_model.html#GWLogisticRegression.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.linear_model.GWLogisticRegression.fit" title="Link to this definition">#</a></dt>
 <dd><p>Fit the geographically weighted model</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -540,51 +547,6 @@ fulfilling <code class="docutils literal notranslate"><span class="pre">min_prop
 <dt><strong>X</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pd.DataFrame</span></code></span></dt><dd><p>Independent variables</p>
 </dd>
 <dt><strong>y</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pd.Series</span></code></span></dt><dd><p>Dependent variable</p>
-</dd>
-<dt><strong>geometry</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gpd.GeoSeries</span></code></span></dt><dd><p>Geographic location</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="gwlearn.linear_model.GWLogisticRegression.set_fit_request">
-<span class="sig-name descname"><span class="pre">set_fit_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gwlearn.linear_model.GWLogisticRegression.set_fit_request" title="Link to this definition">#</a></dt>
-<dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p>
-<p>Note that this method is only relevant if
-<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code>).
-Please see <span class="xref std std-ref">User Guide</span> on how the routing
-mechanism works.</p>
-<p>The options for each parameter are:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">fit</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
-</ul>
-<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
-existing request. This allows you to change the request for some
-parameters and not others.</p>
-<div class="versionadded">
-<p><span class="versionmodified added">Added in version 1.3.</span></p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This method is only relevant if this estimator is used as a
-sub-estimator of a meta-estimator, e.g. used inside a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code>. Otherwise it has no effect.</p>
-</div>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>geometry</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">True</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">False</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">or</span></code> <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">geometry</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl>
-<dt><strong>self</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></a></span></dt><dd><p>The updated object.</p>
 </dd>
 </dl>
 </dd>
@@ -772,7 +734,6 @@ sub-estimator of a meta-estimator, e.g. used inside a
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.linear_model.GWLogisticRegression"><code class="docutils literal notranslate"><span class="pre">GWLogisticRegression</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.linear_model.GWLogisticRegression.__init__"><code class="docutils literal notranslate"><span class="pre">GWLogisticRegression.__init__()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.linear_model.GWLogisticRegression.fit"><code class="docutils literal notranslate"><span class="pre">GWLogisticRegression.fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.linear_model.GWLogisticRegression.set_fit_request"><code class="docutils literal notranslate"><span class="pre">GWLogisticRegression.set_fit_request()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.linear_model.GWLogisticRegression.set_predict_proba_request"><code class="docutils literal notranslate"><span class="pre">GWLogisticRegression.set_predict_proba_request()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.linear_model.GWLogisticRegression.set_predict_request"><code class="docutils literal notranslate"><span class="pre">GWLogisticRegression.set_predict_request()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwlearn.linear_model.GWLogisticRegression.set_score_request"><code class="docutils literal notranslate"><span class="pre">GWLogisticRegression.set_score_request()</span></code></a></li>

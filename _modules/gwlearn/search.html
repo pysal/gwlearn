@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.search &#8212; gwlearn 0.1.dev63+g80e3a6b documentation</title>
+    <title>gwlearn.search &#8212; gwlearn 0.1.dev64+gd35e426 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=0737b15b"></script>
+    <script src="../../_static/documentation_options.js?v=e8e85b14"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev63+g80e3a6b documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev64+gd35e426 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -361,6 +361,7 @@ document.write(`
             <span class="c1"># &quot;exponential&quot;,</span>
         <span class="p">]</span>
         <span class="o">|</span> <span class="n">Callable</span> <span class="o">=</span> <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
+        <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">search_method</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;golden_section&quot;</span><span class="p">,</span> <span class="s2">&quot;interval&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;golden_section&quot;</span><span class="p">,</span>
         <span class="n">criterion</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;aicc&quot;</span><span class="p">,</span> <span class="s2">&quot;aic&quot;</span><span class="p">,</span> <span class="s2">&quot;bic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;aicc&quot;</span><span class="p">,</span>
@@ -377,6 +378,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">kernel</span> <span class="o">=</span> <span class="n">kernel</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fixed</span> <span class="o">=</span> <span class="n">fixed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">geometry</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span> <span class="o">=</span> <span class="n">n_jobs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">search_method</span> <span class="o">=</span> <span class="n">search_method</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="n">criterion</span>
@@ -391,20 +393,18 @@ document.write(`
 
 <div class="viewcode-block" id="BandwidthSearch.fit">
 <a class="viewcode-back" href="../../generated/gwlearn.search.BandwidthSearch.html#gwlearn.search.BandwidthSearch.fit">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_method</span> <span class="o">==</span> <span class="s2">&quot;interval&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_method</span> <span class="o">==</span> <span class="s2">&quot;golden_section&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_golden_section</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tolerance</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_golden_section</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tolerance</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">optimal_bandwidth_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scores_</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_score</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">,</span> <span class="n">bw</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">bw</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the model ans report criterion score.</span>
 
 <span class="sd">        In case of invariant y in a local model, returns np.inf</span>
@@ -414,6 +414,7 @@ document.write(`
 
         <span class="n">gwm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span>
             <span class="n">bandwidth</span><span class="o">=</span><span class="n">bw</span><span class="p">,</span>
+            <span class="n">geometry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
             <span class="n">fixed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed</span><span class="p">,</span>
             <span class="n">kernel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">,</span>
             <span class="n">n_jobs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">,</span>
@@ -422,7 +423,7 @@ document.write(`
             <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span>
             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_model_kwargs</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 
         <span class="n">met</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span>
 
@@ -440,7 +441,7 @@ document.write(`
             <span class="k">case</span> <span class="s2">&quot;aicc&quot;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">gwm</span><span class="o">.</span><span class="n">aicc_</span><span class="p">,</span> <span class="n">additional_metrics</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit models using the equal interval search.</span>
 
 <span class="sd">        Parameters</span>
@@ -449,14 +450,12 @@ document.write(`
 <span class="sd">            Independent variables</span>
 <span class="sd">        y : pd.Series</span>
 <span class="sd">            Dependent variable</span>
-<span class="sd">        geometry : gpd.GeoSeries</span>
-<span class="sd">            Geographic location</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">scores</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">metrics</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">bw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_bandwidth</span>
         <span class="k">while</span> <span class="n">bw</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_bandwidth</span><span class="p">:</span>
-            <span class="n">score</span><span class="p">,</span> <span class="n">metric</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="n">bw</span><span class="p">)</span>
+            <span class="n">score</span><span class="p">,</span> <span class="n">metric</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="n">bw</span><span class="p">)</span>
             <span class="n">scores</span><span class="p">[</span><span class="n">bw</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span>
             <span class="n">metrics</span><span class="p">[</span><span class="n">bw</span><span class="p">]</span> <span class="o">=</span> <span class="n">metric</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
@@ -465,12 +464,10 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">scores_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metrics_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_golden_section</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_golden_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">delta</span> <span class="o">=</span> <span class="mf">0.38197</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed</span><span class="p">:</span>
-            <span class="n">pairwise_distance</span> <span class="o">=</span> <span class="n">pdist</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">get_coordinates</span><span class="p">())</span>
+            <span class="n">pairwise_distance</span> <span class="o">=</span> <span class="n">pdist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">get_coordinates</span><span class="p">())</span>
             <span class="n">min_dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">pairwise_distance</span><span class="p">)</span>
             <span class="n">max_dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">pairwise_distance</span><span class="p">)</span>
 
@@ -478,7 +475,7 @@ document.write(`
             <span class="n">c</span> <span class="o">=</span> <span class="n">max_dist</span> <span class="o">*</span> <span class="mf">2.0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">a</span> <span class="o">=</span> <span class="mi">40</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">c</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_bandwidth</span><span class="p">:</span>
             <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_bandwidth</span>
@@ -500,7 +497,7 @@ document.write(`
             <span class="k">if</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">:</span>
                 <span class="n">score_b</span> <span class="o">=</span> <span class="n">scores</span><span class="p">[</span><span class="n">b</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">score_b</span><span class="p">,</span> <span class="n">metric_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
+                <span class="n">score_b</span><span class="p">,</span> <span class="n">metric_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;Bandwidth: </span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">b</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>
@@ -512,7 +509,7 @@ document.write(`
             <span class="k">if</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">:</span>
                 <span class="n">score_d</span> <span class="o">=</span> <span class="n">scores</span><span class="p">[</span><span class="n">d</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">score_d</span><span class="p">,</span> <span class="n">metric_d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+                <span class="n">score_d</span><span class="p">,</span> <span class="n">metric_d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;Bandwidth: </span><span class="si">{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">d</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;0&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">, &quot;</span>

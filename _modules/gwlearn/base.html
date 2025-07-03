@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.base &#8212; gwlearn 0.1.dev63+g80e3a6b documentation</title>
+    <title>gwlearn.base &#8212; gwlearn 0.1.dev64+gd35e426 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=0737b15b"></script>
+    <script src="../../_static/documentation_options.js?v=e8e85b14"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev63+g80e3a6b documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev64+gd35e426 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -353,7 +353,7 @@ document.write(`
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">bandwidth</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">bandwidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">fixed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">kernel</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
             <span class="s2">&quot;triangular&quot;</span><span class="p">,</span>
@@ -367,6 +367,7 @@ document.write(`
         <span class="p">]</span>
         <span class="o">|</span> <span class="n">Callable</span> <span class="o">=</span> <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
         <span class="n">include_focal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">graph</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">fit_global_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -382,6 +383,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span> <span class="o">=</span> <span class="n">bandwidth</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kernel</span> <span class="o">=</span> <span class="n">kernel</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">include_focal</span> <span class="o">=</span> <span class="n">include_focal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">geometry</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">graph</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fixed</span> <span class="o">=</span> <span class="n">fixed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
@@ -397,24 +399,24 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_type</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geometry</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate that geometry contains only Point geometries&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">geom_type</span> <span class="o">==</span> <span class="s2">&quot;Point&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">geometry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">geom_type</span> <span class="o">==</span> <span class="s2">&quot;Point&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">&quot;Unsupported geometry type. Only point geometry is allowed.&quot;</span>
             <span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_build_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Build spatial weights graph&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed</span><span class="p">:</span>  <span class="c1"># fixed distance</span>
             <span class="n">weights</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span><span class="o">.</span><span class="n">build_kernel</span><span class="p">(</span>
-                <span class="n">geometry</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
                 <span class="n">kernel</span><span class="o">=</span><span class="n">_kernel_functions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">],</span>
                 <span class="n">bandwidth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># adaptive KNN</span>
             <span class="n">weights</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span><span class="o">.</span><span class="n">build_kernel</span><span class="p">(</span>
-                <span class="n">geometry</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
                 <span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;identity&quot;</span><span class="p">,</span>
                 <span class="n">k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">include_focal</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span><span class="p">,</span>
             <span class="p">)</span>
@@ -440,12 +442,11 @@ document.write(`
         <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
         <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span>
         <span class="n">weights</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span>
-        <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit models in batches or all at once&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">:</span>
             <span class="n">training_output</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">num_groups</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+            <span class="n">num_groups</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
             <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_groups</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_groups</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">):</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
@@ -636,7 +637,7 @@ document.write(`
 
 <div class="viewcode-block" id="BaseClassifier">
 <a class="viewcode-back" href="../../generated/gwlearn.base.BaseClassifier.html#gwlearn.base.BaseClassifier">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">BaseClassifier</span><span class="p">(</span><span class="n">_BaseModel</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseClassifier</span><span class="p">(</span><span class="n">ClassifierMixin</span><span class="p">,</span> <span class="n">_BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic geographically weighted classification meta-class</span>
 
 <span class="sd">    Parameters</span>
@@ -657,10 +658,18 @@ document.write(`
 <span class="sd">        further spatial analysis of the model performance (and generalises to models</span>
 <span class="sd">        that do not support OOB scoring). However, it leaves out the most representative</span>
 <span class="sd">        sample. By default False</span>
+<span class="sd">    geometry : gpd.GeoSeries, optional</span>
+<span class="sd">        Geographic location of the observations in the sample. Used to determine the</span>
+<span class="sd">        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,</span>
+<span class="sd">        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need</span>
+<span class="sd">        to be specified. To allow prediction, it is required to specify ``geometry``.</span>
 <span class="sd">    graph : Graph, optional</span>
 <span class="sd">        Custom libpysal.graph.Graph object encoding the spatial interaction between</span>
-<span class="sd">        observations. If given, it is used directly and `bandwidth`, `fixed`, `kernel`,</span>
-<span class="sd">        and `include_focal` keywords are ignored.</span>
+<span class="sd">        observations in the sample. If given, it is used directly and ``bandwidth``,</span>
+<span class="sd">        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``</span>
+<span class="sd">        or ``graph`` need to be specified. To allow prediction, it is required to</span>
+<span class="sd">        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes</span>
+<span class="sd">        spatial interaction between observations in ``geometry``.</span>
 <span class="sd">    n_jobs : int, optional</span>
 <span class="sd">        The number of jobs to run in parallel. ``-1`` means using all processors</span>
 <span class="sd">        by default ``-1``</span>
@@ -744,7 +753,7 @@ document.write(`
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">bandwidth</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">bandwidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">fixed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">kernel</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
             <span class="s2">&quot;triangular&quot;</span><span class="p">,</span>
@@ -758,6 +767,7 @@ document.write(`
         <span class="p">]</span>
         <span class="o">|</span> <span class="n">Callable</span> <span class="o">=</span> <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
         <span class="n">include_focal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">graph</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">fit_global_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -778,6 +788,7 @@ document.write(`
             <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span>
             <span class="n">kernel</span><span class="o">=</span><span class="n">kernel</span><span class="p">,</span>
             <span class="n">include_focal</span><span class="o">=</span><span class="n">include_focal</span><span class="p">,</span>
+            <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span>
             <span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span>
             <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
             <span class="n">fit_global_model</span><span class="o">=</span><span class="n">fit_global_model</span><span class="p">,</span>
@@ -806,9 +817,7 @@ document.write(`
 
 <div class="viewcode-block" id="BaseClassifier.fit">
 <a class="viewcode-back" href="../../generated/gwlearn.base.BaseClassifier.html#gwlearn.base.BaseClassifier.fit">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseClassifier&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseClassifier&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the geographically weighted model</span>
 
 <span class="sd">        Parameters</span>
@@ -817,14 +826,12 @@ document.write(`
 <span class="sd">            Independent variables</span>
 <span class="sd">        y : pd.Series</span>
 <span class="sd">            Dependent variable</span>
-<span class="sd">        geometry : gpd.GeoSeries</span>
-<span class="sd">            Geographic location</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_is_binary</span><span class="p">(</span><span class="n">series</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Check if a pandas Series encodes a binary variable (bool or 0/1).&quot;&quot;&quot;</span>
-            <span class="n">unique_values</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">series</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+            <span class="n">unique_values</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">series</span><span class="p">))</span>
 
             <span class="c1"># Check for boolean type</span>
             <span class="k">if</span> <span class="n">series</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="nb">bool</span> <span class="ow">or</span> <span class="n">unique_values</span><span class="o">.</span><span class="n">issubset</span><span class="p">({</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">}):</span>
@@ -833,7 +840,7 @@ document.write(`
             <span class="c1"># Check for 0, 1 encoding</span>
             <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">unique_values</span><span class="o">.</span><span class="n">issubset</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">}))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_geometry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_binary</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only binary dependent variable is supported.&quot;</span><span class="p">)</span>
@@ -841,20 +848,22 @@ document.write(`
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s: Building weights&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_weights</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_weights</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s: Weights ready&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_model_storage</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_global_classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">feature_names_in_</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">feature_names_in_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
         <span class="c1"># fit the models</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s: Fitting the models&quot;</span><span class="p">)</span>
-        <span class="n">training_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_models_batch</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">geometry</span><span class="p">)</span>
+        <span class="n">training_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_models_batch</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s: Models fitted&quot;</span><span class="p">)</span>
@@ -870,7 +879,6 @@ document.write(`
                 <span class="n">models</span><span class="p">,</span>
             <span class="p">)</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">training_output</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_local_models</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">geometry</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">,</span>
@@ -1076,17 +1084,17 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed</span><span class="p">:</span>
-            <span class="n">input_ids</span><span class="p">,</span> <span class="n">local_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span><span class="o">.</span><span class="n">sindex</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+            <span class="n">input_ids</span><span class="p">,</span> <span class="n">local_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">sindex</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
                 <span class="n">geometry</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="s2">&quot;dwithin&quot;</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span>
             <span class="p">)</span>
             <span class="n">distance</span> <span class="o">=</span> <span class="n">_kernel_functions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">](</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">local_ids</span><span class="p">]</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">local_ids</span><span class="p">]</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span>
                     <span class="n">geometry</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">input_ids</span><span class="p">],</span> <span class="n">align</span><span class="o">=</span><span class="kc">False</span>
                 <span class="p">),</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">training_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span><span class="o">.</span><span class="n">get_coordinates</span><span class="p">()</span>
+            <span class="n">training_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">get_coordinates</span><span class="p">()</span>
             <span class="n">tree</span> <span class="o">=</span> <span class="n">KDTree</span><span class="p">(</span><span class="n">training_coords</span><span class="p">)</span>
             <span class="n">query_coords</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">get_coordinates</span><span class="p">()</span>
 
@@ -1240,10 +1248,18 @@ document.write(`
 <span class="sd">        further spatial analysis of the model performance (and generalises to models</span>
 <span class="sd">        that do not support OOB scoring). However, it leaves out the most representative</span>
 <span class="sd">        sample. By default False</span>
+<span class="sd">    geometry : gpd.GeoSeries, optional</span>
+<span class="sd">        Geographic location of the observations in the sample. Used to determine the</span>
+<span class="sd">        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,</span>
+<span class="sd">        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need</span>
+<span class="sd">        to be specified. To allow prediction, it is required to specify ``geometry``.</span>
 <span class="sd">    graph : Graph, optional</span>
 <span class="sd">        Custom libpysal.graph.Graph object encoding the spatial interaction between</span>
-<span class="sd">        observations. If given, it is used directly and `bandwidth`, `fixed`, `kernel`,</span>
-<span class="sd">        and `include_focal` keywords are ignored.</span>
+<span class="sd">        observations in the sample. If given, it is used directly and ``bandwidth``,</span>
+<span class="sd">        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``</span>
+<span class="sd">        or ``graph`` need to be specified. To allow prediction, it is required to</span>
+<span class="sd">        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes</span>
+<span class="sd">        spatial interaction between observations in ``geometry``.</span>
 <span class="sd">    n_jobs : int, optional</span>
 <span class="sd">        The number of jobs to run in parallel. ``-1`` means using all processors</span>
 <span class="sd">        by default ``-1``</span>
@@ -1313,9 +1329,7 @@ document.write(`
 
 <div class="viewcode-block" id="BaseRegressor.fit">
 <a class="viewcode-back" href="../../generated/gwlearn.base.BaseRegressor.html#gwlearn.base.BaseRegressor.fit">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseRegressor&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseRegressor&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the geographically weighted model</span>
 
 <span class="sd">        Parameters</span>
@@ -1327,16 +1341,13 @@ document.write(`
 <span class="sd">        geometry : gpd.GeoSeries</span>
 <span class="sd">            Geographic location</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_geometry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_weights</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_weights</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_model_storage</span><span class="p">()</span>
 
         <span class="c1"># fit the models</span>
-        <span class="n">training_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_models_batch</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">geometry</span><span class="p">)</span>
+        <span class="n">training_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_models_batch</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_models</span><span class="p">:</span>
             <span class="p">(</span>
@@ -1349,7 +1360,6 @@ document.write(`
                 <span class="n">models</span><span class="p">,</span>
             <span class="p">)</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">training_output</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_local_models</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">geometry</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">,</span>
