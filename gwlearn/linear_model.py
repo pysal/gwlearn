@@ -202,13 +202,15 @@ class GWLogisticRegression(BaseClassifier):
         self._model_type = "logistic"
 
     def fit(self, X: pd.DataFrame, y: pd.Series):
-        cols = (
-            self.feature_names_in_ if hasattr(self, "feature_names_in_") else X.columns
-        )
+        if isinstance(X, pd.DataFrame):
+            self.feature_names_in_ = X.columns.to_numpy()
+        else:
+            self.feature_names_in_ = np.arange(X.shape[1])
+
         self._empty_score_data = (
             np.array([]),  # true
             np.array([]),  # pred
-            pd.Series(np.nan, index=cols),  # local coefficients
+            pd.Series(np.nan, index=self.feature_names_in_),  # local coefficients
             np.array([np.nan]),
         )  # intercept
 
@@ -449,8 +451,12 @@ class GWLinearRegression(BaseRegressor):
         )
 
     def fit(self, X: pd.DataFrame, y: pd.Series):
+        if isinstance(X, pd.DataFrame):
+            self.feature_names_in_ = X.columns.to_numpy()
+        else:
+            self.feature_names_in_ = np.arange(X.shape[1])
         self._empty_score_data = (
-            pd.Series(np.nan, index=X.columns),  # local coefficients
+            pd.Series(np.nan, index=self.feature_names_in_),  # local coefficients
             np.array([np.nan]),
         )  # intercept
 

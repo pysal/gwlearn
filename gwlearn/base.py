@@ -569,6 +569,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         if isinstance(X, pd.DataFrame):
             self.feature_names_in_ = X.columns.to_numpy()
+        else:
+            self.feature_names_in_ = np.arange(X.shape[1])
 
         # fit the models
         if self.verbose:
