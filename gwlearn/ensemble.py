@@ -42,8 +42,8 @@ class GWRandomForestClassifier(BaseClassifier):
     fit_global_model : bool, optional
         Determines if the global baseline model shall be fitted alognside the
         geographically weighted, by default True
-    measure_performance : bool, optional
-        Calculate performance metrics for the model. If True, measures accurace score,
+    measure_performance : bool | list, optional
+        Calculate performance metrics for the model. If True, measures accuracy score,
         precision, recall, balanced accuracy, and F1 scores (based on focal prediction,
         pooled local out-of-bag predictions and individual local out-of-bag
         predictions). A subset of these can be specified by passing a list of strings.
@@ -62,7 +62,7 @@ class GWRandomForestClassifier(BaseClassifier):
         with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default
         None
     batch_size : int | None, optional
-        Number of models to process in each batch. Specify batch_size fi your models do
+        Number of models to process in each batch. Specify batch_size if your models do
         not fit into memory. By default None
     min_proportion : float, optional
         Minimum proportion of minority class for a model to be fitted, by default 0.2
@@ -104,9 +104,9 @@ class GWRandomForestClassifier(BaseClassifier):
     log_likelihood_ : float
         Global log likelihood of the model
     aic_ : float
-        Akaike inofrmation criterion of the model
+        Akaike information criterion of the model
     aicc_ : float
-        Corrected Akaike information criterion to account to account for model
+        Corrected Akaike information criterion to account for model
         complexity (smaller bandwidths)
     bic_ : float
         Bayesian information criterion
