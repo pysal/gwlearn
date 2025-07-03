@@ -32,10 +32,18 @@ class GWRandomForestClassifier(BaseClassifier):
         analysis of the model performance (and generalises to models that do not support
         OOB scoring). However, it leaves out the most representative sample. By default
         False
+    geometry : gpd.GeoSeries, optional
+        Geographic location of the observations in the sample. Used to determine the
+        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
+        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need
+        to be specified. To allow prediction, it is required to specify ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
-        observations. If given, it is used directly and `bandwidth`, `fixed`, `kernel`,
-        and `include_focal` keywords are ignored.
+        observations in the sample. If given, it is used directly and ``bandwidth``,
+        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``
+        or ``graph`` need to be specified. To allow prediction, it is required to
+        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes
+        spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors by
         default ``-1``
@@ -162,6 +170,7 @@ class GWRandomForestClassifier(BaseClassifier):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
+        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -182,6 +191,7 @@ class GWRandomForestClassifier(BaseClassifier):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
+            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -205,9 +215,7 @@ class GWRandomForestClassifier(BaseClassifier):
     def _get_oob_score_data(self, true, pred):
         return true, pred
 
-    def fit(
-        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries
-    ) -> "GWRandomForestClassifier":
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> "GWRandomForestClassifier":
         """Fit the geographically weighted model
 
         Parameters
@@ -220,7 +228,7 @@ class GWRandomForestClassifier(BaseClassifier):
             Geographic location
         """
         self._empty_feature_imp = np.array([np.nan] * (X.shape[1]))
-        super().fit(X=X, y=y, geometry=geometry)
+        super().fit(X=X, y=y)
 
         if self.measure_performance:
             if self.measure_performance is True:
@@ -341,10 +349,18 @@ class GWGradientBoostingClassifier(BaseClassifier):
         futher spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default False
+    geometry : gpd.GeoSeries, optional
+        Geographic location of the observations in the sample. Used to determine the
+        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
+        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need
+        to be specified. To allow prediction, it is required to specify ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
-        observations. If given, it is used directly and `bandwidth`, `fixed`, `kernel`,
-        and `include_focal` keywords are ignored.
+        observations in the sample. If given, it is used directly and ``bandwidth``,
+        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``
+        or ``graph`` need to be specified. To allow prediction, it is required to
+        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes
+        spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
@@ -426,6 +442,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
 
     def __init__(
         self,
+        *,
         bandwidth: int | float,
         fixed: bool = False,
         kernel: Literal[
@@ -440,6 +457,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
+        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -456,6 +474,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
+            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -470,9 +489,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
         self._model_type = "gradient_boosting"
         self._empty_score_data = np.nan
 
-    def fit(
-        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries
-    ) -> "GWGradientBoostingClassifier":
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> "GWGradientBoostingClassifier":
         """Fit the geographically weighted model
 
         Parameters
@@ -485,7 +502,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
             Geographic location
         """
         self._empty_feature_imp = np.array([np.nan] * (X.shape[1]))
-        super().fit(X=X, y=y, geometry=geometry)
+        super().fit(X=X, y=y)
 
         if self.measure_performance:
             # OOB accuracy for stochastic GB can be measured as local only. GB is

@@ -80,7 +80,7 @@ class _BaseModel(BaseEstimator):
         self,
         model,
         *,
-        bandwidth: float,
+        bandwidth: float | None = None,
         fixed: bool = False,
         kernel: Literal[
             "triangular",
@@ -94,6 +94,7 @@ class _BaseModel(BaseEstimator):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
+        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -109,6 +110,7 @@ class _BaseModel(BaseEstimator):
         self.bandwidth = bandwidth
         self.kernel = kernel
         self.include_focal = include_focal
+        self.geometry = geometry
         self.graph = graph
         self.fixed = fixed
         self._model_kwargs = kwargs
@@ -124,24 +126,24 @@ class _BaseModel(BaseEstimator):
         self.verbose = verbose
         self._model_type = None
 
-    def _validate_geometry(self, geometry: gpd.GeoSeries):
+    def _validate_geometry(self, geometry):
         """Validate that geometry contains only Point geometries"""
-        if not (geometry.geom_type == "Point").all():
+        if geometry is not None and not (geometry.geom_type == "Point").all():
             raise ValueError(
                 "Unsupported geometry type. Only point geometry is allowed."
             )
 
-    def _build_weights(self, geometry: gpd.GeoSeries) -> graph.Graph:
+    def _build_weights(self) -> graph.Graph:
         """Build spatial weights graph"""
         if self.fixed:  # fixed distance
             weights = graph.Graph.build_kernel(
-                geometry,
+                self.geometry,
                 kernel=_kernel_functions[self.kernel],
                 bandwidth=self.bandwidth,
             )
         else:  # adaptive KNN
             weights = graph.Graph.build_kernel(
-                geometry,
+                self.geometry,
                 kernel="identity",
                 k=self.bandwidth - 1 if self.include_focal else self.bandwidth,
             )
@@ -167,12 +169,11 @@ class _BaseModel(BaseEstimator):
         X: pd.DataFrame,
         y: pd.Series,
         weights: graph.Graph,
-        geometry: gpd.GeoSeries,
     ) -> list:
         """Fit models in batches or all at once"""
         if self.batch_size:
             training_output = []
-            num_groups = len(geometry)
+            num_groups = len(y)
             indices = np.arange(num_groups)
             for i in range(0, num_groups, self.batch_size):
                 if self.verbose:
@@ -361,7 +362,7 @@ class _BaseModel(BaseEstimator):
     #     return tags
 
 
-class BaseClassifier(_BaseModel, ClassifierMixin):
+class BaseClassifier(ClassifierMixin, _BaseModel):
     """Generic geographically weighted classification meta-class
 
     Parameters
@@ -382,10 +383,18 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
         further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default False
+    geometry : gpd.GeoSeries, optional
+        Geographic location of the observations in the sample. Used to determine the
+        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
+        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need
+        to be specified. To allow prediction, it is required to specify ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
-        observations. If given, it is used directly and `bandwidth`, `fixed`, `kernel`,
-        and `include_focal` keywords are ignored.
+        observations in the sample. If given, it is used directly and ``bandwidth``,
+        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``
+        or ``graph`` need to be specified. To allow prediction, it is required to
+        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes
+        spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
@@ -467,7 +476,7 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
         self,
         model,
         *,
-        bandwidth: float,
+        bandwidth: float | None = None,
         fixed: bool = False,
         kernel: Literal[
             "triangular",
@@ -481,6 +490,7 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
+        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -501,6 +511,7 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
+            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -526,9 +537,7 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
                     "imbalance-learn is required for undersampling."
                 ) from err
 
-    def fit(
-        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries
-    ) -> "BaseClassifier":
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> "BaseClassifier":
         """Fit the geographically weighted model
 
         Parameters
@@ -537,14 +546,12 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
             Independent variables
         y : pd.Series
             Dependent variable
-        geometry : gpd.GeoSeries
-            Geographic location
         """
         self._start = time()
 
         def _is_binary(series: pd.Series) -> bool:
             """Check if a pandas Series encodes a binary variable (bool or 0/1)."""
-            unique_values = set(series.unique())
+            unique_values = set(np.unique(series))
 
             # Check for boolean type
             if series.dtype == bool or unique_values.issubset({True, False}):
@@ -553,7 +560,7 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
             # Check for 0, 1 encoding
             return bool(unique_values.issubset({0, 1}))
 
-        self._validate_geometry(geometry)
+        self._validate_geometry(self.geometry)
 
         if not _is_binary(y):
             raise ValueError("Only binary dependent variable is supported.")
@@ -561,20 +568,22 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
         if self.verbose:
             print(f"{(time() - self._start):.2f}s: Building weights")
 
-        if self.graph is not None:
-            weights = self.graph
-        else:
-            weights = self._build_weights(geometry)
+        weights = self.graph if self.graph is not None else self._build_weights()
         if self.verbose:
             print(f"{(time() - self._start):.2f}s: Weights ready")
         self._setup_model_storage()
 
         self._global_classes = np.unique(y)
 
+        if isinstance(X, pd.DataFrame):
+            self.feature_names_in_ = X.columns.to_numpy()
+        else:
+            self.feature_names_in_ = np.arange(X.shape[1])
+
         # fit the models
         if self.verbose:
             print(f"{(time() - self._start):.2f}s: Fitting the models")
-        training_output = self._fit_models_batch(X, y, weights, geometry)
+        training_output = self._fit_models_batch(X, y, weights)
 
         if self.verbose:
             print(f"{(time() - self._start):.2f}s: Models fitted")
@@ -590,7 +599,6 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
                 models,
             ) = zip(*training_output, strict=False)
             self._local_models = pd.Series(models, index=self._names)
-            self._geometry = geometry
         else:
             (
                 self._names,
@@ -793,17 +801,17 @@ class BaseClassifier(_BaseModel, ClassifierMixin):
         self._validate_geometry(geometry)
 
         if self.fixed:
-            input_ids, local_ids = self._geometry.sindex.query(
+            input_ids, local_ids = self.geometry.sindex.query(
                 geometry, predicate="dwithin", distance=self.bandwidth
             )
             distance = _kernel_functions[self.kernel](
-                self._geometry.iloc[local_ids].distance(
+                self.geometry.iloc[local_ids].distance(
                     geometry.iloc[input_ids], align=False
                 ),
                 self.bandwidth,
             )
         else:
-            training_coords = self._geometry.get_coordinates()
+            training_coords = self.geometry.get_coordinates()
             tree = KDTree(training_coords)
             query_coords = geometry.get_coordinates()
 
@@ -950,10 +958,18 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default False
+    geometry : gpd.GeoSeries, optional
+        Geographic location of the observations in the sample. Used to determine the
+        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
+        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need
+        to be specified. To allow prediction, it is required to specify ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
-        observations. If given, it is used directly and `bandwidth`, `fixed`, `kernel`,
-        and `include_focal` keywords are ignored.
+        observations in the sample. If given, it is used directly and ``bandwidth``,
+        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``
+        or ``graph`` need to be specified. To allow prediction, it is required to
+        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes
+        spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
@@ -1021,9 +1037,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         Bayesian information criterion.
     """
 
-    def fit(
-        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries
-    ) -> "BaseRegressor":
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> "BaseRegressor":
         """Fit the geographically weighted model
 
         Parameters
@@ -1035,16 +1049,13 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         geometry : gpd.GeoSeries
             Geographic location
         """
-        self._validate_geometry(geometry)
+        self._validate_geometry(self.geometry)
 
-        if self.graph is not None:
-            weights = self.graph
-        else:
-            weights = self._build_weights(geometry)
+        weights = self.graph if self.graph is not None else self._build_weights()
         self._setup_model_storage()
 
         # fit the models
-        training_output = self._fit_models_batch(X, y, weights, geometry)
+        training_output = self._fit_models_batch(X, y, weights)
 
         if self.keep_models:
             (
@@ -1057,7 +1068,6 @@ class BaseRegressor(_BaseModel, RegressorMixin):
                 models,
             ) = zip(*training_output, strict=False)
             self._local_models = pd.Series(models, index=self._names)
-            self._geometry = geometry
         else:
             (
                 self._names,

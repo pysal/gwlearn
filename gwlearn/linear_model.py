@@ -31,10 +31,18 @@ class GWLogisticRegression(BaseClassifier):
         further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default True
+    geometry : gpd.GeoSeries, optional
+        Geographic location of the observations in the sample. Used to determine the
+        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
+        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need
+        to be specified. To allow prediction, it is required to specify ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
-        observations. If given, it is used directly and `bandwidth`, `fixed`, `kernel`,
-        and `include_focal` keywords are ignored.
+        observations in the sample. If given, it is used directly and ``bandwidth``,
+        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``
+        or ``graph`` need to be specified. To allow prediction, it is required to
+        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes
+        spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
@@ -154,7 +162,7 @@ class GWLogisticRegression(BaseClassifier):
 
     def __init__(
         self,
-        bandwidth: int | float,
+        bandwidth: float | None = None,
         fixed: bool = False,
         kernel: Literal[
             "triangular",
@@ -168,6 +176,7 @@ class GWLogisticRegression(BaseClassifier):
         ]
         | Callable = "bisquare",
         include_focal: bool = True,
+        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -185,6 +194,7 @@ class GWLogisticRegression(BaseClassifier):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
+            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -199,15 +209,20 @@ class GWLogisticRegression(BaseClassifier):
 
         self._model_type = "logistic"
 
-    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
+    def fit(self, X: pd.DataFrame, y: pd.Series):
+        if isinstance(X, pd.DataFrame):
+            self.feature_names_in_ = X.columns.to_numpy()
+        else:
+            self.feature_names_in_ = np.arange(X.shape[1])
+
         self._empty_score_data = (
             np.array([]),  # true
             np.array([]),  # pred
-            pd.Series(np.nan, index=X.columns),  # local coefficients
+            pd.Series(np.nan, index=self.feature_names_in_),  # local coefficients
             np.array([np.nan]),
         )  # intercept
 
-        super().fit(X=X, y=y, geometry=geometry)
+        super().fit(X=X, y=y)
 
         self.local_coef_ = pd.concat(
             [x[2] for x in self._score_data], axis=1, keys=self._names
@@ -344,10 +359,18 @@ class GWLinearRegression(BaseRegressor):
         further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default True
+    geometry : gpd.GeoSeries, optional
+        Geographic location of the observations in the sample. Used to determine the
+        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
+        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need
+        to be specified. To allow prediction, it is required to specify ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
-        observations. If given, it is used directly and `bandwidth`, `fixed`, `kernel`,
-        and `include_focal` keywords are ignored.
+        observations in the sample. If given, it is used directly and ``bandwidth``,
+        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``
+        or ``graph`` need to be specified. To allow prediction, it is required to
+        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes
+        spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
@@ -405,6 +428,7 @@ class GWLinearRegression(BaseRegressor):
         ]
         | Callable = "bisquare",
         include_focal: bool = True,
+        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -420,6 +444,7 @@ class GWLinearRegression(BaseRegressor):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
+            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -441,13 +466,17 @@ class GWLinearRegression(BaseRegressor):
             local_model.intercept_,  # intercept
         )
 
-    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
+    def fit(self, X: pd.DataFrame, y: pd.Series):
+        if isinstance(X, pd.DataFrame):
+            self.feature_names_in_ = X.columns.to_numpy()
+        else:
+            self.feature_names_in_ = np.arange(X.shape[1])
         self._empty_score_data = (
-            pd.Series(np.nan, index=X.columns),  # local coefficients
+            pd.Series(np.nan, index=self.feature_names_in_),  # local coefficients
             np.array([np.nan]),
         )  # intercept
 
-        super().fit(X=X, y=y, geometry=geometry)
+        super().fit(X=X, y=y)
 
         self.local_coef_ = pd.concat(
             [x[0] for x in self._score_data], axis=1, keys=self._names
