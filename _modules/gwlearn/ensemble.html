@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.ensemble &#8212; gwlearn 0.1.dev62+g557a531 documentation</title>
+    <title>gwlearn.ensemble &#8212; gwlearn 0.1.dev63+g80e3a6b documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=d5423b81"></script>
+    <script src="../../_static/documentation_options.js?v=0737b15b"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev62+g557a531 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev63+g80e3a6b documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -317,8 +317,8 @@ document.write(`
 <span class="sd">    fit_global_model : bool, optional</span>
 <span class="sd">        Determines if the global baseline model shall be fitted alognside the</span>
 <span class="sd">        geographically weighted, by default True</span>
-<span class="sd">    measure_performance : bool, optional</span>
-<span class="sd">        Calculate performance metrics for the model. If True, measures accurace score,</span>
+<span class="sd">    measure_performance : bool | list, optional</span>
+<span class="sd">        Calculate performance metrics for the model. If True, measures accuracy score,</span>
 <span class="sd">        precision, recall, balanced accuracy, and F1 scores (based on focal prediction,</span>
 <span class="sd">        pooled local out-of-bag predictions and individual local out-of-bag</span>
 <span class="sd">        predictions). A subset of these can be specified by passing a list of strings.</span>
@@ -337,7 +337,7 @@ document.write(`
 <span class="sd">        with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default</span>
 <span class="sd">        None</span>
 <span class="sd">    batch_size : int | None, optional</span>
-<span class="sd">        Number of models to process in each batch. Specify batch_size fi your models do</span>
+<span class="sd">        Number of models to process in each batch. Specify batch_size if your models do</span>
 <span class="sd">        not fit into memory. By default None</span>
 <span class="sd">    min_proportion : float, optional</span>
 <span class="sd">        Minimum proportion of minority class for a model to be fitted, by default 0.2</span>
@@ -379,9 +379,9 @@ document.write(`
 <span class="sd">    log_likelihood_ : float</span>
 <span class="sd">        Global log likelihood of the model</span>
 <span class="sd">    aic_ : float</span>
-<span class="sd">        Akaike inofrmation criterion of the model</span>
+<span class="sd">        Akaike information criterion of the model</span>
 <span class="sd">    aicc_ : float</span>
-<span class="sd">        Corrected Akaike information criterion to account to account for model</span>
+<span class="sd">        Corrected Akaike information criterion to account for model</span>
 <span class="sd">        complexity (smaller bandwidths)</span>
 <span class="sd">    bic_ : float</span>
 <span class="sd">        Bayesian information criterion</span>

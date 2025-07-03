@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>gwlearn.linear_model.GWLinearRegression &#8212; gwlearn 0.1.dev62+g557a531 documentation</title>
+    <title>gwlearn.linear_model.GWLinearRegression &#8212; gwlearn 0.1.dev63+g80e3a6b documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=d5423b81"></script>
+    <script src="../_static/documentation_options.js?v=0737b15b"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev62+g557a531 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev63+g80e3a6b documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -344,17 +344,17 @@ document.write(`
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>bandwidth</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>bandwidth value consisting of either a distance or N nearest neighbors</p>
+<dt><strong>bandwidth</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Bandwidth value consisting of either a distance or N nearest neighbors</p>
 </dd>
 <dt><strong>fixed</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>True for distance based bandwidth and False for adaptive (nearest neighbor)
 bandwidth, by default False</p>
 </dd>
-<dt><strong>kernel</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>type of kernel function used to weight observations, by default “bisquare”</p>
+<dt><strong>kernel</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">Callable</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Type of kernel function used to weight observations, by default “bisquare”</p>
 </dd>
 <dt><strong>include_focal</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Include focal in the local model training. Excluding it allows
 assessment of geographically weighted metrics on unseen data without a need for
 train/test split, hence providing value for all samples. This is needed for
-futher spatial analysis of the model performance (and generalises to models
+further spatial analysis of the model performance (and generalises to models
 that do not support OOB scoring). However, it leaves out the most representative
 sample. By default True</p>
 </dd>
@@ -365,10 +365,10 @@ and <cite>include_focal</cite> keywords are ignored.</p>
 <dt><strong>n_jobs</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>The number of jobs to run in parallel. <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors
 by default <code class="docutils literal notranslate"><span class="pre">-1</span></code></p>
 </dd>
-<dt><strong>fit_global_model</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Determines if the global baseline model shall be fitted alognside
+<dt><strong>fit_global_model</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Determines if the global baseline model shall be fitted alongside
 the geographically weighted, by default True</p>
 </dd>
-<dt><strong>measure_performance</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Calculate performance metrics for the model. If True, measures accurace score,
+<dt><strong>measure_performance</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Calculate performance metrics for the model. If True, measures accuracy score,
 precision, recall, balanced accuracy, and F1 scores (based on focal prediction,
 pooled local predictions and individual local predictions). By default True</p>
 </dd>
@@ -385,11 +385,22 @@ the disk from which they are loaded in prediction.</p>
 with worker processes, e.g., <code class="docutils literal notranslate"><span class="pre">/tmp</span></code>. Passed to <code class="docutils literal notranslate"><span class="pre">joblib.Parallel</span></code>, by default
 None</p>
 </dd>
-<dt><strong>batch_size</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Number of models to process in each batch. Specify batch_size fi your models do
+<dt><strong>batch_size</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Number of models to process in each batch. Specify batch_size if your models do
 not fit into memory. By default None</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Whether to print progress information, by default False</p>
 </dd>
 <dt><strong>**kwargs</strong></dt><dd><p>Additional keyword arguments passed to <code class="docutils literal notranslate"><span class="pre">sklearn.linear_model.LinearRegression</span></code>
 initialisation</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>local_coef_</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pd.DataFrame</span></code></span></dt><dd><p>Local coefficient of the features in the decision function for each feature at
+each location</p>
+</dd>
+<dt><strong>local_intercept_</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pd.Series</span></code></span></dt><dd><p>Local intercept values at each location</p>
 </dd>
 </dl>
 </dd>

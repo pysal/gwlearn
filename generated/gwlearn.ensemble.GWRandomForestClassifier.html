@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>gwlearn.ensemble.GWRandomForestClassifier &#8212; gwlearn 0.1.dev62+g557a531 documentation</title>
+    <title>gwlearn.ensemble.GWRandomForestClassifier &#8212; gwlearn 0.1.dev63+g80e3a6b documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=d5423b81"></script>
+    <script src="../_static/documentation_options.js?v=0737b15b"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev62+g557a531 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev63+g80e3a6b documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -370,7 +370,7 @@ default <code class="docutils literal notranslate"><span class="pre">-1</span></
 <dt><strong>fit_global_model</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Determines if the global baseline model shall be fitted alognside the
 geographically weighted, by default True</p>
 </dd>
-<dt><strong>measure_performance</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Calculate performance metrics for the model. If True, measures accurace score,
+<dt><strong>measure_performance</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Calculate performance metrics for the model. If True, measures accuracy score,
 precision, recall, balanced accuracy, and F1 scores (based on focal prediction,
 pooled local out-of-bag predictions and individual local out-of-bag
 predictions). A subset of these can be specified by passing a list of strings.
@@ -389,7 +389,7 @@ from which they are loaded in prediction.</p>
 with worker processes, e.g., <code class="docutils literal notranslate"><span class="pre">/tmp</span></code>. Passed to <code class="docutils literal notranslate"><span class="pre">joblib.Parallel</span></code>, by default
 None</p>
 </dd>
-<dt><strong>batch_size</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Number of models to process in each batch. Specify batch_size fi your models do
+<dt><strong>batch_size</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Number of models to process in each batch. Specify batch_size if your models do
 not fit into memory. By default None</p>
 </dd>
 <dt><strong>min_proportion</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Minimum proportion of minority class for a model to be fitted, by default 0.2</p>
@@ -432,9 +432,9 @@ location itself.</p>
 </dd>
 <dt><strong>log_likelihood_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Global log likelihood of the model</p>
 </dd>
-<dt><strong>aic_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Akaike inofrmation criterion of the model</p>
+<dt><strong>aic_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Akaike information criterion of the model</p>
 </dd>
-<dt><strong>aicc_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Corrected Akaike information criterion to account to account for model
+<dt><strong>aicc_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Corrected Akaike information criterion to account for model
 complexity (smaller bandwidths)</p>
 </dd>
 <dt><strong>bic_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Bayesian information criterion</p>

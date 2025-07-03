@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.search &#8212; gwlearn 0.1.dev62+g557a531 documentation</title>
+    <title>gwlearn.search &#8212; gwlearn 0.1.dev63+g80e3a6b documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=d5423b81"></script>
+    <script src="../../_static/documentation_options.js?v=0737b15b"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev62+g557a531 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev63+g80e3a6b documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -286,7 +286,7 @@ document.write(`
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Optimal bandwidth search for geographically-weighted models</span>
 
 <span class="sd">    Reports information criteria and (optionally) other scores from multiple models with</span>
-<span class="sd">    varying bandwidth. When using golden section search, minimises one of</span>
+<span class="sd">    varying bandwidth. When using golden section search, minimizes one of</span>
 <span class="sd">    AIC, AICc, BIC based on prediction probability on focal geometries.</span>
 
 <span class="sd">    When using classification models with a defined ``min_proportion``, keep in mind</span>
@@ -296,8 +296,8 @@ document.write(`
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    model :  model class</span>
-<span class="sd">        Scikit-learn model class</span>
+<span class="sd">    model : model class</span>
+<span class="sd">        Scikit-learn model class or compatible estimator.</span>
 <span class="sd">    fixed : bool, optional</span>
 <span class="sd">        True for distance based bandwidth and False for adaptive (nearest neighbor)</span>
 <span class="sd">        bandwidth, by default False</span>
@@ -306,19 +306,18 @@ document.write(`
 <span class="sd">    n_jobs : int, optional</span>
 <span class="sd">        The number of jobs to run in parallel. ``-1`` means using all processors,</span>
 <span class="sd">        by default ``-1``</span>
-<span class="sd">    search_method : str, optional</span>
+<span class="sd">    search_method : {&quot;golden_section&quot;, &quot;interval&quot;}, optional</span>
 <span class="sd">        Method used to search for optimal bandwidth. When using ``&quot;golden_section&quot;``,</span>
-<span class="sd">        the Golden section optimisation is used to find the optimal bandwidth while</span>
+<span class="sd">        the Golden section optimization is used to find the optimal bandwidth while</span>
 <span class="sd">        attempting to minimize ``criterion``. When using ``&quot;interval&quot;``, fits all models</span>
 <span class="sd">        within the specified bandwidths at a set interval without any attempt to</span>
 <span class="sd">        optimize the selection. By default &quot;golden_section&quot;.</span>
-<span class="sd">    criterion : str, optional</span>
-<span class="sd">        Information criterion used to select optimal bandwidth. Could be one of</span>
-<span class="sd">        ``{&quot;aicc&quot;, &quot;aic&quot;, &quot;bic&quot;}``, by default &quot;aicc&quot;</span>
-<span class="sd">    metrics : list, optional</span>
+<span class="sd">    criterion : {&quot;aicc&quot;, &quot;aic&quot;, &quot;bic&quot;}, optional</span>
+<span class="sd">        Information criterion used to select optimal bandwidth. By default &quot;aicc&quot;.</span>
+<span class="sd">    metrics : list[str] | None, optional</span>
 <span class="sd">        List of additional metrics beyond ``criterion`` to be reported. Has to be</span>
 <span class="sd">        a metric supported by ``model``, passable to ``measure_performance`` argument</span>
-<span class="sd">        of model&#39;s intialization or &#39;prediction_rate&#39;.</span>
+<span class="sd">        of model&#39;s initialization or &#39;prediction_rate&#39;. By default None.</span>
 <span class="sd">    min_bandwidth : int | float | None, optional</span>
 <span class="sd">        Minimum bandwidth to consider, by default None</span>
 <span class="sd">    max_bandwidth : int | float | None, optional</span>
@@ -333,6 +332,15 @@ document.write(`
 <span class="sd">        Verbosity level, by default False</span>
 <span class="sd">    **kwargs</span>
 <span class="sd">        Additional keyword arguments passed to ``model`` initialization</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scores_ : pd.Series</span>
+<span class="sd">        Series of criterion scores for each bandwidth tested (index is bandwidth).</span>
+<span class="sd">    metrics_ : pd.DataFrame</span>
+<span class="sd">        DataFrame of additional metrics for each bandwidth tested.</span>
+<span class="sd">    optimal_bandwidth_ : int | float</span>
+<span class="sd">        The optimal bandwidth found by the search method (minimizing the criterion).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BandwidthSearch.__init__">
