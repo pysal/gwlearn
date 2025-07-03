@@ -1,3 +1,4 @@
+import warnings
 from collections.abc import Callable
 from time import time
 from typing import Literal
@@ -34,18 +35,19 @@ class GWLogisticRegression(BaseClassifier):
     geometry : gpd.GeoSeries, optional
         Geographic location of the observations in the sample. Used to determine the
         spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need
-        to be specified. To allow prediction, it is required to specify ``geometry``.
+        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
+        need to be specified. To allow prediction, it is required to specify
+        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
-        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``
-        or ``graph`` need to be specified. To allow prediction, it is required to
-        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes
-        spatial interaction between observations in ``geometry``.
+        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either
+        ``geometry`` or ``graph`` need to be specified. To allow prediction, it is
+        required to specify ``geometry``. Potentially, both can be specified where
+        ``graph`` encodes spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
-        The number of jobs to run in parallel. ``-1`` means using all processors
-        by default ``-1``
+        The number of jobs to run in parallel. ``-1`` means using all processors by
+        default ``-1``
     fit_global_model : bool, optional
         Determines if the global baseline model shall be fitted alongside
         the geographically weighted, by default True
@@ -232,18 +234,9 @@ class GWLogisticRegression(BaseClassifier):
         )
 
         if self.measure_performance:
-            if self.measure_performance is True:
-                metrics_to_measure = [
-                    "accuracy",
-                    "precision",
-                    "recall",
-                    "balanced_accuracy",
-                    "f1_macro",
-                    "f1_micro",
-                    "f1_weighted",
-                ]
-            else:
+            if self.measure_performance is not True:
                 metrics_to_measure = self.measure_performance
+
             if self.verbose:
                 print(f"{(time() - self._start):.2f}s: Measuring pooled performance")
 
@@ -255,36 +248,57 @@ class GWLogisticRegression(BaseClassifier):
             all_true = np.concatenate(true)
             all_pred = np.concatenate(pred)
 
+            if len(all_true) == 0:
+                warnings.warn(
+                    "No models fitted due to inability to fulfil imbalance rules.",
+                    stacklevel=2,
+                )
+                return self
+
             # global pred scores
-            if "accuracy" in metrics_to_measure:
+            if self.measure_performance is True or (
+                "pooled_score" in metrics_to_measure
+            ):
                 self.pooled_score_ = metrics.accuracy_score(all_true, all_pred)
 
-            if "precision" in metrics_to_measure:
+            if self.measure_performance is True or (
+                "pooled_precision" in metrics_to_measure
+            ):
                 self.pooled_precision_ = metrics.precision_score(
                     all_true, all_pred, zero_division=0
                 )
 
-            if "recall" in metrics_to_measure:
+            if self.measure_performance is True or (
+                "pooled_recall" in metrics_to_measure
+            ):
                 self.pooled_recall_ = metrics.recall_score(
                     all_true, all_pred, zero_division=0
                 )
 
-            if "balanced_accuracy" in metrics_to_measure:
-                self.pred_f1_macropooled_balanced_accuracy_ = (
-                    metrics.balanced_accuracy_score(all_true, all_pred)
+            if self.measure_performance is True or (
+                "pooled_balanced_accuracy" in metrics_to_measure
+            ):
+                self.pooled_balanced_accuracy_ = metrics.balanced_accuracy_score(
+                    all_true, all_pred
                 )
 
-            if "f1_macro" in metrics_to_measure:
+            if self.measure_performance is True or (
+                "pooled_f1_macro" in metrics_to_measure
+            ):
                 self.pooled_f1_macro_ = metrics.f1_score(
                     all_true, all_pred, average="macro", zero_division=0
                 )
 
-            if "f1_micro" in metrics_to_measure:
+            if self.measure_performance is True or (
+                "pooled_f1_micro" in metrics_to_measure
+            ):
                 self.pooled_f1_micro_ = metrics.f1_score(
                     all_true, all_pred, average="micro", zero_division=0
                 )
 
-            if "f1_weighted" in metrics_to_measure:
+            if self.measure_performance is True or (
+                "pooled_f1_weighted" in metrics_to_measure
+            ):
                 self.pooled_f1_weighted_ = metrics.f1_score(
                     all_true, all_pred, average="weighted", zero_division=0
                 )
@@ -295,30 +309,63 @@ class GWLogisticRegression(BaseClassifier):
                 )
 
             # local pred scores
-            local_score = pd.DataFrame(
-                [
-                    self._scores(y_true, y_false)
-                    for y_true, y_false in zip(true, pred, strict=True)
-                ],
-                index=self._names,
-                columns=["pred_" + c for c in metrics_to_measure],
-            )
-            if "accuracy" in metrics_to_measure:
-                self.local_pooled_score_ = local_score["pred_accuracy"]
-            if "precision" in metrics_to_measure:
-                self.local_pooled_precision_ = local_score["pred_precision"]
-            if "recall" in metrics_to_measure:
-                self.local_pooled_recall_ = local_score["pred_recall"]
-            if "balanced_accuracy" in metrics_to_measure:
-                self.local_pooled_balanced_accuracy_ = local_score[
-                    "pred_balanced_accuracy"
+            if self.measure_performance is True:
+                local_cols = [
+                    "pooled_accuracy",
+                    "pooled_precision",
+                    "pooled_recall",
+                    "pooled_balanced_accuracy",
+                    "pooled_f1_macro",
+                    "pooled_f1_micro",
+                    "pooled_f1_weighted",
                 ]
-            if "f1_macro" in metrics_to_measure:
-                self.local_pooled_f1_macro_ = local_score["pred_f1_macro"]
-            if "f1_micro" in metrics_to_measure:
-                self.local_pooled_f1_micro_ = local_score["pred_f1_micro"]
-            if "f1_weighted" in metrics_to_measure:
-                self.local_pooled_f1_weighted_ = local_score["pred_f1_weighted"]
+            else:
+                local_cols = [
+                    c[6:] for c in metrics_to_measure if c.startswith("local_")
+                ]
+            if local_cols:
+                local_score = pd.DataFrame(
+                    [
+                        self._scores(
+                            y_true,
+                            y_false,
+                            metrics_to_measure=[c[7:] for c in local_cols],
+                        )
+                        for y_true, y_false in zip(true, pred, strict=True)
+                    ],
+                    index=self._names,
+                    columns=local_cols,
+                )
+                if self.measure_performance is True or (
+                    "local_pooled_score" in metrics_to_measure
+                ):
+                    self.local_pooled_score_ = local_score["pooled_accuracy"]
+                if self.measure_performance is True or (
+                    "local_pooled_precision" in metrics_to_measure
+                ):
+                    self.local_pooled_precision_ = local_score["pooled_precision"]
+                if self.measure_performance is True or (
+                    "local_pooled_recall" in metrics_to_measure
+                ):
+                    self.local_pooled_recall_ = local_score["pooled_recall"]
+                if self.measure_performance is True or (
+                    "local_pooled_balanced_accuracy" in metrics_to_measure
+                ):
+                    self.local_pooled_balanced_accuracy_ = local_score[
+                        "pooled_balanced_accuracy"
+                    ]
+                if self.measure_performance is True or (
+                    "local_pooled_f1_macro" in metrics_to_measure
+                ):
+                    self.local_pooled_f1_macro_ = local_score["pooled_f1_macro"]
+                if self.measure_performance is True or (
+                    "local_pooled_f1_micro" in metrics_to_measure
+                ):
+                    self.local_pooled_f1_micro_ = local_score["pooled_f1_micro"]
+                if self.measure_performance is True or (
+                    "local_pooled_f1_weighted" in metrics_to_measure
+                ):
+                    self.local_pooled_f1_weighted_ = local_score["pooled_f1_weighted"]
 
             if self.verbose:
                 print(f"{(time() - self._start):.2f}s: Finished")
@@ -362,18 +409,19 @@ class GWLinearRegression(BaseRegressor):
     geometry : gpd.GeoSeries, optional
         Geographic location of the observations in the sample. Used to determine the
         spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need
-        to be specified. To allow prediction, it is required to specify ``geometry``.
+        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
+        need to be specified. To allow prediction, it is required to specify
+        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
-        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``
-        or ``graph`` need to be specified. To allow prediction, it is required to
-        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes
-        spatial interaction between observations in ``geometry``.
+        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either
+        ``geometry`` or ``graph`` need to be specified. To allow prediction, it is
+        required to specify ``geometry``. Potentially, both can be specified where
+        ``graph`` encodes spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
-        The number of jobs to run in parallel. ``-1`` means using all processors
-        by default ``-1``
+        The number of jobs to run in parallel. ``-1`` means using all processors by
+        default ``-1``
     fit_global_model : bool, optional
         Determines if the global baseline model shall be fitted alongside
         the geographically weighted, by default True

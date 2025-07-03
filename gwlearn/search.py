@@ -146,6 +146,9 @@ class BandwidthSearch:
 
         met = [] if self.metrics is None else self.metrics
 
+        if hasattr(gwm, "prediction_rate_") and gwm.prediction_rate_ == 0:
+            return np.nan, [np.nan for _ in met]
+
         additional_metrics = []
         for m in met:
             if m == "accuracy":

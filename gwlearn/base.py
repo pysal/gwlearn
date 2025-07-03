@@ -386,15 +386,16 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
     geometry : gpd.GeoSeries, optional
         Geographic location of the observations in the sample. Used to determine the
         spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need
-        to be specified. To allow prediction, it is required to specify ``geometry``.
+        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
+        need to be specified. To allow prediction, it is required to specify
+        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
-        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``
-        or ``graph`` need to be specified. To allow prediction, it is required to
-        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes
-        spatial interaction between observations in ``geometry``.
+        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either
+        ``geometry`` or ``graph`` need to be specified. To allow prediction, it is
+        required to specify ``geometry``. Potentially, both can be specified where
+        ``graph`` encodes spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
@@ -889,19 +890,25 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         proba = self.predict_proba(X, geometry)
         return proba.idxmax(axis=1)
 
-    def _scores(self, y_true: np.ndarray, y_pred: np.ndarray) -> tuple:
-        if self.measure_performance is True:
-            metrics_to_measure = [
-                "accuracy",
-                "precision",
-                "recall",
-                "balanced_accuracy",
-                "f1_macro",
-                "f1_micro",
-                "f1_weighted",
-            ]
-        else:
-            metrics_to_measure = self.measure_performance
+    def _scores(
+        self,
+        y_true: np.ndarray,
+        y_pred: np.ndarray,
+        metrics_to_measure: list | None = None,
+    ) -> tuple:
+        if metrics_to_measure is None:
+            if self.measure_performance is True:
+                metrics_to_measure = [
+                    "accuracy",
+                    "precision",
+                    "recall",
+                    "balanced_accuracy",
+                    "f1_macro",
+                    "f1_micro",
+                    "f1_weighted",
+                ]
+            else:
+                metrics_to_measure = self.measure_performance
 
         if y_true.shape[0] == 0:
             return (np.nan,) * len(metrics_to_measure)
@@ -961,18 +968,19 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     geometry : gpd.GeoSeries, optional
         Geographic location of the observations in the sample. Used to determine the
         spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need
-        to be specified. To allow prediction, it is required to specify ``geometry``.
+        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
+        need to be specified. To allow prediction, it is required to specify
+        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
-        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``
-        or ``graph`` need to be specified. To allow prediction, it is required to
-        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes
-        spatial interaction between observations in ``geometry``.
+        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either
+        ``geometry`` or ``graph`` need to be specified. To allow prediction, it is
+        required to specify ``geometry``. Potentially, both can be specified where
+        ``graph`` encodes spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
-        The number of jobs to run in parallel. ``-1`` means using all processors
-        by default ``-1``
+        The number of jobs to run in parallel. ``-1`` means using all processors by
+        default ``-1``
     fit_global_model : bool, optional
         Determines if the global baseline model shall be fitted alongside
         the geographically weighted, by default True

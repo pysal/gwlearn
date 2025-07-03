@@ -1,3 +1,4 @@
+import warnings
 from collections.abc import Callable
 from pathlib import Path
 from time import time
@@ -35,15 +36,16 @@ class GWRandomForestClassifier(BaseClassifier):
     geometry : gpd.GeoSeries, optional
         Geographic location of the observations in the sample. Used to determine the
         spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need
-        to be specified. To allow prediction, it is required to specify ``geometry``.
+        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
+        need to be specified. To allow prediction, it is required to specify
+        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
-        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``
-        or ``graph`` need to be specified. To allow prediction, it is required to
-        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes
-        spatial interaction between observations in ``geometry``.
+        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either
+        ``geometry`` or ``graph`` need to be specified. To allow prediction, it is
+        required to specify ``geometry``. Potentially, both can be specified where
+        ``graph`` encodes spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors by
         default ``-1``
@@ -231,18 +233,9 @@ class GWRandomForestClassifier(BaseClassifier):
         super().fit(X=X, y=y)
 
         if self.measure_performance:
-            if self.measure_performance is True:
-                metrics_to_measure = [
-                    "accuracy",
-                    "precision",
-                    "recall",
-                    "balanced_accuracy",
-                    "f1_macro",
-                    "f1_micro",
-                    "f1_weighted",
-                ]
-            else:
+            if self.measure_performance is not True:
                 metrics_to_measure = self.measure_performance
+
             if self.verbose:
                 print(f"{(time() - self._start):.2f}s: Measuring pooled performance")
 
@@ -253,36 +246,53 @@ class GWRandomForestClassifier(BaseClassifier):
             all_true = np.concatenate(true)
             all_pred = np.concatenate(pred)
 
+            if len(all_true) == 0:
+                warnings.warn(
+                    "No models fitted due to inability to fulfil imbalance rules.",
+                    stacklevel=2,
+                )
+                return self
+
             # global OOB scores
-            if "accuracy" in metrics_to_measure:
+            if self.measure_performance is True or ("oob_score" in metrics_to_measure):
                 self.oob_score_ = metrics.accuracy_score(all_true, all_pred)
 
-            if "precision" in metrics_to_measure:
+            if self.measure_performance is True or (
+                "oob_precision" in metrics_to_measure
+            ):
                 self.oob_precision_ = metrics.precision_score(
                     all_true, all_pred, zero_division=0
                 )
 
-            if "recall" in metrics_to_measure:
+            if self.measure_performance is True or ("oob_recall" in metrics_to_measure):
                 self.oob_recall_ = metrics.recall_score(
                     all_true, all_pred, zero_division=0
                 )
 
-            if "balanced_accuracy" in metrics_to_measure:
+            if self.measure_performance is True or (
+                "oob_balanced_accuracy" in metrics_to_measure
+            ):
                 self.oob_balanced_accuracy_ = metrics.balanced_accuracy_score(
                     all_true, all_pred
                 )
 
-            if "f1_macro" in metrics_to_measure:
+            if self.measure_performance is True or (
+                "oob_f1_macro" in metrics_to_measure
+            ):
                 self.oob_f1_macro_ = metrics.f1_score(
                     all_true, all_pred, average="macro", zero_division=0
                 )
 
-            if "f1_micro" in metrics_to_measure:
+            if self.measure_performance is True or (
+                "oob_f1_micro" in metrics_to_measure
+            ):
                 self.oob_f1_micro_ = metrics.f1_score(
                     all_true, all_pred, average="micro", zero_division=0
                 )
 
-            if "f1_weighted" in metrics_to_measure:
+            if self.measure_performance is True or (
+                "oob_f1_weighted" in metrics_to_measure
+            ):
                 self.oob_f1_weighted_ = metrics.f1_score(
                     all_true, all_pred, average="weighted", zero_division=0
                 )
@@ -293,28 +303,63 @@ class GWRandomForestClassifier(BaseClassifier):
                 )
 
             # local OOB scores
-            local_score = pd.DataFrame(
-                [
-                    self._scores(y_true, y_false)
-                    for y_true, y_false in zip(true, pred, strict=True)
-                ],
-                index=self._names,
-                columns=["oob_" + c for c in metrics_to_measure],
-            )
-            if "accuracy" in metrics_to_measure:
-                self.local_oob_score_ = local_score["oob_accuracy"]
-            if "precision" in metrics_to_measure:
-                self.local_oob_precision_ = local_score["oob_precision"]
-            if "recall" in metrics_to_measure:
-                self.local_oob_recall_ = local_score["oob_recall"]
-            if "balanced_accuracy" in metrics_to_measure:
-                self.local_oob_balanced_accuracy_ = local_score["oob_balanced_accuracy"]
-            if "f1_macro" in metrics_to_measure:
-                self.local_oob_f1_macro_ = local_score["oob_f1_macro"]
-            if "f1_micro" in metrics_to_measure:
-                self.local_oob_f1_micro_ = local_score["oob_f1_micro"]
-            if "f1_weighted" in metrics_to_measure:
-                self.local_oob_f1_weighted_ = local_score["oob_f1_weighted"]
+            if self.measure_performance is True:
+                local_cols = [
+                    "oob_accuracy",
+                    "oob_precision",
+                    "oob_recall",
+                    "oob_balanced_accuracy",
+                    "oob_f1_macro",
+                    "oob_f1_micro",
+                    "oob_f1_weighted",
+                ]
+            else:
+                local_cols = [
+                    c[6:] for c in metrics_to_measure if c.startswith("local_")
+                ]
+            if local_cols:
+                local_score = pd.DataFrame(
+                    [
+                        self._scores(
+                            y_true,
+                            y_false,
+                            metrics_to_measure=[c[4:] for c in local_cols],
+                        )
+                        for y_true, y_false in zip(true, pred, strict=True)
+                    ],
+                    index=self._names,
+                    columns=local_cols,
+                )
+                if self.measure_performance is True or (
+                    "local_oob_score" in metrics_to_measure
+                ):
+                    self.local_oob_score_ = local_score["oob_accuracy"]
+                if self.measure_performance is True or (
+                    "local_oob_precision" in metrics_to_measure
+                ):
+                    self.local_oob_precision_ = local_score["oob_precision"]
+                if self.measure_performance is True or (
+                    "local_oob_recall" in metrics_to_measure
+                ):
+                    self.local_oob_recall_ = local_score["oob_recall"]
+                if self.measure_performance is True or (
+                    "local_oob_balanced_accuracy" in metrics_to_measure
+                ):
+                    self.local_oob_balanced_accuracy_ = local_score[
+                        "oob_balanced_accuracy"
+                    ]
+                if self.measure_performance is True or (
+                    "flocal_oob_1_macro" in metrics_to_measure
+                ):
+                    self.local_oob_f1_macro_ = local_score["oob_f1_macro"]
+                if self.measure_performance is True or (
+                    "local_oob_f1_micro" in metrics_to_measure
+                ):
+                    self.local_oob_f1_micro_ = local_score["oob_f1_micro"]
+                if self.measure_performance is True or (
+                    "f1_weighted" in metrics_to_measure
+                ):
+                    self.local_oob_f1_weighted_ = local_score["oob_f1_weighted"]
 
         # feature importances
         self.feature_importances_ = pd.DataFrame(
@@ -352,15 +397,16 @@ class GWGradientBoostingClassifier(BaseClassifier):
     geometry : gpd.GeoSeries, optional
         Geographic location of the observations in the sample. Used to determine the
         spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph`` need
-        to be specified. To allow prediction, it is required to specify ``geometry``.
+        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
+        need to be specified. To allow prediction, it is required to specify
+        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
-        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either ``geometry``
-        or ``graph`` need to be specified. To allow prediction, it is required to
-        specify ``geometry``. Potentially, both can be specified where ``graph`` encodes
-        spatial interaction between observations in ``geometry``.
+        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either
+        ``geometry`` or ``graph`` need to be specified. To allow prediction, it is
+        required to specify ``geometry``. Potentially, both can be specified where
+        ``graph`` encodes spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors
         by default ``-1``
