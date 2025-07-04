@@ -6,7 +6,7 @@ from sklearn import linear_model, metrics, preprocessing
 from sklearn.base import clone
 from sklearn.inspection import permutation_importance
 
-__all__ = ['QuadtreeRegressor', 'QuadtreeClassifier', 'QuadtreeEnsembleRegressor', 'QuadtreeEnsembleClassifier']
+__all__ = ['QuadtreeRegressor', 'QuadtreeClassifier', 'QuadtreeEnsembleRegressor', 'QuadtreeEnsembleClassifier', 'QuadtreeBoostingRegressor']
 
 class _Cell:
 
@@ -25,7 +25,7 @@ class _Cell:
         pruned=None,
     ):
         """
-        Class to contain cells at each level of a Quadtree_Regression object.
+        Class to contain cells at each level of a QuadtreeRegressor object.
         This class should not be instantiated directly by users.
 
         index : int
@@ -176,7 +176,7 @@ class QuadtreeRegressor:
         bounds=None
     ):
         """
-        Initialize a Quadtree_Regression object
+        Initialize a QuadtreeRegressor.
 
         Parameters
         ----------
@@ -439,7 +439,7 @@ class QuadtreeRegressor:
 
         Returns
         -------
-        Quadtree_Regression() object
+        QuadtreeRegressor() object
         """
         if coordinates is None:
             if X.ndim != 3:
@@ -656,7 +656,7 @@ class QuadtreeRegressor:
             assert all(provided), (
                 "either cached values or a full new input X, y, coordinates is needed to be scored."
             )
-            prediction = self.predict(X, y, coordinates)
+            prediction = self.predict(X, coordinates)
         else:
             prediction = self.prediction_
         return self._score_function(self.leaves_[0].y, prediction)
@@ -893,9 +893,9 @@ class QuadtreeRegressor:
 
 class QuadtreeBoostingRegressor(QuadtreeRegressor):
     """
-    Boosting version of the quadtree regression, setting defaults
+    Boosting version of the QuadtreeRegressor, setting defaults
     boost = True, split_test='eps', and prune=True.
-    Consult Quadtree_Regression for specifics.
+    Consult QuadtreeRegressor for specifics.
     """
     def __init__(self, *, boost=True, **kwargs):
         kwargs['split_test'] = 'eps'
@@ -906,7 +906,7 @@ class QuadtreeClassifier(QuadtreeRegressor):
     """
     Classifier version of the quadtree regression, setting defaults
     to model=LogisticRegression(), split_test='eps', and split_test='eps'.
-    Consult Quadtree_Regression for specifics.
+    Consult QuadtreeRegressor for specifics.
     """
     def __init__(self, *, model=None, score_function=metrics.accuracy_score, split_test='eps', prune=False, **kwargs):
         if model is None:
@@ -934,7 +934,7 @@ def _df_from_sparse_features(features, leaf_ixs, effect_ixs, effect_names):
     )
     return df
 
-KDTreeEnsembleRegressor = KDTreeRegressor
-KDTreeEnsembleRegressor.predict = KDTreeEnsembleRegressor._predict_local
-KDTreeEnsembleClassifier = KDTreeClassifier
-KDTreeEnsembleClassifier.predict = KDTreeEnsembleClassifier._predict_local
+QuadtreeEnsembleRegressor = QuadtreeRegressor
+QuadtreeEnsembleRegressor.predict = QuadtreeEnsembleRegressor._predict_local
+QuadtreeEnsembleClassifier = QuadtreeClassifier
+QuadtreeEnsembleClassifier.predict = QuadtreeEnsembleClassifier._predict_local

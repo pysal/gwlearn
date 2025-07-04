@@ -7,7 +7,7 @@ from sklearn.base import clone
 from sklearn import linear_model, metrics,
 import warnings
 
-__all__ = ['KDTreeRegressor', 'KDTreeClassifier', 'KDTreeEnsembleRegressor', 'KDTreeEnsembleClassifier']
+__all__ = ['KDTreeRegressor', 'KDTreeClassifier', 'KDTreeEnsembleRegressor', 'KDTreeEnsembleClassifier', 'KDTreeBoostingRegressor']
 
 class _Node(_Cell):
     def _split_by_plane(self, plane, boost=False):
@@ -85,10 +85,10 @@ class _WeightedMedianSplitNode(_Node):
             if abs(max_x - min_x)>abs(max_y-min_y):
                 # in classification, assigns even prediction misses to each half
                 # in regression, assigns even residuals to each half
-                mid_x = weighted_median(self.coordinates[:,0], weights=numpy.abs(self.residuals_))
+                mid_x = _weighted_median(self.coordinates[:,0], weights=numpy.abs(self.residuals_))
                 plane = [(mid_x, min_y), (mid_x, max_y)]
             else:
-                mid_y = weighted_median(self.coordinates[:,1], weights=numpy.abs(self.residuals_))
+                mid_y = _weighted_median(self.coordinates[:,1], weights=numpy.abs(self.residuals_))
                 plane = [(min_x, mid_y), (max_x, mid_y)]
             return self._split_by_plane(plane, boost=boost)
 
@@ -109,7 +109,7 @@ class _OptimalSplitNode(_Node):
                 mid_x = type(min_x)(optimize.minimize(
                     objective,
                     bounds=[(min_x, max_x)],
-                    x0=[weighted_median(self.coordinates[:,0], weights=numpy.abs(self.residuals_))]
+                    x0=[_weighted_median(self.coordinates[:,0], weights=numpy.abs(self.residuals_))]
                     ).x.item()
                     )
 
@@ -126,7 +126,7 @@ class _OptimalSplitNode(_Node):
                 mid_y = type(min_x)(optimize.minimize(
                     objective,
                     bounds=[(min_y, max_y)],
-                    x0=[weighted_median(self.coordinates[:,1], weights=numpy.abs(self.residuals_))]
+                    x0=[_weighted_median(self.coordinates[:,1], weights=numpy.abs(self.residuals_))]
                     ).x.item()
                     )
 
@@ -524,10 +524,34 @@ class KDTreeRegressor(QuadtreeRegressor):
                 self._update_map(parent, leaf=True)
         return retained_splits
 
-class KDTreeClassifier(QuadtreeClassifier):
-    ...
+class KDTreeBoostingRegressor(KDTreeRegressor):
+    """
+    Boosting version of the KDTreeRegressor, setting defaults
+    boost = True, split_test='eps', and prune=True.
+    Consult KDTreeRegressor for specifics.
+    """
+    def __init__(self, *, boost=True, **kwargs):
+        kwargs['split_test'] = 'eps'
+        kwargs.setdefault("prune", True)
+        super().__init__(**kwargs)
 
-def weighted_median(x, weights):
+class KDTreeClassifier(QuadtreeRegressor):
+    """
+    Classifier version of the quadtree regression, setting defaults
+    to model=LogisticRegression(), split_test='eps', and split_test='eps'.
+    Consult KDTreeRegressor for specifics.
+    """
+    def __init__(self, *, model=None, score_function=metrics.accuracy_score, split_test='eps', prune=False, **kwargs):
+        if model is None:
+            model = linear_model.LogisticRegression()
+        if split_test != "eps":
+            raise NotImplementedError("only 'eps' splitting is supported with classifiers.")
+        if prune not in ("perm", True, False):
+            raise NotImplementedError("only 'perm' splitting is supported with classifiers.")
+        super().__init__(model=model, score_function=score_function, split_test=split_test, prune=prune)
+
+
+def _weighted_median(x, weights):
     df = pandas.DataFrame.from_dict(dict(data=x, weight=weights))
     df.sort_values("data", inplace=True)
     cutpoint = df.weight.sum() / 2
