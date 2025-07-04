@@ -25,9 +25,9 @@ class BandwidthSearch:
         Scikit-learn model class or compatible estimator.
     fixed : bool, optional
         True for distance based bandwidth and False for adaptive (nearest neighbor)
-        bandwidth, by default False
+        bandwidth, by default ``False``
     kernel : str | Callable, optional
-        Type of kernel function used to weight observations, by default "bisquare"
+        Type of kernel function used to weight observations, by default ``"bisquare"``
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all processors,
         by default ``-1``
@@ -36,29 +36,29 @@ class BandwidthSearch:
         the Golden section optimization is used to find the optimal bandwidth while
         attempting to minimize or maximise ``criterion``. When using ``"interval"``,
         fits all models within the specified bandwidths at a set interval without any
-        attempt to optimize the selection. By default "golden_section".
+        attempt to optimize the selection. By default ``"golden_section"``.
     criterion : str, optional
         Vriterion used to select optimal bandwidth. Can be one of
-        ``{"aicc", "aic", "bic"}`` or any of ``metrics``. By default "aicc".
+        ``{"aicc", "aic", "bic"}`` or any of ``metrics``. By default ``"aicc"``.
     metrics : list[str] | None, optional
         List of additional metrics beyond ``criterion`` to be reported. Has to be
         a metric supported by ``model``, passable to ``measure_performance`` argument
-        of model's initialization or 'prediction_rate'. By default None.
+        of model's initialization or 'prediction_rate'. By default ``None``.
     minimize : bool, optional
         Minimize or maximize the ``criterion``. When using information criterions,
         like AICc, the optimal solution is the lowest value. When using other metrics,
         the optimal may the the highest value. By default True, assuming lower is
         better.
     min_bandwidth : int | float | None, optional
-        Minimum bandwidth to consider, by default None
+        Minimum bandwidth to consider, by default ``None``
     max_bandwidth : int | float | None, optional
-        Maximum bandwidth to consider, by default None
+        Maximum bandwidth to consider, by default ``None``
     interval : int | float | None, optional
-        Interval for bandwidth search when using "interval" method, by default None
+        Interval for bandwidth search when using "interval" method, by default ``None``
     max_iterations : int, optional
-        Maximum number of iterations for golden section search, by default 100
+        Maximum number of iterations for golden section search, by default ``100``
     tolerance : float, optional
-        Tolerance for convergence in golden section search, by default 1e-2
+        Tolerance for convergence in golden section search, by default ``1e-2``
     verbose : bool | int, optional
         Verbosity level, by default False
     **kwargs
