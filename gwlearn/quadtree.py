@@ -6,10 +6,10 @@ from sklearn import linear_model, metrics, preprocessing
 from sklearn.base import clone
 from sklearn.inspection import permutation_importance
 
-__all__ = ['QuadtreeRegression']
+__all__ = ['QuadtreeRegressor', 'QuadtreeClassifier', 'QuadtreeEnsembleRegressor', 'QuadtreeEnsembleClassifier']
 
 class _Cell:
-    
+
     def __init__(
         self,
         index,
@@ -429,13 +429,13 @@ class QuadtreeRegressor:
         ----------
         X : numpy.ndarray, pandas.DataFrame
             array of shape (n_samples, n_features) features to be fit, or
-            (n_rows, n_cols, n_features) if a raster is input. 
+            (n_rows, n_cols, n_features) if a raster is input.
             An intercept should not be included.
         y : numpy.ndarray, pandas.Series, pandas.DataFrame
             array of outcome shaped (n_samples,) or (n_rows, n_cols) to be predicted. In nearly all cases, this should
             be centered on zero for splits to be found successfully.
         coordinates: numpy.ndarray
-            array of shape (n_samples, 2) where observations occur. 
+            array of shape (n_samples, 2) where observations occur.
 
         Returns
         -------
@@ -933,3 +933,8 @@ def _df_from_sparse_features(features, leaf_ixs, effect_ixs, effect_names):
         names = ("leaf", "effect")
     )
     return df
+
+KDTreeEnsembleRegressor = KDTreeRegressor
+KDTreeEnsembleRegressor.predict = KDTreeEnsembleRegressor._predict_local
+KDTreeEnsembleClassifier = KDTreeClassifier
+KDTreeEnsembleClassifier.predict = KDTreeEnsembleClassifier._predict_local

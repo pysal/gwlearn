@@ -4,8 +4,10 @@ from collections import defaultdict
 import pandas
 from scipy import sparse, stats, optimize
 from sklearn.base import clone
-from sklearn import linear_model, metrics, 
-import warnings 
+from sklearn import linear_model, metrics,
+import warnings
+
+__all__ = ['KDTreeRegressor', 'KDTreeClassifier', 'KDTreeEnsembleRegressor', 'KDTreeEnsembleClassifier']
 
 class _Node(_Cell):
     def _split_by_plane(self, plane, boost=False):
@@ -17,7 +19,7 @@ class _Node(_Cell):
         bounds = [
             [min_x, min_y, *plane[1]],
             [*plane[0], max_x, max_y]
-        ]  
+        ]
 
         children = []
         if boost:
@@ -51,12 +53,12 @@ class _Node(_Cell):
                 cell.boosted = True
             children.append(cell)
         return children
-    
+
     def split(self, boost=False):
         min_x, min_y, max_x, max_y = self.bounds
         if abs(max_x - min_x)>abs(max_y-min_y):
             mid_x = numpy.median(self.coordinates[:,0])
-            plane = [(mid_x, min_y), (mid_x, max_y)] 
+            plane = [(mid_x, min_y), (mid_x, max_y)]
         else:
             mid_y = numpy.median(self.coordinates[:,1])
             plane = [(min_x, mid_y), (max_x, mid_y)]
@@ -69,9 +71,9 @@ class _RandomSplitNode(_Node):
         take = numpy.ceil(frac*n_in_node).astype(int)
         # allow replacement iff the take is bigger than the leaf
         ixs = numpy.random.choice(numpy.arange(n_in_node), take, replace=take>n_in_node)
-        if abs(max_x - min_x)>abs(max_y-min_y): 
+        if abs(max_x - min_x)>abs(max_y-min_y):
             mid_x = numpy.median(self.coordinates[ixs,0])
-            plane = [(mid_x, min_y), (mid_x, max_y)] 
+            plane = [(mid_x, min_y), (mid_x, max_y)]
         else:
             mid_y = numpy.median(self.coordinates[ixs,1])
             plane = [(min_x, mid_y), (max_x, mid_y)]
@@ -80,11 +82,11 @@ class _RandomSplitNode(_Node):
 class _WeightedMedianSplitNode(_Node):
     def split(self, boost=False):
             min_x, min_y, max_x, max_y = self.bounds
-            if abs(max_x - min_x)>abs(max_y-min_y): 
+            if abs(max_x - min_x)>abs(max_y-min_y):
                 # in classification, assigns even prediction misses to each half
                 # in regression, assigns even residuals to each half
                 mid_x = weighted_median(self.coordinates[:,0], weights=numpy.abs(self.residuals_))
-                plane = [(mid_x, min_y), (mid_x, max_y)] 
+                plane = [(mid_x, min_y), (mid_x, max_y)]
             else:
                 mid_y = weighted_median(self.coordinates[:,1], weights=numpy.abs(self.residuals_))
                 plane = [(min_x, mid_y), (max_x, mid_y)]
@@ -93,7 +95,7 @@ class _WeightedMedianSplitNode(_Node):
 class _OptimalSplitNode(_Node):
     def split(self, boost=False, min_leaf_size=10):
         min_x, min_y, max_x, max_y = self.bounds
-        if abs(max_x - min_x)>abs(max_y-min_y): 
+        if abs(max_x - min_x)>abs(max_y-min_y):
             # in classification, assigns even prediction misses to each half
             # in regression, assigns even residuals to each half
             def objective(t):
@@ -110,8 +112,8 @@ class _OptimalSplitNode(_Node):
                     x0=[weighted_median(self.coordinates[:,0], weights=numpy.abs(self.residuals_))]
                     ).x.item()
                     )
-                
-            plane = [(mid_x, min_y), (mid_x, max_y)] 
+
+            plane = [(mid_x, min_y), (mid_x, max_y)]
         else:
             def objective(t):
                 plane = [(min_x, t), (max_x, t)]
@@ -127,7 +129,7 @@ class _OptimalSplitNode(_Node):
                     x0=[weighted_median(self.coordinates[:,1], weights=numpy.abs(self.residuals_))]
                     ).x.item()
                     )
-                
+
             plane = [(min_x, mid_y), (max_x, mid_y)]
         return self._split_by_plane(plane, boost=boost)
 
@@ -166,14 +168,14 @@ class KDTreeRegressor(QuadtreeRegressor):
             one of:
             1. median (default): split the page into two equal halves along its longest dimension
             2. int/float: split the page into two equal halves along its longest dimension
-                by sampling this many points/this percentage of the page and calculating the 
-                median. If the sample is smaller than min_leaf_size, then min_leaf_size will 
+                by sampling this many points/this percentage of the page and calculating the
+                median. If the sample is smaller than min_leaf_size, then min_leaf_size will
                 be used instead.
             3. weighted: split the page into two equal halves along its longest dimension
                 the loss-weighted median along the longest dimension.
-            4. optimal: split the page into two halves along its longest dimension in 
+            4. optimal: split the page into two halves along its longest dimension in
                 a way that minimizes the loss for the split. This tends to result in the
-                same splits as the weighted outcome for many score functions. 
+                same splits as the weighted outcome for many score functions.
         split_test : either 'eps' or 'lrt' (default: 'eps')
             splitting rule to use to grow the tree. If 'eps', then
             a node is split when the improvement from introducing
@@ -307,7 +309,7 @@ class KDTreeRegressor(QuadtreeRegressor):
             return _OptimalSplitNode(*args, **kwargs)
         else:
             raise ValueError("split_method must be either 'median', 'gini', or a float/int value")
-    
+
     def fit(self, X, y, coordinates=None):
         """
         Fit a KDTreeRegressor on input coordinates, with features X and outcome y.
@@ -316,13 +318,13 @@ class KDTreeRegressor(QuadtreeRegressor):
         ----------
         X : numpy.ndarray, pandas.DataFrame
             array of shape (n_samples, n_features) features to be fit, or
-            (n_rows, n_cols, n_features) if a raster is input. 
+            (n_rows, n_cols, n_features) if a raster is input.
             An intercept should not be included.
         y : numpy.ndarray, pandas.Series, pandas.DataFrame
             array of outcome shaped (n_samples,) or (n_rows, n_cols) to be predicted. In nearly all cases, this should
             be centered on zero for splits to be found successfully.
         coordinates: numpy.ndarray
-            array of shape (n_samples, 2) where observations occur. 
+            array of shape (n_samples, 2) where observations occur.
 
         Returns
         -------
@@ -416,9 +418,9 @@ class KDTreeRegressor(QuadtreeRegressor):
         self.geoms_ = geopandas.GeoDataFrame(pandas.DataFrame.from_records(tmp_geoms)).sort_values("depth")
 
         return self
-    
+
     def _evaluate_splits(self, parent, X_global, y_global):
-        # NOTE: parent.y refers to the y within parent. y_global refers to *all y*. 
+        # NOTE: parent.y refers to the y within parent. y_global refers to *all y*.
         # same with X_global
         if isinstance(self.split_method, (float,int)):
             # check node size limits first
@@ -433,7 +435,7 @@ class KDTreeRegressor(QuadtreeRegressor):
             else:
                 n_in_parent = len(parent.y)
                 f = numpy.maximum(
-                    # if the int is bigger than the leaf, 
+                    # if the int is bigger than the leaf,
                     # just sample from the leaf itself
                     numpy.minimum(
                         self.split_method/n_in_parent,
@@ -447,11 +449,11 @@ class KDTreeRegressor(QuadtreeRegressor):
             left, right = parent.split(boost=self.boost, min_leaf_size=self.min_leaf_size)
         else:
             left, right = parent.split(boost=self.boost)
-        
+
         self.levels_[parent.depth+1].extend([left, right])
         retain_split = numpy.ones((2,)).astype(bool)
         candidate_labels = self.labels_.copy()
-        
+
         for i,split in enumerate([left, right]):
             too_deep = split.depth > self.max_depth
             if too_deep:
@@ -473,10 +475,10 @@ class KDTreeRegressor(QuadtreeRegressor):
                 if not is_improvement:
                     retain_split[i] = False
             else:
-                # LRT is a global check, so we update labels and then 
+                # LRT is a global check, so we update labels and then
                 # run the LRT checks
                 candidate_labels[split.ids] = split.index
-            
+
         if self.split_test == 'lrt':
             ### Now that we have all the labels, run the test on label : feature terms
             # we use get dummies here because the one hot encoder isn't built yet!
@@ -519,8 +521,8 @@ class KDTreeRegressor(QuadtreeRegressor):
                 retained_splits.append(split)
             else:
                 #print(f"Split {split.index} is not retained")
-                self._update_map(parent, leaf=True)        
-        return retained_splits 
+                self._update_map(parent, leaf=True)
+        return retained_splits
 
 class KDTreeClassifier(QuadtreeClassifier):
     ...
@@ -531,3 +533,8 @@ def weighted_median(x, weights):
     cutpoint = df.weight.sum() / 2
     wsums = df.weight.cumsum()
     return df.data[wsums >= cutpoint].iloc[0]
+
+KDTreeEnsembleRegressor = KDTreeRegressor
+KDTreeEnsembleRegressor.predict = KDTreeEnsembleRegressor._predict_local
+KDTreeEnsembleClassifier = KDTreeClassifier
+KDTreeEnsembleClassifier.predict = KDTreeEnsembleClassifier._predict_local
