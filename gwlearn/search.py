@@ -192,7 +192,10 @@ class BandwidthSearch:
             bw += self.interval
         self.scores_ = pd.Series(scores, name=self.criterion)
         self.metrics_ = pd.DataFrame(
-            metrics, index=["aicc", "aic", "bic"] + self.metrics
+            metrics,
+            index=["aicc", "aic", "bic"] + self.metrics
+            if self.metrics
+            else ["aicc", "aic", "bic"],
         ).T
 
     def _golden_section(self, X: pd.DataFrame, y: pd.Series, tolerance: float) -> None:
@@ -276,5 +279,8 @@ class BandwidthSearch:
 
         self.scores_ = pd.Series(scores, name="oob_score")
         self.metrics_ = pd.DataFrame(
-            metrics, index=["aicc", "aic", "bic"] + self.metrics
+            metrics,
+            index=["aicc", "aic", "bic"] + self.metrics
+            if self.metrics
+            else ["aicc", "aic", "bic"],
         ).T
