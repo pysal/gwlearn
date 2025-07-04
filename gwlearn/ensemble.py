@@ -297,6 +297,13 @@ class GWRandomForestClassifier(BaseClassifier):
                     all_true, all_pred, average="weighted", zero_division=0
                 )
 
+            if self.measure_performance is True or (
+                "oob_log_loss" in metrics_to_measure
+            ):
+                self.oob_f1_weighted_ = metrics.f1_score(
+                    all_true, all_pred, average="weighted", zero_division=0
+                )
+
             if self.verbose:
                 print(
                     f"{(time() - self._start):.2f}s: Measuring local pooled performance"

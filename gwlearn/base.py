@@ -103,6 +103,7 @@ class _BaseModel(BaseEstimator):
         keep_models: bool | str | Path = False,
         temp_folder: str | None = None,
         batch_size: int | None = None,
+        leave_out: float | None = None,
         verbose: bool = False,
         **kwargs,
     ):
@@ -123,6 +124,7 @@ class _BaseModel(BaseEstimator):
         self.keep_models = keep_models
         self.temp_folder = temp_folder
         self.batch_size = batch_size
+        self.leave_out = leave_out
         self.verbose = verbose
         self._model_type = None
 
@@ -404,8 +406,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         the geographically weighted, by default True
     measure_performance : bool | list, optional
         Calculate performance metrics for the model. If True, measures accuracy score,
-        precision, recall, balanced accuracy, and F1 scores. A subset of these can be
-        specified by passing a list of strings. By default True
+        precision, recall, balanced accuracy, F1 scores and log loss. A subset of these
+        can be specified by passing a list of strings. By default True
     strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``,
         by default False. None is treated as False but provides a warning if there are
@@ -502,6 +504,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         batch_size: int | None = None,
         min_proportion: float = 0.2,
         undersample: bool = False,
+        leave_out: float | None = None,
         random_state: int | None = None,
         verbose: bool = False,
         **kwargs,
@@ -521,6 +524,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             keep_models=keep_models,
             temp_folder=temp_folder,
             batch_size=batch_size,
+            leave_out=leave_out,
             verbose=verbose,
             **kwargs,
         )
@@ -633,13 +637,14 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         if self.measure_performance:
             if self.measure_performance is True:
                 metrics_to_measure = [
-                    "accuracy",
+                    "score",
                     "precision",
                     "recall",
                     "balanced_accuracy",
                     "f1_macro",
                     "f1_micro",
                     "f1_weighted",
+                    "log_loss",
                 ]
             else:
                 metrics_to_measure = self.measure_performance
@@ -647,7 +652,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                 print(f"{(time() - self._start):.2f}s: Measuring focal performance")
             masked_y = y[~nan_mask]
 
-            if "accuracy" in metrics_to_measure:
+            if "score" in metrics_to_measure:
                 self.score_ = metrics.accuracy_score(masked_y, self.pred_)
 
             if "precision" in metrics_to_measure:
@@ -680,6 +685,12 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                     masked_y, self.pred_, average="weighted", zero_division=0
                 )
 
+            if "log_loss" in metrics_to_measure:
+                self.log_loss_ = metrics.log_loss(
+                    masked_y,
+                    self.proba_[~nan_mask],
+                )
+
         # Compute global log likelihood and information criteria
         if self.verbose:
             print(f"{(time() - self._start):.2f}s: Computing global likelihood")
@@ -699,7 +710,16 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         focal_x: np.ndarray,
         model_kwargs: dict,
     ) -> tuple:
-        """Fit individual local model"""
+        """Fit individual local model
+
+
+        TODO:
+            1. take out a subset
+            2. predict_proba on the subset
+            3. return proba and y
+            4. (elsewhere) compute log_loss and other metrics based on the take out data
+
+        """
         if self.undersample:
             from imblearn.under_sampling import RandomUnderSampler
 
