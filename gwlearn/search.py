@@ -144,24 +144,20 @@ class BandwidthSearch:
             **self._model_kwargs,
         ).fit(X=X, y=y)
 
-        met = [] if self.metrics is None else self.metrics
+        met = ["aicc", "aic", "bic"]
+        if self.metrics is not None:
+            met += self.metrics
 
         if hasattr(gwm, "prediction_rate_") and gwm.prediction_rate_ == 0:
             return np.nan, [np.nan for _ in met]
 
-        additional_metrics = []
+        all_metrics = []
         for m in met:
             if m == "accuracy":
                 m = "score"
-            additional_metrics.append(getattr(gwm, m + "_"))
+            all_metrics.append(getattr(gwm, m + "_"))
 
-        match self.criterion:
-            case "aic":
-                return gwm.aic_, additional_metrics
-            case "bic":
-                return gwm.bic_, additional_metrics
-            case "aicc":
-                return gwm.aicc_, additional_metrics
+        return all_metrics[met.index(self.criterion)], all_metrics
 
     def _interval(self, X: pd.DataFrame, y: pd.Series) -> None:
         """Fit models using the equal interval search.
@@ -184,7 +180,9 @@ class BandwidthSearch:
                 print(f"Bandwidth: {bw:.2f}, {self.criterion}: {scores[bw]:.3f}")
             bw += self.interval
         self.scores_ = pd.Series(scores, name=self.criterion)
-        self.metrics_ = pd.DataFrame(metrics, index=self.metrics).T
+        self.metrics_ = pd.DataFrame(
+            metrics, index=["aicc", "aic", "bic"] + self.metrics
+        ).T
 
     def _golden_section(self, X: pd.DataFrame, y: pd.Series, tolerance: float) -> None:
         delta = 0.38197
@@ -253,4 +251,6 @@ class BandwidthSearch:
             diff = np.abs(score_b - score_d)
 
         self.scores_ = pd.Series(scores, name="oob_score")
-        self.metrics_ = pd.DataFrame(metrics, index=self.metrics).T
+        self.metrics_ = pd.DataFrame(
+            metrics, index=["aicc", "aic", "bic"] + self.metrics
+        ).T

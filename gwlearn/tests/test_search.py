@@ -386,7 +386,7 @@ def test_bandwidth_search_metrics(sample_data, search_method):
     # Check that metrics were tracked correctly
     assert hasattr(search, "metrics_")
     assert isinstance(search.metrics_, pd.DataFrame)
-    assert list(search.metrics_.columns) == custom_metrics
+    assert list(search.metrics_.columns) == ["aicc", "aic", "bic"] + custom_metrics
     assert len(search.metrics_) == len(search.scores_)
 
     # Verify that metrics contain expected types
