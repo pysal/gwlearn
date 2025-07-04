@@ -386,7 +386,7 @@ def test_bandwidth_search_metrics(sample_data, search_method):
     # Check that metrics were tracked correctly
     assert hasattr(search, "metrics_")
     assert isinstance(search.metrics_, pd.DataFrame)
-    assert list(search.metrics_.columns) == custom_metrics
+    assert list(search.metrics_.columns) == ["aicc", "aic", "bic"] + custom_metrics
     assert len(search.metrics_) == len(search.scores_)
 
     # Verify that metrics contain expected types
@@ -402,3 +402,34 @@ def test_bandwidth_search_metrics(sample_data, search_method):
         if metric == "prediction_rate":
             assert (search.metrics_[metric] > 0).all()
             assert (search.metrics_[metric] <= 1).all()
+
+
+def test_maximize_custom_metric(sample_data):
+    """Test that BandwidthSearch handles custom metrics."""
+    X, y, geometry = sample_data
+
+    # Define custom metrics to track
+    custom_metrics = ["balanced_accuracy", "f1_weighted", "prediction_rate"]
+
+    # Test interval search
+    search = BandwidthSearch(
+        model=GWLogisticRegression,
+        geometry=geometry,
+        fixed=True,
+        search_method="golden_section",
+        min_bandwidth=100000,
+        max_bandwidth=600000,
+        max_iterations=10,  # Limit iterations for faster testing
+        tolerance=0.01,
+        verbose=False,
+        random_state=42,
+        max_iter=500,
+        metrics=custom_metrics,
+        criterion="prediction_rate",  # stupid example but does the trick in the test
+        minimize=False,
+    )
+    # Fit the bandwidth search
+    search.fit(X, y)
+
+    # Check that metrics were tracked correctly
+    assert search.optimal_bandwidth_ > 400000

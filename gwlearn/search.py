@@ -34,15 +34,21 @@ class BandwidthSearch:
     search_method : {"golden_section", "interval"}, optional
         Method used to search for optimal bandwidth. When using ``"golden_section"``,
         the Golden section optimization is used to find the optimal bandwidth while
-        attempting to minimize ``criterion``. When using ``"interval"``, fits all models
-        within the specified bandwidths at a set interval without any attempt to
-        optimize the selection. By default "golden_section".
-    criterion : {"aicc", "aic", "bic"}, optional
-        Information criterion used to select optimal bandwidth. By default "aicc".
+        attempting to minimize or maximise ``criterion``. When using ``"interval"``,
+        fits all models within the specified bandwidths at a set interval without any
+        attempt to optimize the selection. By default "golden_section".
+    criterion : str, optional
+        Vriterion used to select optimal bandwidth. Can be one of
+        ``{"aicc", "aic", "bic"}`` or any of ``metrics``. By default "aicc".
     metrics : list[str] | None, optional
         List of additional metrics beyond ``criterion`` to be reported. Has to be
         a metric supported by ``model``, passable to ``measure_performance`` argument
         of model's initialization or 'prediction_rate'. By default None.
+    minimize : bool, optional
+        Minimize or maximize the ``criterion``. When using information criterions,
+        like AICc, the optimal solution is the lowest value. When using other metrics,
+        the optimal may the the highest value. By default True, assuming lower is
+        better.
     min_bandwidth : int | float | None, optional
         Minimum bandwidth to consider, by default None
     max_bandwidth : int | float | None, optional
@@ -65,7 +71,8 @@ class BandwidthSearch:
     metrics_ : pd.DataFrame
         DataFrame of additional metrics for each bandwidth tested.
     optimal_bandwidth_ : int | float
-        The optimal bandwidth found by the search method (minimizing the criterion).
+        The optimal bandwidth found by the search method (minimizing or maximizingt
+        the criterion).
     """
 
     def __init__(
@@ -87,8 +94,9 @@ class BandwidthSearch:
         geometry: gpd.GeoSeries | None = None,
         n_jobs: int = -1,
         search_method: Literal["golden_section", "interval"] = "golden_section",
-        criterion: Literal["aicc", "aic", "bic"] = "aicc",
+        criterion: str = "aicc",
         metrics: list | None = None,
+        minimize: bool = True,
         min_bandwidth: int | float | None = None,
         max_bandwidth: int | float | None = None,
         interval: int | float | None = None,
@@ -105,6 +113,7 @@ class BandwidthSearch:
         self.n_jobs = n_jobs
         self.search_method = search_method
         self.criterion = criterion
+        self.minimize = minimize
         self.min_bandwidth = min_bandwidth
         self.max_bandwidth = max_bandwidth
         self.interval = interval
@@ -119,7 +128,9 @@ class BandwidthSearch:
         elif self.search_method == "golden_section":
             self._golden_section(X=X, y=y, tolerance=self.tolerance)
 
-        self.optimal_bandwidth_ = self.scores_.idxmin()
+        self.optimal_bandwidth_ = (
+            self.scores_.idxmin() if self.minimize else self.scores_.idxmax()
+        )
 
         return self
 
@@ -144,24 +155,20 @@ class BandwidthSearch:
             **self._model_kwargs,
         ).fit(X=X, y=y)
 
-        met = [] if self.metrics is None else self.metrics
+        met = ["aicc", "aic", "bic"]
+        if self.metrics is not None:
+            met += self.metrics
 
         if hasattr(gwm, "prediction_rate_") and gwm.prediction_rate_ == 0:
             return np.nan, [np.nan for _ in met]
 
-        additional_metrics = []
+        all_metrics = []
         for m in met:
             if m == "accuracy":
                 m = "score"
-            additional_metrics.append(getattr(gwm, m + "_"))
+            all_metrics.append(getattr(gwm, m + "_"))
 
-        match self.criterion:
-            case "aic":
-                return gwm.aic_, additional_metrics
-            case "bic":
-                return gwm.bic_, additional_metrics
-            case "aicc":
-                return gwm.aicc_, additional_metrics
+        return all_metrics[met.index(self.criterion)], all_metrics
 
     def _interval(self, X: pd.DataFrame, y: pd.Series) -> None:
         """Fit models using the equal interval search.
@@ -184,7 +191,12 @@ class BandwidthSearch:
                 print(f"Bandwidth: {bw:.2f}, {self.criterion}: {scores[bw]:.3f}")
             bw += self.interval
         self.scores_ = pd.Series(scores, name=self.criterion)
-        self.metrics_ = pd.DataFrame(metrics, index=self.metrics).T
+        self.metrics_ = pd.DataFrame(
+            metrics,
+            index=["aicc", "aic", "bic"] + self.metrics
+            if self.metrics
+            else ["aicc", "aic", "bic"],
+        ).T
 
     def _golden_section(self, X: pd.DataFrame, y: pd.Series, tolerance: float) -> None:
         delta = 0.38197
@@ -240,17 +252,35 @@ class BandwidthSearch:
                 scores[d] = score_d
                 metrics[d] = metric_d
 
-            if score_b <= score_d:
-                c = d
-                d = b
-                b = a + delta * np.abs(c - a)
+            if self.minimize:
+                if score_b <= score_d:
+                    c = d
+                    d = b
+                    b = a + delta * np.abs(c - a)
+
+                else:
+                    a = b
+                    b = d
+                    d = c - delta * np.abs(c - a)
+
+                diff = np.abs(score_b - score_d)
 
             else:
-                a = b
-                b = d
-                d = c - delta * np.abs(c - a)
+                if score_b >= score_d:
+                    c = d
+                    d = b
+                    b = a + delta * np.abs(c - a)
+                else:
+                    a = b
+                    b = d
+                    d = c - delta * np.abs(c - a)
 
-            diff = np.abs(score_b - score_d)
+                diff = np.abs(score_b - score_d)
 
         self.scores_ = pd.Series(scores, name="oob_score")
-        self.metrics_ = pd.DataFrame(metrics, index=self.metrics).T
+        self.metrics_ = pd.DataFrame(
+            metrics,
+            index=["aicc", "aic", "bic"] + self.metrics
+            if self.metrics
+            else ["aicc", "aic", "bic"],
+        ).T
