@@ -750,9 +750,12 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             data, _ = rus.fit_resample(data, data["_y"])
 
         if self.leave_out:
-            data, left_out_data = train_test_split(
-                data, test_size=self.leave_out, stratify=data["_y"]
-            )
+            try:
+                data, left_out_data = train_test_split(
+                    data, test_size=self.leave_out, stratify=data["_y"]
+                )
+            except ValueError:
+                skip = True
             if len(data["_y"].value_counts()) == 1:
                 skip = True
 
