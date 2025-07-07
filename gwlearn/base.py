@@ -731,16 +731,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         focal_x: np.ndarray,
         model_kwargs: dict,
     ) -> tuple:
-        """Fit individual local model
+        """Fit individual local model"""
 
-
-        TODO:
-            1. take out a subset
-            2. predict_proba on the subset
-            3. return proba and y (an maybe weight to pass to log_loss?)
-            4. (elsewhere) compute log_loss and other metrics based on the take out data
-
-        """
         if self.undersample:
             from imblearn.under_sampling import RandomUnderSampler
 
