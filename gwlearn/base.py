@@ -13,6 +13,7 @@ from libpysal import graph
 from scipy.spatial import KDTree
 from sklearn import metrics
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
+from sklearn.model_selection import train_test_split
 
 # TODO: summary
 # TODO: formal documentation
@@ -504,7 +505,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         batch_size: int | None = None,
         min_proportion: float = 0.2,
         undersample: bool = False,
-        leave_out: float | None = None,
+        leave_out: float | int | None = None,
         random_state: int | None = None,
         verbose: bool = False,
         **kwargs,
@@ -600,7 +601,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                 self._score_data,
                 self._feature_importances,
                 focal_proba,
-                hat_values,  # Add hat values
+                hat_values,
+                left_out_proba,
                 models,
             ) = zip(*training_output, strict=False)
             self._local_models = pd.Series(models, index=self._names)
@@ -611,7 +613,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                 self._score_data,
                 self._feature_importances,
                 focal_proba,
-                hat_values,  # Add hat values
+                hat_values,
+                left_out_proba,
             ) = zip(*training_output, strict=False)
 
         self._n_labels = pd.Series(self._n_labels, index=self._names)
@@ -620,6 +623,12 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         # Store hat values and compute effective degrees of freedom
         self.hat_values_ = pd.Series(hat_values, index=self._names)
         self.effective_df_ = np.nansum(self.hat_values_)
+
+        if self.leave_out:
+            y_pred = np.concatenate([arr[0] for arr in left_out_proba])
+            y_true = np.concatenate([arr[1] for arr in left_out_proba])
+
+            self.log_loss_ = metrics.log_loss(y_true, y_pred)
 
         # support both bool and 0, 1 encoding of binary variable
         col = True if True in self.proba_.columns else 1
@@ -716,7 +725,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         TODO:
             1. take out a subset
             2. predict_proba on the subset
-            3. return proba and y
+            3. return proba and y (an maybe weight to pass to log_loss?)
             4. (elsewhere) compute log_loss and other metrics based on the take out data
 
         """
@@ -728,20 +737,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         skip = n_labels == 1
         if n_labels > 1:
             skip = (vc.iloc[1] / vc.iloc[0]) < self.min_proportion
-        if skip:
-            score_data = self._empty_score_data
-            feature_imp = self._empty_feature_imp
-            output = [
-                name,
-                n_labels,
-                score_data,
-                feature_imp,
-                pd.Series(np.nan, index=self._global_classes),
-                np.nan,
-            ]
-            if self.keep_models:
-                output.append(None)
-            return output
 
         local_model = model(random_state=self.random_state, **model_kwargs)
 
@@ -753,6 +748,29 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             else:
                 rus = RandomUnderSampler(random_state=self.random_state)
             data, _ = rus.fit_resample(data, data["_y"])
+
+        if self.leave_out:
+            data, left_out_data = train_test_split(
+                data, test_size=self.leave_out, stratify=data["_y"]
+            )
+            if len(data["_y"].value_counts()) == 1:
+                skip = True
+
+        if skip:
+            score_data = self._empty_score_data
+            feature_imp = self._empty_feature_imp
+            output = [
+                name,
+                n_labels,
+                score_data,
+                feature_imp,
+                pd.Series(np.nan, index=self._global_classes),
+                np.nan,
+                (np.zeros(shape=(0, 2)), data["_y"].iloc[:0]),
+            ]
+            if self.keep_models:
+                output.append(None)
+            return output
 
         X = data.drop(columns=["_y", "_weight"])
         y = data["_y"]
@@ -773,6 +791,14 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         hat_value = self._compute_hat_value(X, data["_weight"], focal_x.values)
 
+        if self.leave_out:
+            left_out_proba = local_model.predict_proba(
+                left_out_data.drop(columns=["_y", "_weight"])
+            )
+            left_out_proba = (left_out_proba, left_out_data["_y"])
+        else:
+            left_out_proba = None
+
         output = [
             name,
             n_labels,
@@ -780,6 +806,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             getattr(local_model, "feature_importances_", None),
             focal_proba,
             hat_value,
+            left_out_proba,
         ]
 
         if self.keep_models:
