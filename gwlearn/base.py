@@ -650,9 +650,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         if self.leave_out:
             if self.prediction_rate_ > 0:
-                self.oos_log_loss_ = np.nan
-
-            else:
                 y_pred = np.concatenate([arr[0] for arr in left_out_proba])
                 y_true = np.concatenate([arr[1] for arr in left_out_proba])
                 w = np.concatenate([arr[2] for arr in left_out_proba])
@@ -660,6 +657,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                 # TODO: this could potentially follow the logic of measure_performance
                 # and measure more than log loss
                 self.oos_log_loss_ = metrics.log_loss(y_true, y_pred, sample_weight=w)
+            else:
+                self.oos_log_loss_ = np.nan
 
         if self.fit_global_model:
             if self.verbose:
