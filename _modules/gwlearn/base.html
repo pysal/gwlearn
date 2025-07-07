@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.base &#8212; gwlearn 0.1.dev67+g9d8d76d documentation</title>
+    <title>gwlearn.base &#8212; gwlearn 0.1.dev68+g65369a3 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=34201d90"></script>
+    <script src="../../_static/documentation_options.js?v=4c15f8b2"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev67+g9d8d76d documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev68+g65369a3 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -585,7 +585,11 @@ document.write(`
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_compute_information_criteria</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute AIC, BIC, and AICc using the global log likelihood&quot;&quot;&quot;</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_n_fitted_models</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_n_fitted_models&quot;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">)</span>
+        <span class="p">)</span>
 
         <span class="c1"># Use effective degrees of freedom as the number of parameters</span>
         <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span>
@@ -903,7 +907,8 @@ document.write(`
         <span class="n">nan_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="o">~</span><span class="n">nan_mask</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">prediction_rate_</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">nan_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">nan_mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_fitted_models</span> <span class="o">=</span> <span class="p">(</span><span class="o">~</span><span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prediction_rate_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_fitted_models</span> <span class="o">/</span> <span class="n">nan_mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_global_model</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
