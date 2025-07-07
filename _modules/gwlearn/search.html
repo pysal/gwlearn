@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.search &#8212; gwlearn 0.1.dev68+g65369a3 documentation</title>
+    <title>gwlearn.search &#8212; gwlearn 0.1.dev69+ge9d5587 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=4c15f8b2"></script>
+    <script src="../../_static/documentation_options.js?v=caadcbb6"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev68+g65369a3 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev69+ge9d5587 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -300,9 +300,9 @@ document.write(`
 <span class="sd">        Scikit-learn model class or compatible estimator.</span>
 <span class="sd">    fixed : bool, optional</span>
 <span class="sd">        True for distance based bandwidth and False for adaptive (nearest neighbor)</span>
-<span class="sd">        bandwidth, by default False</span>
+<span class="sd">        bandwidth, by default ``False``</span>
 <span class="sd">    kernel : str | Callable, optional</span>
-<span class="sd">        Type of kernel function used to weight observations, by default &quot;bisquare&quot;</span>
+<span class="sd">        Type of kernel function used to weight observations, by default ``&quot;bisquare&quot;``</span>
 <span class="sd">    n_jobs : int, optional</span>
 <span class="sd">        The number of jobs to run in parallel. ``-1`` means using all processors,</span>
 <span class="sd">        by default ``-1``</span>
@@ -311,29 +311,29 @@ document.write(`
 <span class="sd">        the Golden section optimization is used to find the optimal bandwidth while</span>
 <span class="sd">        attempting to minimize or maximise ``criterion``. When using ``&quot;interval&quot;``,</span>
 <span class="sd">        fits all models within the specified bandwidths at a set interval without any</span>
-<span class="sd">        attempt to optimize the selection. By default &quot;golden_section&quot;.</span>
+<span class="sd">        attempt to optimize the selection. By default ``&quot;golden_section&quot;``.</span>
 <span class="sd">    criterion : str, optional</span>
 <span class="sd">        Vriterion used to select optimal bandwidth. Can be one of</span>
-<span class="sd">        ``{&quot;aicc&quot;, &quot;aic&quot;, &quot;bic&quot;}`` or any of ``metrics``. By default &quot;aicc&quot;.</span>
+<span class="sd">        ``{&quot;aicc&quot;, &quot;aic&quot;, &quot;bic&quot;}`` or any of ``metrics``. By default ``&quot;aicc&quot;``.</span>
 <span class="sd">    metrics : list[str] | None, optional</span>
 <span class="sd">        List of additional metrics beyond ``criterion`` to be reported. Has to be</span>
 <span class="sd">        a metric supported by ``model``, passable to ``measure_performance`` argument</span>
-<span class="sd">        of model&#39;s initialization or &#39;prediction_rate&#39;. By default None.</span>
+<span class="sd">        of model&#39;s initialization or &#39;prediction_rate&#39;. By default ``None``.</span>
 <span class="sd">    minimize : bool, optional</span>
 <span class="sd">        Minimize or maximize the ``criterion``. When using information criterions,</span>
 <span class="sd">        like AICc, the optimal solution is the lowest value. When using other metrics,</span>
 <span class="sd">        the optimal may the the highest value. By default True, assuming lower is</span>
 <span class="sd">        better.</span>
 <span class="sd">    min_bandwidth : int | float | None, optional</span>
-<span class="sd">        Minimum bandwidth to consider, by default None</span>
+<span class="sd">        Minimum bandwidth to consider, by default ``None``</span>
 <span class="sd">    max_bandwidth : int | float | None, optional</span>
-<span class="sd">        Maximum bandwidth to consider, by default None</span>
+<span class="sd">        Maximum bandwidth to consider, by default ``None``</span>
 <span class="sd">    interval : int | float | None, optional</span>
-<span class="sd">        Interval for bandwidth search when using &quot;interval&quot; method, by default None</span>
+<span class="sd">        Interval for bandwidth search when using &quot;interval&quot; method, by default ``None``</span>
 <span class="sd">    max_iterations : int, optional</span>
-<span class="sd">        Maximum number of iterations for golden section search, by default 100</span>
+<span class="sd">        Maximum number of iterations for golden section search, by default ``100``</span>
 <span class="sd">    tolerance : float, optional</span>
-<span class="sd">        Tolerance for convergence in golden section search, by default 1e-2</span>
+<span class="sd">        Tolerance for convergence in golden section search, by default ``1e-2``</span>
 <span class="sd">    verbose : bool | int, optional</span>
 <span class="sd">        Verbosity level, by default False</span>
 <span class="sd">    **kwargs</span>

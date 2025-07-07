@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.ensemble &#8212; gwlearn 0.1.dev68+g65369a3 documentation</title>
+    <title>gwlearn.ensemble &#8212; gwlearn 0.1.dev69+ge9d5587 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=4c15f8b2"></script>
+    <script src="../../_static/documentation_options.js?v=caadcbb6"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev68+g65369a3 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev69+ge9d5587 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -353,6 +353,12 @@ document.write(`
 <span class="sd">        Minimum proportion of minority class for a model to be fitted, by default 0.2</span>
 <span class="sd">    undersample : bool, optional</span>
 <span class="sd">        Whether to apply random undersampling to balance classes, by default False</span>
+<span class="sd">    leave_out : float | int, optional</span>
+<span class="sd">        Leave out a fraction (when float) or a set number (when int) of random</span>
+<span class="sd">        observations from each local model to be used to measure out-of-sample log loss</span>
+<span class="sd">        based on pooled samples from all the models. This is useful for bandwidth</span>
+<span class="sd">        selection for cases where some local models are not fitted due to local</span>
+<span class="sd">        invariance and resulting information criteria are not comparable.</span>
 <span class="sd">    random_state : int | None, optional</span>
 <span class="sd">        Random seed for reproducibility, by default None</span>
 <span class="sd">    verbose : bool, optional</span>
@@ -386,6 +392,8 @@ document.write(`
 <span class="sd">        F1 score with micro averaging based on ``pred_``.</span>
 <span class="sd">    f1_weighted_ : float</span>
 <span class="sd">        F1 score with weighted averaging based on ``pred_``.</span>
+<span class="sd">    log_loss_ : float</span>
+<span class="sd">        Log loss of the model based on ``pred_``.</span>
 <span class="sd">    log_likelihood_ : float</span>
 <span class="sd">        Global log likelihood of the model</span>
 <span class="sd">    aic_ : float</span>
@@ -428,6 +436,11 @@ document.write(`
 <span class="sd">    prediction_rate_ : float</span>
 <span class="sd">        Proportion of models that are fitted, where the rest are skipped due to not</span>
 <span class="sd">        fulfilling ``min_proportion``.</span>
+<span class="sd">    oos_log_loss_ : float</span>
+<span class="sd">        Out-of-sample log loss of the model. It is based on pooled data of randomly left</span>
+<span class="sd">        out observations from training of local models. Log loss is measured as weighted</span>
+<span class="sd">        using the set bandwidth and a kernel. Available only when ``leave_out`` is not</span>
+<span class="sd">        None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GWRandomForestClassifier.__init__">
@@ -460,6 +473,7 @@ document.write(`
         <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">min_proportion</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
         <span class="n">undersample</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">leave_out</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
@@ -481,6 +495,7 @@ document.write(`
             <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
             <span class="n">min_proportion</span><span class="o">=</span><span class="n">min_proportion</span><span class="p">,</span>
             <span class="n">undersample</span><span class="o">=</span><span class="n">undersample</span><span class="p">,</span>
+            <span class="n">leave_out</span><span class="o">=</span><span class="n">leave_out</span><span class="p">,</span>
             <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
             <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
@@ -572,6 +587,13 @@ document.write(`
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
                 <span class="s2">&quot;oob_f1_weighted&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">oob_f1_weighted_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
+                    <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;weighted&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="s2">&quot;oob_log_loss&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
             <span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">oob_f1_weighted_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
                     <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;weighted&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>

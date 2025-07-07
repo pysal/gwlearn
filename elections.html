@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Optimize the bandwidth of RF Classification based on out-of-bag score &#8212; gwlearn 0.1.dev68+g65369a3 documentation</title>
+    <title>Optimize the bandwidth of RF Classification based on out-of-bag score and an out-of-sample score &#8212; gwlearn 0.1.dev69+ge9d5587 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=4c15f8b2"></script>
+    <script src="_static/documentation_options.js?v=caadcbb6"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev68+g65369a3 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev69+ge9d5587 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -305,7 +305,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Optimize the bandwidth of RF Classification based on out-of-bag score</h1>
+    <h1>Optimize the bandwidth of RF Classification based on out-of-bag score and an out-of-sample score</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -319,8 +319,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="optimize-the-bandwidth-of-rf-classification-based-on-out-of-bag-score">
-<h1>Optimize the bandwidth of RF Classification based on out-of-bag score<a class="headerlink" href="#optimize-the-bandwidth-of-rf-classification-based-on-out-of-bag-score" title="Link to this heading">#</a></h1>
+  <section id="optimize-the-bandwidth-of-rf-classification-based-on-out-of-bag-score-and-an-out-of-sample-score">
+<h1>Optimize the bandwidth of RF Classification based on out-of-bag score and an out-of-sample score<a class="headerlink" href="#optimize-the-bandwidth-of-rf-classification-based-on-out-of-bag-score-and-an-out-of-sample-score" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
@@ -354,10 +354,23 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample</span> <span class="o">=</span> <span class="n">elections_data</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sample = elections_data.sample(500, random_state=10)</span>
+<span class="n">sample</span> <span class="o">=</span> <span class="n">elections_data</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">sample</span><span class="p">[</span><span class="n">independent_names</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">sample</span><span class="p">[</span><span class="s2">&quot;PetrPavel&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(6254, 21)
 </pre></div>
 </div>
 </div>
@@ -370,15 +383,14 @@ document.write(`
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">geometry</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">centroid</span><span class="p">,</span>
     <span class="n">search_method</span><span class="o">=</span><span class="s2">&quot;interval&quot;</span><span class="p">,</span>
-    <span class="n">min_bandwidth</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
-    <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">499</span><span class="p">,</span>
-    <span class="n">interval</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
-    <span class="n">max_iterations</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-    <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">,</span>
-    <span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;oob_score&#39;</span><span class="p">,</span>
-    <span class="n">minimize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;oob_score&#39;</span><span class="p">,</span> <span class="s1">&#39;prediction_rate&#39;</span><span class="p">]</span>
+    <span class="n">min_bandwidth</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">6250</span><span class="p">,</span>
+    <span class="n">interval</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;log_loss&#39;</span><span class="p">,</span>
+    <span class="n">leave_out</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="c1"># max_iter=1000,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;log_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;oob_score&#39;</span><span class="p">,</span> <span class="s1">&#39;leave_out_log_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="s1">&#39;prediction_rate&#39;</span><span class="p">]</span>
 <span class="p">)</span>
 <span class="n">search_rf</span> <span class="o">=</span> <span class="n">search_rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">)</span>
 <span class="n">search_rf</span><span class="o">.</span><span class="n">scores_</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
@@ -386,61 +398,66 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bandwidth: 50.00, log_loss: 0.560
+Bandwidth: 550.00, log_loss: 0.495
+Bandwidth: 1050.00, log_loss: 0.496
+Bandwidth: 1550.00, log_loss: 0.486
+Bandwidth: 2050.00, log_loss: 0.493
+Bandwidth: 2550.00, log_loss: 0.493
+Bandwidth: 3050.00, log_loss: 0.491
+Bandwidth: 3550.00, log_loss: 0.492
+Bandwidth: 4050.00, log_loss: 0.501
+Bandwidth: 4550.00, log_loss: 0.509
+Bandwidth: 5050.00, log_loss: 0.502
+Bandwidth: 5550.00, log_loss: 0.502
+Bandwidth: 6050.00, log_loss: 0.500
+</pre></div>
+</div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/430a979a880b36f576901d6163d345d4180edfcac07a7104b48bda6ce394542c.png" src="_images/430a979a880b36f576901d6163d345d4180edfcac07a7104b48bda6ce394542c.png" />
-</div>
-</div>
-<p>Optimize using golden section. It should find the peak (one of them).</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_section</span> <span class="o">=</span> <span class="n">BandwidthSearch</span><span class="p">(</span>
-    <span class="n">GWRandomForestClassifier</span><span class="p">,</span>
-    <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">centroid</span><span class="p">,</span>
-    <span class="n">search_method</span><span class="o">=</span><span class="s2">&quot;golden_section&quot;</span><span class="p">,</span>
-    <span class="n">min_bandwidth</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
-    <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">499</span><span class="p">,</span>
-    <span class="n">max_iterations</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-    <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">,</span>
-    <span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;oob_score&#39;</span><span class="p">,</span>
-    <span class="n">minimize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;oob_score&#39;</span><span class="p">,</span> <span class="s1">&#39;prediction_rate&#39;</span><span class="p">]</span>
-<span class="p">)</span>
-<span class="n">search_section</span> <span class="o">=</span> <span class="n">search_section</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">)</span>
-</pre></div>
-</div>
+<img alt="_images/3b639062f849dd539efae14027e70987c568c23690c91f0bdf9349521ab3ecbb.png" src="_images/3b639062f849dd539efae14027e70987c568c23690c91f0bdf9349521ab3ecbb.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_section</span><span class="o">.</span><span class="n">optimal_bandwidth_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_rf</span><span class="o">.</span><span class="n">metrics_</span><span class="o">.</span><span class="n">leave_out_log_loss</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(402)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
+<img alt="_images/a961b7f153c3330c4258029744969abe8390b245be3f1545d6fd7f61a0573d12.png" src="_images/a961b7f153c3330c4258029744969abe8390b245be3f1545d6fd7f61a0573d12.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">search_rf</span><span class="o">.</span><span class="n">scores_</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">search_section</span><span class="o">.</span><span class="n">optimal_bandwidth_</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_rf</span><span class="o">.</span><span class="n">metrics_</span><span class="o">.</span><span class="n">oob_score</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.lines.Line2D at 0x7d6a623ce180&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/2d2ecd734d2e5e10c2471b954988d063c6fc0af3656c798e64b1b4a50ec8484d.png" src="_images/2d2ecd734d2e5e10c2471b954988d063c6fc0af3656c798e64b1b4a50ec8484d.png" />
+<img alt="_images/5b7e2816496e1e9dd6dea3ee6b1b1829eb21e3bc05286fb3c64af8d9613eefc4.png" src="_images/5b7e2816496e1e9dd6dea3ee6b1b1829eb21e3bc05286fb3c64af8d9613eefc4.png" />
 </div>
 </div>
-<p>It did find the peak as expected. Though not the globally optimal one due to the limitation of the golden section.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_rf</span><span class="o">.</span><span class="n">metrics_</span><span class="o">.</span><span class="n">prediction_rate</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
+</pre></div>
+</div>
+<img alt="_images/458031b8beb07c4cb6b93e2487d901a265bf0ac9f02f0d9a55b941665b0c0f7f.png" src="_images/458031b8beb07c4cb6b93e2487d901a265bf0ac9f02f0d9a55b941665b0c0f7f.png" />
+</div>
+</div>
 </section>
 
 
