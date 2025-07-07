@@ -639,15 +639,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self.hat_values_ = pd.Series(hat_values, index=self._names)
         self.effective_df_ = np.nansum(self.hat_values_)
 
-        if self.leave_out:
-            y_pred = np.concatenate([arr[0] for arr in left_out_proba])
-            y_true = np.concatenate([arr[1] for arr in left_out_proba])
-            w = np.concatenate([arr[2] for arr in left_out_proba])
-
-            # TODO: this could potentially follow the logic of measure_performance
-            # and measure more than log loss
-            self.oos_log_loss_ = metrics.log_loss(y_true, y_pred, sample_weight=w)
-
         # support both bool and 0, 1 encoding of binary variable
         col = True if True in self.proba_.columns else 1
         # global GW accuracy
@@ -656,6 +647,19 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         self._n_fitted_models = (~self.proba_[col].isna()).sum()
         self.prediction_rate_ = self._n_fitted_models / nan_mask.shape[0]
+
+        if self.leave_out:
+            if self.prediction_rate_ > 0:
+                self.oos_log_loss_ = np.nan
+
+            else:
+                y_pred = np.concatenate([arr[0] for arr in left_out_proba])
+                y_true = np.concatenate([arr[1] for arr in left_out_proba])
+                w = np.concatenate([arr[2] for arr in left_out_proba])
+
+                # TODO: this could potentially follow the logic of measure_performance
+                # and measure more than log loss
+                self.oos_log_loss_ = metrics.log_loss(y_true, y_pred, sample_weight=w)
 
         if self.fit_global_model:
             if self.verbose:
@@ -681,42 +685,68 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             masked_y = y[~nan_mask]
 
             if "score" in metrics_to_measure:
-                self.score_ = metrics.accuracy_score(masked_y, self.pred_)
+                self.score_ = (
+                    metrics.accuracy_score(masked_y, self.pred_)
+                    if self.prediction_rate_ > 0
+                    else np.nan
+                )
 
             if "precision" in metrics_to_measure:
-                self.precision_ = metrics.precision_score(
-                    masked_y, self.pred_, zero_division=0
+                self.precision_ = (
+                    metrics.precision_score(masked_y, self.pred_, zero_division=0)
+                    if self.prediction_rate_ > 0
+                    else np.nan
                 )
 
             if "recall" in metrics_to_measure:
-                self.recall_ = metrics.recall_score(
-                    masked_y, self.pred_, zero_division=0
+                self.recall_ = (
+                    metrics.recall_score(masked_y, self.pred_, zero_division=0)
+                    if self.prediction_rate_ > 0
+                    else np.nan
                 )
 
             if "balanced_accuracy" in metrics_to_measure:
-                self.balanced_accuracy_ = metrics.balanced_accuracy_score(
-                    masked_y, self.pred_
+                self.balanced_accuracy_ = (
+                    metrics.balanced_accuracy_score(masked_y, self.pred_)
+                    if self.prediction_rate_ > 0
+                    else np.nan
                 )
 
             if "f1_macro" in metrics_to_measure:
-                self.f1_macro_ = metrics.f1_score(
-                    masked_y, self.pred_, average="macro", zero_division=0
+                self.f1_macro_ = (
+                    metrics.f1_score(
+                        masked_y, self.pred_, average="macro", zero_division=0
+                    )
+                    if self.prediction_rate_ > 0
+                    else np.nan
                 )
 
             if "f1_micro" in metrics_to_measure:
-                self.f1_micro_ = metrics.f1_score(
-                    masked_y, self.pred_, average="micro", zero_division=0
+                self.f1_micro_ = (
+                    metrics.f1_score(
+                        masked_y, self.pred_, average="micro", zero_division=0
+                    )
+                    if self.prediction_rate_ > 0
+                    else np.nan
                 )
 
             if "f1_weighted" in metrics_to_measure:
-                self.f1_weighted_ = metrics.f1_score(
-                    masked_y, self.pred_, average="weighted", zero_division=0
+                self.f1_weighted_ = (
+                    metrics.f1_score(
+                        masked_y, self.pred_, average="weighted", zero_division=0
+                    )
+                    if self.prediction_rate_ > 0
+                    else np.nan
                 )
 
             if "log_loss" in metrics_to_measure:
-                self.log_loss_ = metrics.log_loss(
-                    masked_y,
-                    self.proba_[~nan_mask],
+                self.log_loss_ = (
+                    metrics.log_loss(
+                        masked_y,
+                        self.proba_[~nan_mask],
+                    )
+                    if self.prediction_rate_ > 0
+                    else np.nan
                 )
 
         # Compute global log likelihood and information criteria
