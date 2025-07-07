@@ -104,7 +104,6 @@ class _BaseModel(BaseEstimator):
         keep_models: bool | str | Path = False,
         temp_folder: str | None = None,
         batch_size: int | None = None,
-        leave_out: float | None = None,
         verbose: bool = False,
         **kwargs,
     ):
@@ -125,7 +124,6 @@ class _BaseModel(BaseEstimator):
         self.keep_models = keep_models
         self.temp_folder = temp_folder
         self.batch_size = batch_size
-        self.leave_out = leave_out
         self.verbose = verbose
         self._model_type = None
 
@@ -525,13 +523,13 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             keep_models=keep_models,
             temp_folder=temp_folder,
             batch_size=batch_size,
-            leave_out=leave_out,
             verbose=verbose,
             **kwargs,
         )
         self.min_proportion = min_proportion
         self.undersample = undersample
         self.random_state = random_state
+        self.leave_out = leave_out
         self._empty_score_data = None
         self._empty_feature_imp = None
 
@@ -628,7 +626,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             y_pred = np.concatenate([arr[0] for arr in left_out_proba])
             y_true = np.concatenate([arr[1] for arr in left_out_proba])
 
-            self.log_loss_ = metrics.log_loss(y_true, y_pred)
+            self.leave_out_log_loss_ = metrics.log_loss(y_true, y_pred)
 
         # support both bool and 0, 1 encoding of binary variable
         col = True if True in self.proba_.columns else 1
