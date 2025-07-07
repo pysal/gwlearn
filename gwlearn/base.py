@@ -378,12 +378,12 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
     kernel : str | Callable, optional
         Type of kernel function used to weight observations, by default "bisquare"
     include_focal : bool, optional
-        Include focal in the local model training. Excluding it allows
-        assessment of geographically weighted metrics on unseen data without a need for
-        train/test split, hence providing value for all samples. This is needed for
-        further spatial analysis of the model performance (and generalises to models
-        that do not support OOB scoring). However, it leaves out the most representative
-        sample. By default False
+        Include focal in the local model training. Excluding it allows assessment of
+        geographically weighted metrics on unseen data without a need for train/test
+        split, hence providing value for all samples. This is needed for further spatial
+        analysis of the model performance (and generalises to models that do not support
+        OOB scoring). However, it leaves out the most representative sample. By default
+        False
     geometry : gpd.GeoSeries, optional
         Geographic location of the observations in the sample. Used to determine the
         spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
@@ -398,24 +398,24 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         required to specify ``geometry``. Potentially, both can be specified where
         ``graph`` encodes spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
-        The number of jobs to run in parallel. ``-1`` means using all processors
-        by default ``-1``
+        The number of jobs to run in parallel. ``-1`` means using all processors by
+        default ``-1``
     fit_global_model : bool, optional
-        Determines if the global baseline model shall be fitted alongside
-        the geographically weighted, by default True
+        Determines if the global baseline model shall be fitted alongside the
+        geographically weighted, by default True
     measure_performance : bool | list, optional
         Calculate performance metrics for the model. If True, measures accuracy score,
         precision, recall, balanced accuracy, F1 scores and log loss. A subset of these
         can be specified by passing a list of strings. By default True
     strict : bool | None, optional
-        Do not fit any models if at least one neighborhood has invariant ``y``,
-        by default False. None is treated as False but provides a warning if there are
+        Do not fit any models if at least one neighborhood has invariant ``y``, by
+        default False. None is treated as False but provides a warning if there are
         invariant models.
     keep_models : bool | str | Path, optional
-        Keep all local models (required for prediction), by default False. Note that
-        for some models, like random forests, the objects can be large. If string or
-        Path is provided, the local models are not held in memory but serialized to
-        the disk from which they are loaded in prediction.
+        Keep all local models (required for prediction), by default False. Note that for
+        some models, like random forests, the objects can be large. If string or Path is
+        provided, the local models are not held in memory but serialized to the disk
+        from which they are loaded in prediction.
     temp_folder : str | None, optional
         Folder to be used by the pool for memmapping large arrays for sharing memory
         with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default
@@ -446,8 +446,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Probability predictions for focal locations based on a local model trained
         around the point itself.
     pred_ : pd.Series
-        Binary predictions for focal locations based on a local model trained around
-        the location itself.
+        Binary predictions for focal locations based on a local model trained around the
+        location itself.
     hat_values_ : pd.Series
         Hat values for each location (diagonal elements of hat matrix)
     effective_df_ : float
@@ -473,15 +473,17 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
     aic_ : float
         Akaike information criterion of the model
     aicc_ : float
-        Corrected Akaike information criterion to account for model
-        complexity (smaller bandwidths)
+        Corrected Akaike information criterion to account for model complexity (smaller
+        bandwidths)
     bic_ : float
         Bayesian information criterion
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
     oos_log_loss_ : float
-        Out-of-sample log loss of the model. Available only when ``leave_out`` is not
+        Out-of-sample log loss of the model. It is based on pooled data of randomly left
+        out observations from training of local models. Log loss is measured as weighted
+        using the set bandwidth and a kernel. Available only when ``leave_out`` is not
         None.
     """
 

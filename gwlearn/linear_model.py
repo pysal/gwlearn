@@ -169,7 +169,9 @@ class GWLogisticRegression(BaseClassifier):
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
     oos_log_loss_ : float
-        Out-of-sample log loss of the model. Available only when ``leave_out`` is not
+        Out-of-sample log loss of the model. It is based on pooled data of randomly left
+        out observations from training of local models. Log loss is measured as weighted
+        using the set bandwidth and a kernel. Available only when ``leave_out`` is not
         None.
     """
 
