@@ -75,6 +75,12 @@ class GWLogisticRegression(BaseClassifier):
         Minimum proportion of minority class for a model to be fitted, by default 0.2
     undersample : bool, optional
         Whether to apply random undersampling to balance classes, by default False
+    leave_out : float | int, optional
+        Leave out a fraction (when float) or a set number (when int) of random
+        observations from each local model to be used to measure out-of-sample log loss
+        based on pooled samples from all the models. This is useful for bandwidth
+        selection for cases where some local models are not fitted due to local
+        invariance and resulting information criteria are not comparable.
     random_state : int | None, optional
         Random seed for reproducibility, by default None
     verbose : bool, optional
@@ -108,6 +114,8 @@ class GWLogisticRegression(BaseClassifier):
         F1 score with micro averaging based on ``pred_``.
     f1_weighted_ : float
         F1 score with weighted averaging based on ``pred_``.
+    log_loss_ : float
+        Log loss of the model based on ``pred_``.
     log_likelihood_ : float
         Global log likelihood of the model
     aic_ : float
@@ -160,6 +168,11 @@ class GWLogisticRegression(BaseClassifier):
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
+    oos_log_loss_ : float
+        Out-of-sample log loss of the model. It is based on pooled data of randomly left
+        out observations from training of local models. Log loss is measured as weighted
+        using the set bandwidth and a kernel. Available only when ``leave_out`` is not
+        None.
     """
 
     def __init__(
@@ -188,6 +201,7 @@ class GWLogisticRegression(BaseClassifier):
         temp_folder: str | None = None,
         batch_size: int | None = None,
         undersample: bool = False,
+        leave_out: float | int | None = None,
         **kwargs,
     ):
         super().__init__(
@@ -206,6 +220,7 @@ class GWLogisticRegression(BaseClassifier):
             temp_folder=temp_folder,
             batch_size=batch_size,
             undersample=undersample,
+            leave_out=leave_out,
             **kwargs,
         )
 

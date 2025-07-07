@@ -13,6 +13,7 @@ from libpysal import graph
 from scipy.spatial import KDTree
 from sklearn import metrics
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
+from sklearn.model_selection import train_test_split
 
 # TODO: summary
 # TODO: formal documentation
@@ -381,12 +382,12 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
     kernel : str | Callable, optional
         Type of kernel function used to weight observations, by default "bisquare"
     include_focal : bool, optional
-        Include focal in the local model training. Excluding it allows
-        assessment of geographically weighted metrics on unseen data without a need for
-        train/test split, hence providing value for all samples. This is needed for
-        further spatial analysis of the model performance (and generalises to models
-        that do not support OOB scoring). However, it leaves out the most representative
-        sample. By default False
+        Include focal in the local model training. Excluding it allows assessment of
+        geographically weighted metrics on unseen data without a need for train/test
+        split, hence providing value for all samples. This is needed for further spatial
+        analysis of the model performance (and generalises to models that do not support
+        OOB scoring). However, it leaves out the most representative sample. By default
+        False
     geometry : gpd.GeoSeries, optional
         Geographic location of the observations in the sample. Used to determine the
         spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
@@ -401,24 +402,24 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         required to specify ``geometry``. Potentially, both can be specified where
         ``graph`` encodes spatial interaction between observations in ``geometry``.
     n_jobs : int, optional
-        The number of jobs to run in parallel. ``-1`` means using all processors
-        by default ``-1``
+        The number of jobs to run in parallel. ``-1`` means using all processors by
+        default ``-1``
     fit_global_model : bool, optional
-        Determines if the global baseline model shall be fitted alongside
-        the geographically weighted, by default True
+        Determines if the global baseline model shall be fitted alongside the
+        geographically weighted, by default True
     measure_performance : bool | list, optional
         Calculate performance metrics for the model. If True, measures accuracy score,
-        precision, recall, balanced accuracy, and F1 scores. A subset of these can be
-        specified by passing a list of strings. By default True
+        precision, recall, balanced accuracy, F1 scores and log loss. A subset of these
+        can be specified by passing a list of strings. By default True
     strict : bool | None, optional
-        Do not fit any models if at least one neighborhood has invariant ``y``,
-        by default False. None is treated as False but provides a warning if there are
+        Do not fit any models if at least one neighborhood has invariant ``y``, by
+        default False. None is treated as False but provides a warning if there are
         invariant models.
     keep_models : bool | str | Path, optional
-        Keep all local models (required for prediction), by default False. Note that
-        for some models, like random forests, the objects can be large. If string or
-        Path is provided, the local models are not held in memory but serialized to
-        the disk from which they are loaded in prediction.
+        Keep all local models (required for prediction), by default False. Note that for
+        some models, like random forests, the objects can be large. If string or Path is
+        provided, the local models are not held in memory but serialized to the disk
+        from which they are loaded in prediction.
     temp_folder : str | None, optional
         Folder to be used by the pool for memmapping large arrays for sharing memory
         with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default
@@ -430,6 +431,12 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Minimum proportion of minority class for a model to be fitted, by default 0.2
     undersample : bool, optional
         Whether to apply random undersampling to balance classes, by default False
+    leave_out : float | int, optional
+        Leave out a fraction (when float) or a set number (when int) of random
+        observations from each local model to be used to measure out-of-sample log loss
+        based on pooled samples from all the models. This is useful for bandwidth
+        selection for cases where some local models are not fitted due to local
+        invariance and resulting information criteria are not comparable.
     random_state : int | None, optional
         Random seed for reproducibility, by default None
     verbose : bool, optional
@@ -443,8 +450,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Probability predictions for focal locations based on a local model trained
         around the point itself.
     pred_ : pd.Series
-        Binary predictions for focal locations based on a local model trained around
-        the location itself.
+        Binary predictions for focal locations based on a local model trained around the
+        location itself.
     hat_values_ : pd.Series
         Hat values for each location (diagonal elements of hat matrix)
     effective_df_ : float
@@ -463,18 +470,25 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         F1 score with micro averaging based on ``pred_``.
     f1_weighted_ : float
         F1 score with weighted averaging based on ``pred_``.
+    log_loss_ : float
+        Log loss of the model based on ``pred_``.
     log_likelihood_ : float
         Global log likelihood of the model
     aic_ : float
         Akaike information criterion of the model
     aicc_ : float
-        Corrected Akaike information criterion to account for model
-        complexity (smaller bandwidths)
+        Corrected Akaike information criterion to account for model complexity (smaller
+        bandwidths)
     bic_ : float
         Bayesian information criterion
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
+    oos_log_loss_ : float
+        Out-of-sample log loss of the model. It is based on pooled data of randomly left
+        out observations from training of local models. Log loss is measured as weighted
+        using the set bandwidth and a kernel. Available only when ``leave_out`` is not
+        None.
     """
 
     def __init__(
@@ -506,6 +520,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         batch_size: int | None = None,
         min_proportion: float = 0.2,
         undersample: bool = False,
+        leave_out: float | int | None = None,
         random_state: int | None = None,
         verbose: bool = False,
         **kwargs,
@@ -531,6 +546,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self.min_proportion = min_proportion
         self.undersample = undersample
         self.random_state = random_state
+        self.leave_out = leave_out
         self._empty_score_data = None
         self._empty_feature_imp = None
 
@@ -600,7 +616,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                 self._score_data,
                 self._feature_importances,
                 focal_proba,
-                hat_values,  # Add hat values
+                hat_values,
+                left_out_proba,
                 models,
             ) = zip(*training_output, strict=False)
             self._local_models = pd.Series(models, index=self._names)
@@ -611,7 +628,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                 self._score_data,
                 self._feature_importances,
                 focal_proba,
-                hat_values,  # Add hat values
+                hat_values,
+                left_out_proba,
             ) = zip(*training_output, strict=False)
 
         self._n_labels = pd.Series(self._n_labels, index=self._names)
@@ -620,6 +638,15 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         # Store hat values and compute effective degrees of freedom
         self.hat_values_ = pd.Series(hat_values, index=self._names)
         self.effective_df_ = np.nansum(self.hat_values_)
+
+        if self.leave_out:
+            y_pred = np.concatenate([arr[0] for arr in left_out_proba])
+            y_true = np.concatenate([arr[1] for arr in left_out_proba])
+            w = np.concatenate([arr[2] for arr in left_out_proba])
+
+            # TODO: this could potentially follow the logic of measure_performance
+            # and measure more than log loss
+            self.oos_log_loss_ = metrics.log_loss(y_true, y_pred, sample_weight=w)
 
         # support both bool and 0, 1 encoding of binary variable
         col = True if True in self.proba_.columns else 1
@@ -638,13 +665,14 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         if self.measure_performance:
             if self.measure_performance is True:
                 metrics_to_measure = [
-                    "accuracy",
+                    "score",
                     "precision",
                     "recall",
                     "balanced_accuracy",
                     "f1_macro",
                     "f1_micro",
                     "f1_weighted",
+                    "log_loss",
                 ]
             else:
                 metrics_to_measure = self.measure_performance
@@ -652,7 +680,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                 print(f"{(time() - self._start):.2f}s: Measuring focal performance")
             masked_y = y[~nan_mask]
 
-            if "accuracy" in metrics_to_measure:
+            if "score" in metrics_to_measure:
                 self.score_ = metrics.accuracy_score(masked_y, self.pred_)
 
             if "precision" in metrics_to_measure:
@@ -685,6 +713,12 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                     masked_y, self.pred_, average="weighted", zero_division=0
                 )
 
+            if "log_loss" in metrics_to_measure:
+                self.log_loss_ = metrics.log_loss(
+                    masked_y,
+                    self.proba_[~nan_mask],
+                )
+
         # Compute global log likelihood and information criteria
         if self.verbose:
             print(f"{(time() - self._start):.2f}s: Computing global likelihood")
@@ -705,6 +739,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         model_kwargs: dict,
     ) -> tuple:
         """Fit individual local model"""
+
         if self.undersample:
             from imblearn.under_sampling import RandomUnderSampler
 
@@ -713,19 +748,23 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         skip = n_labels == 1
         if n_labels > 1:
             skip = (vc.iloc[1] / vc.iloc[0]) < self.min_proportion
+
+        # empty data for skipped models
+        score_data = self._empty_score_data
+        feature_imp = self._empty_feature_imp
+        output = [
+            name,
+            n_labels,
+            score_data,
+            feature_imp,
+            pd.Series(np.nan, index=self._global_classes),
+            np.nan,
+            (np.zeros(shape=(0, 2)), data["_y"].iloc[:0], data["_weight"].iloc[:0]),
+        ]
+        if self.keep_models:
+            output.append(None)
+
         if skip:
-            score_data = self._empty_score_data
-            feature_imp = self._empty_feature_imp
-            output = [
-                name,
-                n_labels,
-                score_data,
-                feature_imp,
-                pd.Series(np.nan, index=self._global_classes),
-                np.nan,
-            ]
-            if self.keep_models:
-                output.append(None)
             return output
 
         local_model = model(random_state=self.random_state, **model_kwargs)
@@ -738,6 +777,16 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             else:
                 rus = RandomUnderSampler(random_state=self.random_state)
             data, _ = rus.fit_resample(data, data["_y"])
+
+        if self.leave_out:
+            try:
+                data, left_out_data = train_test_split(
+                    data, test_size=self.leave_out, stratify=data["_y"]
+                )
+            except ValueError:  # only 1 observation of True
+                return output
+            if len(data["_y"].value_counts()) == 1:
+                return output
 
         X = data.drop(columns=["_y", "_weight"])
         y = data["_y"]
@@ -758,6 +807,18 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         hat_value = self._compute_hat_value(X, data["_weight"], focal_x.values)
 
+        if self.leave_out:
+            left_out_proba = local_model.predict_proba(
+                left_out_data.drop(columns=["_y", "_weight"])
+            )
+            left_out_proba = (
+                left_out_proba,
+                left_out_data["_y"],
+                left_out_data["_weight"],
+            )
+        else:
+            left_out_proba = None
+
         output = [
             name,
             n_labels,
@@ -765,6 +826,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             getattr(local_model, "feature_importances_", None),
             focal_proba,
             hat_value,
+            left_out_proba,
         ]
 
         if self.keep_models:
