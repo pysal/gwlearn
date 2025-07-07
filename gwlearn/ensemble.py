@@ -78,6 +78,12 @@ class GWRandomForestClassifier(BaseClassifier):
         Minimum proportion of minority class for a model to be fitted, by default 0.2
     undersample : bool, optional
         Whether to apply random undersampling to balance classes, by default False
+    leave_out : float | int, optional
+        Leave out a fraction (when float) or a set number (when int) of random
+        observations from each local model to be used to measure out-of-sample log loss
+        based on pooled samples from all the models. This is useful for bandwidth
+        selection for cases where some local models are not fitted due to local
+        invariance and resulting information criteria are not comparable.
     random_state : int | None, optional
         Random seed for reproducibility, by default None
     verbose : bool, optional
@@ -111,6 +117,8 @@ class GWRandomForestClassifier(BaseClassifier):
         F1 score with micro averaging based on ``pred_``.
     f1_weighted_ : float
         F1 score with weighted averaging based on ``pred_``.
+    log_loss_ : float
+        Log loss of the model based on ``pred_``.
     log_likelihood_ : float
         Global log likelihood of the model
     aic_ : float
@@ -153,6 +161,9 @@ class GWRandomForestClassifier(BaseClassifier):
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
+    oos_log_loss_ : float
+        Out-of-sample log loss of the model. Available only when ``leave_out`` is not
+        None.
     """
 
     def __init__(

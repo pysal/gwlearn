@@ -1547,3 +1547,25 @@ def test_custom_graph_baseclassifier(sample_data):
     # Check that the model was fit successfully
     assert hasattr(clf, "proba_")
     assert hasattr(clf, "score_")
+
+
+def test_leave_out_oos_log_loss(sample_data):
+    """Test that leave_out enables oos_log_loss_ calculation."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        geometry=geometry,
+        bandwidth=150000,
+        fixed=True,
+        leave_out=0.2,
+        random_state=42,
+        strict=False,
+        max_iter=500,
+    )
+    clf.fit(X, y)
+
+    # oos_log_loss_ should be present and a finite float
+    assert hasattr(clf, "oos_log_loss_")
+    assert isinstance(clf.oos_log_loss_, float)
+    assert np.isfinite(clf.oos_log_loss_)
