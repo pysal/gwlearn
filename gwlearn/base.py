@@ -312,7 +312,11 @@ class _BaseModel(BaseEstimator):
 
     def _compute_information_criteria(self):
         """Compute AIC, BIC, and AICc using the global log likelihood"""
-        n = len(self.pred_)
+        n = (
+            self._n_fitted_models
+            if hasattr(self, "_n_fitted_models")
+            else len(self.pred_)
+        )
 
         # Use effective degrees of freedom as the number of parameters
         k = self.effective_df_
@@ -623,7 +627,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         nan_mask = self.proba_[col].isna()
         self.pred_ = self.proba_[col][~nan_mask] > 0.5
 
-        self.prediction_rate_ = 1 - (nan_mask.sum() / nan_mask.shape[0])
+        self._n_fitted_models = (~self.proba_[col].isna()).sum()
+        self.prediction_rate_ = self._n_fitted_models / nan_mask.shape[0]
 
         if self.fit_global_model:
             if self.verbose:
