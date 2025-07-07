@@ -625,8 +625,11 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         if self.leave_out:
             y_pred = np.concatenate([arr[0] for arr in left_out_proba])
             y_true = np.concatenate([arr[1] for arr in left_out_proba])
+            w = np.concatenate([arr[2] for arr in left_out_proba])
 
-            self.leave_out_log_loss_ = metrics.log_loss(y_true, y_pred)
+            # TODO: this could potentially follow the logic of measure_performance
+            # and measure more than log loss
+            self.leave_out_log_loss_ = metrics.log_loss(y_true, y_pred, sample_weight=w)
 
         # support both bool and 0, 1 encoding of binary variable
         col = True if True in self.proba_.columns else 1
@@ -752,7 +755,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                 data, left_out_data = train_test_split(
                     data, test_size=self.leave_out, stratify=data["_y"]
                 )
-            except ValueError:
+            except ValueError:  # only 1 observation of True
                 skip = True
             if len(data["_y"].value_counts()) == 1:
                 skip = True
@@ -767,7 +770,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                 feature_imp,
                 pd.Series(np.nan, index=self._global_classes),
                 np.nan,
-                (np.zeros(shape=(0, 2)), data["_y"].iloc[:0]),
+                (np.zeros(shape=(0, 2)), data["_y"].iloc[:0], data["_weight"].iloc[:0]),
             ]
             if self.keep_models:
                 output.append(None)
@@ -796,7 +799,11 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             left_out_proba = local_model.predict_proba(
                 left_out_data.drop(columns=["_y", "_weight"])
             )
-            left_out_proba = (left_out_proba, left_out_data["_y"])
+            left_out_proba = (
+                left_out_proba,
+                left_out_data["_y"],
+                left_out_data["_weight"],
+            )
         else:
             left_out_proba = None
 
