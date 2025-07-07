@@ -742,6 +742,24 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         if n_labels > 1:
             skip = (vc.iloc[1] / vc.iloc[0]) < self.min_proportion
 
+        # empty data for skipped models
+        score_data = self._empty_score_data
+        feature_imp = self._empty_feature_imp
+        output = [
+            name,
+            n_labels,
+            score_data,
+            feature_imp,
+            pd.Series(np.nan, index=self._global_classes),
+            np.nan,
+            (np.zeros(shape=(0, 2)), data["_y"].iloc[:0], data["_weight"].iloc[:0]),
+        ]
+        if self.keep_models:
+            output.append(None)
+
+        if skip:
+            return output
+
         local_model = model(random_state=self.random_state, **model_kwargs)
 
         if self.undersample:
@@ -759,25 +777,9 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                     data, test_size=self.leave_out, stratify=data["_y"]
                 )
             except ValueError:  # only 1 observation of True
-                skip = True
+                return output
             if len(data["_y"].value_counts()) == 1:
-                skip = True
-
-        if skip:
-            score_data = self._empty_score_data
-            feature_imp = self._empty_feature_imp
-            output = [
-                name,
-                n_labels,
-                score_data,
-                feature_imp,
-                pd.Series(np.nan, index=self._global_classes),
-                np.nan,
-                (np.zeros(shape=(0, 2)), data["_y"].iloc[:0], data["_weight"].iloc[:0]),
-            ]
-            if self.keep_models:
-                output.append(None)
-            return output
+                return output
 
         X = data.drop(columns=["_y", "_weight"])
         y = data["_y"]
