@@ -160,7 +160,16 @@ class BandwidthSearch:
             met += self.metrics
 
         if hasattr(gwm, "prediction_rate_") and gwm.prediction_rate_ == 0:
-            return np.nan, [np.nan for _ in met]
+            # prediction rate should report 0, everything else is undefined
+            score = (
+                gwm.prediction_rate_ if self.criterion == "prediction_rate" else np.nan
+            )
+
+            all_metrics = [
+                gwm.prediction_rate_ if m == "prediction_rate" else np.nan for m in met
+            ]
+
+            return score, all_metrics
 
         all_metrics = []
         for m in met:
