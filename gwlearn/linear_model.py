@@ -477,7 +477,7 @@ class GWLinearRegression(BaseRegressor):
 
     def __init__(
         self,
-        bandwidth: int | float,
+        bandwidth: float | None = None,
         fixed: bool = False,
         kernel: Literal[
             "triangular",
