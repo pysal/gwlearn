@@ -683,31 +683,33 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                 print(f"{(time() - self._start):.2f}s: Measuring focal performance")
             masked_y = y[~nan_mask]
 
+            computable = (self.prediction_rate_ > 0) and masked_y.nunique() > 1
+
             if "score" in metrics_to_measure:
                 self.score_ = (
                     metrics.accuracy_score(masked_y, self.pred_)
-                    if self.prediction_rate_ > 0
+                    if computable
                     else np.nan
                 )
 
             if "precision" in metrics_to_measure:
                 self.precision_ = (
                     metrics.precision_score(masked_y, self.pred_, zero_division=0)
-                    if self.prediction_rate_ > 0
+                    if computable
                     else np.nan
                 )
 
             if "recall" in metrics_to_measure:
                 self.recall_ = (
                     metrics.recall_score(masked_y, self.pred_, zero_division=0)
-                    if self.prediction_rate_ > 0
+                    if computable
                     else np.nan
                 )
 
             if "balanced_accuracy" in metrics_to_measure:
                 self.balanced_accuracy_ = (
                     metrics.balanced_accuracy_score(masked_y, self.pred_)
-                    if self.prediction_rate_ > 0
+                    if computable
                     else np.nan
                 )
 
@@ -716,7 +718,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                     metrics.f1_score(
                         masked_y, self.pred_, average="macro", zero_division=0
                     )
-                    if self.prediction_rate_ > 0
+                    if computable
                     else np.nan
                 )
 
@@ -725,7 +727,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                     metrics.f1_score(
                         masked_y, self.pred_, average="micro", zero_division=0
                     )
-                    if self.prediction_rate_ > 0
+                    if computable
                     else np.nan
                 )
 
@@ -734,7 +736,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                     metrics.f1_score(
                         masked_y, self.pred_, average="weighted", zero_division=0
                     )
-                    if self.prediction_rate_ > 0
+                    if computable
                     else np.nan
                 )
 
@@ -744,7 +746,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                         masked_y,
                         self.proba_[~nan_mask],
                     )
-                    if self.prediction_rate_ > 0
+                    if computable
                     else np.nan
                 )
 
