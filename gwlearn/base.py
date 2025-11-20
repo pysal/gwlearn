@@ -214,7 +214,7 @@ class _BaseModel(BaseEstimator):
         data["_y"] = y
         data = data.loc[index.get_level_values(1)]
         data["_weight"] = _weight
-        grouper = data.groupby(index.get_level_values(0))
+        grouper = data.groupby(index.get_level_values(0), sort=False)
 
         invariant = grouper["_y"].nunique() == 1
         if invariant.any():
