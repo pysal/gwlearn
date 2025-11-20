@@ -4,6 +4,7 @@ import pandas as pd
 import pytest
 from geodatasets import get_path
 from numpy.testing import assert_almost_equal, assert_array_almost_equal
+from pandas.testing import assert_series_equal
 from sklearn.linear_model import LinearRegression, LogisticRegression
 
 from gwlearn.linear_model import GWLinearRegression, GWLogisticRegression
@@ -243,6 +244,41 @@ def test_gwlinear_fit_basic(sample_regression_data):
     # Check structure of intercepts
     assert isinstance(model.local_intercept_, pd.Series)
     assert len(model.local_intercept_) == len(X)
+
+
+def test_index_order_influence(sample_regression_data):
+    X, y, geometry = sample_regression_data
+
+    model = GWLinearRegression(
+        geometry=geometry,
+        bandwidth=150000,
+        fixed=True,
+        n_jobs=1,
+        include_focal=False,
+    )
+
+    model.fit(X, y)
+    pred_expected = model.pred_.sort_index()
+
+    rng = np.random.default_rng()
+    order = np.arange(len(y))
+    rng.shuffle(order)
+    X = X.iloc[order]
+    y = y.iloc[order]
+    geometry = geometry.iloc[order]
+
+    model = GWLinearRegression(
+        geometry=geometry,
+        bandwidth=150000,
+        fixed=True,
+        n_jobs=1,
+        include_focal=False,
+    )
+
+    model.fit(X, y)
+    pred_re_ordered = model.pred_.sort_index()
+
+    assert_series_equal(pred_expected, pred_re_ordered)
 
 
 # def test_gwlinear_coefficients_structure(sample_regression_data):
