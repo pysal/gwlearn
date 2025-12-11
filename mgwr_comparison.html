@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Comparison of GWLinearRegression to MGWR’s implementation &#8212; gwlearn 0.1.dev77+g33aea2af8 documentation</title>
+    <title>Comparison of GWLinearRegression to MGWR’s implementation &#8212; gwlearn 0.1.dev78+gc5a3203da documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=0bb3269f"></script>
+    <script src="_static/documentation_options.js?v=5cc36f40"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev77+g33aea2af8 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev78+gc5a3203da documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -412,20 +412,21 @@ document.write(`
   --sklearn-color-fitted-level-1: #d4ebff;
   --sklearn-color-fitted-level-2: #b3dbfd;
   --sklearn-color-fitted-level-3: cornflowerblue;
+}
 
+#sk-container-id-1.light {
   /* Specific color for light theme */
-  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
-  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
-  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-text-on-default-background: black;
+  --sklearn-color-background: white;
+  --sklearn-color-border-box: black;
   --sklearn-color-icon: #696969;
+}
 
-  @media (prefers-color-scheme: dark) {
-    /* Redefinition of color scheme for dark theme */
-    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
-    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-icon: #878787;
-  }
+#sk-container-id-1.dark {
+  --sklearn-color-text-on-default-background: white;
+  --sklearn-color-background: #111;
+  --sklearn-color-border-box: white;
+  --sklearn-color-icon: #878787;
 }
 
 #sk-container-id-1 {
@@ -551,8 +552,8 @@ clickable and can be expanded/collapsed.
   padding: 0.5em;
   box-sizing: border-box;
   text-align: center;
-  align-items: start;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
   gap: 0.5em;
 }
 
@@ -577,9 +578,7 @@ clickable and can be expanded/collapsed.
 /* Toggleable content - dropdown */
 
 #sk-container-id-1 div.sk-toggleable__content {
-  max-height: 0;
-  max-width: 0;
-  overflow: hidden;
+  display: none;
   text-align: left;
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-0);
@@ -605,9 +604,9 @@ clickable and can be expanded/collapsed.
 
 #sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
   /* Expand drop-down */
-  max-height: 200px;
-  max-width: 100%;
-  overflow: auto;
+  display: block;
+  width: 100%;
+  overflow: visible;
 }
 
 #sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
@@ -661,7 +660,6 @@ clickable and can be expanded/collapsed.
 #sk-container-id-1 div.sk-label label {
   font-family: monospace;
   font-weight: bold;
-  display: inline-block;
   line-height: 1.2em;
 }
 
@@ -707,7 +705,7 @@ a:visited.sk-estimator-doc-link {
   font-size: smaller;
   line-height: 1em;
   font-family: monospace;
-  background-color: var(--sklearn-color-background);
+  background-color: var(--sklearn-color-unfitted-level-0);
   border-radius: 1em;
   height: 1em;
   width: 1em;
@@ -715,16 +713,17 @@ a:visited.sk-estimator-doc-link {
   margin-left: 0.5em;
   text-align: center;
   /* unfitted */
-  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
-  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-3) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-3);
 }
 
 .sk-estimator-doc-link.fitted,
 a:link.sk-estimator-doc-link.fitted,
 a:visited.sk-estimator-doc-link.fitted {
   /* fitted */
-  border: var(--sklearn-color-fitted-level-1) 1pt solid;
-  color: var(--sklearn-color-fitted-level-1);
+  background-color: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3) 1pt solid;
+  color: var(--sklearn-color-fitted-level-3);
 }
 
 /* On hover */
@@ -734,7 +733,8 @@ div.sk-label-container:hover .sk-estimator-doc-link:hover,
 .sk-estimator-doc-link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
-  color: var(--sklearn-color-background);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-0);
   text-decoration: none;
 }
 
@@ -744,7 +744,8 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 .sk-estimator-doc-link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
-  color: var(--sklearn-color-background);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-fitted-level-0);
   text-decoration: none;
 }
 
@@ -784,7 +785,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   font-size: 1rem;
   line-height: 1em;
   font-family: monospace;
-  background-color: var(--sklearn-color-background);
+  background-color: var(--sklearn-color-unfitted-level-0);
   border-radius: 1rem;
   height: 1rem;
   width: 1rem;
@@ -796,6 +797,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 
 #sk-container-id-1 a.estimator_doc_link.fitted {
   /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
   border: var(--sklearn-color-fitted-level-1) 1pt solid;
   color: var(--sklearn-color-fitted-level-1);
 }
@@ -812,7 +814,397 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
 }
-</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLinearRegression(bandwidth=300)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLinearRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted"><pre>GWLinearRegression(bandwidth=300)</pre></div> </div></div></div></div></div></div>
+
+.estimator-table {
+    font-family: monospace;
+}
+
+.estimator-table summary {
+    padding: .5rem;
+    cursor: pointer;
+}
+
+.estimator-table summary::marker {
+    font-size: 0.7rem;
+}
+
+.estimator-table details[open] {
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+    padding-bottom: 0.3rem;
+}
+
+.estimator-table .parameters-table {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 0;
+}
+
+.estimator-table .parameters-table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.estimator-table .parameters-table tr:nth-child(even) {
+    background-color: #f6f6f6;
+}
+
+.estimator-table .parameters-table tr:hover {
+    background-color: #e0e0e0;
+}
+
+.estimator-table table td {
+    border: 1px solid rgba(106, 105, 104, 0.232);
+}
+
+/*
+    `table td`is set in notebook with right text-align.
+    We need to overwrite it.
+*/
+.estimator-table table td.param {
+    text-align: left;
+    position: relative;
+    padding: 0;
+}
+
+.user-set td {
+    color:rgb(255, 94, 0);
+    text-align: left !important;
+}
+
+.user-set td.value {
+    color:rgb(255, 94, 0);
+    background-color: transparent;
+}
+
+.default td {
+    color: black;
+    text-align: left !important;
+}
+
+.user-set td i,
+.default td i {
+    color: black;
+}
+
+/*
+    Styles for parameter documentation links
+    We need styling for visited so jupyter doesn't overwrite it
+*/
+a.param-doc-link,
+a.param-doc-link:link,
+a.param-doc-link:visited {
+    text-decoration: underline dashed;
+    text-underline-offset: .3em;
+    color: inherit;
+    display: block;
+    padding: .5em;
+}
+
+/* "hack" to make the entire area of the cell containing the link clickable */
+a.param-doc-link::before {
+    position: absolute;
+    content: "";
+    inset: 0;
+}
+
+.param-doc-description {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    left: 0;
+    padding: .5ex;
+    margin-left: 1.5em;
+    color: var(--sklearn-color-text);
+    box-shadow: .3em .3em .4em #999;
+    width: max-content;
+    text-align: left;
+    max-height: 10em;
+    overflow-y: auto;
+
+    /* unfitted */
+    background: var(--sklearn-color-unfitted-level-0);
+    border: thin solid var(--sklearn-color-unfitted-level-3);
+}
+
+/* Fitted state for parameter tooltips */
+.fitted .param-doc-description {
+    /* fitted */
+    background: var(--sklearn-color-fitted-level-0);
+    border: thin solid var(--sklearn-color-fitted-level-3);
+}
+
+.param-doc-link:hover .param-doc-description {
+    display: block;
+}
+
+.copy-paste-icon {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNy4yIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjUgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTIwOCAwTDMzMi4xIDBjMTIuNyAwIDI0LjkgNS4xIDMzLjkgMTQuMWw2Ny45IDY3LjljOSA5IDE0LjEgMjEuMiAxNC4xIDMzLjlMNDQ4IDMzNmMwIDI2LjUtMjEuNSA0OC00OCA0OGwtMTkyIDBjLTI2LjUgMC00OC0yMS41LTQ4LTQ4bDAtMjg4YzAtMjYuNSAyMS41LTQ4IDQ4LTQ4ek00OCAxMjhsODAgMCAwIDY0LTY0IDAgMCAyNTYgMTkyIDAgMC0zMiA2NCAwIDAgNDhjMCAyNi41LTIxLjUgNDgtNDggNDhMNDggNTEyYy0yNi41IDAtNDgtMjEuNS00OC00OEwwIDE3NmMwLTI2LjUgMjEuNS00OCA0OC00OHoiLz48L3N2Zz4=);
+    background-repeat: no-repeat;
+    background-size: 14px 14px;
+    background-position: 0;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLinearRegression(bandwidth=300,
+                   geometry=0          POINT (82379.611 2869738.377)
+1       POINT (-1668934.975 3018181.842)
+2       POINT (-1619958.935 3006537.453)
+3         POINT (-1755117.16 3050487.11)
+4       POINT (-1577383.387 2998650.582)
+                      ...               
+3080    POINT (-1657849.621 1282663.159)
+3081    POINT (-1087856.066 1384868.843)
+3082      POINT (1699672.63 1751264.588)
+3083      POINT (1582459.36 1898177.771)
+3084     POINT (-1155816.554 2564833.36)
+Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLinearRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+        <div class="estimator-table">
+            <details>
+                <summary>Parameters</summary>
+                <table class="parameters-table">
+                  <tbody>
+                    
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('bandwidth',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">bandwidth</td>
+            <td class="value">300</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('fixed',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">fixed</td>
+            <td class="value">False</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('kernel',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">kernel</td>
+            <td class="value">&#x27;bisquare&#x27;</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('include_focal',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">include_focal</td>
+            <td class="value">True</td>
+        </tr>
+    
+
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('geometry',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">geometry</td>
+            <td class="value">0          PO...type: geometry</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('graph',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">graph</td>
+            <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('n_jobs',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">n_jobs</td>
+            <td class="value">-1</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('fit_global_model',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">fit_global_model</td>
+            <td class="value">True</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('measure_performance',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">measure_performance</td>
+            <td class="value">True</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('keep_models',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">keep_models</td>
+            <td class="value">False</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('temp_folder',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">temp_folder</td>
+            <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('batch_size',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">batch_size</td>
+            <td class="value">None</td>
+        </tr>
+    
+                  </tbody>
+                </table>
+            </details>
+        </div>
+    </div></div></div></div></div><script>function copyToClipboard(text, element) {
+    // Get the parameter prefix from the closest toggleable content
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const fullParamName = paramPrefix ? `${paramPrefix}${text}` : text;
+
+    const originalStyle = element.style;
+    const computedStyle = window.getComputedStyle(element);
+    const originalWidth = computedStyle.width;
+    const originalHTML = element.innerHTML.replace('Copied!', '');
+
+    navigator.clipboard.writeText(fullParamName)
+        .then(() => {
+            element.style.width = originalWidth;
+            element.style.color = 'green';
+            element.innerHTML = "Copied!";
+
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        })
+        .catch(err => {
+            console.error('Failed to copy:', err);
+            element.style.color = 'red';
+            element.innerHTML = "Failed!";
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        });
+    return false;
+}
+
+document.querySelectorAll('.copy-paste-icon').forEach(function(element) {
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const paramName = element.parentElement.nextElementSibling
+        .textContent.trim().split(' ')[0];
+    const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
+
+    element.setAttribute('title', fullParamName);
+});
+
+
+/**
+ * Adapted from Skrub
+ * https://github.com/skrub-data/skrub/blob/403466d1d5d4dc76a7ef569b3f8228db59a31dc3/skrub/_reporting/_data/templates/report.js#L789
+ * @returns "light" or "dark"
+ */
+function detectTheme(element) {
+    const body = document.querySelector('body');
+
+    // Check VSCode theme
+    const themeKindAttr = body.getAttribute('data-vscode-theme-kind');
+    const themeNameAttr = body.getAttribute('data-vscode-theme-name');
+
+    if (themeKindAttr && themeNameAttr) {
+        const themeKind = themeKindAttr.toLowerCase();
+        const themeName = themeNameAttr.toLowerCase();
+
+        if (themeKind.includes("dark") || themeName.includes("dark")) {
+            return "dark";
+        }
+        if (themeKind.includes("light") || themeName.includes("light")) {
+            return "light";
+        }
+    }
+
+    // Check Jupyter theme
+    if (body.getAttribute('data-jp-theme-light') === 'false') {
+        return 'dark';
+    } else if (body.getAttribute('data-jp-theme-light') === 'true') {
+        return 'light';
+    }
+
+    // Guess based on a parent element's color
+    const color = window.getComputedStyle(element.parentNode, null).getPropertyValue('color');
+    const match = color.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i);
+    if (match) {
+        const [r, g, b] = [
+            parseFloat(match[1]),
+            parseFloat(match[2]),
+            parseFloat(match[3])
+        ];
+
+        // https://en.wikipedia.org/wiki/HSL_and_HSV#Lightness
+        const luma = 0.299 * r + 0.587 * g + 0.114 * b;
+
+        if (luma > 180) {
+            // If the text is very bright we have a dark theme
+            return 'dark';
+        }
+        if (luma < 75) {
+            // If the text is very dark we have a light theme
+            return 'light';
+        }
+        // Otherwise fall back to the next heuristic.
+    }
+
+    // Fallback to system preference
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+
+function forceTheme(elementId) {
+    const estimatorElement = document.querySelector(`#${elementId}`);
+    if (estimatorElement === null) {
+        console.error(`Element with id ${elementId} not found.`);
+    } else {
+        const theme = detectTheme(estimatorElement);
+        estimatorElement.classList.add(theme);
+    }
+}
+
+forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 <p>mgwr</p>
 <div class="cell docutils container">
@@ -945,6 +1337,56 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(16733.940863829866)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1101793a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1068893a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x105a793a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x105f893a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x104e353a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x106d793a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1052f53a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1074093a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
 </pre></div>
 </div>
 </div>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.ensemble &#8212; gwlearn 0.1.dev77+g33aea2af8 documentation</title>
+    <title>gwlearn.ensemble &#8212; gwlearn 0.1.dev78+gc5a3203da documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=0bb3269f"></script>
+    <script src="../../_static/documentation_options.js?v=5cc36f40"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev77+g33aea2af8 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev78+gc5a3203da documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -378,21 +378,21 @@ document.write(`
 <span class="sd">        Hat values for each location (diagonal elements of hat matrix)</span>
 <span class="sd">    effective_df_ : float</span>
 <span class="sd">        Effective degrees of freedom (sum of hat values)</span>
-<span class="sd">    score_ : float</span>
+<span class="sd">    focal_score_ : float</span>
 <span class="sd">        Accuracy score of the model based on ``pred_``.</span>
-<span class="sd">    precision_ : float</span>
+<span class="sd">    focal_precision_ : float</span>
 <span class="sd">        Precision score of the model based on ``pred_``.</span>
-<span class="sd">    recall_ : float</span>
+<span class="sd">    focal_recall_ : float</span>
 <span class="sd">        Recall score of the model based on ``pred_``.</span>
-<span class="sd">    balanced_accuracy_ : float</span>
+<span class="sd">    focal_balanced_accuracy_ : float</span>
 <span class="sd">        Balanced accuracy score of the model based on ``pred_``.</span>
-<span class="sd">    f1_macro_ : float</span>
+<span class="sd">    focal_f1_macro_ : float</span>
 <span class="sd">        F1 score with macro averaging based on ``pred_``.</span>
-<span class="sd">    f1_micro_ : float</span>
+<span class="sd">    focal_f1_micro_ : float</span>
 <span class="sd">        F1 score with micro averaging based on ``pred_``.</span>
-<span class="sd">    f1_weighted_ : float</span>
+<span class="sd">    focal_f1_weighted_ : float</span>
 <span class="sd">        F1 score with weighted averaging based on ``pred_``.</span>
-<span class="sd">    log_loss_ : float</span>
+<span class="sd">    focal_log_loss_ : float</span>
 <span class="sd">        Log loss of the model based on ``pred_``.</span>
 <span class="sd">    log_likelihood_ : float</span>
 <span class="sd">        Global log likelihood of the model</span>
@@ -403,19 +403,19 @@ document.write(`
 <span class="sd">        complexity (smaller bandwidths)</span>
 <span class="sd">    bic_ : float</span>
 <span class="sd">        Bayesian information criterion</span>
-<span class="sd">    oob_score_ : float</span>
+<span class="sd">    pooled_oob_score_ : float</span>
 <span class="sd">        Out-of-bag accuracy score based on pooled OOB predictions</span>
-<span class="sd">    oob_precision_ : float</span>
+<span class="sd">    pooled_oob_precision_ : float</span>
 <span class="sd">        Out-of-bag precision score based on pooled OOB predictions</span>
-<span class="sd">    oob_recall_ : float</span>
+<span class="sd">    pooled_oob_recall_ : float</span>
 <span class="sd">        Out-of-bag recall score based on pooled OOB predictions</span>
-<span class="sd">    oob_balanced_accuracy_ : float</span>
+<span class="sd">    pooled_oob_balanced_accuracy_ : float</span>
 <span class="sd">        Out-of-bag balanced accuracy score based on pooled OOB predictions</span>
-<span class="sd">    oob_f1_macro_ : float</span>
+<span class="sd">    pooled_oob_f1_macro_ : float</span>
 <span class="sd">        Out-of-bag F1 score with macro averaging based on pooled OOB predictions</span>
-<span class="sd">    oob_f1_micro_ : float</span>
+<span class="sd">    pooled_oob_f1_micro_ : float</span>
 <span class="sd">        Out-of-bag F1 score with micro averaging based on pooled OOB predictions</span>
-<span class="sd">    oob_f1_weighted_ : float</span>
+<span class="sd">    pooled_oob_f1_weighted_ : float</span>
 <span class="sd">        Out-of-bag F1 score with weighted averaging based on pooled OOB predictions</span>
 <span class="sd">    local_oob_score_ : pd.Series</span>
 <span class="sd">        Out-of-bag accuracy score for each local model</span>
@@ -549,53 +549,50 @@ document.write(`
                 <span class="k">return</span> <span class="bp">self</span>
 
             <span class="c1"># global OOB scores</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;oob_score&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">oob_score_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="s2">&quot;pooled_oob_score&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pooled_oob_score_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
-                <span class="s2">&quot;oob_precision&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                <span class="s2">&quot;pooled_oob_precision&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
             <span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">oob_precision_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">precision_score</span><span class="p">(</span>
-                    <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
-                <span class="p">)</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;oob_recall&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">oob_recall_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">recall_score</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pooled_oob_precision_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">precision_score</span><span class="p">(</span>
                     <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
                 <span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
-                <span class="s2">&quot;oob_balanced_accuracy&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                <span class="s2">&quot;pooled_oob_recall&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
             <span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">oob_balanced_accuracy_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">balanced_accuracy_score</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pooled_oob_recall_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">recall_score</span><span class="p">(</span>
+                    <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="s2">&quot;pooled_oob_balanced_accuracy&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pooled_oob_balanced_accuracy_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">balanced_accuracy_score</span><span class="p">(</span>
                     <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span>
                 <span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
-                <span class="s2">&quot;oob_f1_macro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                <span class="s2">&quot;pooled_oob_f1_macro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
             <span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">oob_f1_macro_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pooled_oob_f1_macro_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
                     <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
                 <span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
-                <span class="s2">&quot;oob_f1_micro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                <span class="s2">&quot;pooled_oob_f1_micro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
             <span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">oob_f1_micro_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pooled_oob_f1_micro_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
                     <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;micro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
                 <span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
-                <span class="s2">&quot;oob_f1_weighted&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                <span class="s2">&quot;pooled_oob_f1_weighted&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
             <span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">oob_f1_weighted_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
-                    <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;weighted&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
-                <span class="p">)</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
-                <span class="s2">&quot;oob_log_loss&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
-            <span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">oob_f1_weighted_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pooled_oob_f1_weighted_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
                     <span class="n">all_true</span><span class="p">,</span> <span class="n">all_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;weighted&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
                 <span class="p">)</span>
 
@@ -762,20 +759,22 @@ document.write(`
 <span class="sd">        Hat values for each location (diagonal elements of hat matrix)</span>
 <span class="sd">    effective_df_ : float</span>
 <span class="sd">        Effective degrees of freedom (sum of hat values)</span>
-<span class="sd">    score_ : float</span>
+<span class="sd">    focal_score_ : float</span>
 <span class="sd">        Accuracy score of the model based on ``pred_``.</span>
-<span class="sd">    precision_ : float</span>
+<span class="sd">    focal_precision_ : float</span>
 <span class="sd">        Precision score of the model based on ``pred_``.</span>
-<span class="sd">    recall_ : float</span>
+<span class="sd">    focal_recall_ : float</span>
 <span class="sd">        Recall score of the model based on ``pred_``.</span>
-<span class="sd">    balanced_accuracy_ : float</span>
+<span class="sd">    focal_balanced_accuracy_ : float</span>
 <span class="sd">        Balanced accuracy score of the model based on ``pred_``.</span>
-<span class="sd">    f1_macro_ : float</span>
+<span class="sd">    focal_f1_macro_ : float</span>
 <span class="sd">        F1 score with macro averaging based on ``pred_``.</span>
-<span class="sd">    f1_micro_ : float</span>
+<span class="sd">    focal_f1_micro_ : float</span>
 <span class="sd">        F1 score with micro averaging based on ``pred_``.</span>
-<span class="sd">    f1_weighted_ : float</span>
+<span class="sd">    focal_f1_weighted_ : float</span>
 <span class="sd">        F1 score with weighted averaging based on ``pred_``.</span>
+<span class="sd">    focal_log_loss_ : float</span>
+<span class="sd">        Log loss of the model based on ``pred_``.</span>
 <span class="sd">    log_likelihood_ : float</span>
 <span class="sd">        Global log likelihood of the model</span>
 <span class="sd">    aic_ : float</span>

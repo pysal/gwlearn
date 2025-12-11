@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.base &#8212; gwlearn 0.1.dev77+g33aea2af8 documentation</title>
+    <title>gwlearn.base &#8212; gwlearn 0.1.dev78+gc5a3203da documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=0bb3269f"></script>
+    <script src="../../_static/documentation_options.js?v=5cc36f40"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev77+g33aea2af8 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev78+gc5a3203da documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -684,8 +684,9 @@ document.write(`
 <span class="sd">        geographically weighted, by default True</span>
 <span class="sd">    measure_performance : bool | list, optional</span>
 <span class="sd">        Calculate performance metrics for the model. If True, measures accuracy score,</span>
-<span class="sd">        precision, recall, balanced accuracy, F1 scores and log loss. A subset of these</span>
-<span class="sd">        can be specified by passing a list of strings. By default True</span>
+<span class="sd">        precision, recall, balanced accuracy, F1 scores and log loss based on focal</span>
+<span class="sd">        prediction. A subset of these can be specified by passing a list of strings.</span>
+<span class="sd">        By default True</span>
 <span class="sd">    strict : bool | None, optional</span>
 <span class="sd">        Do not fit any models if at least one neighborhood has invariant ``y``, by</span>
 <span class="sd">        default False. None is treated as False but provides a warning if there are</span>
@@ -731,21 +732,21 @@ document.write(`
 <span class="sd">        Hat values for each location (diagonal elements of hat matrix)</span>
 <span class="sd">    effective_df_ : float</span>
 <span class="sd">        Effective degrees of freedom (sum of hat values)</span>
-<span class="sd">    score_ : float</span>
+<span class="sd">    focal_score_ : float</span>
 <span class="sd">        Accuracy score of the model based on ``pred_``.</span>
-<span class="sd">    precision_ : float</span>
+<span class="sd">    focal_precision_ : float</span>
 <span class="sd">        Precision score of the model based on ``pred_``.</span>
-<span class="sd">    recall_ : float</span>
+<span class="sd">    focal_recall_ : float</span>
 <span class="sd">        Recall score of the model based on ``pred_``.</span>
-<span class="sd">    balanced_accuracy_ : float</span>
+<span class="sd">    focal_balanced_accuracy_ : float</span>
 <span class="sd">        Balanced accuracy score of the model based on ``pred_``.</span>
-<span class="sd">    f1_macro_ : float</span>
+<span class="sd">    focal_f1_macro_ : float</span>
 <span class="sd">        F1 score with macro averaging based on ``pred_``.</span>
-<span class="sd">    f1_micro_ : float</span>
+<span class="sd">    focal_f1_micro_ : float</span>
 <span class="sd">        F1 score with micro averaging based on ``pred_``.</span>
-<span class="sd">    f1_weighted_ : float</span>
+<span class="sd">    focal_f1_weighted_ : float</span>
 <span class="sd">        F1 score with weighted averaging based on ``pred_``.</span>
-<span class="sd">    log_loss_ : float</span>
+<span class="sd">    focal_log_loss_ : float</span>
 <span class="sd">        Log loss of the model based on ``pred_``.</span>
 <span class="sd">    log_likelihood_ : float</span>
 <span class="sd">        Global log likelihood of the model</span>
@@ -948,14 +949,14 @@ document.write(`
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="n">metrics_to_measure</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="s2">&quot;score&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;precision&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;recall&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;balanced_accuracy&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;f1_macro&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;f1_micro&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;f1_weighted&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;log_loss&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;focal_score&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;focal_precision&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;focal_recall&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;focal_balanced_accuracy&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;focal_f1_macro&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;focal_f1_micro&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;focal_f1_weighted&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;focal_log_loss&quot;</span><span class="p">,</span>
                 <span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">metrics_to_measure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span>
@@ -965,36 +966,36 @@ document.write(`
 
             <span class="n">computable</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prediction_rate_</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">masked_y</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span>
 
-            <span class="k">if</span> <span class="s2">&quot;score&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">score_</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">if</span> <span class="s2">&quot;focal_score&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">focal_score_</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">computable</span>
                     <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;precision&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">precision_</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">if</span> <span class="s2">&quot;focal_precision&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">focal_precision_</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">metrics</span><span class="o">.</span><span class="n">precision_score</span><span class="p">(</span><span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">computable</span>
                     <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;recall&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">recall_</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">if</span> <span class="s2">&quot;focal_recall&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">focal_recall_</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">metrics</span><span class="o">.</span><span class="n">recall_score</span><span class="p">(</span><span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">computable</span>
                     <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;balanced_accuracy&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">balanced_accuracy_</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">if</span> <span class="s2">&quot;focal_balanced_accuracy&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">focal_balanced_accuracy_</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">metrics</span><span class="o">.</span><span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">computable</span>
                     <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;f1_macro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">f1_macro_</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">if</span> <span class="s2">&quot;focal_f1_macro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">focal_f1_macro_</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
                         <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
                     <span class="p">)</span>
@@ -1002,8 +1003,8 @@ document.write(`
                     <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;f1_micro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">f1_micro_</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">if</span> <span class="s2">&quot;focal_f1_micro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">focal_f1_micro_</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
                         <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;micro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
                     <span class="p">)</span>
@@ -1011,8 +1012,8 @@ document.write(`
                     <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;f1_weighted&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">f1_weighted_</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">if</span> <span class="s2">&quot;focal_f1_weighted&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">focal_f1_weighted_</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
                         <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;weighted&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
                     <span class="p">)</span>
@@ -1020,8 +1021,8 @@ document.write(`
                     <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;log_loss&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">log_loss_</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="k">if</span> <span class="s2">&quot;focal_log_loss&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">focal_log_loss_</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">metrics</span><span class="o">.</span><span class="n">log_loss</span><span class="p">(</span>
                         <span class="n">masked_y</span><span class="p">,</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="p">[</span><span class="o">~</span><span class="n">nan_mask</span><span class="p">],</span>

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.linear_model &#8212; gwlearn 0.1.dev77+g33aea2af8 documentation</title>
+    <title>gwlearn.linear_model &#8212; gwlearn 0.1.dev78+gc5a3203da documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=0bb3269f"></script>
+    <script src="../../_static/documentation_options.js?v=5cc36f40"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev77+g33aea2af8 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev78+gc5a3203da documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -375,21 +375,21 @@ document.write(`
 <span class="sd">        Hat values for each location (diagonal elements of hat matrix)</span>
 <span class="sd">    effective_df_ : float</span>
 <span class="sd">        Effective degrees of freedom (sum of hat values)</span>
-<span class="sd">    score_ : float</span>
+<span class="sd">    focal_score_ : float</span>
 <span class="sd">        Accuracy score of the model based on ``pred_``.</span>
-<span class="sd">    precision_ : float</span>
+<span class="sd">    focal_precision_ : float</span>
 <span class="sd">        Precision score of the model based on ``pred_``.</span>
-<span class="sd">    recall_ : float</span>
+<span class="sd">    focal_recall_ : float</span>
 <span class="sd">        Recall score of the model based on ``pred_``.</span>
-<span class="sd">    balanced_accuracy_ : float</span>
+<span class="sd">    focal_balanced_accuracy_ : float</span>
 <span class="sd">        Balanced accuracy score of the model based on ``pred_``.</span>
-<span class="sd">    f1_macro_ : float</span>
+<span class="sd">    focal_f1_macro_ : float</span>
 <span class="sd">        F1 score with macro averaging based on ``pred_``.</span>
-<span class="sd">    f1_micro_ : float</span>
+<span class="sd">    focal_f1_micro_ : float</span>
 <span class="sd">        F1 score with micro averaging based on ``pred_``.</span>
-<span class="sd">    f1_weighted_ : float</span>
+<span class="sd">    focal_f1_weighted_ : float</span>
 <span class="sd">        F1 score with weighted averaging based on ``pred_``.</span>
-<span class="sd">    log_loss_ : float</span>
+<span class="sd">    focal_log_loss_ : float</span>
 <span class="sd">        Log loss of the model based on ``pred_``.</span>
 <span class="sd">    log_likelihood_ : float</span>
 <span class="sd">        Global log likelihood of the model</span>
@@ -419,25 +419,25 @@ document.write(`
 <span class="sd">        F1 score with micro averaging for pooled predictions from local models</span>
 <span class="sd">    pooled_f1_weighted_ : float</span>
 <span class="sd">        F1 score with weighted averaging for pooled predictions from local models</span>
-<span class="sd">    local_pooled_score_ : pd.Series</span>
+<span class="sd">    local_score_ : pd.Series</span>
 <span class="sd">        Local accuracy scores for each location based on all samples used in each local</span>
 <span class="sd">        model</span>
-<span class="sd">    local_pooled_precision_ : pd.Series</span>
+<span class="sd">    local_precision_ : pd.Series</span>
 <span class="sd">        Local precision scores for each location based on all samples used in each local</span>
 <span class="sd">        model</span>
-<span class="sd">    local_pooled_recall_ : pd.Series</span>
+<span class="sd">    local_recall_ : pd.Series</span>
 <span class="sd">        Local recall scores for each location based on all samples used in each local</span>
 <span class="sd">        model</span>
-<span class="sd">    local_pooled_balanced_accuracy_ : pd.Series</span>
+<span class="sd">    local_balanced_accuracy_ : pd.Series</span>
 <span class="sd">        Local balanced accuracy scores for each location based on all samples used in</span>
 <span class="sd">        each local model</span>
-<span class="sd">    local_pooled_f1_macro_ : pd.Series</span>
+<span class="sd">    local_f1_macro_ : pd.Series</span>
 <span class="sd">        Local F1 scores with macro averaging for each location based on all samples used</span>
 <span class="sd">        in each local model</span>
-<span class="sd">    local_pooled_f1_micro_ : pd.Series</span>
+<span class="sd">    local_f1_micro_ : pd.Series</span>
 <span class="sd">        Local F1 scores with micro averaging for each location based on all samples used</span>
 <span class="sd">        in each local model</span>
-<span class="sd">    local_pooled_f1_weighted_ : pd.Series</span>
+<span class="sd">    local_f1_weighted_ : pd.Series</span>
 <span class="sd">        Local F1 scores with weighted averaging for each location based on all samples</span>
 <span class="sd">        used in each local model</span>
 <span class="sd">    prediction_rate_ : float</span>
@@ -450,6 +450,7 @@ document.write(`
 <span class="sd">        None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="c1"># TODO: score_ should be an alias of pooled_score_ - this is different from MGWR</span>
 <div class="viewcode-block" id="GWLogisticRegression.__init__">
 <a class="viewcode-back" href="../../generated/gwlearn.linear_model.GWLogisticRegression.html#gwlearn.linear_model.GWLogisticRegression.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -632,35 +633,35 @@ document.write(`
                     <span class="n">columns</span><span class="o">=</span><span class="n">local_cols</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
-                    <span class="s2">&quot;local_pooled_score&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                    <span class="s2">&quot;local_score&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
                 <span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">local_pooled_score_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pooled_accuracy&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">local_score_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pooled_accuracy&quot;</span><span class="p">]</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
-                    <span class="s2">&quot;local_pooled_precision&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                    <span class="s2">&quot;local_precision&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
                 <span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">local_pooled_precision_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pooled_precision&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">local_precision_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pooled_precision&quot;</span><span class="p">]</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
-                    <span class="s2">&quot;local_pooled_recall&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                    <span class="s2">&quot;local_recall&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
                 <span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">local_pooled_recall_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pooled_recall&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">local_recall_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pooled_recall&quot;</span><span class="p">]</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
-                    <span class="s2">&quot;local_pooled_balanced_accuracy&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                    <span class="s2">&quot;local_balanced_accuracy&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
                 <span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">local_pooled_balanced_accuracy_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">local_balanced_accuracy_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span>
                         <span class="s2">&quot;pooled_balanced_accuracy&quot;</span>
                     <span class="p">]</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
-                    <span class="s2">&quot;local_pooled_f1_macro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                    <span class="s2">&quot;local_f1_macro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
                 <span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">local_pooled_f1_macro_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pooled_f1_macro&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">local_f1_macro_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pooled_f1_macro&quot;</span><span class="p">]</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
-                    <span class="s2">&quot;local_pooled_f1_micro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                    <span class="s2">&quot;local_f1_micro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
                 <span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">local_pooled_f1_micro_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pooled_f1_micro&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">local_f1_micro_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pooled_f1_micro&quot;</span><span class="p">]</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">or</span> <span class="p">(</span>
-                    <span class="s2">&quot;local_pooled_f1_weighted&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
+                    <span class="s2">&quot;local_f1_weighted&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span>
                 <span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">local_pooled_f1_weighted_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pooled_f1_weighted&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">local_f1_weighted_</span> <span class="o">=</span> <span class="n">local_score</span><span class="p">[</span><span class="s2">&quot;pooled_f1_weighted&quot;</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s: Finished&quot;</span><span class="p">)</span>

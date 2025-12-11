@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Exploration of geographically weighted random forest classification modelling &#8212; gwlearn 0.1.dev77+g33aea2af8 documentation</title>
+    <title>Exploration of geographically weighted random forest classification modelling &#8212; gwlearn 0.1.dev78+gc5a3203da documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=0bb3269f"></script>
+    <script src="_static/documentation_options.js?v=5cc36f40"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev77+g33aea2af8 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev78+gc5a3203da documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -438,20 +438,21 @@ document.write(`
   --sklearn-color-fitted-level-1: #d4ebff;
   --sklearn-color-fitted-level-2: #b3dbfd;
   --sklearn-color-fitted-level-3: cornflowerblue;
+}
 
+#sk-container-id-1.light {
   /* Specific color for light theme */
-  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
-  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
-  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-text-on-default-background: black;
+  --sklearn-color-background: white;
+  --sklearn-color-border-box: black;
   --sklearn-color-icon: #696969;
+}
 
-  @media (prefers-color-scheme: dark) {
-    /* Redefinition of color scheme for dark theme */
-    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
-    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-icon: #878787;
-  }
+#sk-container-id-1.dark {
+  --sklearn-color-text-on-default-background: white;
+  --sklearn-color-background: #111;
+  --sklearn-color-border-box: white;
+  --sklearn-color-icon: #878787;
 }
 
 #sk-container-id-1 {
@@ -577,8 +578,8 @@ clickable and can be expanded/collapsed.
   padding: 0.5em;
   box-sizing: border-box;
   text-align: center;
-  align-items: start;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
   gap: 0.5em;
 }
 
@@ -685,7 +686,6 @@ clickable and can be expanded/collapsed.
 #sk-container-id-1 div.sk-label label {
   font-family: monospace;
   font-weight: bold;
-  display: inline-block;
   line-height: 1.2em;
 }
 
@@ -731,7 +731,7 @@ a:visited.sk-estimator-doc-link {
   font-size: smaller;
   line-height: 1em;
   font-family: monospace;
-  background-color: var(--sklearn-color-background);
+  background-color: var(--sklearn-color-unfitted-level-0);
   border-radius: 1em;
   height: 1em;
   width: 1em;
@@ -739,16 +739,17 @@ a:visited.sk-estimator-doc-link {
   margin-left: 0.5em;
   text-align: center;
   /* unfitted */
-  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
-  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-3) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-3);
 }
 
 .sk-estimator-doc-link.fitted,
 a:link.sk-estimator-doc-link.fitted,
 a:visited.sk-estimator-doc-link.fitted {
   /* fitted */
-  border: var(--sklearn-color-fitted-level-1) 1pt solid;
-  color: var(--sklearn-color-fitted-level-1);
+  background-color: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3) 1pt solid;
+  color: var(--sklearn-color-fitted-level-3);
 }
 
 /* On hover */
@@ -758,7 +759,8 @@ div.sk-label-container:hover .sk-estimator-doc-link:hover,
 .sk-estimator-doc-link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
-  color: var(--sklearn-color-background);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-0);
   text-decoration: none;
 }
 
@@ -768,7 +770,8 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 .sk-estimator-doc-link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
-  color: var(--sklearn-color-background);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-fitted-level-0);
   text-decoration: none;
 }
 
@@ -808,7 +811,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   font-size: 1rem;
   line-height: 1em;
   font-family: monospace;
-  background-color: var(--sklearn-color-background);
+  background-color: var(--sklearn-color-unfitted-level-0);
   border-radius: 1rem;
   height: 1rem;
   width: 1rem;
@@ -820,6 +823,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 
 #sk-container-id-1 a.estimator_doc_link.fitted {
   /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
   border: var(--sklearn-color-fitted-level-1) 1pt solid;
   color: var(--sklearn-color-fitted-level-1);
 }
@@ -837,10 +841,17 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   background-color: var(--sklearn-color-fitted-level-3);
 }
 
+.estimator-table {
+    font-family: monospace;
+}
+
 .estimator-table summary {
     padding: .5rem;
-    font-family: monospace;
     cursor: pointer;
+}
+
+.estimator-table summary::marker {
+    font-size: 0.7rem;
 }
 
 .estimator-table details[open] {
@@ -852,6 +863,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 .estimator-table .parameters-table {
     margin-left: auto !important;
     margin-right: auto !important;
+    margin-top: 0;
 }
 
 .estimator-table .parameters-table tr:nth-child(odd) {
@@ -870,24 +882,85 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
     border: 1px solid rgba(106, 105, 104, 0.232);
 }
 
-.user-set td {
-    color:rgb(255, 94, 0);
+/*
+    `table td`is set in notebook with right text-align.
+    We need to overwrite it.
+*/
+.estimator-table table td.param {
     text-align: left;
+    position: relative;
+    padding: 0;
 }
 
-.user-set td.value pre {
-    color:rgb(255, 94, 0) !important;
-    background-color: transparent !important;
+.user-set td {
+    color:rgb(255, 94, 0);
+    text-align: left !important;
+}
+
+.user-set td.value {
+    color:rgb(255, 94, 0);
+    background-color: transparent;
 }
 
 .default td {
     color: black;
-    text-align: left;
+    text-align: left !important;
 }
 
 .user-set td i,
 .default td i {
     color: black;
+}
+
+/*
+    Styles for parameter documentation links
+    We need styling for visited so jupyter doesn't overwrite it
+*/
+a.param-doc-link,
+a.param-doc-link:link,
+a.param-doc-link:visited {
+    text-decoration: underline dashed;
+    text-underline-offset: .3em;
+    color: inherit;
+    display: block;
+    padding: .5em;
+}
+
+/* "hack" to make the entire area of the cell containing the link clickable */
+a.param-doc-link::before {
+    position: absolute;
+    content: "";
+    inset: 0;
+}
+
+.param-doc-description {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    left: 0;
+    padding: .5ex;
+    margin-left: 1.5em;
+    color: var(--sklearn-color-text);
+    box-shadow: .3em .3em .4em #999;
+    width: max-content;
+    text-align: left;
+    max-height: 10em;
+    overflow-y: auto;
+
+    /* unfitted */
+    background: var(--sklearn-color-unfitted-level-0);
+    border: thin solid var(--sklearn-color-unfitted-level-3);
+}
+
+/* Fitted state for parameter tooltips */
+.fitted .param-doc-description {
+    /* fitted */
+    background: var(--sklearn-color-fitted-level-0);
+    border: thin solid var(--sklearn-color-fitted-level-3);
+}
+
+.param-doc-link:hover .param-doc-description {
+    display: block;
 }
 
 .copy-paste-icon {
@@ -924,7 +997,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('bandwidth',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">bandwidth&nbsp;</td>
+            <td class="param">bandwidth</td>
             <td class="value">250</td>
         </tr>
     
@@ -934,7 +1007,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('fixed',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">fixed&nbsp;</td>
+            <td class="param">fixed</td>
             <td class="value">False</td>
         </tr>
     
@@ -944,7 +1017,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('kernel',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">kernel&nbsp;</td>
+            <td class="param">kernel</td>
             <td class="value">&#x27;bisquare&#x27;</td>
         </tr>
     
@@ -954,7 +1027,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('include_focal',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">include_focal&nbsp;</td>
+            <td class="param">include_focal</td>
             <td class="value">False</td>
         </tr>
     
@@ -964,7 +1037,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('geometry',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">geometry&nbsp;</td>
+            <td class="param">geometry</td>
             <td class="value">0          PO...type: geometry</td>
         </tr>
     
@@ -974,7 +1047,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('graph',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">graph&nbsp;</td>
+            <td class="param">graph</td>
             <td class="value">None</td>
         </tr>
     
@@ -984,7 +1057,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('n_jobs',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">n_jobs&nbsp;</td>
+            <td class="param">n_jobs</td>
             <td class="value">-1</td>
         </tr>
     
@@ -994,7 +1067,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('fit_global_model',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">fit_global_model&nbsp;</td>
+            <td class="param">fit_global_model</td>
             <td class="value">True</td>
         </tr>
     
@@ -1004,7 +1077,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('measure_performance',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">measure_performance&nbsp;</td>
+            <td class="param">measure_performance</td>
             <td class="value">True</td>
         </tr>
     
@@ -1014,7 +1087,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('strict',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">strict&nbsp;</td>
+            <td class="param">strict</td>
             <td class="value">False</td>
         </tr>
     
@@ -1024,7 +1097,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('keep_models',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">keep_models&nbsp;</td>
+            <td class="param">keep_models</td>
             <td class="value">False</td>
         </tr>
     
@@ -1034,7 +1107,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('temp_folder',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">temp_folder&nbsp;</td>
+            <td class="param">temp_folder</td>
             <td class="value">None</td>
         </tr>
     
@@ -1044,7 +1117,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('batch_size',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">batch_size&nbsp;</td>
+            <td class="param">batch_size</td>
             <td class="value">None</td>
         </tr>
     
@@ -1054,7 +1127,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('min_proportion',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">min_proportion&nbsp;</td>
+            <td class="param">min_proportion</td>
             <td class="value">0.2</td>
         </tr>
     
@@ -1064,8 +1137,18 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('undersample',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">undersample&nbsp;</td>
+            <td class="param">undersample</td>
             <td class="value">False</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('leave_out',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">leave_out</td>
+            <td class="value">None</td>
         </tr>
     
 
@@ -1074,7 +1157,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('random_state',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">random_state&nbsp;</td>
+            <td class="param">random_state</td>
             <td class="value">None</td>
         </tr>
     
@@ -1084,7 +1167,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('verbose',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">verbose&nbsp;</td>
+            <td class="param">verbose</td>
             <td class="value">False</td>
         </tr>
     
@@ -1126,61 +1209,134 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
     return false;
 }
 
-document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
+document.querySelectorAll('.copy-paste-icon').forEach(function(element) {
     const toggleableContent = element.closest('.sk-toggleable__content');
     const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
-    const paramName = element.parentElement.nextElementSibling.textContent.trim();
+    const paramName = element.parentElement.nextElementSibling
+        .textContent.trim().split(' ')[0];
     const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
 
     element.setAttribute('title', fullParamName);
 });
-</script></body></div></div>
+
+
+/**
+ * Adapted from Skrub
+ * https://github.com/skrub-data/skrub/blob/403466d1d5d4dc76a7ef569b3f8228db59a31dc3/skrub/_reporting/_data/templates/report.js#L789
+ * @returns "light" or "dark"
+ */
+function detectTheme(element) {
+    const body = document.querySelector('body');
+
+    // Check VSCode theme
+    const themeKindAttr = body.getAttribute('data-vscode-theme-kind');
+    const themeNameAttr = body.getAttribute('data-vscode-theme-name');
+
+    if (themeKindAttr && themeNameAttr) {
+        const themeKind = themeKindAttr.toLowerCase();
+        const themeName = themeNameAttr.toLowerCase();
+
+        if (themeKind.includes("dark") || themeName.includes("dark")) {
+            return "dark";
+        }
+        if (themeKind.includes("light") || themeName.includes("light")) {
+            return "light";
+        }
+    }
+
+    // Check Jupyter theme
+    if (body.getAttribute('data-jp-theme-light') === 'false') {
+        return 'dark';
+    } else if (body.getAttribute('data-jp-theme-light') === 'true') {
+        return 'light';
+    }
+
+    // Guess based on a parent element's color
+    const color = window.getComputedStyle(element.parentNode, null).getPropertyValue('color');
+    const match = color.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i);
+    if (match) {
+        const [r, g, b] = [
+            parseFloat(match[1]),
+            parseFloat(match[2]),
+            parseFloat(match[3])
+        ];
+
+        // https://en.wikipedia.org/wiki/HSL_and_HSV#Lightness
+        const luma = 0.299 * r + 0.587 * g + 0.114 * b;
+
+        if (luma > 180) {
+            // If the text is very bright we have a dark theme
+            return 'dark';
+        }
+        if (luma < 75) {
+            // If the text is very dark we have a light theme
+            return 'light';
+        }
+        // Otherwise fall back to the next heuristic.
+    }
+
+    // Fallback to system preference
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+
+function forceTheme(elementId) {
+    const estimatorElement = document.querySelector(`#${elementId}`);
+    if (estimatorElement === null) {
+        console.error(`Element with id ${elementId} not found.`);
+    } else {
+        const theme = detectTheme(estimatorElement);
+        estimatorElement.classList.add(theme);
+    }
+}
+
+forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 <p>Global OOB accuracy for the GW model measured based on OOB predictions from individual local trees.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">oob_score_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">pooled_oob_score_</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7643722943722944
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7642770562770563
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">oob_precision_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">pooled_oob_precision_</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7679570790853757
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7679759330768221
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">oob_recall_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">pooled_oob_recall_</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7635992887106852
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7632937638601863
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">oob_balanced_accuracy_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">pooled_oob_balanced_accuracy_</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7643791871893246
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7642858242008288
 </pre></div>
 </div>
 </div>
@@ -1196,7 +1352,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/0b4e92ca48dc0123fbcdb8d44ee8cf5b62708bf19191ac74921629331c6d26d6.png" src="_images/0b4e92ca48dc0123fbcdb8d44ee8cf5b62708bf19191ac74921629331c6d26d6.png" />
+<img alt="_images/dca80dbbe5dabe8684910829a7c391602bd8594c9a7ffd8312f2f89487428a32.png" src="_images/dca80dbbe5dabe8684910829a7c391602bd8594c9a7ffd8312f2f89487428a32.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1209,7 +1365,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/840a5497f9c1aaba283ef50f211d08cf1a2213e46681ff921c0b66a194a0e5dc.png" src="_images/840a5497f9c1aaba283ef50f211d08cf1a2213e46681ff921c0b66a194a0e5dc.png" />
+<img alt="_images/bcbda2e76d82b1d6f0a4a684c570128dccb924f1c7c368380c63ef5a8320ae6a.png" src="_images/bcbda2e76d82b1d6f0a4a684c570128dccb924f1c7c368380c63ef5a8320ae6a.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1222,7 +1378,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/a839658e77731817d18d5ff82739b0a75eb893703222602876fa91b7bf110300.png" src="_images/a839658e77731817d18d5ff82739b0a75eb893703222602876fa91b7bf110300.png" />
+<img alt="_images/2e83aa03879bb0b1f67fed222f5d2ca6476ef856b81e315c4c77238d2926425a.png" src="_images/2e83aa03879bb0b1f67fed222f5d2ca6476ef856b81e315c4c77238d2926425a.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1235,7 +1391,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/46e4aa85613e2f41491b70733288864521e4c811e7053a098bb6906e05573460.png" src="_images/46e4aa85613e2f41491b70733288864521e4c811e7053a098bb6906e05573460.png" />
+<img alt="_images/951871550e19cb4e1c9e0656d547313f84262d75d1e62160bb05230d78ede8ea.png" src="_images/951871550e19cb4e1c9e0656d547313f84262d75d1e62160bb05230d78ede8ea.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1248,7 +1404,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/4432f1dc5a8e49f4402115b14dcf805e711581906194a365bc24ebf9b427dc95.png" src="_images/4432f1dc5a8e49f4402115b14dcf805e711581906194a365bc24ebf9b427dc95.png" />
+<img alt="_images/2fb4f725eeaf6866ce79ffd74ad6dff719dfc7057bd1d1b8751031734e78ded4.png" src="_images/2fb4f725eeaf6866ce79ffd74ad6dff719dfc7057bd1d1b8751031734e78ded4.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1261,7 +1417,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/0b4e92ca48dc0123fbcdb8d44ee8cf5b62708bf19191ac74921629331c6d26d6.png" src="_images/0b4e92ca48dc0123fbcdb8d44ee8cf5b62708bf19191ac74921629331c6d26d6.png" />
+<img alt="_images/dca80dbbe5dabe8684910829a7c391602bd8594c9a7ffd8312f2f89487428a32.png" src="_images/dca80dbbe5dabe8684910829a7c391602bd8594c9a7ffd8312f2f89487428a32.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1274,7 +1430,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/bbb4b7f50d3ffbba640046b5d91363072230b67afcaaf781b2a7489d45ed7958.png" src="_images/bbb4b7f50d3ffbba640046b5d91363072230b67afcaaf781b2a7489d45ed7958.png" />
+<img alt="_images/cda579b90d9d73763d326d9b122d5e3157db1296aa6fe6931a95f98a49c0edb6.png" src="_images/cda579b90d9d73763d326d9b122d5e3157db1296aa6fe6931a95f98a49c0edb6.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1287,7 +1443,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/35abc9e7f9529d2ec67aa68556e1177d8d0a7a4a4016e80063a2901c7d99a79c.png" src="_images/35abc9e7f9529d2ec67aa68556e1177d8d0a7a4a4016e80063a2901c7d99a79c.png" />
+<img alt="_images/63cc02a09fd43c1b022accb352921737281d2532e1a81e232c8d55d47200e69e.png" src="_images/63cc02a09fd43c1b022accb352921737281d2532e1a81e232c8d55d47200e69e.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1300,18 +1456,18 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/efd6ebc1e4c50b7f2a0c294c2885eee397b83067a19b4c2bcef2a94e30b166d4.png" src="_images/efd6ebc1e4c50b7f2a0c294c2885eee397b83067a19b4c2bcef2a94e30b166d4.png" />
+<img alt="_images/d757d7e9aff270b2718721648d48d3493d0615fb68c076cc087c7308b746152a.png" src="_images/d757d7e9aff270b2718721648d48d3493d0615fb68c076cc087c7308b746152a.png" />
 </div>
 </div>
 <p>Global accuracy for the GW model measured based on prediction of focals.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">score_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">focal_score_</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7645021645021645
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7688311688311689
 </pre></div>
 </div>
 </div>
@@ -1319,12 +1475,12 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <p>F1 scores for the GW model measured based on prediction of focals.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">f1_macro_</span><span class="p">,</span> <span class="n">gwrf</span><span class="o">.</span><span class="n">f1_micro_</span><span class="p">,</span> <span class="n">gwrf</span><span class="o">.</span><span class="n">f1_weighted_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">focal_f1_macro_</span><span class="p">,</span> <span class="n">gwrf</span><span class="o">.</span><span class="n">focal_f1_micro_</span><span class="p">,</span> <span class="n">gwrf</span><span class="o">.</span><span class="n">focal_f1_weighted_</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.764297916749508, 0.7645021645021645, 0.7645622373705929)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.7686423054070113, 0.7688311688311689, 0.768894123305888)
 </pre></div>
 </div>
 </div>
@@ -1337,7 +1493,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7815235008103728
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7857374392220421
 </pre></div>
 </div>
 </div>
@@ -1388,39 +1544,39 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
     </tr>
     <tr>
       <th>1</th>
-      <td>0.143555</td>
-      <td>0.144544</td>
-      <td>0.130977</td>
-      <td>0.156979</td>
-      <td>0.204043</td>
-      <td>0.219902</td>
+      <td>0.144477</td>
+      <td>0.132334</td>
+      <td>0.128224</td>
+      <td>0.159942</td>
+      <td>0.224753</td>
+      <td>0.210269</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.139614</td>
-      <td>0.136897</td>
-      <td>0.127446</td>
-      <td>0.158433</td>
-      <td>0.224136</td>
-      <td>0.213474</td>
+      <td>0.157417</td>
+      <td>0.131966</td>
+      <td>0.129957</td>
+      <td>0.163009</td>
+      <td>0.201650</td>
+      <td>0.216002</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.148806</td>
-      <td>0.142504</td>
-      <td>0.132619</td>
-      <td>0.164545</td>
-      <td>0.151791</td>
-      <td>0.259734</td>
+      <td>0.149385</td>
+      <td>0.150804</td>
+      <td>0.121830</td>
+      <td>0.158391</td>
+      <td>0.159365</td>
+      <td>0.260225</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.141747</td>
-      <td>0.133433</td>
-      <td>0.139764</td>
-      <td>0.163955</td>
-      <td>0.213242</td>
-      <td>0.207860</td>
+      <td>0.150746</td>
+      <td>0.126414</td>
+      <td>0.133151</td>
+      <td>0.168743</td>
+      <td>0.188069</td>
+      <td>0.232876</td>
     </tr>
     <tr>
       <th>...</th>
@@ -1433,48 +1589,48 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
     </tr>
     <tr>
       <th>3080</th>
-      <td>0.130005</td>
-      <td>0.113039</td>
-      <td>0.213974</td>
-      <td>0.090641</td>
-      <td>0.300356</td>
-      <td>0.151985</td>
+      <td>0.159566</td>
+      <td>0.092755</td>
+      <td>0.200158</td>
+      <td>0.100452</td>
+      <td>0.266964</td>
+      <td>0.180106</td>
     </tr>
     <tr>
       <th>3081</th>
-      <td>0.166948</td>
-      <td>0.096454</td>
-      <td>0.151763</td>
-      <td>0.222966</td>
-      <td>0.219973</td>
-      <td>0.141897</td>
+      <td>0.145268</td>
+      <td>0.106852</td>
+      <td>0.149962</td>
+      <td>0.205229</td>
+      <td>0.226562</td>
+      <td>0.166127</td>
     </tr>
     <tr>
       <th>3082</th>
-      <td>0.148219</td>
-      <td>0.216178</td>
-      <td>0.171018</td>
-      <td>0.226767</td>
-      <td>0.095963</td>
-      <td>0.141855</td>
+      <td>0.135004</td>
+      <td>0.191319</td>
+      <td>0.196336</td>
+      <td>0.229536</td>
+      <td>0.101454</td>
+      <td>0.146351</td>
     </tr>
     <tr>
       <th>3083</th>
-      <td>0.145805</td>
-      <td>0.172605</td>
-      <td>0.193565</td>
-      <td>0.253249</td>
-      <td>0.103349</td>
-      <td>0.131427</td>
+      <td>0.157471</td>
+      <td>0.179052</td>
+      <td>0.172274</td>
+      <td>0.258900</td>
+      <td>0.101638</td>
+      <td>0.130664</td>
     </tr>
     <tr>
       <th>3084</th>
-      <td>0.084987</td>
-      <td>0.122284</td>
-      <td>0.154201</td>
-      <td>0.193388</td>
-      <td>0.244352</td>
-      <td>0.200787</td>
+      <td>0.082932</td>
+      <td>0.124870</td>
+      <td>0.153951</td>
+      <td>0.196156</td>
+      <td>0.249131</td>
+      <td>0.192961</td>
     </tr>
   </tbody>
 </table>
@@ -1491,7 +1647,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/d4b340c3c943300215bc6bf52e1f51c9e2c72bc8ee6a1ea50300fe7121df0728.png" src="_images/d4b340c3c943300215bc6bf52e1f51c9e2c72bc8ee6a1ea50300fe7121df0728.png" />
+<img alt="_images/45c93237bcf9d66ec3a853cc02724e70975d56e1c679cefb263e339ac3d7c10c.png" src="_images/45c93237bcf9d66ec3a853cc02724e70975d56e1c679cefb263e339ac3d7c10c.png" />
 </div>
 </div>
 <p>Compare to global feature importance.</p>
@@ -1502,8 +1658,8 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.13700992, 0.1544734 , 0.19118714, 0.18763012, 0.16186395,
-       0.16783548])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.1376211 , 0.14922522, 0.18811756, 0.18455711, 0.15414063,
+       0.18633837])
 </pre></div>
 </div>
 </div>
@@ -1543,20 +1699,21 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
   --sklearn-color-fitted-level-1: #d4ebff;
   --sklearn-color-fitted-level-2: #b3dbfd;
   --sklearn-color-fitted-level-3: cornflowerblue;
+}
 
+#sk-container-id-2.light {
   /* Specific color for light theme */
-  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
-  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
-  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-text-on-default-background: black;
+  --sklearn-color-background: white;
+  --sklearn-color-border-box: black;
   --sklearn-color-icon: #696969;
+}
 
-  @media (prefers-color-scheme: dark) {
-    /* Redefinition of color scheme for dark theme */
-    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
-    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-icon: #878787;
-  }
+#sk-container-id-2.dark {
+  --sklearn-color-text-on-default-background: white;
+  --sklearn-color-background: #111;
+  --sklearn-color-border-box: white;
+  --sklearn-color-icon: #878787;
 }
 
 #sk-container-id-2 {
@@ -1682,8 +1839,8 @@ clickable and can be expanded/collapsed.
   padding: 0.5em;
   box-sizing: border-box;
   text-align: center;
-  align-items: start;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
   gap: 0.5em;
 }
 
@@ -1790,7 +1947,6 @@ clickable and can be expanded/collapsed.
 #sk-container-id-2 div.sk-label label {
   font-family: monospace;
   font-weight: bold;
-  display: inline-block;
   line-height: 1.2em;
 }
 
@@ -1836,7 +1992,7 @@ a:visited.sk-estimator-doc-link {
   font-size: smaller;
   line-height: 1em;
   font-family: monospace;
-  background-color: var(--sklearn-color-background);
+  background-color: var(--sklearn-color-unfitted-level-0);
   border-radius: 1em;
   height: 1em;
   width: 1em;
@@ -1844,16 +2000,17 @@ a:visited.sk-estimator-doc-link {
   margin-left: 0.5em;
   text-align: center;
   /* unfitted */
-  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
-  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-3) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-3);
 }
 
 .sk-estimator-doc-link.fitted,
 a:link.sk-estimator-doc-link.fitted,
 a:visited.sk-estimator-doc-link.fitted {
   /* fitted */
-  border: var(--sklearn-color-fitted-level-1) 1pt solid;
-  color: var(--sklearn-color-fitted-level-1);
+  background-color: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3) 1pt solid;
+  color: var(--sklearn-color-fitted-level-3);
 }
 
 /* On hover */
@@ -1863,7 +2020,8 @@ div.sk-label-container:hover .sk-estimator-doc-link:hover,
 .sk-estimator-doc-link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
-  color: var(--sklearn-color-background);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-0);
   text-decoration: none;
 }
 
@@ -1873,7 +2031,8 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 .sk-estimator-doc-link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
-  color: var(--sklearn-color-background);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-fitted-level-0);
   text-decoration: none;
 }
 
@@ -1913,7 +2072,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   font-size: 1rem;
   line-height: 1em;
   font-family: monospace;
-  background-color: var(--sklearn-color-background);
+  background-color: var(--sklearn-color-unfitted-level-0);
   border-radius: 1rem;
   height: 1rem;
   width: 1rem;
@@ -1925,6 +2084,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 
 #sk-container-id-2 a.estimator_doc_link.fitted {
   /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
   border: var(--sklearn-color-fitted-level-1) 1pt solid;
   color: var(--sklearn-color-fitted-level-1);
 }
@@ -1942,10 +2102,17 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   background-color: var(--sklearn-color-fitted-level-3);
 }
 
+.estimator-table {
+    font-family: monospace;
+}
+
 .estimator-table summary {
     padding: .5rem;
-    font-family: monospace;
     cursor: pointer;
+}
+
+.estimator-table summary::marker {
+    font-size: 0.7rem;
 }
 
 .estimator-table details[open] {
@@ -1957,6 +2124,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 .estimator-table .parameters-table {
     margin-left: auto !important;
     margin-right: auto !important;
+    margin-top: 0;
 }
 
 .estimator-table .parameters-table tr:nth-child(odd) {
@@ -1975,24 +2143,85 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
     border: 1px solid rgba(106, 105, 104, 0.232);
 }
 
-.user-set td {
-    color:rgb(255, 94, 0);
+/*
+    `table td`is set in notebook with right text-align.
+    We need to overwrite it.
+*/
+.estimator-table table td.param {
     text-align: left;
+    position: relative;
+    padding: 0;
 }
 
-.user-set td.value pre {
-    color:rgb(255, 94, 0) !important;
-    background-color: transparent !important;
+.user-set td {
+    color:rgb(255, 94, 0);
+    text-align: left !important;
+}
+
+.user-set td.value {
+    color:rgb(255, 94, 0);
+    background-color: transparent;
 }
 
 .default td {
     color: black;
-    text-align: left;
+    text-align: left !important;
 }
 
 .user-set td i,
 .default td i {
     color: black;
+}
+
+/*
+    Styles for parameter documentation links
+    We need styling for visited so jupyter doesn't overwrite it
+*/
+a.param-doc-link,
+a.param-doc-link:link,
+a.param-doc-link:visited {
+    text-decoration: underline dashed;
+    text-underline-offset: .3em;
+    color: inherit;
+    display: block;
+    padding: .5em;
+}
+
+/* "hack" to make the entire area of the cell containing the link clickable */
+a.param-doc-link::before {
+    position: absolute;
+    content: "";
+    inset: 0;
+}
+
+.param-doc-description {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    left: 0;
+    padding: .5ex;
+    margin-left: 1.5em;
+    color: var(--sklearn-color-text);
+    box-shadow: .3em .3em .4em #999;
+    width: max-content;
+    text-align: left;
+    max-height: 10em;
+    overflow-y: auto;
+
+    /* unfitted */
+    background: var(--sklearn-color-unfitted-level-0);
+    border: thin solid var(--sklearn-color-unfitted-level-3);
+}
+
+/* Fitted state for parameter tooltips */
+.fitted .param-doc-description {
+    /* fitted */
+    background: var(--sklearn-color-fitted-level-0);
+    border: thin solid var(--sklearn-color-fitted-level-3);
+}
+
+.param-doc-link:hover .param-doc-description {
+    display: block;
 }
 
 .copy-paste-icon {
@@ -2029,7 +2258,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('bandwidth',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">bandwidth&nbsp;</td>
+            <td class="param">bandwidth</td>
             <td class="value">250</td>
         </tr>
     
@@ -2039,7 +2268,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('fixed',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">fixed&nbsp;</td>
+            <td class="param">fixed</td>
             <td class="value">False</td>
         </tr>
     
@@ -2049,7 +2278,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('kernel',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">kernel&nbsp;</td>
+            <td class="param">kernel</td>
             <td class="value">&#x27;bisquare&#x27;</td>
         </tr>
     
@@ -2059,7 +2288,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('include_focal',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">include_focal&nbsp;</td>
+            <td class="param">include_focal</td>
             <td class="value">False</td>
         </tr>
     
@@ -2069,7 +2298,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('geometry',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">geometry&nbsp;</td>
+            <td class="param">geometry</td>
             <td class="value">0          PO...type: geometry</td>
         </tr>
     
@@ -2079,7 +2308,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('graph',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">graph&nbsp;</td>
+            <td class="param">graph</td>
             <td class="value">None</td>
         </tr>
     
@@ -2089,7 +2318,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('n_jobs',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">n_jobs&nbsp;</td>
+            <td class="param">n_jobs</td>
             <td class="value">-1</td>
         </tr>
     
@@ -2099,7 +2328,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('fit_global_model',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">fit_global_model&nbsp;</td>
+            <td class="param">fit_global_model</td>
             <td class="value">True</td>
         </tr>
     
@@ -2109,7 +2338,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('measure_performance',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">measure_performance&nbsp;</td>
+            <td class="param">measure_performance</td>
             <td class="value">True</td>
         </tr>
     
@@ -2119,7 +2348,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('strict',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">strict&nbsp;</td>
+            <td class="param">strict</td>
             <td class="value">False</td>
         </tr>
     
@@ -2129,7 +2358,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('keep_models',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">keep_models&nbsp;</td>
+            <td class="param">keep_models</td>
             <td class="value">False</td>
         </tr>
     
@@ -2139,7 +2368,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('temp_folder',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">temp_folder&nbsp;</td>
+            <td class="param">temp_folder</td>
             <td class="value">None</td>
         </tr>
     
@@ -2149,7 +2378,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                  onclick="copyToClipboard('batch_size',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">batch_size&nbsp;</td>
+            <td class="param">batch_size</td>
             <td class="value">None</td>
         </tr>
     
@@ -2191,25 +2420,98 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
     return false;
 }
 
-document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
+document.querySelectorAll('.copy-paste-icon').forEach(function(element) {
     const toggleableContent = element.closest('.sk-toggleable__content');
     const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
-    const paramName = element.parentElement.nextElementSibling.textContent.trim();
+    const paramName = element.parentElement.nextElementSibling
+        .textContent.trim().split(' ')[0];
     const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
 
     element.setAttribute('title', fullParamName);
 });
-</script></body></div></div>
+
+
+/**
+ * Adapted from Skrub
+ * https://github.com/skrub-data/skrub/blob/403466d1d5d4dc76a7ef569b3f8228db59a31dc3/skrub/_reporting/_data/templates/report.js#L789
+ * @returns "light" or "dark"
+ */
+function detectTheme(element) {
+    const body = document.querySelector('body');
+
+    // Check VSCode theme
+    const themeKindAttr = body.getAttribute('data-vscode-theme-kind');
+    const themeNameAttr = body.getAttribute('data-vscode-theme-name');
+
+    if (themeKindAttr && themeNameAttr) {
+        const themeKind = themeKindAttr.toLowerCase();
+        const themeName = themeNameAttr.toLowerCase();
+
+        if (themeKind.includes("dark") || themeName.includes("dark")) {
+            return "dark";
+        }
+        if (themeKind.includes("light") || themeName.includes("light")) {
+            return "light";
+        }
+    }
+
+    // Check Jupyter theme
+    if (body.getAttribute('data-jp-theme-light') === 'false') {
+        return 'dark';
+    } else if (body.getAttribute('data-jp-theme-light') === 'true') {
+        return 'light';
+    }
+
+    // Guess based on a parent element's color
+    const color = window.getComputedStyle(element.parentNode, null).getPropertyValue('color');
+    const match = color.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i);
+    if (match) {
+        const [r, g, b] = [
+            parseFloat(match[1]),
+            parseFloat(match[2]),
+            parseFloat(match[3])
+        ];
+
+        // https://en.wikipedia.org/wiki/HSL_and_HSV#Lightness
+        const luma = 0.299 * r + 0.587 * g + 0.114 * b;
+
+        if (luma > 180) {
+            // If the text is very bright we have a dark theme
+            return 'dark';
+        }
+        if (luma < 75) {
+            // If the text is very dark we have a light theme
+            return 'light';
+        }
+        // Otherwise fall back to the next heuristic.
+    }
+
+    // Fallback to system preference
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+
+function forceTheme(elementId) {
+    const estimatorElement = document.querySelector(`#${elementId}`);
+    if (estimatorElement === null) {
+        console.error(`Element with id ${elementId} not found.`);
+    } else {
+        const theme = detectTheme(estimatorElement);
+        estimatorElement.classList.add(theme);
+    }
+}
+
+forceTheme('sk-container-id-2');</script></body></div></div>
 </div>
-<p>Global score (accuracy) for the GW model measured based on prediction of focals.</p>
+<p>Global score (accuracy) for the GW model measured based on prediction of focals using focal model only.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwgb</span><span class="o">.</span><span class="n">score_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwgb</span><span class="o">.</span><span class="n">focal_score_</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7541125541125541
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7532467532467533
 </pre></div>
 </div>
 </div>
@@ -2217,12 +2519,12 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <p>F1 scores for the GW model measured based on prediction of focals.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwgb</span><span class="o">.</span><span class="n">f1_macro_</span><span class="p">,</span> <span class="n">gwgb</span><span class="o">.</span><span class="n">f1_micro_</span><span class="p">,</span> <span class="n">gwgb</span><span class="o">.</span><span class="n">f1_weighted_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwgb</span><span class="o">.</span><span class="n">focal_f1_macro_</span><span class="p">,</span> <span class="n">gwgb</span><span class="o">.</span><span class="n">focal_f1_micro_</span><span class="p">,</span> <span class="n">gwgb</span><span class="o">.</span><span class="n">focal_f1_weighted_</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.7539236654736193, 0.7541125541125541, 0.7541833873521547)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.7530688699117222, 0.7532467532467533, 0.7533213494840244)
 </pre></div>
 </div>
 </div>
@@ -2273,39 +2575,39 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
     </tr>
     <tr>
       <th>1</th>
-      <td>0.178333</td>
-      <td>0.126859</td>
-      <td>0.061734</td>
-      <td>0.156824</td>
-      <td>0.153063</td>
-      <td>0.323186</td>
+      <td>0.177324</td>
+      <td>0.128130</td>
+      <td>0.061830</td>
+      <td>0.156487</td>
+      <td>0.153590</td>
+      <td>0.322639</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.185605</td>
-      <td>0.127163</td>
-      <td>0.062682</td>
-      <td>0.166373</td>
-      <td>0.121446</td>
-      <td>0.336731</td>
+      <td>0.191413</td>
+      <td>0.128259</td>
+      <td>0.065317</td>
+      <td>0.159779</td>
+      <td>0.122753</td>
+      <td>0.332479</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.148759</td>
-      <td>0.134358</td>
-      <td>0.074722</td>
-      <td>0.173533</td>
-      <td>0.069262</td>
-      <td>0.399365</td>
+      <td>0.150581</td>
+      <td>0.136845</td>
+      <td>0.076695</td>
+      <td>0.168919</td>
+      <td>0.069886</td>
+      <td>0.397074</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.177275</td>
-      <td>0.127015</td>
-      <td>0.076319</td>
-      <td>0.151208</td>
-      <td>0.113616</td>
-      <td>0.354566</td>
+      <td>0.176430</td>
+      <td>0.126904</td>
+      <td>0.076155</td>
+      <td>0.152064</td>
+      <td>0.113692</td>
+      <td>0.354755</td>
     </tr>
     <tr>
       <th>...</th>
@@ -2318,48 +2620,48 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
     </tr>
     <tr>
       <th>3080</th>
-      <td>0.105238</td>
-      <td>0.052052</td>
-      <td>0.146476</td>
-      <td>0.052299</td>
-      <td>0.582578</td>
-      <td>0.061357</td>
+      <td>0.108860</td>
+      <td>0.050411</td>
+      <td>0.147236</td>
+      <td>0.050985</td>
+      <td>0.578005</td>
+      <td>0.064505</td>
     </tr>
     <tr>
       <th>3081</th>
-      <td>0.087946</td>
-      <td>0.072842</td>
-      <td>0.137440</td>
-      <td>0.213128</td>
-      <td>0.453273</td>
-      <td>0.035371</td>
+      <td>0.085776</td>
+      <td>0.070274</td>
+      <td>0.137502</td>
+      <td>0.213598</td>
+      <td>0.457443</td>
+      <td>0.035408</td>
     </tr>
     <tr>
       <th>3082</th>
-      <td>0.114451</td>
-      <td>0.193609</td>
-      <td>0.191503</td>
-      <td>0.309195</td>
-      <td>0.063846</td>
-      <td>0.127396</td>
+      <td>0.107440</td>
+      <td>0.195233</td>
+      <td>0.192253</td>
+      <td>0.313614</td>
+      <td>0.066126</td>
+      <td>0.125333</td>
     </tr>
     <tr>
       <th>3083</th>
-      <td>0.152044</td>
-      <td>0.148627</td>
-      <td>0.157480</td>
-      <td>0.383484</td>
-      <td>0.043363</td>
-      <td>0.115003</td>
+      <td>0.147868</td>
+      <td>0.145626</td>
+      <td>0.156851</td>
+      <td>0.384657</td>
+      <td>0.044400</td>
+      <td>0.120598</td>
     </tr>
     <tr>
       <th>3084</th>
-      <td>0.022936</td>
-      <td>0.091924</td>
-      <td>0.100458</td>
-      <td>0.238287</td>
-      <td>0.430561</td>
-      <td>0.115833</td>
+      <td>0.025484</td>
+      <td>0.089282</td>
+      <td>0.099999</td>
+      <td>0.239973</td>
+      <td>0.431387</td>
+      <td>0.113875</td>
     </tr>
   </tbody>
 </table>
@@ -2376,7 +2678,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/3900c1f5cef76b9017709ab2ac26805d3834ac679967557f673d3a7277ab93dc.png" src="_images/3900c1f5cef76b9017709ab2ac26805d3834ac679967557f673d3a7277ab93dc.png" />
+<img alt="_images/a2287129ed8361c3df9af5aeb0e5f22f48555dd584aed23fb889d8f6f15daa19.png" src="_images/a2287129ed8361c3df9af5aeb0e5f22f48555dd584aed23fb889d8f6f15daa19.png" />
 </div>
 </div>
 <p>Compare to global feature importance.</p>
@@ -2387,8 +2689,8 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.05409877, 0.05972901, 0.12286631, 0.1510606 , 0.22302637,
-       0.38921895])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.05122282, 0.05589   , 0.12284528, 0.15103731, 0.22564836,
+       0.39335622])
 </pre></div>
 </div>
 </div>
@@ -2416,6 +2718,10 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:1184: FutureWarning: &#39;n_jobs&#39; has no effect since 1.8 and will be removed in 1.10. You provided &#39;n_jobs=-1&#39;, please leave it unspecified.
+  warnings.warn(msg, category=FutureWarning)
+</pre></div>
+</div>
 <div class="output text_html"><style>#sk-container-id-3 {
   /* Definition of color scheme common for light and dark mode */
   --sklearn-color-text: #000;
@@ -2431,20 +2737,21 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
   --sklearn-color-fitted-level-1: #d4ebff;
   --sklearn-color-fitted-level-2: #b3dbfd;
   --sklearn-color-fitted-level-3: cornflowerblue;
+}
 
+#sk-container-id-3.light {
   /* Specific color for light theme */
-  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
-  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
-  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-text-on-default-background: black;
+  --sklearn-color-background: white;
+  --sklearn-color-border-box: black;
   --sklearn-color-icon: #696969;
+}
 
-  @media (prefers-color-scheme: dark) {
-    /* Redefinition of color scheme for dark theme */
-    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
-    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-icon: #878787;
-  }
+#sk-container-id-3.dark {
+  --sklearn-color-text-on-default-background: white;
+  --sklearn-color-background: #111;
+  --sklearn-color-border-box: white;
+  --sklearn-color-icon: #878787;
 }
 
 #sk-container-id-3 {
@@ -2570,8 +2877,8 @@ clickable and can be expanded/collapsed.
   padding: 0.5em;
   box-sizing: border-box;
   text-align: center;
-  align-items: start;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
   gap: 0.5em;
 }
 
@@ -2678,7 +2985,6 @@ clickable and can be expanded/collapsed.
 #sk-container-id-3 div.sk-label label {
   font-family: monospace;
   font-weight: bold;
-  display: inline-block;
   line-height: 1.2em;
 }
 
@@ -2724,7 +3030,7 @@ a:visited.sk-estimator-doc-link {
   font-size: smaller;
   line-height: 1em;
   font-family: monospace;
-  background-color: var(--sklearn-color-background);
+  background-color: var(--sklearn-color-unfitted-level-0);
   border-radius: 1em;
   height: 1em;
   width: 1em;
@@ -2732,16 +3038,17 @@ a:visited.sk-estimator-doc-link {
   margin-left: 0.5em;
   text-align: center;
   /* unfitted */
-  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
-  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-3) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-3);
 }
 
 .sk-estimator-doc-link.fitted,
 a:link.sk-estimator-doc-link.fitted,
 a:visited.sk-estimator-doc-link.fitted {
   /* fitted */
-  border: var(--sklearn-color-fitted-level-1) 1pt solid;
-  color: var(--sklearn-color-fitted-level-1);
+  background-color: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3) 1pt solid;
+  color: var(--sklearn-color-fitted-level-3);
 }
 
 /* On hover */
@@ -2751,7 +3058,8 @@ div.sk-label-container:hover .sk-estimator-doc-link:hover,
 .sk-estimator-doc-link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
-  color: var(--sklearn-color-background);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-0);
   text-decoration: none;
 }
 
@@ -2761,7 +3069,8 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 .sk-estimator-doc-link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
-  color: var(--sklearn-color-background);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-fitted-level-0);
   text-decoration: none;
 }
 
@@ -2801,7 +3110,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   font-size: 1rem;
   line-height: 1em;
   font-family: monospace;
-  background-color: var(--sklearn-color-background);
+  background-color: var(--sklearn-color-unfitted-level-0);
   border-radius: 1rem;
   height: 1rem;
   width: 1rem;
@@ -2813,6 +3122,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 
 #sk-container-id-3 a.estimator_doc_link.fitted {
   /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
   border: var(--sklearn-color-fitted-level-1) 1pt solid;
   color: var(--sklearn-color-fitted-level-1);
 }
@@ -2830,10 +3140,17 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   background-color: var(--sklearn-color-fitted-level-3);
 }
 
+.estimator-table {
+    font-family: monospace;
+}
+
 .estimator-table summary {
     padding: .5rem;
-    font-family: monospace;
     cursor: pointer;
+}
+
+.estimator-table summary::marker {
+    font-size: 0.7rem;
 }
 
 .estimator-table details[open] {
@@ -2845,6 +3162,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 .estimator-table .parameters-table {
     margin-left: auto !important;
     margin-right: auto !important;
+    margin-top: 0;
 }
 
 .estimator-table .parameters-table tr:nth-child(odd) {
@@ -2863,24 +3181,85 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
     border: 1px solid rgba(106, 105, 104, 0.232);
 }
 
-.user-set td {
-    color:rgb(255, 94, 0);
+/*
+    `table td`is set in notebook with right text-align.
+    We need to overwrite it.
+*/
+.estimator-table table td.param {
     text-align: left;
+    position: relative;
+    padding: 0;
 }
 
-.user-set td.value pre {
-    color:rgb(255, 94, 0) !important;
-    background-color: transparent !important;
+.user-set td {
+    color:rgb(255, 94, 0);
+    text-align: left !important;
+}
+
+.user-set td.value {
+    color:rgb(255, 94, 0);
+    background-color: transparent;
 }
 
 .default td {
     color: black;
-    text-align: left;
+    text-align: left !important;
 }
 
 .user-set td i,
 .default td i {
     color: black;
+}
+
+/*
+    Styles for parameter documentation links
+    We need styling for visited so jupyter doesn't overwrite it
+*/
+a.param-doc-link,
+a.param-doc-link:link,
+a.param-doc-link:visited {
+    text-decoration: underline dashed;
+    text-underline-offset: .3em;
+    color: inherit;
+    display: block;
+    padding: .5em;
+}
+
+/* "hack" to make the entire area of the cell containing the link clickable */
+a.param-doc-link::before {
+    position: absolute;
+    content: "";
+    inset: 0;
+}
+
+.param-doc-description {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    left: 0;
+    padding: .5ex;
+    margin-left: 1.5em;
+    color: var(--sklearn-color-text);
+    box-shadow: .3em .3em .4em #999;
+    width: max-content;
+    text-align: left;
+    max-height: 10em;
+    overflow-y: auto;
+
+    /* unfitted */
+    background: var(--sklearn-color-unfitted-level-0);
+    border: thin solid var(--sklearn-color-unfitted-level-3);
+}
+
+/* Fitted state for parameter tooltips */
+.fitted .param-doc-description {
+    /* fitted */
+    background: var(--sklearn-color-fitted-level-0);
+    border: thin solid var(--sklearn-color-fitted-level-3);
+}
+
+.param-doc-link:hover .param-doc-description {
+    display: block;
 }
 
 .copy-paste-icon {
@@ -2918,7 +3297,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('bandwidth',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">bandwidth&nbsp;</td>
+            <td class="param">bandwidth</td>
             <td class="value">900000</td>
         </tr>
     
@@ -2928,7 +3307,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('fixed',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">fixed&nbsp;</td>
+            <td class="param">fixed</td>
             <td class="value">True</td>
         </tr>
     
@@ -2938,7 +3317,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('kernel',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">kernel&nbsp;</td>
+            <td class="param">kernel</td>
             <td class="value">&#x27;bisquare&#x27;</td>
         </tr>
     
@@ -2948,7 +3327,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('include_focal',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">include_focal&nbsp;</td>
+            <td class="param">include_focal</td>
             <td class="value">True</td>
         </tr>
     
@@ -2958,7 +3337,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('geometry',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">geometry&nbsp;</td>
+            <td class="param">geometry</td>
             <td class="value">0          PO...type: geometry</td>
         </tr>
     
@@ -2968,7 +3347,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('graph',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">graph&nbsp;</td>
+            <td class="param">graph</td>
             <td class="value">None</td>
         </tr>
     
@@ -2978,7 +3357,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('n_jobs',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">n_jobs&nbsp;</td>
+            <td class="param">n_jobs</td>
             <td class="value">-1</td>
         </tr>
     
@@ -2988,7 +3367,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('fit_global_model',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">fit_global_model&nbsp;</td>
+            <td class="param">fit_global_model</td>
             <td class="value">True</td>
         </tr>
     
@@ -2998,7 +3377,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('measure_performance',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">measure_performance&nbsp;</td>
+            <td class="param">measure_performance</td>
             <td class="value">True</td>
         </tr>
     
@@ -3008,7 +3387,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('strict',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">strict&nbsp;</td>
+            <td class="param">strict</td>
             <td class="value">False</td>
         </tr>
     
@@ -3018,7 +3397,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('keep_models',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">keep_models&nbsp;</td>
+            <td class="param">keep_models</td>
             <td class="value">True</td>
         </tr>
     
@@ -3028,7 +3407,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('temp_folder',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">temp_folder&nbsp;</td>
+            <td class="param">temp_folder</td>
             <td class="value">None</td>
         </tr>
     
@@ -3038,7 +3417,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('batch_size',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">batch_size&nbsp;</td>
+            <td class="param">batch_size</td>
             <td class="value">None</td>
         </tr>
     
@@ -3048,8 +3427,18 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('undersample',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">undersample&nbsp;</td>
+            <td class="param">undersample</td>
             <td class="value">False</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('leave_out',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">leave_out</td>
+            <td class="value">None</td>
         </tr>
     
                   </tbody>
@@ -3090,19 +3479,92 @@ Name: geometry, Length: 3085, dtype: geometry,
     return false;
 }
 
-document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
+document.querySelectorAll('.copy-paste-icon').forEach(function(element) {
     const toggleableContent = element.closest('.sk-toggleable__content');
     const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
-    const paramName = element.parentElement.nextElementSibling.textContent.trim();
+    const paramName = element.parentElement.nextElementSibling
+        .textContent.trim().split(' ')[0];
     const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
 
     element.setAttribute('title', fullParamName);
 });
-</script></body></div></div>
+
+
+/**
+ * Adapted from Skrub
+ * https://github.com/skrub-data/skrub/blob/403466d1d5d4dc76a7ef569b3f8228db59a31dc3/skrub/_reporting/_data/templates/report.js#L789
+ * @returns "light" or "dark"
+ */
+function detectTheme(element) {
+    const body = document.querySelector('body');
+
+    // Check VSCode theme
+    const themeKindAttr = body.getAttribute('data-vscode-theme-kind');
+    const themeNameAttr = body.getAttribute('data-vscode-theme-name');
+
+    if (themeKindAttr && themeNameAttr) {
+        const themeKind = themeKindAttr.toLowerCase();
+        const themeName = themeNameAttr.toLowerCase();
+
+        if (themeKind.includes("dark") || themeName.includes("dark")) {
+            return "dark";
+        }
+        if (themeKind.includes("light") || themeName.includes("light")) {
+            return "light";
+        }
+    }
+
+    // Check Jupyter theme
+    if (body.getAttribute('data-jp-theme-light') === 'false') {
+        return 'dark';
+    } else if (body.getAttribute('data-jp-theme-light') === 'true') {
+        return 'light';
+    }
+
+    // Guess based on a parent element's color
+    const color = window.getComputedStyle(element.parentNode, null).getPropertyValue('color');
+    const match = color.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i);
+    if (match) {
+        const [r, g, b] = [
+            parseFloat(match[1]),
+            parseFloat(match[2]),
+            parseFloat(match[3])
+        ];
+
+        // https://en.wikipedia.org/wiki/HSL_and_HSV#Lightness
+        const luma = 0.299 * r + 0.587 * g + 0.114 * b;
+
+        if (luma > 180) {
+            // If the text is very bright we have a dark theme
+            return 'dark';
+        }
+        if (luma < 75) {
+            // If the text is very dark we have a light theme
+            return 'light';
+        }
+        // Otherwise fall back to the next heuristic.
+    }
+
+    // Fallback to system preference
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+
+function forceTheme(elementId) {
+    const estimatorElement = document.querySelector(`#${elementId}`);
+    if (estimatorElement === null) {
+        console.error(`Element with id ${elementId} not found.`);
+    } else {
+        const theme = detectTheme(estimatorElement);
+        estimatorElement.classList.add(theme);
+    }
+}
+
+forceTheme('sk-container-id-3');</script></body></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">score_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">focal_score_</span>
 </pre></div>
 </div>
 </div>
@@ -3114,7 +3576,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">f1_micro_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">focal_f1_micro_</span>
 </pre></div>
 </div>
 </div>
@@ -3126,7 +3588,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwlr</span><span class="o">.</span><span class="n">local_pooled_score_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwlr</span><span class="o">.</span><span class="n">local_score_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3134,17 +3596,17 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/56a741770e0217e31dc8feb93a401c5ebd4fc0f5c04ef45d02ca4f23222d3240.png" src="_images/56a741770e0217e31dc8feb93a401c5ebd4fc0f5c04ef45d02ca4f23222d3240.png" />
+<img alt="_images/6a69aadd46e6bfa5d5a4400ec9c2bd72cad0a468b78293e326be15e2a38d87c3.png" src="_images/6a69aadd46e6bfa5d5a4400ec9c2bd72cad0a468b78293e326be15e2a38d87c3.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">f1_macro_</span><span class="p">,</span> <span class="n">gwlr</span><span class="o">.</span><span class="n">f1_micro_</span><span class="p">,</span> <span class="n">gwlr</span><span class="o">.</span><span class="n">f1_weighted_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">pooled_f1_macro_</span><span class="p">,</span> <span class="n">gwlr</span><span class="o">.</span><span class="n">pooled_f1_micro_</span><span class="p">,</span> <span class="n">gwlr</span><span class="o">.</span><span class="n">pooled_f1_weighted_</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.7991439081991037, 0.7991746905089409, 0.799217443717048)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.7867537109649924, 0.7869420636659645, 0.7870271397918338)
 </pre></div>
 </div>
 </div>
@@ -3298,7 +3760,7 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/5824fe18f40ac793336c38491dd1cfe9a62a5ca864332a38b08c0a784f66950e.png" src="_images/5824fe18f40ac793336c38491dd1cfe9a62a5ca864332a38b08c0a784f66950e.png" />
+<img alt="_images/958395d882bb4e5968eceb5a85000ebf0d6bf6985c3c26a3bf2aad40fef6dbf4.png" src="_images/958395d882bb4e5968eceb5a85000ebf0d6bf6985c3c26a3bf2aad40fef6dbf4.png" />
 </div>
 </div>
 <p>Local intercepts</p>
@@ -3396,19 +3858,19 @@ Name: oob_score, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bandwidth: 50.00, score: 3496.602
-Bandwidth: 150.00, score: 2590.608
-Bandwidth: 250.00, score: 2470.417
-Bandwidth: 350.00, score: 2467.736
-Bandwidth: 450.00, score: 2507.082
-Bandwidth: 550.00, score: 2522.316
-Bandwidth: 650.00, score: 2543.729
-Bandwidth: 750.00, score: 2612.469
-Bandwidth: 850.00, score: 2655.850
-Bandwidth: 950.00, score: 2712.442
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bandwidth: 50.00, aicc: 3496.602
+Bandwidth: 150.00, aicc: 2590.608
+Bandwidth: 250.00, aicc: 2470.417
+Bandwidth: 350.00, aicc: 2467.736
+Bandwidth: 450.00, aicc: 2507.082
+Bandwidth: 550.00, aicc: 2522.316
+Bandwidth: 650.00, aicc: 2543.729
+Bandwidth: 750.00, aicc: 2612.469
+Bandwidth: 850.00, aicc: 2655.850
+Bandwidth: 950.00, aicc: 2712.442
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;gwlearn.search.BandwidthSearch at 0x111a48050&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;gwlearn.search.BandwidthSearch at 0x30e43ef00&gt;
 </pre></div>
 </div>
 </div>
@@ -3423,7 +3885,7 @@ Bandwidth: 950.00, score: 2712.442
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/7fb1dcb2351b02d29e5d8b201d404102b30e84d36078704e55ffeba7ce498e25.png" src="_images/7fb1dcb2351b02d29e5d8b201d404102b30e84d36078704e55ffeba7ce498e25.png" />
+<img alt="_images/94de870650e24a55a64891ce733ba522c4689f762f6cddee6f92b23f88ad0220.png" src="_images/94de870650e24a55a64891ce733ba522c4689f762f6cddee6f92b23f88ad0220.png" />
 </div>
 </div>
 <p>Get the optimal one.</p>
@@ -3466,12 +3928,16 @@ Bandwidth: 950.00, score: 2712.442
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.00s: Building weights
-2.33s: Weights ready
-2.34s: Fitting the models
-19.79s: Models fitted
-20.08s: Fitting global model
-20.78s: Computing global likelihood
-20.79s: Computing information criteria
+2.20s: Weights ready
+2.20s: Fitting the models
+8.81s: Models fitted
+8.89s: Fitting global model
+8.89s: Computing global likelihood
+8.89s: Computing information criteria
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:1184: FutureWarning: &#39;n_jobs&#39; has no effect since 1.8 and will be removed in 1.10. You provided &#39;n_jobs=-1&#39;, please leave it unspecified.
+  warnings.warn(msg, category=FutureWarning)
 </pre></div>
 </div>
 <div class="output text_html"><style>#sk-container-id-4 {
@@ -3489,20 +3955,21 @@ Bandwidth: 950.00, score: 2712.442
   --sklearn-color-fitted-level-1: #d4ebff;
   --sklearn-color-fitted-level-2: #b3dbfd;
   --sklearn-color-fitted-level-3: cornflowerblue;
+}
 
+#sk-container-id-4.light {
   /* Specific color for light theme */
-  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
-  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
-  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-text-on-default-background: black;
+  --sklearn-color-background: white;
+  --sklearn-color-border-box: black;
   --sklearn-color-icon: #696969;
+}
 
-  @media (prefers-color-scheme: dark) {
-    /* Redefinition of color scheme for dark theme */
-    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
-    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-icon: #878787;
-  }
+#sk-container-id-4.dark {
+  --sklearn-color-text-on-default-background: white;
+  --sklearn-color-background: #111;
+  --sklearn-color-border-box: white;
+  --sklearn-color-icon: #878787;
 }
 
 #sk-container-id-4 {
@@ -3628,8 +4095,8 @@ clickable and can be expanded/collapsed.
   padding: 0.5em;
   box-sizing: border-box;
   text-align: center;
-  align-items: start;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
   gap: 0.5em;
 }
 
@@ -3736,7 +4203,6 @@ clickable and can be expanded/collapsed.
 #sk-container-id-4 div.sk-label label {
   font-family: monospace;
   font-weight: bold;
-  display: inline-block;
   line-height: 1.2em;
 }
 
@@ -3782,7 +4248,7 @@ a:visited.sk-estimator-doc-link {
   font-size: smaller;
   line-height: 1em;
   font-family: monospace;
-  background-color: var(--sklearn-color-background);
+  background-color: var(--sklearn-color-unfitted-level-0);
   border-radius: 1em;
   height: 1em;
   width: 1em;
@@ -3790,16 +4256,17 @@ a:visited.sk-estimator-doc-link {
   margin-left: 0.5em;
   text-align: center;
   /* unfitted */
-  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
-  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-3) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-3);
 }
 
 .sk-estimator-doc-link.fitted,
 a:link.sk-estimator-doc-link.fitted,
 a:visited.sk-estimator-doc-link.fitted {
   /* fitted */
-  border: var(--sklearn-color-fitted-level-1) 1pt solid;
-  color: var(--sklearn-color-fitted-level-1);
+  background-color: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3) 1pt solid;
+  color: var(--sklearn-color-fitted-level-3);
 }
 
 /* On hover */
@@ -3809,7 +4276,8 @@ div.sk-label-container:hover .sk-estimator-doc-link:hover,
 .sk-estimator-doc-link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
-  color: var(--sklearn-color-background);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-0);
   text-decoration: none;
 }
 
@@ -3819,7 +4287,8 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 .sk-estimator-doc-link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
-  color: var(--sklearn-color-background);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-fitted-level-0);
   text-decoration: none;
 }
 
@@ -3859,7 +4328,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   font-size: 1rem;
   line-height: 1em;
   font-family: monospace;
-  background-color: var(--sklearn-color-background);
+  background-color: var(--sklearn-color-unfitted-level-0);
   border-radius: 1rem;
   height: 1rem;
   width: 1rem;
@@ -3871,6 +4340,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 
 #sk-container-id-4 a.estimator_doc_link.fitted {
   /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
   border: var(--sklearn-color-fitted-level-1) 1pt solid;
   color: var(--sklearn-color-fitted-level-1);
 }
@@ -3888,10 +4358,17 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   background-color: var(--sklearn-color-fitted-level-3);
 }
 
+.estimator-table {
+    font-family: monospace;
+}
+
 .estimator-table summary {
     padding: .5rem;
-    font-family: monospace;
     cursor: pointer;
+}
+
+.estimator-table summary::marker {
+    font-size: 0.7rem;
 }
 
 .estimator-table details[open] {
@@ -3903,6 +4380,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 .estimator-table .parameters-table {
     margin-left: auto !important;
     margin-right: auto !important;
+    margin-top: 0;
 }
 
 .estimator-table .parameters-table tr:nth-child(odd) {
@@ -3921,24 +4399,85 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
     border: 1px solid rgba(106, 105, 104, 0.232);
 }
 
-.user-set td {
-    color:rgb(255, 94, 0);
+/*
+    `table td`is set in notebook with right text-align.
+    We need to overwrite it.
+*/
+.estimator-table table td.param {
     text-align: left;
+    position: relative;
+    padding: 0;
 }
 
-.user-set td.value pre {
-    color:rgb(255, 94, 0) !important;
-    background-color: transparent !important;
+.user-set td {
+    color:rgb(255, 94, 0);
+    text-align: left !important;
+}
+
+.user-set td.value {
+    color:rgb(255, 94, 0);
+    background-color: transparent;
 }
 
 .default td {
     color: black;
-    text-align: left;
+    text-align: left !important;
 }
 
 .user-set td i,
 .default td i {
     color: black;
+}
+
+/*
+    Styles for parameter documentation links
+    We need styling for visited so jupyter doesn't overwrite it
+*/
+a.param-doc-link,
+a.param-doc-link:link,
+a.param-doc-link:visited {
+    text-decoration: underline dashed;
+    text-underline-offset: .3em;
+    color: inherit;
+    display: block;
+    padding: .5em;
+}
+
+/* "hack" to make the entire area of the cell containing the link clickable */
+a.param-doc-link::before {
+    position: absolute;
+    content: "";
+    inset: 0;
+}
+
+.param-doc-description {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    left: 0;
+    padding: .5ex;
+    margin-left: 1.5em;
+    color: var(--sklearn-color-text);
+    box-shadow: .3em .3em .4em #999;
+    width: max-content;
+    text-align: left;
+    max-height: 10em;
+    overflow-y: auto;
+
+    /* unfitted */
+    background: var(--sklearn-color-unfitted-level-0);
+    border: thin solid var(--sklearn-color-unfitted-level-3);
+}
+
+/* Fitted state for parameter tooltips */
+.fitted .param-doc-description {
+    /* fitted */
+    background: var(--sklearn-color-fitted-level-0);
+    border: thin solid var(--sklearn-color-fitted-level-3);
+}
+
+.param-doc-link:hover .param-doc-description {
+    display: block;
 }
 
 .copy-paste-icon {
@@ -3976,7 +4515,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('bandwidth',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">bandwidth&nbsp;</td>
+            <td class="param">bandwidth</td>
             <td class="value">918447</td>
         </tr>
     
@@ -3986,7 +4525,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('fixed',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">fixed&nbsp;</td>
+            <td class="param">fixed</td>
             <td class="value">True</td>
         </tr>
     
@@ -3996,7 +4535,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('kernel',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">kernel&nbsp;</td>
+            <td class="param">kernel</td>
             <td class="value">&#x27;bisquare&#x27;</td>
         </tr>
     
@@ -4006,7 +4545,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('include_focal',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">include_focal&nbsp;</td>
+            <td class="param">include_focal</td>
             <td class="value">True</td>
         </tr>
     
@@ -4016,7 +4555,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('geometry',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">geometry&nbsp;</td>
+            <td class="param">geometry</td>
             <td class="value">0          PO...type: geometry</td>
         </tr>
     
@@ -4026,7 +4565,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('graph',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">graph&nbsp;</td>
+            <td class="param">graph</td>
             <td class="value">None</td>
         </tr>
     
@@ -4036,7 +4575,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('n_jobs',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">n_jobs&nbsp;</td>
+            <td class="param">n_jobs</td>
             <td class="value">-1</td>
         </tr>
     
@@ -4046,7 +4585,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('fit_global_model',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">fit_global_model&nbsp;</td>
+            <td class="param">fit_global_model</td>
             <td class="value">True</td>
         </tr>
     
@@ -4056,7 +4595,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('measure_performance',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">measure_performance&nbsp;</td>
+            <td class="param">measure_performance</td>
             <td class="value">False</td>
         </tr>
     
@@ -4066,7 +4605,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('strict',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">strict&nbsp;</td>
+            <td class="param">strict</td>
             <td class="value">False</td>
         </tr>
     
@@ -4076,7 +4615,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('keep_models',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">keep_models&nbsp;</td>
+            <td class="param">keep_models</td>
             <td class="value">True</td>
         </tr>
     
@@ -4086,7 +4625,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('temp_folder',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">temp_folder&nbsp;</td>
+            <td class="param">temp_folder</td>
             <td class="value">None</td>
         </tr>
     
@@ -4096,7 +4635,7 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('batch_size',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">batch_size&nbsp;</td>
+            <td class="param">batch_size</td>
             <td class="value">None</td>
         </tr>
     
@@ -4106,8 +4645,18 @@ Name: geometry, Length: 3085, dtype: geometry,
                  onclick="copyToClipboard('undersample',
                           this.parentElement.nextElementSibling)"
             ></i></td>
-            <td class="param">undersample&nbsp;</td>
+            <td class="param">undersample</td>
             <td class="value">False</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('leave_out',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">leave_out</td>
+            <td class="value">None</td>
         </tr>
     
                   </tbody>
@@ -4148,15 +4697,88 @@ Name: geometry, Length: 3085, dtype: geometry,
     return false;
 }
 
-document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
+document.querySelectorAll('.copy-paste-icon').forEach(function(element) {
     const toggleableContent = element.closest('.sk-toggleable__content');
     const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
-    const paramName = element.parentElement.nextElementSibling.textContent.trim();
+    const paramName = element.parentElement.nextElementSibling
+        .textContent.trim().split(' ')[0];
     const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
 
     element.setAttribute('title', fullParamName);
 });
-</script></body></div></div>
+
+
+/**
+ * Adapted from Skrub
+ * https://github.com/skrub-data/skrub/blob/403466d1d5d4dc76a7ef569b3f8228db59a31dc3/skrub/_reporting/_data/templates/report.js#L789
+ * @returns "light" or "dark"
+ */
+function detectTheme(element) {
+    const body = document.querySelector('body');
+
+    // Check VSCode theme
+    const themeKindAttr = body.getAttribute('data-vscode-theme-kind');
+    const themeNameAttr = body.getAttribute('data-vscode-theme-name');
+
+    if (themeKindAttr && themeNameAttr) {
+        const themeKind = themeKindAttr.toLowerCase();
+        const themeName = themeNameAttr.toLowerCase();
+
+        if (themeKind.includes("dark") || themeName.includes("dark")) {
+            return "dark";
+        }
+        if (themeKind.includes("light") || themeName.includes("light")) {
+            return "light";
+        }
+    }
+
+    // Check Jupyter theme
+    if (body.getAttribute('data-jp-theme-light') === 'false') {
+        return 'dark';
+    } else if (body.getAttribute('data-jp-theme-light') === 'true') {
+        return 'light';
+    }
+
+    // Guess based on a parent element's color
+    const color = window.getComputedStyle(element.parentNode, null).getPropertyValue('color');
+    const match = color.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i);
+    if (match) {
+        const [r, g, b] = [
+            parseFloat(match[1]),
+            parseFloat(match[2]),
+            parseFloat(match[3])
+        ];
+
+        // https://en.wikipedia.org/wiki/HSL_and_HSV#Lightness
+        const luma = 0.299 * r + 0.587 * g + 0.114 * b;
+
+        if (luma > 180) {
+            // If the text is very bright we have a dark theme
+            return 'dark';
+        }
+        if (luma < 75) {
+            // If the text is very dark we have a light theme
+            return 'light';
+        }
+        // Otherwise fall back to the next heuristic.
+    }
+
+    // Fallback to system preference
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+
+function forceTheme(elementId) {
+    const estimatorElement = document.querySelector(`#${elementId}`);
+    if (estimatorElement === null) {
+        console.error(`Element with id ${elementId} not found.`);
+    } else {
+        const theme = detectTheme(estimatorElement);
+        estimatorElement.classList.add(theme);
+    }
+}
+
+forceTheme('sk-container-id-4');</script></body></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -4267,6 +4889,56 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 8    False
 9    False
 dtype: bool
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1073053a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x106c613a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1037793a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x106a793a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x102ef53a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1068413a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1056753a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1034b13a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
 </pre></div>
 </div>
 </div>

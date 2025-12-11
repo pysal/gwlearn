@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Optimize the bandwidth of RF Classification based on out-of-bag score and an out-of-sample score &#8212; gwlearn 0.1.dev77+g33aea2af8 documentation</title>
+    <title>Optimize the bandwidth of RF Classification based on out-of-bag score and an out-of-sample score &#8212; gwlearn 0.1.dev78+gc5a3203da documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=0bb3269f"></script>
+    <script src="_static/documentation_options.js?v=5cc36f40"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev77+g33aea2af8 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev78+gc5a3203da documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -354,8 +354,8 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sample = elections_data.sample(500, random_state=10)</span>
-<span class="n">sample</span> <span class="o">=</span> <span class="n">elections_data</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample</span> <span class="o">=</span> <span class="n">elections_data</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="c1"># sample = elections_data</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">sample</span><span class="p">[</span><span class="n">independent_names</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">sample</span><span class="p">[</span><span class="s2">&quot;PetrPavel&quot;</span><span class="p">]</span>
@@ -370,7 +370,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(6254, 21)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(500, 21)
 </pre></div>
 </div>
 </div>
@@ -384,13 +384,13 @@ document.write(`
     <span class="n">geometry</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">centroid</span><span class="p">,</span>
     <span class="n">search_method</span><span class="o">=</span><span class="s2">&quot;interval&quot;</span><span class="p">,</span>
     <span class="n">min_bandwidth</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-    <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">6250</span><span class="p">,</span>
-    <span class="n">interval</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-    <span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;log_loss&#39;</span><span class="p">,</span>
+    <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+    <span class="n">interval</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;focal_log_loss&#39;</span><span class="p">,</span>
     <span class="n">leave_out</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
     <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="c1"># max_iter=1000,</span>
-    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;log_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;oob_score&#39;</span><span class="p">,</span> <span class="s1">&#39;leave_out_log_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="s1">&#39;prediction_rate&#39;</span><span class="p">]</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;focal_log_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;pooled_oob_score&#39;</span><span class="p">,</span> <span class="s1">&#39;oos_log_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;focal_score&#39;</span><span class="p">,</span> <span class="s1">&#39;prediction_rate&#39;</span><span class="p">]</span>
 <span class="p">)</span>
 <span class="n">search_rf</span> <span class="o">=</span> <span class="n">search_rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">)</span>
 <span class="n">search_rf</span><span class="o">.</span><span class="n">scores_</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
@@ -398,30 +398,22 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bandwidth: 50.00, log_loss: 0.560
-Bandwidth: 550.00, log_loss: 0.495
-Bandwidth: 1050.00, log_loss: 0.496
-Bandwidth: 1550.00, log_loss: 0.486
-Bandwidth: 2050.00, log_loss: 0.493
-Bandwidth: 2550.00, log_loss: 0.493
-Bandwidth: 3050.00, log_loss: 0.491
-Bandwidth: 3550.00, log_loss: 0.492
-Bandwidth: 4050.00, log_loss: 0.501
-Bandwidth: 4550.00, log_loss: 0.509
-Bandwidth: 5050.00, log_loss: 0.502
-Bandwidth: 5550.00, log_loss: 0.502
-Bandwidth: 6050.00, log_loss: 0.500
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bandwidth: 50.00, focal_log_loss: 0.528
+Bandwidth: 150.00, focal_log_loss: 0.565
+Bandwidth: 250.00, focal_log_loss: 0.516
+Bandwidth: 350.00, focal_log_loss: 0.509
+Bandwidth: 450.00, focal_log_loss: 0.525
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/3b639062f849dd539efae14027e70987c568c23690c91f0bdf9349521ab3ecbb.png" src="_images/3b639062f849dd539efae14027e70987c568c23690c91f0bdf9349521ab3ecbb.png" />
+<img alt="_images/a3f91cf9e1d2a0d213c534ef7581aeeca57b0c6823f0c29fc7e4e834fdcbf22f.png" src="_images/a3f91cf9e1d2a0d213c534ef7581aeeca57b0c6823f0c29fc7e4e834fdcbf22f.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_rf</span><span class="o">.</span><span class="n">metrics_</span><span class="o">.</span><span class="n">leave_out_log_loss</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_rf</span><span class="o">.</span><span class="n">metrics_</span><span class="o">.</span><span class="n">oos_log_loss</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -429,12 +421,12 @@ Bandwidth: 6050.00, log_loss: 0.500
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/a961b7f153c3330c4258029744969abe8390b245be3f1545d6fd7f61a0573d12.png" src="_images/a961b7f153c3330c4258029744969abe8390b245be3f1545d6fd7f61a0573d12.png" />
+<img alt="_images/89f923becf6ba1ca4c9b84d648ca945a04770a4aff1a831652e0b7444b09e1de.png" src="_images/89f923becf6ba1ca4c9b84d648ca945a04770a4aff1a831652e0b7444b09e1de.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_rf</span><span class="o">.</span><span class="n">metrics_</span><span class="o">.</span><span class="n">oob_score</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_rf</span><span class="o">.</span><span class="n">metrics_</span><span class="o">.</span><span class="n">pooled_oob_score</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -442,7 +434,7 @@ Bandwidth: 6050.00, log_loss: 0.500
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/5b7e2816496e1e9dd6dea3ee6b1b1829eb21e3bc05286fb3c64af8d9613eefc4.png" src="_images/5b7e2816496e1e9dd6dea3ee6b1b1829eb21e3bc05286fb3c64af8d9613eefc4.png" />
+<img alt="_images/44bcea4b8966ebd617bbe00825af1ab6703e1bdef32523a1ec1ab15f57b92833.png" src="_images/44bcea4b8966ebd617bbe00825af1ab6703e1bdef32523a1ec1ab15f57b92833.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -455,7 +447,7 @@ Bandwidth: 6050.00, log_loss: 0.500
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/458031b8beb07c4cb6b93e2487d901a265bf0ac9f02f0d9a55b941665b0c0f7f.png" src="_images/458031b8beb07c4cb6b93e2487d901a265bf0ac9f02f0d9a55b941665b0c0f7f.png" />
+<img alt="_images/3b9af5cdd18ec0c360eb914c4c1162281b515f5cd21b4eff0649d6ba867ae67a.png" src="_images/3b9af5cdd18ec0c360eb914c4c1162281b515f5cd21b4eff0649d6ba867ae67a.png" />
 </div>
 </div>
 </section>
