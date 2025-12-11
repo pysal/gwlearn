@@ -363,7 +363,7 @@ def test_bandwidth_search_metrics(sample_data, search_method):
     X, y, geometry = sample_data
 
     # Define custom metrics to track
-    custom_metrics = ["balanced_accuracy", "f1_weighted", "prediction_rate"]
+    custom_metrics = ["focal_balanced_accuracy", "focal_f1_weighted", "prediction_rate"]
 
     # Test interval search
     search = BandwidthSearch(
@@ -409,7 +409,7 @@ def test_maximize_custom_metric(sample_data):
     X, y, geometry = sample_data
 
     # Define custom metrics to track
-    custom_metrics = ["balanced_accuracy", "f1_weighted", "prediction_rate"]
+    custom_metrics = ["focal_balanced_accuracy", "focal_f1_weighted", "prediction_rate"]
 
     # Test interval search
     search = BandwidthSearch(

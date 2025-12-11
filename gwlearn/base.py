@@ -409,8 +409,9 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         geographically weighted, by default True
     measure_performance : bool | list, optional
         Calculate performance metrics for the model. If True, measures accuracy score,
-        precision, recall, balanced accuracy, F1 scores and log loss. A subset of these
-        can be specified by passing a list of strings. By default True
+        precision, recall, balanced accuracy, F1 scores and log loss based on focal
+        prediction. A subset of these can be specified by passing a list of strings.
+        By default True
     strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``, by
         default False. None is treated as False but provides a warning if there are
@@ -456,21 +457,21 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Hat values for each location (diagonal elements of hat matrix)
     effective_df_ : float
         Effective degrees of freedom (sum of hat values)
-    score_ : float
+    pred_score_ : float
         Accuracy score of the model based on ``pred_``.
-    precision_ : float
+    pred_precision_ : float
         Precision score of the model based on ``pred_``.
-    recall_ : float
+    pred_recall_ : float
         Recall score of the model based on ``pred_``.
-    balanced_accuracy_ : float
+    pred_balanced_accuracy_ : float
         Balanced accuracy score of the model based on ``pred_``.
-    f1_macro_ : float
+    pred_f1_macro_ : float
         F1 score with macro averaging based on ``pred_``.
-    f1_micro_ : float
+    pred_f1_micro_ : float
         F1 score with micro averaging based on ``pred_``.
-    f1_weighted_ : float
+    pred_f1_weighted_ : float
         F1 score with weighted averaging based on ``pred_``.
-    log_loss_ : float
+    pred_log_loss_ : float
         Log loss of the model based on ``pred_``.
     log_likelihood_ : float
         Global log likelihood of the model
@@ -668,14 +669,14 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         if self.measure_performance:
             if self.measure_performance is True:
                 metrics_to_measure = [
-                    "score",
-                    "precision",
-                    "recall",
-                    "balanced_accuracy",
-                    "f1_macro",
-                    "f1_micro",
-                    "f1_weighted",
-                    "log_loss",
+                    "focal_score",
+                    "focal_precision",
+                    "focal_recall",
+                    "focal_balanced_accuracy",
+                    "focal_f1_macro",
+                    "focal_f1_micro",
+                    "focal_f1_weighted",
+                    "focal_log_loss",
                 ]
             else:
                 metrics_to_measure = self.measure_performance
@@ -685,36 +686,36 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
             computable = (self.prediction_rate_ > 0) and masked_y.nunique() > 1
 
-            if "score" in metrics_to_measure:
-                self.score_ = (
+            if "focal_score" in metrics_to_measure:
+                self.focal_score_ = (
                     metrics.accuracy_score(masked_y, self.pred_)
                     if computable
                     else np.nan
                 )
 
-            if "precision" in metrics_to_measure:
-                self.precision_ = (
+            if "focal_precision" in metrics_to_measure:
+                self.focal_precision_ = (
                     metrics.precision_score(masked_y, self.pred_, zero_division=0)
                     if computable
                     else np.nan
                 )
 
-            if "recall" in metrics_to_measure:
-                self.recall_ = (
+            if "focal_recall" in metrics_to_measure:
+                self.focal_recall_ = (
                     metrics.recall_score(masked_y, self.pred_, zero_division=0)
                     if computable
                     else np.nan
                 )
 
-            if "balanced_accuracy" in metrics_to_measure:
-                self.balanced_accuracy_ = (
+            if "focal_balanced_accuracy" in metrics_to_measure:
+                self.focal_balanced_accuracy_ = (
                     metrics.balanced_accuracy_score(masked_y, self.pred_)
                     if computable
                     else np.nan
                 )
 
-            if "f1_macro" in metrics_to_measure:
-                self.f1_macro_ = (
+            if "focal_f1_macro" in metrics_to_measure:
+                self.focal_f1_macro_ = (
                     metrics.f1_score(
                         masked_y, self.pred_, average="macro", zero_division=0
                     )
@@ -722,8 +723,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                     else np.nan
                 )
 
-            if "f1_micro" in metrics_to_measure:
-                self.f1_micro_ = (
+            if "focal_f1_micro" in metrics_to_measure:
+                self.focal_f1_micro_ = (
                     metrics.f1_score(
                         masked_y, self.pred_, average="micro", zero_division=0
                     )
@@ -731,8 +732,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                     else np.nan
                 )
 
-            if "f1_weighted" in metrics_to_measure:
-                self.f1_weighted_ = (
+            if "focal_f1_weighted" in metrics_to_measure:
+                self.focal_f1_weighted_ = (
                     metrics.f1_score(
                         masked_y, self.pred_, average="weighted", zero_division=0
                     )
@@ -740,8 +741,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                     else np.nan
                 )
 
-            if "log_loss" in metrics_to_measure:
-                self.log_loss_ = (
+            if "focal_log_loss" in metrics_to_measure:
+                self.focal_log_loss_ = (
                     metrics.log_loss(
                         masked_y,
                         self.proba_[~nan_mask],

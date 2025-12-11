@@ -180,11 +180,11 @@ def test_fit_basic_functionality(sample_data):
     assert isinstance(clf.global_model, RandomForestClassifier)
 
     # Test that performance metrics were calculated
-    assert hasattr(clf, "score_")
-    assert 0 <= clf.score_ <= 1
-    assert hasattr(clf, "f1_macro_")
-    assert hasattr(clf, "f1_micro_")
-    assert hasattr(clf, "f1_weighted_")
+    assert hasattr(clf, "focal_score_")
+    assert 0 <= clf.focal_score_ <= 1
+    assert hasattr(clf, "focal_f1_macro_")
+    assert hasattr(clf, "focal_f1_micro_")
+    assert hasattr(clf, "focal_f1_weighted_")
 
 
 def test_fit_with_keep_models(sample_data):
@@ -261,8 +261,8 @@ def test_fit_different_kernels(sample_data, kernel):
     clf.fit(X, y)
 
     # Check that the model was fit successfully
-    assert hasattr(clf, "score_")
-    assert 0 <= clf.score_ <= 1
+    assert hasattr(clf, "focal_score_")
+    assert 0 <= clf.focal_score_ <= 1
 
 
 def test_fit_fixed_bandwidth(sample_data):
@@ -282,8 +282,8 @@ def test_fit_fixed_bandwidth(sample_data):
     clf.fit(X, y)
 
     # Check that the model was fit successfully
-    assert hasattr(clf, "score_")
-    assert 0 <= clf.score_ <= 1
+    assert hasattr(clf, "focal_score_")
+    assert 0 <= clf.focal_score_ <= 1
 
 
 def test_fit_without_global_model(sample_data):
@@ -326,7 +326,7 @@ def test_fit_without_performance_metrics(sample_data):
     clf.fit(X, y)
 
     # Check that performance metrics were not computed
-    assert not hasattr(clf, "score_")
+    assert not hasattr(clf, "focal_score_")
     assert not hasattr(clf, "f1_macro_")
 
     # But focal probabilities should still be available
@@ -430,8 +430,8 @@ def test_fit_with_batch_processing(sample_data):
 
     # Check that the model was fit successfully
     assert hasattr(clf, "proba_")
-    assert hasattr(clf, "score_")
-    assert 0 <= clf.score_ <= 1
+    assert hasattr(clf, "focal_score_")
+    assert 0 <= clf.focal_score_ <= 1
 
     # Compare with a model without batching to ensure results are consistent
     clf_no_batch = BaseClassifier(
@@ -488,9 +488,11 @@ def test_fit_n_jobs_consistency(sample_data):
     )
 
     # Check that performance metrics are also equal
-    assert clf_sequential.score_ == pytest.approx(clf_parallel.score_)
-    assert clf_sequential.f1_macro_ == pytest.approx(clf_parallel.f1_macro_)
-    assert clf_sequential.f1_weighted_ == pytest.approx(clf_parallel.f1_weighted_)
+    assert clf_sequential.focal_score_ == pytest.approx(clf_parallel.focal_score_)
+    assert clf_sequential.focal_f1_macro_ == pytest.approx(clf_parallel.focal_f1_macro_)
+    assert clf_sequential.focal_f1_weighted_ == pytest.approx(
+        clf_parallel.focal_f1_weighted_
+    )
 
     # Check that global models have the same coefficients
     np.testing.assert_allclose(
@@ -693,8 +695,8 @@ def test_binary_target_zero_one(sample_data):
     assert fitted_clf is clf
 
     # Check that performance metrics were calculated
-    assert hasattr(clf, "score_")
-    assert 0 <= clf.score_ <= 1
+    assert hasattr(clf, "focal_score_")
+    assert 0 <= clf.focal_score_ <= 1
 
     # propagation to prediction
     pd.testing.assert_index_equal(clf.proba_.columns, pd.Index([0, 1]))
@@ -763,8 +765,8 @@ def test_undersample_boolean(sample_data):
     clf.fit(X, y)
 
     # Check that the model was fit successfully
-    assert hasattr(clf, "score_")
-    assert 0 <= clf.score_ <= 1
+    assert hasattr(clf, "focal_score_")
+    assert 0 <= clf.focal_score_ <= 1
 
 
 @pytest.mark.skipif(not HAS_IMBLEARN, reason="requires imblearn")
@@ -788,8 +790,8 @@ def test_undersample_ratio(sample_data):
     clf.fit(X, y)
 
     # Check that the model was fit successfully
-    assert hasattr(clf, "score_")
-    assert 0 <= clf.score_ <= 1
+    assert hasattr(clf, "focal_score_")
+    assert 0 <= clf.focal_score_ <= 1
 
 
 def test_random_state_consistency(sample_data):
@@ -819,7 +821,7 @@ def test_random_state_consistency(sample_data):
 
     # Results should be identical
     pd.testing.assert_frame_equal(clf1.proba_, clf2.proba_)
-    assert clf1.score_ == clf2.score_
+    assert clf1.focal_score_ == clf2.focal_score_
 
 
 def test_different_random_states(sample_data):
@@ -883,7 +885,7 @@ def test_random_state_with_undersample(sample_data):
 
     # Results should be identical
     pd.testing.assert_frame_equal(clf1.proba_, clf2.proba_)
-    assert clf1.score_ == clf2.score_
+    assert clf1.focal_score_ == clf2.focal_score_
 
 
 def test_repr_basic():
@@ -1424,7 +1426,7 @@ def test_regressor_n_jobs_consistency(sample_regression_data):
     )
 
     # TODO: Check that performance metrics are also equal
-    # assert reg_sequential.score_ == pytest.approx(reg_parallel.score_)
+    # assert reg_sequential.focal_score_ == pytest.approx(reg_parallel.focal_score_)
     # assert reg_sequential.mae_ == pytest.approx(reg_parallel.mae_)
     # assert reg_sequential.mse_ == pytest.approx(reg_parallel.mse_)
 
@@ -1546,7 +1548,7 @@ def test_custom_graph_baseclassifier(sample_data):
 
     # Check that the model was fit successfully
     assert hasattr(clf, "proba_")
-    assert hasattr(clf, "score_")
+    assert hasattr(clf, "focal_score_")
 
 
 def test_leave_out_oos_log_loss(sample_data):

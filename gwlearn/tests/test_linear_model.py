@@ -172,26 +172,26 @@ def test_gwlogistic_local_prediction_metrics(sample_data):  # noqa: F811
     model.fit(X, y)
 
     # Check local prediction metrics attributes
-    assert hasattr(model, "local_pooled_score_")
-    assert hasattr(model, "local_pooled_precision_")
-    assert hasattr(model, "local_pooled_recall_")
-    assert hasattr(model, "local_pooled_f1_macro_")
-    assert hasattr(model, "local_pooled_f1_micro_")
-    assert hasattr(model, "local_pooled_f1_weighted_")
+    assert hasattr(model, "local_score_")
+    assert hasattr(model, "local_precision_")
+    assert hasattr(model, "local_recall_")
+    assert hasattr(model, "local_f1_macro_")
+    assert hasattr(model, "local_f1_micro_")
+    assert hasattr(model, "local_f1_weighted_")
 
     # Check structure and values
-    assert isinstance(model.local_pooled_score_, pd.Series)
-    assert len(model.local_pooled_score_) == len(X)
-    assert (model.local_pooled_score_.dropna() >= 0).all()
-    assert (model.local_pooled_score_.dropna() <= 1).all()
+    assert isinstance(model.local_score_, pd.Series)
+    assert len(model.local_score_) == len(X)
+    assert (model.local_score_.dropna() >= 0).all()
+    assert (model.local_score_.dropna() <= 1).all()
 
     # Check that values are as expected
-    assert pytest.approx(0.879587166) == model.local_pooled_score_.mean()
-    assert pytest.approx(0.889862351) == model.local_pooled_precision_.mean()
-    assert pytest.approx(0.849844990) == model.local_pooled_recall_.mean()
-    assert pytest.approx(0.859829075) == model.local_pooled_f1_macro_.mean()
-    assert pytest.approx(0.879587166) == model.local_pooled_f1_micro_.mean()
-    assert pytest.approx(0.877102172) == model.local_pooled_f1_weighted_.mean()
+    assert pytest.approx(0.879587166) == model.local_score_.mean()
+    assert pytest.approx(0.889862351) == model.local_precision_.mean()
+    assert pytest.approx(0.849844990) == model.local_recall_.mean()
+    assert pytest.approx(0.859829075) == model.local_f1_macro_.mean()
+    assert pytest.approx(0.879587166) == model.local_f1_micro_.mean()
+    assert pytest.approx(0.877102172) == model.local_f1_weighted_.mean()
 
 
 def test_gwlinear_init():
