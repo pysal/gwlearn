@@ -103,21 +103,21 @@ class GWRandomForestClassifier(BaseClassifier):
         Hat values for each location (diagonal elements of hat matrix)
     effective_df_ : float
         Effective degrees of freedom (sum of hat values)
-    score_ : float
+    focal_score_ : float
         Accuracy score of the model based on ``pred_``.
-    precision_ : float
+    focal_precision_ : float
         Precision score of the model based on ``pred_``.
-    recall_ : float
+    focal_recall_ : float
         Recall score of the model based on ``pred_``.
-    balanced_accuracy_ : float
+    focal_balanced_accuracy_ : float
         Balanced accuracy score of the model based on ``pred_``.
-    f1_macro_ : float
+    focal_f1_macro_ : float
         F1 score with macro averaging based on ``pred_``.
-    f1_micro_ : float
+    focal_f1_micro_ : float
         F1 score with micro averaging based on ``pred_``.
-    f1_weighted_ : float
+    focal_f1_weighted_ : float
         F1 score with weighted averaging based on ``pred_``.
-    log_loss_ : float
+    focal_log_loss_ : float
         Log loss of the model based on ``pred_``.
     log_likelihood_ : float
         Global log likelihood of the model
@@ -128,19 +128,19 @@ class GWRandomForestClassifier(BaseClassifier):
         complexity (smaller bandwidths)
     bic_ : float
         Bayesian information criterion
-    oob_score_ : float
+    pooled_oob_score_ : float
         Out-of-bag accuracy score based on pooled OOB predictions
-    oob_precision_ : float
+    pooled_oob_precision_ : float
         Out-of-bag precision score based on pooled OOB predictions
-    oob_recall_ : float
+    pooled_oob_recall_ : float
         Out-of-bag recall score based on pooled OOB predictions
-    oob_balanced_accuracy_ : float
+    pooled_oob_balanced_accuracy_ : float
         Out-of-bag balanced accuracy score based on pooled OOB predictions
-    oob_f1_macro_ : float
+    pooled_oob_f1_macro_ : float
         Out-of-bag F1 score with macro averaging based on pooled OOB predictions
-    oob_f1_micro_ : float
+    pooled_oob_f1_micro_ : float
         Out-of-bag F1 score with micro averaging based on pooled OOB predictions
-    oob_f1_weighted_ : float
+    pooled_oob_f1_weighted_ : float
         Out-of-bag F1 score with weighted averaging based on pooled OOB predictions
     local_oob_score_ : pd.Series
         Out-of-bag accuracy score for each local model
@@ -269,53 +269,50 @@ class GWRandomForestClassifier(BaseClassifier):
                 return self
 
             # global OOB scores
-            if self.measure_performance is True or ("oob_score" in metrics_to_measure):
-                self.oob_score_ = metrics.accuracy_score(all_true, all_pred)
+            if self.measure_performance is True or (
+                "pooled_oob_score" in metrics_to_measure
+            ):
+                self.pooled_oob_score_ = metrics.accuracy_score(all_true, all_pred)
 
             if self.measure_performance is True or (
-                "oob_precision" in metrics_to_measure
+                "pooled_oob_precision" in metrics_to_measure
             ):
-                self.oob_precision_ = metrics.precision_score(
-                    all_true, all_pred, zero_division=0
-                )
-
-            if self.measure_performance is True or ("oob_recall" in metrics_to_measure):
-                self.oob_recall_ = metrics.recall_score(
+                self.pooled_oob_precision_ = metrics.precision_score(
                     all_true, all_pred, zero_division=0
                 )
 
             if self.measure_performance is True or (
-                "oob_balanced_accuracy" in metrics_to_measure
+                "pooled_oob_recall" in metrics_to_measure
             ):
-                self.oob_balanced_accuracy_ = metrics.balanced_accuracy_score(
+                self.pooled_oob_recall_ = metrics.recall_score(
+                    all_true, all_pred, zero_division=0
+                )
+
+            if self.measure_performance is True or (
+                "pooled_oob_balanced_accuracy" in metrics_to_measure
+            ):
+                self.pooled_oob_balanced_accuracy_ = metrics.balanced_accuracy_score(
                     all_true, all_pred
                 )
 
             if self.measure_performance is True or (
-                "oob_f1_macro" in metrics_to_measure
+                "pooled_oob_f1_macro" in metrics_to_measure
             ):
-                self.oob_f1_macro_ = metrics.f1_score(
+                self.pooled_oob_f1_macro_ = metrics.f1_score(
                     all_true, all_pred, average="macro", zero_division=0
                 )
 
             if self.measure_performance is True or (
-                "oob_f1_micro" in metrics_to_measure
+                "pooled_oob_f1_micro" in metrics_to_measure
             ):
-                self.oob_f1_micro_ = metrics.f1_score(
+                self.pooled_oob_f1_micro_ = metrics.f1_score(
                     all_true, all_pred, average="micro", zero_division=0
                 )
 
             if self.measure_performance is True or (
-                "oob_f1_weighted" in metrics_to_measure
+                "pooled_oob_f1_weighted" in metrics_to_measure
             ):
-                self.oob_f1_weighted_ = metrics.f1_score(
-                    all_true, all_pred, average="weighted", zero_division=0
-                )
-
-            if self.measure_performance is True or (
-                "oob_log_loss" in metrics_to_measure
-            ):
-                self.oob_f1_weighted_ = metrics.f1_score(
+                self.pooled_oob_f1_weighted_ = metrics.f1_score(
                     all_true, all_pred, average="weighted", zero_division=0
                 )
 
@@ -478,20 +475,22 @@ class GWGradientBoostingClassifier(BaseClassifier):
         Hat values for each location (diagonal elements of hat matrix)
     effective_df_ : float
         Effective degrees of freedom (sum of hat values)
-    score_ : float
+    focal_score_ : float
         Accuracy score of the model based on ``pred_``.
-    precision_ : float
+    focal_precision_ : float
         Precision score of the model based on ``pred_``.
-    recall_ : float
+    focal_recall_ : float
         Recall score of the model based on ``pred_``.
-    balanced_accuracy_ : float
+    focal_balanced_accuracy_ : float
         Balanced accuracy score of the model based on ``pred_``.
-    f1_macro_ : float
+    focal_f1_macro_ : float
         F1 score with macro averaging based on ``pred_``.
-    f1_micro_ : float
+    focal_f1_micro_ : float
         F1 score with micro averaging based on ``pred_``.
-    f1_weighted_ : float
+    focal_f1_weighted_ : float
         F1 score with weighted averaging based on ``pred_``.
+    focal_log_loss_ : float
+        Log loss of the model based on ``pred_``.
     log_likelihood_ : float
         Global log likelihood of the model
     aic_ : float

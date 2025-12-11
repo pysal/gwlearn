@@ -180,3 +180,5 @@ docs/source/generated
 
 # macOS stuff
 *.DS_Store
+
+docs/source/cache/

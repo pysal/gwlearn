@@ -46,8 +46,8 @@ def test_gwrf_fit_basic(sample_data):  # noqa: F811
 
     # Test specific attributes of GWRandomForestClassifier
     assert hasattr(model, "feature_importances_")
-    assert hasattr(model, "oob_score_")
-    assert pytest.approx(0.6033210332) == model.oob_score_
+    assert hasattr(model, "pooled_oob_score_")
+    assert pytest.approx(0.6033210332) == model.pooled_oob_score_
 
     # Check structure of feature importances
     assert isinstance(model.feature_importances_, pd.DataFrame)
@@ -121,20 +121,20 @@ def test_gwrf_global_oob_metrics(sample_data):  # noqa: F811
     model.fit(X, y)
 
     # Check global OOB metrics
-    assert hasattr(model, "oob_score_")
-    assert hasattr(model, "oob_precision_")
-    assert hasattr(model, "oob_recall_")
-    assert hasattr(model, "oob_f1_macro_")
-    assert hasattr(model, "oob_f1_micro_")
-    assert hasattr(model, "oob_f1_weighted_")
+    assert hasattr(model, "pooled_oob_score_")
+    assert hasattr(model, "pooled_oob_precision_")
+    assert hasattr(model, "pooled_oob_recall_")
+    assert hasattr(model, "pooled_oob_f1_macro_")
+    assert hasattr(model, "pooled_oob_f1_micro_")
+    assert hasattr(model, "pooled_oob_f1_weighted_")
 
     # Check that values are as expected
-    assert pytest.approx(0.603321033) == model.oob_score_
-    assert pytest.approx(0.585470085) == model.oob_precision_
-    assert pytest.approx(0.537254901) == model.oob_recall_
-    assert pytest.approx(0.599491330) == model.oob_f1_macro_
-    assert pytest.approx(0.603321033) == model.oob_f1_micro_
-    assert pytest.approx(0.601803603) == model.oob_f1_weighted_
+    assert pytest.approx(0.603321033) == model.pooled_oob_score_
+    assert pytest.approx(0.585470085) == model.pooled_oob_precision_
+    assert pytest.approx(0.537254901) == model.pooled_oob_recall_
+    assert pytest.approx(0.599491330) == model.pooled_oob_f1_macro_
+    assert pytest.approx(0.603321033) == model.pooled_oob_f1_micro_
+    assert pytest.approx(0.601803603) == model.pooled_oob_f1_weighted_
 
 
 def test_gwgb_init():

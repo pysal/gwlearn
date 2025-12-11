@@ -100,21 +100,21 @@ class GWLogisticRegression(BaseClassifier):
         Hat values for each location (diagonal elements of hat matrix)
     effective_df_ : float
         Effective degrees of freedom (sum of hat values)
-    score_ : float
+    focal_score_ : float
         Accuracy score of the model based on ``pred_``.
-    precision_ : float
+    focal_precision_ : float
         Precision score of the model based on ``pred_``.
-    recall_ : float
+    focal_recall_ : float
         Recall score of the model based on ``pred_``.
-    balanced_accuracy_ : float
+    focal_balanced_accuracy_ : float
         Balanced accuracy score of the model based on ``pred_``.
-    f1_macro_ : float
+    focal_f1_macro_ : float
         F1 score with macro averaging based on ``pred_``.
-    f1_micro_ : float
+    focal_f1_micro_ : float
         F1 score with micro averaging based on ``pred_``.
-    f1_weighted_ : float
+    focal_f1_weighted_ : float
         F1 score with weighted averaging based on ``pred_``.
-    log_loss_ : float
+    focal_log_loss_ : float
         Log loss of the model based on ``pred_``.
     log_likelihood_ : float
         Global log likelihood of the model
@@ -144,25 +144,25 @@ class GWLogisticRegression(BaseClassifier):
         F1 score with micro averaging for pooled predictions from local models
     pooled_f1_weighted_ : float
         F1 score with weighted averaging for pooled predictions from local models
-    local_pooled_score_ : pd.Series
+    local_score_ : pd.Series
         Local accuracy scores for each location based on all samples used in each local
         model
-    local_pooled_precision_ : pd.Series
+    local_precision_ : pd.Series
         Local precision scores for each location based on all samples used in each local
         model
-    local_pooled_recall_ : pd.Series
+    local_recall_ : pd.Series
         Local recall scores for each location based on all samples used in each local
         model
-    local_pooled_balanced_accuracy_ : pd.Series
+    local_balanced_accuracy_ : pd.Series
         Local balanced accuracy scores for each location based on all samples used in
         each local model
-    local_pooled_f1_macro_ : pd.Series
+    local_f1_macro_ : pd.Series
         Local F1 scores with macro averaging for each location based on all samples used
         in each local model
-    local_pooled_f1_micro_ : pd.Series
+    local_f1_micro_ : pd.Series
         Local F1 scores with micro averaging for each location based on all samples used
         in each local model
-    local_pooled_f1_weighted_ : pd.Series
+    local_f1_weighted_ : pd.Series
         Local F1 scores with weighted averaging for each location based on all samples
         used in each local model
     prediction_rate_ : float
@@ -175,6 +175,7 @@ class GWLogisticRegression(BaseClassifier):
         None.
     """
 
+    # TODO: score_ should be an alias of pooled_score_ - this is different from MGWR
     def __init__(
         self,
         bandwidth: float | None = None,
@@ -352,35 +353,35 @@ class GWLogisticRegression(BaseClassifier):
                     columns=local_cols,
                 )
                 if self.measure_performance is True or (
-                    "local_pooled_score" in metrics_to_measure
+                    "local_score" in metrics_to_measure
                 ):
-                    self.local_pooled_score_ = local_score["pooled_accuracy"]
+                    self.local_score_ = local_score["pooled_accuracy"]
                 if self.measure_performance is True or (
-                    "local_pooled_precision" in metrics_to_measure
+                    "local_precision" in metrics_to_measure
                 ):
-                    self.local_pooled_precision_ = local_score["pooled_precision"]
+                    self.local_precision_ = local_score["pooled_precision"]
                 if self.measure_performance is True or (
-                    "local_pooled_recall" in metrics_to_measure
+                    "local_recall" in metrics_to_measure
                 ):
-                    self.local_pooled_recall_ = local_score["pooled_recall"]
+                    self.local_recall_ = local_score["pooled_recall"]
                 if self.measure_performance is True or (
-                    "local_pooled_balanced_accuracy" in metrics_to_measure
+                    "local_balanced_accuracy" in metrics_to_measure
                 ):
-                    self.local_pooled_balanced_accuracy_ = local_score[
+                    self.local_balanced_accuracy_ = local_score[
                         "pooled_balanced_accuracy"
                     ]
                 if self.measure_performance is True or (
-                    "local_pooled_f1_macro" in metrics_to_measure
+                    "local_f1_macro" in metrics_to_measure
                 ):
-                    self.local_pooled_f1_macro_ = local_score["pooled_f1_macro"]
+                    self.local_f1_macro_ = local_score["pooled_f1_macro"]
                 if self.measure_performance is True or (
-                    "local_pooled_f1_micro" in metrics_to_measure
+                    "local_f1_micro" in metrics_to_measure
                 ):
-                    self.local_pooled_f1_micro_ = local_score["pooled_f1_micro"]
+                    self.local_f1_micro_ = local_score["pooled_f1_micro"]
                 if self.measure_performance is True or (
-                    "local_pooled_f1_weighted" in metrics_to_measure
+                    "local_f1_weighted" in metrics_to_measure
                 ):
-                    self.local_pooled_f1_weighted_ = local_score["pooled_f1_weighted"]
+                    self.local_f1_weighted_ = local_score["pooled_f1_weighted"]
 
             if self.verbose:
                 print(f"{(time() - self._start):.2f}s: Finished")
