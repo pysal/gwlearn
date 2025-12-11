@@ -1,0 +1,21 @@
+---
+name: py314-latest
+channels:
+  - conda-forge
+dependencies:
+  - python=3.14
+  - geopandas
+  - libpysal
+  - numpy
+  - scipy
+  - scikit-learn
+  - joblib
+  # optional
+  - imbalanced-learn
+  # testing
+  - geodatasets
+  - mgwr
+  - pre-commit
+  - pytest
+  - pytest-cov
+  - pytest-xdist
