@@ -24,19 +24,21 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        environment-file: [
-          py311_oldest,
-          py311_latest,
-          py312_latest,
-          py313_min,
-          py313_latest,
-          py313_dev,
-        ]
+        environment-file:
+          [
+            py311_oldest,
+            py311_latest,
+            py312_latest,
+            py313_min,
+            py313_latest,
+            py313_dev,
+            py314_latest,
+          ]
         include:
           - environment-file: py313_latest
             os: macos-15-intel
           - environment-file: py313_latest
-            os: macos-latest  # Apple Silicon
+            os: macos-latest # Apple Silicon
           - environment-file: py313_latest
             os: windows-latest
       fail-fast: false
@@ -49,7 +51,7 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch all history for all branches and tags.
+          fetch-depth: 0 # Fetch all history for all branches and tags.
 
       - name: setup micromamba
         uses: mamba-org/setup-micromamba@v2
