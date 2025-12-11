@@ -327,7 +327,7 @@ def test_fit_without_performance_metrics(sample_data):
 
     # Check that performance metrics were not computed
     assert not hasattr(clf, "focal_score_")
-    assert not hasattr(clf, "f1_macro_")
+    assert not hasattr(clf, "focal_f1_macro_")
 
     # But focal probabilities should still be available
     assert hasattr(clf, "proba_")

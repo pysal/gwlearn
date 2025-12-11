@@ -319,8 +319,8 @@ class GWRandomForestClassifier(BaseClassifier):
             if self.measure_performance is True or (
                 "pooled_oob_log_loss" in metrics_to_measure
             ):
-                self.pooled_oob_f1_weighted_ = metrics.f1_score(
-                    all_true, all_pred, average="weighted", zero_division=0
+                self.pooled_oob_log_loss_ = metrics.log_loss(
+                    all_true, all_pred_proba
                 )
 
             if self.verbose:
