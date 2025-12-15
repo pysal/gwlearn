@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Using custom, network-based graph &#8212; gwlearn 0.1.dev78+gc5a3203da documentation</title>
+    <title>Using custom, network-based graph &#8212; gwlearn 0.1.dev79+gae39facc2 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=5cc36f40"></script>
+    <script src="_static/documentation_options.js?v=b6915c20"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev78+gc5a3203da documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev79+gae39facc2 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -368,9 +368,9 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating contraction hierarchies with 8 threads.
-Setting CH node vector of size 6002
-Setting CH edge vector of size 17056
-Range graph removed 17488 edges of 34112
+Setting CH node vector of size 6004
+Setting CH edge vector of size 17060
+Range graph removed 17492 edges of 34120
 . 10% . 20% . 30% . 40% . 50% . 60% . 70% . 80% . 90% . 100%
 </pre></div>
 </div>
@@ -403,7 +403,7 @@ Range graph removed 17488 edges of 34112
                 </tr>
                 <tr>
                     <td>Number of edges:</td>
-                    <td>       59745</td>
+                    <td>       59741</td>
                 </tr>
                 <tr>
                     <td>Number of connected components:</td>
@@ -415,11 +415,11 @@ Range graph removed 17488 edges of 34112
                 </tr>
                 <tr>
                     <td>Number of non-zero edges:</td>
-                    <td>       59745</td>
+                    <td>       59741</td>
                 </tr>
                 <tr>
                     <td>Percentage of non-zero edges:</td>
-                    <td>      28.61%</td>
+                    <td>      28.60%</td>
                 </tr>
                 <tr>
                     <td>Number of asymmetries:</td>
@@ -480,21 +480,21 @@ Range graph removed 17488 edges of 34112
                 <caption>Sum of weights and Traces</caption>
                 <tr>
                     <td>S0:</td>
-                    <td>       20114</td>
+                    <td>       20111</td>
                     <td>GG:</td>
-                    <td>       11776</td>
+                    <td>       11775</td>
                 </tr>
                 <tr>
                     <td>S1:</td>
-                    <td>       23553</td>
+                    <td>       23549</td>
                     <td>G'G:</td>
-                    <td>       11776</td>
+                    <td>       11775</td>
                 </tr>
                 <tr>
                     <td>S3:</td>
-                    <td>     4500640</td>
+                    <td>     4500114</td>
                     <td>G'G + GG:</td>
-                    <td>       23553</td>
+                    <td>       23549</td>
                 </tr>
             </table>
             <div>
@@ -506,7 +506,7 @@ Range graph removed 17488 edges of 34112
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span> <span class="o">=</span> <span class="n">GWLinearRegression</span><span class="p">(</span>
-    <span class="n">graph</span><span class="o">=</span><span class="n">G</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="mi">0</span>   <span class="c1"># need to pass graph. bandwidth is ignored but has to be specified now (will fix)</span>
+    <span class="n">graph</span><span class="o">=</span><span class="n">G</span>
 <span class="p">)</span>
 <span class="n">gwlr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">X</span><span class="o">=</span><span class="n">df</span><span class="p">[</span>
@@ -726,8 +726,7 @@ Range graph removed 17488 edges of 34112
 <span class="ne">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;_adjacency&#39;
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GWLinearRegression(bandwidth=0,
-                   graph=&lt;Graph of 457 nodes and 59745 nonzero edges indexed by
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GWLinearRegression(graph=&lt;Graph of 457 nodes and 59741 nonzero edges indexed by
  [0, 1, 2, 3, 4, ...]&gt;)
 </pre></div>
 </div>
@@ -741,7 +740,7 @@ Range graph removed 17488 edges of 34112
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.9381192542606543)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.9381298385291307)
 </pre></div>
 </div>
 </div>
@@ -760,11 +759,11 @@ Range graph removed 17488 edges of 34112
 3      0.974424
 4      0.983153
          ...   
-452    0.795967
-453    0.685935
-454    0.708313
-455    0.796146
-456    0.853570
+452    0.797097
+453    0.671675
+454    0.709559
+455    0.796124
+456    0.859937
 Length: 457, dtype: float64
 </pre></div>
 </div>
@@ -781,50 +780,50 @@ Length: 457, dtype: float64
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/ddb39cf393fdd49242cf6e8a4dcb51939bd09b501050cfa2b50ba6d7fd611170.png" src="_images/ddb39cf393fdd49242cf6e8a4dcb51939bd09b501050cfa2b50ba6d7fd611170.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception ignored in: &lt;function ResourceTracker.__del__ at 0x105c393a0&gt;
+<img alt="_images/68d29547bf1022f17108e24be24dc7b2c2c746aabf79eeb2ae59a7999397da32.png" src="_images/68d29547bf1022f17108e24be24dc7b2c2c746aabf79eeb2ae59a7999397da32.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1072f53a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
 ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1070893a0&gt;
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1035e13a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
 ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x110df93a0&gt;
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1066e13a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
 ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x106b993a0&gt;
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1077193a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
 ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1078793a0&gt;
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1030193a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
 ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x105df93a0&gt;
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x104fa53a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
 ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1060893a0&gt;
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1059d13a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
 ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1070913a0&gt;
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1069e93a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop

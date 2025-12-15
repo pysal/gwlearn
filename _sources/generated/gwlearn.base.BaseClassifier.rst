@@ -17,6 +17,7 @@
       ~BaseClassifier.fit
       ~BaseClassifier.get_metadata_routing
       ~BaseClassifier.get_params
+      ~BaseClassifier.local_metric
       ~BaseClassifier.predict
       ~BaseClassifier.predict_proba
       ~BaseClassifier.score

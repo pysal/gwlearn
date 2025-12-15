@@ -17,6 +17,7 @@
       ~GWGradientBoostingClassifier.fit
       ~GWGradientBoostingClassifier.get_metadata_routing
       ~GWGradientBoostingClassifier.get_params
+      ~GWGradientBoostingClassifier.local_metric
       ~GWGradientBoostingClassifier.predict
       ~GWGradientBoostingClassifier.predict_proba
       ~GWGradientBoostingClassifier.score

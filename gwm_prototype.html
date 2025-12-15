@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Exploration of geographically weighted random forest classification modelling &#8212; gwlearn 0.1.dev78+gc5a3203da documentation</title>
+    <title>Exploration of geographically weighted random forest classification modelling &#8212; gwlearn 0.1.dev79+gae39facc2 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=5cc36f40"></script>
+    <script src="_static/documentation_options.js?v=b6915c20"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev78+gc5a3203da documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev79+gae39facc2 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -1074,16 +1074,6 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
 
         <tr class="default">
             <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('measure_performance',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">measure_performance</td>
-            <td class="value">True</td>
-        </tr>
-    
-
-        <tr class="default">
-            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('strict',
                           this.parentElement.nextElementSibling)"
             ></i></td>
@@ -1292,59 +1282,46 @@ function forceTheme(elementId) {
 
 forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
-<p>Global OOB accuracy for the GW model measured based on OOB predictions from individual local trees.</p>
+<p>Focal metrics</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">pooled_oob_score_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># if your prediction rate is not 1.0, you need to mask out NAs</span>
+<span class="n">nan_mask</span> <span class="o">=</span> <span class="n">gwrf</span><span class="o">.</span><span class="n">pred_</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
+
+<span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">nan_mask</span><span class="p">],</span> <span class="n">gwrf</span><span class="o">.</span><span class="n">pred_</span><span class="p">[</span><span class="n">nan_mask</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7642770562770563
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7675324675324675
 </pre></div>
 </div>
 </div>
 </div>
+<p>Pooled metrics</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">pooled_oob_precision_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">gwrf</span><span class="o">.</span><span class="n">oob_y_pooled_</span><span class="p">,</span> <span class="n">gwrf</span><span class="o">.</span><span class="n">oob_pred_pooled_</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7679759330768221
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7643688311688311
+</pre></div>
+</div>
+</div>
+</div>
+<p>Local metrics</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">local_accuracy</span> <span class="o">=</span> <span class="n">gwrf</span><span class="o">.</span><span class="n">local_metric</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">pooled_oob_recall_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7632937638601863
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">pooled_oob_balanced_accuracy_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7642858242008288
-</pre></div>
-</div>
-</div>
-</div>
-<p>Local OOB accuracy.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwrf</span><span class="o">.</span><span class="n">local_oob_score_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">local_accuracy</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1352,85 +1329,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/dca80dbbe5dabe8684910829a7c391602bd8594c9a7ffd8312f2f89487428a32.png" src="_images/dca80dbbe5dabe8684910829a7c391602bd8594c9a7ffd8312f2f89487428a32.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwrf</span><span class="o">.</span><span class="n">local_oob_precision_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
-</pre></div>
-</div>
-<img alt="_images/bcbda2e76d82b1d6f0a4a684c570128dccb924f1c7c368380c63ef5a8320ae6a.png" src="_images/bcbda2e76d82b1d6f0a4a684c570128dccb924f1c7c368380c63ef5a8320ae6a.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwrf</span><span class="o">.</span><span class="n">local_oob_recall_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
-</pre></div>
-</div>
-<img alt="_images/2e83aa03879bb0b1f67fed222f5d2ca6476ef856b81e315c4c77238d2926425a.png" src="_images/2e83aa03879bb0b1f67fed222f5d2ca6476ef856b81e315c4c77238d2926425a.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwrf</span><span class="o">.</span><span class="n">local_oob_balanced_accuracy_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
-</pre></div>
-</div>
-<img alt="_images/951871550e19cb4e1c9e0656d547313f84262d75d1e62160bb05230d78ede8ea.png" src="_images/951871550e19cb4e1c9e0656d547313f84262d75d1e62160bb05230d78ede8ea.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwrf</span><span class="o">.</span><span class="n">local_oob_f1_macro_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
-</pre></div>
-</div>
-<img alt="_images/2fb4f725eeaf6866ce79ffd74ad6dff719dfc7057bd1d1b8751031734e78ded4.png" src="_images/2fb4f725eeaf6866ce79ffd74ad6dff719dfc7057bd1d1b8751031734e78ded4.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwrf</span><span class="o">.</span><span class="n">local_oob_f1_micro_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
-</pre></div>
-</div>
-<img alt="_images/dca80dbbe5dabe8684910829a7c391602bd8594c9a7ffd8312f2f89487428a32.png" src="_images/dca80dbbe5dabe8684910829a7c391602bd8594c9a7ffd8312f2f89487428a32.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwrf</span><span class="o">.</span><span class="n">local_oob_f1_weighted_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
-</pre></div>
-</div>
-<img alt="_images/cda579b90d9d73763d326d9b122d5e3157db1296aa6fe6931a95f98a49c0edb6.png" src="_images/cda579b90d9d73763d326d9b122d5e3157db1296aa6fe6931a95f98a49c0edb6.png" />
+<img alt="_images/fb2d6257730b379bef2d174950f3a01a466531aeedc8be3120014a5624f35dde.png" src="_images/fb2d6257730b379bef2d174950f3a01a466531aeedc8be3120014a5624f35dde.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1443,7 +1342,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/63cc02a09fd43c1b022accb352921737281d2532e1a81e232c8d55d47200e69e.png" src="_images/63cc02a09fd43c1b022accb352921737281d2532e1a81e232c8d55d47200e69e.png" />
+<img alt="_images/cc95d30038c0e2b9b24319199260a7792e68f12bbb9cbe326daeace686139cda.png" src="_images/cc95d30038c0e2b9b24319199260a7792e68f12bbb9cbe326daeace686139cda.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1459,32 +1358,6 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 <img alt="_images/d757d7e9aff270b2718721648d48d3493d0615fb68c076cc087c7308b746152a.png" src="_images/d757d7e9aff270b2718721648d48d3493d0615fb68c076cc087c7308b746152a.png" />
 </div>
 </div>
-<p>Global accuracy for the GW model measured based on prediction of focals.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">focal_score_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7688311688311689
-</pre></div>
-</div>
-</div>
-</div>
-<p>F1 scores for the GW model measured based on prediction of focals.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span><span class="o">.</span><span class="n">focal_f1_macro_</span><span class="p">,</span> <span class="n">gwrf</span><span class="o">.</span><span class="n">focal_f1_micro_</span><span class="p">,</span> <span class="n">gwrf</span><span class="o">.</span><span class="n">focal_f1_weighted_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.7686423054070113, 0.7688311688311689, 0.768894123305888)
-</pre></div>
-</div>
-</div>
-</div>
 <p>OOB score (accuracy) of the global model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1493,7 +1366,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7857374392220421
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7854132901134522
 </pre></div>
 </div>
 </div>
@@ -1544,39 +1417,39 @@ forceTheme('sk-container-id-1');</script></body></div></div>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.144477</td>
-      <td>0.132334</td>
-      <td>0.128224</td>
-      <td>0.159942</td>
-      <td>0.224753</td>
-      <td>0.210269</td>
+      <td>0.141143</td>
+      <td>0.147787</td>
+      <td>0.126227</td>
+      <td>0.160575</td>
+      <td>0.177147</td>
+      <td>0.247120</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.157417</td>
-      <td>0.131966</td>
-      <td>0.129957</td>
-      <td>0.163009</td>
-      <td>0.201650</td>
-      <td>0.216002</td>
+      <td>0.167619</td>
+      <td>0.127491</td>
+      <td>0.128013</td>
+      <td>0.169987</td>
+      <td>0.192951</td>
+      <td>0.213938</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.149385</td>
-      <td>0.150804</td>
-      <td>0.121830</td>
-      <td>0.158391</td>
-      <td>0.159365</td>
-      <td>0.260225</td>
+      <td>0.143582</td>
+      <td>0.158638</td>
+      <td>0.125196</td>
+      <td>0.159700</td>
+      <td>0.175542</td>
+      <td>0.237341</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.150746</td>
-      <td>0.126414</td>
-      <td>0.133151</td>
-      <td>0.168743</td>
-      <td>0.188069</td>
-      <td>0.232876</td>
+      <td>0.139079</td>
+      <td>0.133460</td>
+      <td>0.126718</td>
+      <td>0.169334</td>
+      <td>0.196859</td>
+      <td>0.234550</td>
     </tr>
     <tr>
       <th>...</th>
@@ -1589,48 +1462,48 @@ forceTheme('sk-container-id-1');</script></body></div></div>
     </tr>
     <tr>
       <th>3080</th>
-      <td>0.159566</td>
-      <td>0.092755</td>
-      <td>0.200158</td>
-      <td>0.100452</td>
-      <td>0.266964</td>
-      <td>0.180106</td>
+      <td>0.139262</td>
+      <td>0.107865</td>
+      <td>0.220152</td>
+      <td>0.083062</td>
+      <td>0.292185</td>
+      <td>0.157474</td>
     </tr>
     <tr>
       <th>3081</th>
-      <td>0.145268</td>
-      <td>0.106852</td>
-      <td>0.149962</td>
-      <td>0.205229</td>
-      <td>0.226562</td>
-      <td>0.166127</td>
+      <td>0.141361</td>
+      <td>0.106563</td>
+      <td>0.163277</td>
+      <td>0.203246</td>
+      <td>0.218746</td>
+      <td>0.166808</td>
     </tr>
     <tr>
       <th>3082</th>
-      <td>0.135004</td>
-      <td>0.191319</td>
-      <td>0.196336</td>
-      <td>0.229536</td>
-      <td>0.101454</td>
-      <td>0.146351</td>
+      <td>0.134782</td>
+      <td>0.195495</td>
+      <td>0.191886</td>
+      <td>0.249266</td>
+      <td>0.093782</td>
+      <td>0.134790</td>
     </tr>
     <tr>
       <th>3083</th>
-      <td>0.157471</td>
-      <td>0.179052</td>
-      <td>0.172274</td>
-      <td>0.258900</td>
-      <td>0.101638</td>
-      <td>0.130664</td>
+      <td>0.171965</td>
+      <td>0.160794</td>
+      <td>0.186460</td>
+      <td>0.246723</td>
+      <td>0.100752</td>
+      <td>0.133306</td>
     </tr>
     <tr>
       <th>3084</th>
-      <td>0.082932</td>
-      <td>0.124870</td>
-      <td>0.153951</td>
-      <td>0.196156</td>
-      <td>0.249131</td>
-      <td>0.192961</td>
+      <td>0.093082</td>
+      <td>0.129588</td>
+      <td>0.145062</td>
+      <td>0.185666</td>
+      <td>0.225102</td>
+      <td>0.221500</td>
     </tr>
   </tbody>
 </table>
@@ -1647,7 +1520,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/45c93237bcf9d66ec3a853cc02724e70975d56e1c679cefb263e339ac3d7c10c.png" src="_images/45c93237bcf9d66ec3a853cc02724e70975d56e1c679cefb263e339ac3d7c10c.png" />
+<img alt="_images/f8d81a35db6dd6ec6134bd7277d8a528fff9890e0ce7588a5b561215dd5cd1b1.png" src="_images/f8d81a35db6dd6ec6134bd7277d8a528fff9890e0ce7588a5b561215dd5cd1b1.png" />
 </div>
 </div>
 <p>Compare to global feature importance.</p>
@@ -1658,8 +1531,8 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.1376211 , 0.14922522, 0.18811756, 0.18455711, 0.15414063,
-       0.18633837])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.13946965, 0.14225581, 0.16861364, 0.19817424, 0.15992872,
+       0.19155794])
 </pre></div>
 </div>
 </div>
@@ -2335,16 +2208,6 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
 
         <tr class="default">
             <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('measure_performance',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">measure_performance</td>
-            <td class="value">True</td>
-        </tr>
-    
-
-        <tr class="default">
-            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('strict',
                           this.parentElement.nextElementSibling)"
             ></i></td>
@@ -2506,25 +2369,15 @@ forceTheme('sk-container-id-2');</script></body></div></div>
 <p>Global score (accuracy) for the GW model measured based on prediction of focals using focal model only.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwgb</span><span class="o">.</span><span class="n">focal_score_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># if your prediction rate is not 1.0, you need to mask out NAs</span>
+<span class="n">nan_mask</span> <span class="o">=</span> <span class="n">gwgb</span><span class="o">.</span><span class="n">pred_</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
+
+<span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">nan_mask</span><span class="p">],</span> <span class="n">gwgb</span><span class="o">.</span><span class="n">pred_</span><span class="p">[</span><span class="n">nan_mask</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7532467532467533
-</pre></div>
-</div>
-</div>
-</div>
-<p>F1 scores for the GW model measured based on prediction of focals.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwgb</span><span class="o">.</span><span class="n">focal_f1_macro_</span><span class="p">,</span> <span class="n">gwgb</span><span class="o">.</span><span class="n">focal_f1_micro_</span><span class="p">,</span> <span class="n">gwgb</span><span class="o">.</span><span class="n">focal_f1_weighted_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.7530688699117222, 0.7532467532467533, 0.7533213494840244)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7528138528138528
 </pre></div>
 </div>
 </div>
@@ -2575,39 +2428,39 @@ forceTheme('sk-container-id-2');</script></body></div></div>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.177324</td>
-      <td>0.128130</td>
-      <td>0.061830</td>
-      <td>0.156487</td>
-      <td>0.153590</td>
-      <td>0.322639</td>
+      <td>0.178138</td>
+      <td>0.128188</td>
+      <td>0.061755</td>
+      <td>0.156530</td>
+      <td>0.153272</td>
+      <td>0.322117</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.191413</td>
-      <td>0.128259</td>
-      <td>0.065317</td>
-      <td>0.159779</td>
-      <td>0.122753</td>
-      <td>0.332479</td>
+      <td>0.189922</td>
+      <td>0.126111</td>
+      <td>0.063131</td>
+      <td>0.158854</td>
+      <td>0.124213</td>
+      <td>0.337768</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.150581</td>
-      <td>0.136845</td>
-      <td>0.076695</td>
-      <td>0.168919</td>
-      <td>0.069886</td>
-      <td>0.397074</td>
+      <td>0.154293</td>
+      <td>0.133378</td>
+      <td>0.073180</td>
+      <td>0.177225</td>
+      <td>0.069446</td>
+      <td>0.392477</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.176430</td>
-      <td>0.126904</td>
-      <td>0.076155</td>
-      <td>0.152064</td>
-      <td>0.113692</td>
-      <td>0.354755</td>
+      <td>0.177972</td>
+      <td>0.127630</td>
+      <td>0.076130</td>
+      <td>0.151980</td>
+      <td>0.112866</td>
+      <td>0.353422</td>
     </tr>
     <tr>
       <th>...</th>
@@ -2620,48 +2473,48 @@ forceTheme('sk-container-id-2');</script></body></div></div>
     </tr>
     <tr>
       <th>3080</th>
-      <td>0.108860</td>
-      <td>0.050411</td>
-      <td>0.147236</td>
-      <td>0.050985</td>
-      <td>0.578005</td>
-      <td>0.064505</td>
+      <td>0.106021</td>
+      <td>0.049750</td>
+      <td>0.146465</td>
+      <td>0.051568</td>
+      <td>0.581501</td>
+      <td>0.064695</td>
     </tr>
     <tr>
       <th>3081</th>
-      <td>0.085776</td>
-      <td>0.070274</td>
-      <td>0.137502</td>
-      <td>0.213598</td>
-      <td>0.457443</td>
-      <td>0.035408</td>
+      <td>0.090319</td>
+      <td>0.065899</td>
+      <td>0.141990</td>
+      <td>0.212114</td>
+      <td>0.453734</td>
+      <td>0.035943</td>
     </tr>
     <tr>
       <th>3082</th>
-      <td>0.107440</td>
-      <td>0.195233</td>
-      <td>0.192253</td>
-      <td>0.313614</td>
-      <td>0.066126</td>
-      <td>0.125333</td>
+      <td>0.108462</td>
+      <td>0.194254</td>
+      <td>0.192112</td>
+      <td>0.308932</td>
+      <td>0.068496</td>
+      <td>0.127744</td>
     </tr>
     <tr>
       <th>3083</th>
-      <td>0.147868</td>
-      <td>0.145626</td>
-      <td>0.156851</td>
-      <td>0.384657</td>
-      <td>0.044400</td>
-      <td>0.120598</td>
+      <td>0.143431</td>
+      <td>0.145732</td>
+      <td>0.155867</td>
+      <td>0.384614</td>
+      <td>0.053131</td>
+      <td>0.117224</td>
     </tr>
     <tr>
       <th>3084</th>
-      <td>0.025484</td>
-      <td>0.089282</td>
-      <td>0.099999</td>
-      <td>0.239973</td>
-      <td>0.431387</td>
-      <td>0.113875</td>
+      <td>0.033785</td>
+      <td>0.089787</td>
+      <td>0.099406</td>
+      <td>0.238838</td>
+      <td>0.431022</td>
+      <td>0.107162</td>
     </tr>
   </tbody>
 </table>
@@ -2678,7 +2531,7 @@ forceTheme('sk-container-id-2');</script></body></div></div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/a2287129ed8361c3df9af5aeb0e5f22f48555dd584aed23fb889d8f6f15daa19.png" src="_images/a2287129ed8361c3df9af5aeb0e5f22f48555dd584aed23fb889d8f6f15daa19.png" />
+<img alt="_images/e4e387c06b420cc9f071909ada3d089a9a50ecd99d7d344e3f35d7417d97f9d3.png" src="_images/e4e387c06b420cc9f071909ada3d089a9a50ecd99d7d344e3f35d7417d97f9d3.png" />
 </div>
 </div>
 <p>Compare to global feature importance.</p>
@@ -2689,8 +2542,8 @@ forceTheme('sk-container-id-2');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.05122282, 0.05589   , 0.12284528, 0.15103731, 0.22564836,
-       0.39335622])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.05254643, 0.06184926, 0.12294406, 0.15103383, 0.22404795,
+       0.38757847])
 </pre></div>
 </div>
 </div>
@@ -3374,16 +3227,6 @@ Name: geometry, Length: 3085, dtype: geometry,
 
         <tr class="default">
             <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('measure_performance',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">measure_performance</td>
-            <td class="value">True</td>
-        </tr>
-    
-
-        <tr class="default">
-            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('strict',
                           this.parentElement.nextElementSibling)"
             ></i></td>
@@ -3562,9 +3405,13 @@ function forceTheme(elementId) {
 
 forceTheme('sk-container-id-3');</script></body></div></div>
 </div>
+<p>Focal metrics</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">focal_score_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># if your prediction rate is not 1.0, you need to mask out NAs</span>
+<span class="n">nan_mask</span> <span class="o">=</span> <span class="n">gwlr</span><span class="o">.</span><span class="n">pred_</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
+
+<span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">nan_mask</span><span class="p">],</span> <span class="n">gwlr</span><span class="o">.</span><span class="n">pred_</span><span class="p">[</span><span class="n">nan_mask</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -3574,21 +3421,30 @@ forceTheme('sk-container-id-3');</script></body></div></div>
 </div>
 </div>
 </div>
+<p>Pooled metrics</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">focal_f1_micro_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">gwlr</span><span class="o">.</span><span class="n">y_pooled_</span><span class="p">,</span> <span class="n">gwlr</span><span class="o">.</span><span class="n">pred_pooled_</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7991746905089409
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7869420636659645
+</pre></div>
+</div>
+</div>
+</div>
+<p>Local metrics</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">local_accuracy</span> <span class="o">=</span> <span class="n">gwlr</span><span class="o">.</span><span class="n">local_metric</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwlr</span><span class="o">.</span><span class="n">local_score_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">local_accuracy</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3597,18 +3453,6 @@ forceTheme('sk-container-id-3');</script></body></div></div>
 </pre></div>
 </div>
 <img alt="_images/6a69aadd46e6bfa5d5a4400ec9c2bd72cad0a468b78293e326be15e2a38d87c3.png" src="_images/6a69aadd46e6bfa5d5a4400ec9c2bd72cad0a468b78293e326be15e2a38d87c3.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">pooled_f1_macro_</span><span class="p">,</span> <span class="n">gwlr</span><span class="o">.</span><span class="n">pooled_f1_micro_</span><span class="p">,</span> <span class="n">gwlr</span><span class="o">.</span><span class="n">pooled_f1_weighted_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.7867537109649924, 0.7869420636659645, 0.7870271397918338)
-</pre></div>
-</div>
 </div>
 </div>
 <p>Local coefficients</p>
@@ -3774,7 +3618,7 @@ forceTheme('sk-container-id-3');</script></body></div></div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/e48cfc98b9ebad348b0db6c52435b2ac1666cca747d4732575a876fc74711020.png" src="_images/e48cfc98b9ebad348b0db6c52435b2ac1666cca747d4732575a876fc74711020.png" />
+<img alt="_images/fc61e3e1388dfd16286fe3887c5f86cb63d458a9727f6d8cc53a5f59286e4490.png" src="_images/fc61e3e1388dfd16286fe3887c5f86cb63d458a9727f6d8cc53a5f59286e4490.png" />
 </div>
 </div>
 </section>
@@ -3804,15 +3648,33 @@ forceTheme('sk-container-id-3');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting bandwidth: 918447.5
--0.4081785661481215 2918 6
-Bandwidth: 918447.5, Score: 12.816
-Fitting bandwidth: 1331552.5
--0.4112848331214553 3073 6
-Bandwidth: 1331552.5, score: 12.823
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bandwidth: 918447.5, score: 2364.143
+Bandwidth: 1331552.5, score: 2509.350
+Bandwidth: 663120.61, score: 2309.652
+Bandwidth: 505326.89, score: 2254.043
+Bandwidth: 407799.68, score: 2215.765
+Bandwidth: 347527.21, score: 2220.596
+Bandwidth: 445052.15, score: 2229.852
+Bandwidth: 384778.81, score: 2207.962
+Bandwidth: 370549.49, score: 2221.485
+Bandwidth: 393571.22, score: 2212.380
+Bandwidth: 379343.1, score: 2206.565
+Bandwidth: 375984.66, score: 2216.272
+Bandwidth: 381419.71, score: 2217.420
+Bandwidth: 378060.69, score: 2211.450
+Bandwidth: 380136.66, score: 2217.962
+Bandwidth: 378853.65, score: 2207.187
+Bandwidth: 379646.59, score: 2217.124
+Bandwidth: 379156.53, score: 2207.130
+Bandwidth: 379459.4, score: 2213.089
+Bandwidth: 379272.22, score: 2206.607
+Bandwidth: 379387.9, score: 2213.132
+Bandwidth: 379316.41, score: 2206.588
+Bandwidth: 379360.59, score: 2213.144
+Bandwidth: 379333.28, score: 2206.572
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;gwlearn.search.BandwidthSearch at 0x14f9d16d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;gwlearn.search.BandwidthSearch at 0x30e0c89b0&gt;
 </pre></div>
 </div>
 </div>
@@ -3825,9 +3687,31 @@ Bandwidth: 1331552.5, score: 12.823
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>918447.5     12.816357
-1331552.5    12.822570
-Name: oob_score, dtype: float64
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9.184475e+05    2364.142974
+1.331552e+06    2509.349738
+6.631206e+05    2309.651536
+5.053269e+05    2254.042931
+4.077997e+05    2215.764565
+3.475272e+05    2220.595820
+4.450521e+05    2229.851559
+3.847788e+05    2207.961793
+3.705495e+05    2221.485339
+3.935712e+05    2212.379600
+3.793431e+05    2206.564757
+3.759847e+05    2216.272263
+3.814197e+05    2217.419825
+3.780607e+05    2211.450048
+3.801367e+05    2217.961819
+3.788536e+05    2207.186929
+3.796466e+05    2217.124299
+3.791565e+05    2207.129844
+3.794594e+05    2213.088606
+3.792722e+05    2206.606987
+3.793879e+05    2213.132099
+3.793164e+05    2206.588128
+3.793606e+05    2213.144032
+3.793333e+05    2206.572411
+dtype: float64
 </pre></div>
 </div>
 </div>
@@ -3843,6 +3727,7 @@ Name: oob_score, dtype: float64
     <span class="n">search_method</span><span class="o">=</span><span class="s2">&quot;interval&quot;</span><span class="p">,</span>
     <span class="n">min_bandwidth</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
     <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;log_loss&quot;</span><span class="p">],</span>
     <span class="n">interval</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
     <span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;aicc&quot;</span><span class="p">,</span>
     <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -3870,7 +3755,7 @@ Bandwidth: 850.00, aicc: 2655.850
 Bandwidth: 950.00, aicc: 2712.442
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;gwlearn.search.BandwidthSearch at 0x30e43ef00&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;gwlearn.search.BandwidthSearch at 0x30ab0c650&gt;
 </pre></div>
 </div>
 </div>
@@ -3901,6 +3786,19 @@ Bandwidth: 950.00, aicc: 2712.442
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search</span><span class="o">.</span><span class="n">metrics_</span><span class="p">[</span><span class="s1">&#39;log_loss&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
+</pre></div>
+</div>
+<img alt="_images/9a352fce6fe70a57ad497b5602d9486fd7ab5d4f92cd7344daafcc6648376b77.png" src="_images/9a352fce6fe70a57ad497b5602d9486fd7ab5d4f92cd7344daafcc6648376b77.png" />
+</div>
+</div>
 </section>
 <section id="prediction">
 <h2>Prediction<a class="headerlink" href="#prediction" title="Link to this heading">#</a></h2>
@@ -3914,7 +3812,6 @@ Bandwidth: 950.00, aicc: 2712.442
     <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>  <span class="c1"># passed to log regr</span>
-    <span class="n">measure_performance</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">keep_models</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">gwlr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
@@ -3928,12 +3825,12 @@ Bandwidth: 950.00, aicc: 2712.442
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.00s: Building weights
-2.20s: Weights ready
-2.20s: Fitting the models
-8.81s: Models fitted
-8.89s: Fitting global model
-8.89s: Computing global likelihood
-8.89s: Computing information criteria
+2.70s: Weights ready
+2.70s: Fitting the models
+11.55s: Models fitted
+11.68s: Fitting global model
+11.69s: Computing global likelihood
+11.69s: Computing information criteria
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:1184: FutureWarning: &#39;n_jobs&#39; has no effect since 1.8 and will be removed in 1.10. You provided &#39;n_jobs=-1&#39;, please leave it unspecified.
@@ -4503,7 +4400,7 @@ a.param-doc-link::before {
 3083      POINT (1582459.36 1898177.771)
 3084     POINT (-1155816.554 2564833.36)
 Name: geometry, Length: 3085, dtype: geometry,
-                     keep_models=True, measure_performance=False)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox" checked><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLogisticRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+                     keep_models=True)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox" checked><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLogisticRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -4587,16 +4484,6 @@ Name: geometry, Length: 3085, dtype: geometry,
             ></i></td>
             <td class="param">fit_global_model</td>
             <td class="value">True</td>
-        </tr>
-    
-
-        <tr class="user-set">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('measure_performance',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">measure_performance</td>
-            <td class="value">False</td>
         </tr>
     
 
@@ -4891,49 +4778,49 @@ forceTheme('sk-container-id-4');</script></body></div></div>
 dtype: bool
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1073053a0&gt;
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1055793a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
 ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x106c613a0&gt;
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1026813a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
 ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1037793a0&gt;
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1052f53a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
 ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x106a793a0&gt;
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1081653a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
 ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x102ef53a0&gt;
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x106df93a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
 ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1068413a0&gt;
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1058793a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
 ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1056753a0&gt;
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1059313a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
 ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1034b13a0&gt;
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1051793a0&gt;
 Traceback (most recent call last):
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
   File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop

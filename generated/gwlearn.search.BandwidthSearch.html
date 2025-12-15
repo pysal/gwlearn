@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>gwlearn.search.BandwidthSearch &#8212; gwlearn 0.1.dev78+gc5a3203da documentation</title>
+    <title>gwlearn.search.BandwidthSearch &#8212; gwlearn 0.1.dev79+gae39facc2 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../_static/documentation_options.js?v=5cc36f40"></script>
+    <script src="../_static/documentation_options.js?v=b6915c20"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev78+gc5a3203da documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev79+gae39facc2 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -369,8 +369,7 @@ attempt to optimize the selection. By default <code class="docutils literal notr
 <code class="docutils literal notranslate"><span class="pre">{&quot;aicc&quot;,</span> <span class="pre">&quot;aic&quot;,</span> <span class="pre">&quot;bic&quot;}</span></code> or any of <code class="docutils literal notranslate"><span class="pre">metrics</span></code>. By default <code class="docutils literal notranslate"><span class="pre">&quot;aicc&quot;</span></code>.</p>
 </dd>
 <dt><strong>metrics</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>] | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>List of additional metrics beyond <code class="docutils literal notranslate"><span class="pre">criterion</span></code> to be reported. Has to be
-a metric supported by <code class="docutils literal notranslate"><span class="pre">model</span></code>, passable to <code class="docutils literal notranslate"><span class="pre">measure_performance</span></code> argument
-of model’s initialization or ‘prediction_rate’. By default <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+an attribute supported by <code class="docutils literal notranslate"><span class="pre">model</span></code> or ‘prediction_rate’. By default <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd>
 <dt><strong>minimize</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Minimize or maximize the <code class="docutils literal notranslate"><span class="pre">criterion</span></code>. When using information criterions,
 like AICc, the optimal solution is the lowest value. When using other metrics,

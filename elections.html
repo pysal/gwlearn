@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Optimize the bandwidth of RF Classification based on out-of-bag score and an out-of-sample score &#8212; gwlearn 0.1.dev78+gc5a3203da documentation</title>
+    <title>Optimize the bandwidth of RF Classification based on out-of-bag score and an out-of-sample score &#8212; gwlearn 0.1.dev79+gae39facc2 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=5cc36f40"></script>
+    <script src="_static/documentation_options.js?v=b6915c20"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev78+gc5a3203da documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev79+gae39facc2 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -386,11 +386,11 @@ document.write(`
     <span class="n">min_bandwidth</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
     <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
     <span class="n">interval</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-    <span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;focal_log_loss&#39;</span><span class="p">,</span>
+    <span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;log_loss&#39;</span><span class="p">,</span>
     <span class="n">leave_out</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
     <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="c1"># max_iter=1000,</span>
-    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;focal_log_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;pooled_oob_score&#39;</span><span class="p">,</span> <span class="s1">&#39;oos_log_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;focal_score&#39;</span><span class="p">,</span> <span class="s1">&#39;prediction_rate&#39;</span><span class="p">]</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;log_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;oos_log_loss&#39;</span><span class="p">,</span> <span class="s1">&#39;prediction_rate&#39;</span><span class="p">]</span>
 <span class="p">)</span>
 <span class="n">search_rf</span> <span class="o">=</span> <span class="n">search_rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">)</span>
 <span class="n">search_rf</span><span class="o">.</span><span class="n">scores_</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
@@ -398,17 +398,17 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bandwidth: 50.00, focal_log_loss: 0.528
-Bandwidth: 150.00, focal_log_loss: 0.565
-Bandwidth: 250.00, focal_log_loss: 0.516
-Bandwidth: 350.00, focal_log_loss: 0.509
-Bandwidth: 450.00, focal_log_loss: 0.525
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Bandwidth: 50.00, log_loss: 0.524
+Bandwidth: 150.00, log_loss: 0.576
+Bandwidth: 250.00, log_loss: 0.518
+Bandwidth: 350.00, log_loss: 0.514
+Bandwidth: 450.00, log_loss: 0.523
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/a3f91cf9e1d2a0d213c534ef7581aeeca57b0c6823f0c29fc7e4e834fdcbf22f.png" src="_images/a3f91cf9e1d2a0d213c534ef7581aeeca57b0c6823f0c29fc7e4e834fdcbf22f.png" />
+<img alt="_images/b58e3c2eb9ec9a02d418882564948b5963aeceebe7f4e25ad7deddc791e9531e.png" src="_images/b58e3c2eb9ec9a02d418882564948b5963aeceebe7f4e25ad7deddc791e9531e.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -421,20 +421,7 @@ Bandwidth: 450.00, focal_log_loss: 0.525
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
 </pre></div>
 </div>
-<img alt="_images/89f923becf6ba1ca4c9b84d648ca945a04770a4aff1a831652e0b7444b09e1de.png" src="_images/89f923becf6ba1ca4c9b84d648ca945a04770a4aff1a831652e0b7444b09e1de.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_rf</span><span class="o">.</span><span class="n">metrics_</span><span class="o">.</span><span class="n">pooled_oob_score</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
-</pre></div>
-</div>
-<img alt="_images/44bcea4b8966ebd617bbe00825af1ab6703e1bdef32523a1ec1ab15f57b92833.png" src="_images/44bcea4b8966ebd617bbe00825af1ab6703e1bdef32523a1ec1ab15f57b92833.png" />
+<img alt="_images/0c9074aeacbc2444d149a176e1f1e8a36c80904283a7497d83437977b0f0cfaf.png" src="_images/0c9074aeacbc2444d149a176e1f1e8a36c80904283a7497d83437977b0f0cfaf.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -448,6 +435,56 @@ Bandwidth: 450.00, focal_log_loss: 0.525
 </pre></div>
 </div>
 <img alt="_images/3b9af5cdd18ec0c360eb914c4c1162281b515f5cd21b4eff0649d6ba867ae67a.png" src="_images/3b9af5cdd18ec0c360eb914c4c1162281b515f5cd21b4eff0649d6ba867ae67a.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception ignored in: &lt;function ResourceTracker.__del__ at 0x10629d3a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1033e93a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1071313a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1067093a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x107ee13a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1026c53a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1058893a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1058793a0&gt;
+Traceback (most recent call last):
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
+  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
+ChildProcessError: [Errno 10] No child processes
+</pre></div>
+</div>
 </div>
 </div>
 </section>

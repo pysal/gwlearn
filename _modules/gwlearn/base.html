@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.base &#8212; gwlearn 0.1.dev78+gc5a3203da documentation</title>
+    <title>gwlearn.base &#8212; gwlearn 0.1.dev79+gae39facc2 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=5cc36f40"></script>
+    <script src="../../_static/documentation_options.js?v=b6915c20"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev78+gc5a3203da documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev79+gae39facc2 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -284,7 +284,6 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">joblib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span><span class="p">,</span> <span class="n">dump</span><span class="p">,</span> <span class="n">load</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">libpysal</span><span class="w"> </span><span class="kn">import</span> <span class="n">graph</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">KDTree</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">metrics</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">,</span> <span class="n">RegressorMixin</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
 
@@ -372,7 +371,6 @@ document.write(`
         <span class="n">graph</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">fit_global_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">measure_performance</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">keep_models</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">temp_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -390,7 +388,6 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span> <span class="o">=</span> <span class="n">n_jobs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fit_global_model</span> <span class="o">=</span> <span class="n">fit_global_model</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="o">=</span> <span class="n">measure_performance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">strict</span> <span class="o">=</span> <span class="n">strict</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">keep_models</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">keep_models</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">keep_models</span><span class="p">)</span>
@@ -682,11 +679,6 @@ document.write(`
 <span class="sd">    fit_global_model : bool, optional</span>
 <span class="sd">        Determines if the global baseline model shall be fitted alongside the</span>
 <span class="sd">        geographically weighted, by default True</span>
-<span class="sd">    measure_performance : bool | list, optional</span>
-<span class="sd">        Calculate performance metrics for the model. If True, measures accuracy score,</span>
-<span class="sd">        precision, recall, balanced accuracy, F1 scores and log loss based on focal</span>
-<span class="sd">        prediction. A subset of these can be specified by passing a list of strings.</span>
-<span class="sd">        By default True</span>
 <span class="sd">    strict : bool | None, optional</span>
 <span class="sd">        Do not fit any models if at least one neighborhood has invariant ``y``, by</span>
 <span class="sd">        default False. None is treated as False but provides a warning if there are</span>
@@ -732,22 +724,6 @@ document.write(`
 <span class="sd">        Hat values for each location (diagonal elements of hat matrix)</span>
 <span class="sd">    effective_df_ : float</span>
 <span class="sd">        Effective degrees of freedom (sum of hat values)</span>
-<span class="sd">    focal_score_ : float</span>
-<span class="sd">        Accuracy score of the model based on ``pred_``.</span>
-<span class="sd">    focal_precision_ : float</span>
-<span class="sd">        Precision score of the model based on ``pred_``.</span>
-<span class="sd">    focal_recall_ : float</span>
-<span class="sd">        Recall score of the model based on ``pred_``.</span>
-<span class="sd">    focal_balanced_accuracy_ : float</span>
-<span class="sd">        Balanced accuracy score of the model based on ``pred_``.</span>
-<span class="sd">    focal_f1_macro_ : float</span>
-<span class="sd">        F1 score with macro averaging based on ``pred_``.</span>
-<span class="sd">    focal_f1_micro_ : float</span>
-<span class="sd">        F1 score with micro averaging based on ``pred_``.</span>
-<span class="sd">    focal_f1_weighted_ : float</span>
-<span class="sd">        F1 score with weighted averaging based on ``pred_``.</span>
-<span class="sd">    focal_log_loss_ : float</span>
-<span class="sd">        Log loss of the model based on ``pred_``.</span>
 <span class="sd">    log_likelihood_ : float</span>
 <span class="sd">        Global log likelihood of the model</span>
 <span class="sd">    aic_ : float</span>
@@ -760,11 +736,14 @@ document.write(`
 <span class="sd">    prediction_rate_ : float</span>
 <span class="sd">        Proportion of models that are fitted, where the rest are skipped due to not</span>
 <span class="sd">        fulfilling ``min_proportion``.</span>
-<span class="sd">    oos_log_loss_ : float</span>
-<span class="sd">        Out-of-sample log loss of the model. It is based on pooled data of randomly left</span>
-<span class="sd">        out observations from training of local models. Log loss is measured as weighted</span>
-<span class="sd">        using the set bandwidth and a kernel. Available only when ``leave_out`` is not</span>
-<span class="sd">        None.</span>
+<span class="sd">    left_out_y_ : np.ndarray</span>
+<span class="sd">        Array of ``y`` values left out when ``leave_out`` is set.</span>
+<span class="sd">    left_out_proba_ : np.ndarray</span>
+<span class="sd">        Array of probabilites on left out observations in local models when</span>
+<span class="sd">        ``leave_out`` is set.</span>
+<span class="sd">    left_out_w_ : np.ndarray</span>
+<span class="sd">        Array of weights on left out observations in local models when</span>
+<span class="sd">        ``leave_out`` is set.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BaseClassifier.__init__">
@@ -791,7 +770,6 @@ document.write(`
         <span class="n">graph</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">fit_global_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">measure_performance</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">keep_models</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">temp_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -813,7 +791,6 @@ document.write(`
             <span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span>
             <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
             <span class="n">fit_global_model</span><span class="o">=</span><span class="n">fit_global_model</span><span class="p">,</span>
-            <span class="n">measure_performance</span><span class="o">=</span><span class="n">measure_performance</span><span class="p">,</span>
             <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">,</span>
             <span class="n">keep_models</span><span class="o">=</span><span class="n">keep_models</span><span class="p">,</span>
             <span class="n">temp_folder</span><span class="o">=</span><span class="n">temp_folder</span><span class="p">,</span>
@@ -924,112 +901,22 @@ document.write(`
         <span class="n">col</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="kc">True</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="o">.</span><span class="n">columns</span> <span class="k">else</span> <span class="mi">1</span>
         <span class="c1"># global GW accuracy</span>
         <span class="n">nan_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="o">~</span><span class="n">nan_mask</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">NA</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;boolean&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">nan_mask</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="o">~</span><span class="n">nan_mask</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_n_fitted_models</span> <span class="o">=</span> <span class="p">(</span><span class="o">~</span><span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prediction_rate_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_fitted_models</span> <span class="o">/</span> <span class="n">nan_mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">leave_out</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prediction_rate_</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">left_out_proba</span><span class="p">])</span>
-                <span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">left_out_proba</span><span class="p">])</span>
-                <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">arr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">left_out_proba</span><span class="p">])</span>
-
-                <span class="c1"># TODO: this could potentially follow the logic of measure_performance</span>
-                <span class="c1"># and measure more than log loss</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">oos_log_loss_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">log_loss</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">oos_log_loss_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">leave_out</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">prediction_rate_</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left_out_y_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">left_out_proba</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left_out_proba_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">left_out_proba</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left_out_w_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">arr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">left_out_proba</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_global_model</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s: Fitting global model&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_fit_global_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">metrics_to_measure</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="s2">&quot;focal_score&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;focal_precision&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;focal_recall&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;focal_balanced_accuracy&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;focal_f1_macro&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;focal_f1_micro&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;focal_f1_weighted&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;focal_log_loss&quot;</span><span class="p">,</span>
-                <span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">metrics_to_measure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s: Measuring focal performance&quot;</span><span class="p">)</span>
-            <span class="n">masked_y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">nan_mask</span><span class="p">]</span>
-
-            <span class="n">computable</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prediction_rate_</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">masked_y</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span>
-
-            <span class="k">if</span> <span class="s2">&quot;focal_score&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">focal_score_</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">computable</span>
-                    <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="p">)</span>
-
-            <span class="k">if</span> <span class="s2">&quot;focal_precision&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">focal_precision_</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">metrics</span><span class="o">.</span><span class="n">precision_score</span><span class="p">(</span><span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">computable</span>
-                    <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="p">)</span>
-
-            <span class="k">if</span> <span class="s2">&quot;focal_recall&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">focal_recall_</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">metrics</span><span class="o">.</span><span class="n">recall_score</span><span class="p">(</span><span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">computable</span>
-                    <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="p">)</span>
-
-            <span class="k">if</span> <span class="s2">&quot;focal_balanced_accuracy&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">focal_balanced_accuracy_</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">metrics</span><span class="o">.</span><span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">computable</span>
-                    <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="p">)</span>
-
-            <span class="k">if</span> <span class="s2">&quot;focal_f1_macro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">focal_f1_macro_</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
-                        <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
-                    <span class="p">)</span>
-                    <span class="k">if</span> <span class="n">computable</span>
-                    <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="p">)</span>
-
-            <span class="k">if</span> <span class="s2">&quot;focal_f1_micro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">focal_f1_micro_</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
-                        <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;micro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
-                    <span class="p">)</span>
-                    <span class="k">if</span> <span class="n">computable</span>
-                    <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="p">)</span>
-
-            <span class="k">if</span> <span class="s2">&quot;focal_f1_weighted&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">focal_f1_weighted_</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span>
-                        <span class="n">masked_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;weighted&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span>
-                    <span class="p">)</span>
-                    <span class="k">if</span> <span class="n">computable</span>
-                    <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="p">)</span>
-
-            <span class="k">if</span> <span class="s2">&quot;focal_log_loss&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">focal_log_loss_</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">metrics</span><span class="o">.</span><span class="n">log_loss</span><span class="p">(</span>
-                        <span class="n">masked_y</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="p">[</span><span class="o">~</span><span class="n">nan_mask</span><span class="p">],</span>
-                    <span class="p">)</span>
-                    <span class="k">if</span> <span class="n">computable</span>
-                    <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="p">)</span>
 
         <span class="c1"># Compute global log likelihood and information criteria</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
@@ -1276,53 +1163,29 @@ document.write(`
         <span class="k">return</span> <span class="n">proba</span><span class="o">.</span><span class="n">idxmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_scores</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">y_true</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-        <span class="n">y_pred</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-        <span class="n">metrics_to_measure</span><span class="p">:</span> <span class="nb">list</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">metrics_to_measure</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">metrics_to_measure</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="s2">&quot;accuracy&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;precision&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;recall&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;balanced_accuracy&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;f1_macro&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;f1_micro&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;f1_weighted&quot;</span><span class="p">,</span>
-                <span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">metrics_to_measure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">measure_performance</span>
+<div class="viewcode-block" id="BaseClassifier.local_metric">
+<a class="viewcode-back" href="../../generated/gwlearn.base.BaseClassifier.html#gwlearn.base.BaseClassifier.local_metric">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">local_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Measure local performance metrics</span>
 
-        <span class="k">if</span> <span class="n">y_true</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">metrics_to_measure</span><span class="p">)</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        func : callable</span>
+<span class="sd">            callable with a signature ``func(y_true, y_pred)``</span>
 
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="k">if</span> <span class="s2">&quot;accuracy&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-        <span class="k">if</span> <span class="s2">&quot;precision&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">precision_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
-        <span class="k">if</span> <span class="s2">&quot;recall&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">recall_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
-        <span class="k">if</span> <span class="s2">&quot;balanced_accuracy&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-        <span class="k">if</span> <span class="s2">&quot;f1_macro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;macro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-            <span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;f1_micro&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;micro&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-            <span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;f1_weighted&quot;</span> <span class="ow">in</span> <span class="n">metrics_to_measure</span><span class="p">:</span>
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s2">&quot;weighted&quot;</span><span class="p">,</span> <span class="n">zero_division</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-            <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">results</span></div>
+        <span class="k">for</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_y_local</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pred_local</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+</div>
 
 
 
@@ -1373,9 +1236,6 @@ document.write(`
 <span class="sd">    fit_global_model : bool, optional</span>
 <span class="sd">        Determines if the global baseline model shall be fitted alongside</span>
 <span class="sd">        the geographically weighted, by default True</span>
-<span class="sd">    measure_performance : bool, optional</span>
-<span class="sd">        Calculate performance metrics for the model, by default True. If True, measures</span>
-<span class="sd">        R2 and adjusted R2.</span>
 <span class="sd">    strict : bool | None, optional</span>
 <span class="sd">        Do not fit any models if at least one neighborhood has invariant ``y``,</span>
 <span class="sd">        by default False. None is treated as False but provides a warning if there are</span>
@@ -1477,7 +1337,8 @@ document.write(`
                 <span class="bp">self</span><span class="o">.</span><span class="n">_score_data</span><span class="p">,</span>
             <span class="p">)</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">training_output</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">focal_pred</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)]</span> <span class="o">=</span> <span class="n">focal_pred</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resid_</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_</span>
         <span class="n">resids_</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">weights</span><span class="o">.</span><span class="n">adjacency</span><span class="o">.</span><span class="n">values</span>

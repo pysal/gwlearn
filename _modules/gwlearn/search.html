@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.search &#8212; gwlearn 0.1.dev78+gc5a3203da documentation</title>
+    <title>gwlearn.search &#8212; gwlearn 0.1.dev79+gae39facc2 documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=5cc36f40"></script>
+    <script src="../../_static/documentation_options.js?v=b6915c20"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev78+gc5a3203da documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev79+gae39facc2 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -278,6 +278,7 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">pdist</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">metrics</span>
 
 
 <div class="viewcode-block" id="BandwidthSearch">
@@ -317,8 +318,7 @@ document.write(`
 <span class="sd">        ``{&quot;aicc&quot;, &quot;aic&quot;, &quot;bic&quot;}`` or any of ``metrics``. By default ``&quot;aicc&quot;``.</span>
 <span class="sd">    metrics : list[str] | None, optional</span>
 <span class="sd">        List of additional metrics beyond ``criterion`` to be reported. Has to be</span>
-<span class="sd">        a metric supported by ``model``, passable to ``measure_performance`` argument</span>
-<span class="sd">        of model&#39;s initialization or &#39;prediction_rate&#39;. By default ``None``.</span>
+<span class="sd">        an attribute supported by ``model`` or &#39;prediction_rate&#39;. By default ``None``.</span>
 <span class="sd">    minimize : bool, optional</span>
 <span class="sd">        Minimize or maximize the ``criterion``. When using information criterions,</span>
 <span class="sd">        like AICc, the optimal solution is the lowest value. When using other metrics,</span>
@@ -430,7 +430,6 @@ document.write(`
             <span class="n">kernel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">,</span>
             <span class="n">n_jobs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">,</span>
             <span class="n">fit_global_model</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">measure_performance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="p">,</span>
             <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span>
             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_model_kwargs</span><span class="p">,</span>
@@ -454,9 +453,11 @@ document.write(`
 
         <span class="n">all_metrics</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">met</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">:</span>
-                <span class="n">m</span> <span class="o">=</span> <span class="s2">&quot;score&quot;</span>
-            <span class="n">all_metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">gwm</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="s2">&quot;log_loss&quot;</span><span class="p">:</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="n">gwm</span><span class="o">.</span><span class="n">proba_</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">all_metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">log_loss</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">],</span> <span class="n">gwm</span><span class="o">.</span><span class="n">proba_</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">all_metrics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">gwm</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">all_metrics</span><span class="p">[</span><span class="n">met</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">)],</span> <span class="n">all_metrics</span>
 
@@ -567,7 +568,9 @@ document.write(`
 
                 <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">score_b</span> <span class="o">-</span> <span class="n">score_d</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">scores_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;oob_score&quot;</span><span class="p">)</span>
+            <span class="n">iters</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scores_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metrics_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
             <span class="n">metrics</span><span class="p">,</span>
             <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;aicc&quot;</span><span class="p">,</span> <span class="s2">&quot;aic&quot;</span><span class="p">,</span> <span class="s2">&quot;bic&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span>

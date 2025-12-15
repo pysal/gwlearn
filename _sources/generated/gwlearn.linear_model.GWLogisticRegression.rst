@@ -17,6 +17,7 @@
       ~GWLogisticRegression.fit
       ~GWLogisticRegression.get_metadata_routing
       ~GWLogisticRegression.get_params
+      ~GWLogisticRegression.local_metric
       ~GWLogisticRegression.predict
       ~GWLogisticRegression.predict_proba
       ~GWLogisticRegression.score

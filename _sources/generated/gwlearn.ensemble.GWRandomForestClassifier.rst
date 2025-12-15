@@ -17,6 +17,7 @@
       ~GWRandomForestClassifier.fit
       ~GWRandomForestClassifier.get_metadata_routing
       ~GWRandomForestClassifier.get_params
+      ~GWRandomForestClassifier.local_metric
       ~GWRandomForestClassifier.predict
       ~GWRandomForestClassifier.predict_proba
       ~GWRandomForestClassifier.score
