@@ -95,8 +95,6 @@ class GWRandomForestClassifier(BaseClassifier):
         Hat values for each location (diagonal elements of hat matrix)
     effective_df_ : float
         Effective degrees of freedom (sum of hat values)
-    focal_log_loss_ : float
-        Log loss of the model based on ``pred_``.
     log_likelihood_ : float
         Global log likelihood of the model
     aic_ : float
@@ -111,11 +109,14 @@ class GWRandomForestClassifier(BaseClassifier):
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
-    oos_log_loss_ : float
-        Out-of-sample log loss of the model. It is based on pooled data of randomly left
-        out observations from training of local models. Log loss is measured as weighted
-        using the set bandwidth and a kernel. Available only when ``leave_out`` is not
-        None.
+    left_out_y : np.ndarray
+        Array of ``y`` values left out when ``leave_out`` is set.
+    left_out_proba_ : np.ndarray
+        Array of probabilites on left out observations in local models when
+        ``leave_out`` is set.
+    left_out_w_ : np.ndarray
+        Array of weights on left out observations in local models when
+        ``leave_out`` is set.
     """
 
     def __init__(

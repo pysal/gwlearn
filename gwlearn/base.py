@@ -11,7 +11,6 @@ import pandas as pd
 from joblib import Parallel, delayed, dump, load
 from libpysal import graph
 from scipy.spatial import KDTree
-from sklearn import metrics
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 from sklearn.model_selection import train_test_split
 
@@ -462,11 +461,14 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
-    oos_log_loss_ : float
-        Out-of-sample log loss of the model. It is based on pooled data of randomly left
-        out observations from training of local models. Log loss is measured as weighted
-        using the set bandwidth and a kernel. Available only when ``leave_out`` is not
-        None.
+    left_out_y_ : np.ndarray
+        Array of ``y`` values left out when ``leave_out`` is set.
+    left_out_proba_ : np.ndarray
+        Array of probabilites on left out observations in local models when
+        ``leave_out`` is set.
+    left_out_w_ : np.ndarray
+        Array of weights on left out observations in local models when
+        ``leave_out`` is set.
     """
 
     def __init__(
@@ -626,15 +628,10 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self._n_fitted_models = (~self.proba_[col].isna()).sum()
         self.prediction_rate_ = self._n_fitted_models / nan_mask.shape[0]
 
-        if self.leave_out:
-            if self.prediction_rate_ > 0:
-                y_pred = np.concatenate([arr[0] for arr in left_out_proba])
-                y_true = np.concatenate([arr[1] for arr in left_out_proba])
-                w = np.concatenate([arr[2] for arr in left_out_proba])
-
-                self.oos_log_loss_ = metrics.log_loss(y_true, y_pred, sample_weight=w)
-            else:
-                self.oos_log_loss_ = np.nan
+        if self.leave_out and self.prediction_rate_ > 0:
+            self.left_out_y_ = np.concatenate([arr[0] for arr in left_out_proba])
+            self.left_out_proba_ = np.concatenate([arr[1] for arr in left_out_proba])
+            self.left_out_w_ = np.concatenate([arr[2] for arr in left_out_proba])
 
         if self.fit_global_model:
             if self.verbose:

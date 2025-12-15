@@ -1491,8 +1491,8 @@ def test_custom_graph_baseclassifier(sample_data):
     assert hasattr(clf, "proba_")
 
 
-def test_leave_out_oos_log_loss(sample_data):
-    """Test that leave_out enables oos_log_loss_ calculation."""
+def test_leave_out_leave_out(sample_data):
+    """Test that leave_out enables out of sample log_loss_ calculation."""
     X, y, geometry = sample_data
 
     clf = BaseClassifier(
@@ -1507,7 +1507,6 @@ def test_leave_out_oos_log_loss(sample_data):
     )
     clf.fit(X, y)
 
-    # oos_log_loss_ should be present and a finite float
-    assert hasattr(clf, "oos_log_loss_")
-    assert isinstance(clf.oos_log_loss_, float)
-    assert np.isfinite(clf.oos_log_loss_)
+    assert hasattr(clf, "left_out_y_")
+    assert hasattr(clf, "left_out_proba_")
+    assert hasattr(clf, "left_out_w_")
