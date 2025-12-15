@@ -629,8 +629,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self.prediction_rate_ = self._n_fitted_models / nan_mask.shape[0]
 
         if self.leave_out and self.prediction_rate_ > 0:
-            self.left_out_y_ = np.concatenate([arr[0] for arr in left_out_proba])
-            self.left_out_proba_ = np.concatenate([arr[1] for arr in left_out_proba])
+            self.left_out_y_ = np.concatenate([arr[1] for arr in left_out_proba])
+            self.left_out_proba_ = np.concatenate([arr[0] for arr in left_out_proba])
             self.left_out_w_ = np.concatenate([arr[2] for arr in left_out_proba])
 
         if self.fit_global_model:

@@ -1491,7 +1491,7 @@ def test_custom_graph_baseclassifier(sample_data):
     assert hasattr(clf, "proba_")
 
 
-def test_leave_out_leave_out(sample_data):
+def test_leave_out_attributes(sample_data):
     """Test that leave_out enables out of sample log_loss_ calculation."""
     X, y, geometry = sample_data
 

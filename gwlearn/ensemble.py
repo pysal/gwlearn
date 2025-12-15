@@ -109,7 +109,7 @@ class GWRandomForestClassifier(BaseClassifier):
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
-    left_out_y : np.ndarray
+    left_out_y_ : np.ndarray
         Array of ``y`` values left out when ``leave_out`` is set.
     left_out_proba_ : np.ndarray
         Array of probabilites on left out observations in local models when
@@ -201,8 +201,19 @@ class GWRandomForestClassifier(BaseClassifier):
 
         del self._score_data
 
-        self.oob_y_pooled_ = np.concatenate(self._y_local)
-        self.oob_pred_pooled_ = np.concatenate(self._pred_local)
+        # Filter out empty arrays before concatenation
+        non_empty_y = [arr for arr in self._y_local if arr.size > 0]
+        non_empty_pred = [arr for arr in self._pred_local if arr.size > 0]
+        if non_empty_y:
+            self.oob_y_pooled_ = np.concatenate(non_empty_y)
+        else:
+            # Set to empty array with same dtype as y
+            self.oob_y_pooled_ = np.array([], dtype=y.dtype)
+        if non_empty_pred:
+            self.oob_pred_pooled_ = np.concatenate(non_empty_pred)
+        else:
+            # Set to empty array with float dtype (typical for predictions)
+            self.oob_pred_pooled_ = np.array([], dtype=float)
 
         # feature importances
         self.feature_importances_ = pd.DataFrame(

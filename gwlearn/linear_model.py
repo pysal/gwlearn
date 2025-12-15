@@ -110,7 +110,7 @@ class GWLogisticRegression(BaseClassifier):
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
-    left_out_y : np.ndarray
+    left_out_y_ : np.ndarray
         Array of ``y`` values left out when ``leave_out`` is set.
     left_out_proba_ : np.ndarray
         Array of probabilites on left out observations in local models when
@@ -197,8 +197,15 @@ class GWLogisticRegression(BaseClassifier):
 
         del self._score_data
 
-        self.y_pooled_ = np.concatenate(self._y_local)
-        self.pred_pooled_ = np.concatenate(self._pred_local)
+        # Check for empty arrays before concatenation to avoid unexpected shapes
+        if self._y_local and any(arr.size > 0 for arr in self._y_local):
+            self.y_pooled_ = np.concatenate([arr for arr in self._y_local if arr.size > 0])
+        else:
+            self.y_pooled_ = np.array([])
+        if self._pred_local and any(arr.size > 0 for arr in self._pred_local):
+            self.pred_pooled_ = np.concatenate([arr for arr in self._pred_local if arr.size > 0])
+        else:
+            self.pred_pooled_ = np.array([])
 
         return self
 
