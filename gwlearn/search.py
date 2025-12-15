@@ -5,6 +5,7 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 from scipy.spatial.distance import pdist
+from sklearn import metrics
 
 
 class BandwidthSearch:
@@ -42,8 +43,7 @@ class BandwidthSearch:
         ``{"aicc", "aic", "bic"}`` or any of ``metrics``. By default ``"aicc"``.
     metrics : list[str] | None, optional
         List of additional metrics beyond ``criterion`` to be reported. Has to be
-        a metric supported by ``model``, passable to ``measure_performance`` argument
-        of model's initialization or 'prediction_rate'. By default ``None``.
+        an attribute supported by ``model`` or 'prediction_rate'. By default ``None``.
     minimize : bool, optional
         Minimize or maximize the ``criterion``. When using information criterions,
         like AICc, the optimal solution is the lowest value. When using other metrics,
@@ -149,7 +149,6 @@ class BandwidthSearch:
             kernel=self.kernel,
             n_jobs=self.n_jobs,
             fit_global_model=False,
-            measure_performance=self.metrics,
             strict=False,
             verbose=self.verbose == 2,
             **self._model_kwargs,
@@ -173,9 +172,11 @@ class BandwidthSearch:
 
         all_metrics = []
         for m in met:
-            if m == "accuracy":
-                m = "score"
-            all_metrics.append(getattr(gwm, m + "_"))
+            if m == "log_loss":
+                mask = gwm.proba_.isna().any(axis=1)
+                all_metrics.append(metrics.log_loss(y[~mask], gwm.proba_[~mask]))
+            else:
+                all_metrics.append(getattr(gwm, m + "_"))
 
         return all_metrics[met.index(self.criterion)], all_metrics
 
@@ -286,7 +287,7 @@ class BandwidthSearch:
 
                 diff = np.abs(score_b - score_d)
 
-        self.scores_ = pd.Series(scores, name="oob_score")
+        self.scores_ = pd.Series(scores)
         self.metrics_ = pd.DataFrame(
             metrics,
             index=["aicc", "aic", "bic"] + self.metrics

@@ -450,22 +450,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Hat values for each location (diagonal elements of hat matrix)
     effective_df_ : float
         Effective degrees of freedom (sum of hat values)
-    focal_score_ : float
-        Accuracy score of the model based on ``pred_``.
-    focal_precision_ : float
-        Precision score of the model based on ``pred_``.
-    focal_recall_ : float
-        Recall score of the model based on ``pred_``.
-    focal_balanced_accuracy_ : float
-        Balanced accuracy score of the model based on ``pred_``.
-    focal_f1_macro_ : float
-        F1 score with macro averaging based on ``pred_``.
-    focal_f1_micro_ : float
-        F1 score with micro averaging based on ``pred_``.
-    focal_f1_weighted_ : float
-        F1 score with weighted averaging based on ``pred_``.
-    focal_log_loss_ : float
-        Log loss of the model based on ``pred_``.
     log_likelihood_ : float
         Global log likelihood of the model
     aic_ : float
