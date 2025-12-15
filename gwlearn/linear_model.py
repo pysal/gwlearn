@@ -1,13 +1,10 @@
-import warnings
 from collections.abc import Callable
-from time import time
 from typing import Literal
 
 import geopandas as gpd
 import numpy as np
 import pandas as pd
 from libpysal import graph
-from sklearn import metrics
 from sklearn.linear_model import LinearRegression, LogisticRegression
 
 from .base import BaseClassifier, BaseRegressor
@@ -51,10 +48,6 @@ class GWLogisticRegression(BaseClassifier):
     fit_global_model : bool, optional
         Determines if the global baseline model shall be fitted alongside
         the geographically weighted, by default True
-    measure_performance : bool | list, optional
-        Calculate performance metrics for the model. If True, measures accuracy score,
-        precision, recall, balanced accuracy, and F1 scores. A subset of these can be
-        specified by passing a list of strings. By default True
     strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``,
         by default False. None is treated as False but provides a warning if there are
@@ -196,7 +189,6 @@ class GWLogisticRegression(BaseClassifier):
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
-        measure_performance: bool | list = True,
         strict: bool = False,
         keep_models: bool = False,
         temp_folder: str | None = None,
@@ -215,7 +207,6 @@ class GWLogisticRegression(BaseClassifier):
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
-            measure_performance=measure_performance,
             strict=strict,
             keep_models=keep_models,
             temp_folder=temp_folder,
@@ -249,142 +240,13 @@ class GWLogisticRegression(BaseClassifier):
             np.concatenate([x[3] for x in self._score_data]), index=self._names
         )
 
-        if self.measure_performance:
-            if self.measure_performance is not True:
-                metrics_to_measure = self.measure_performance
+        self._y_local = [x[0] for x in self._score_data]
+        self._pred_local = [x[1] for x in self._score_data]
 
-            if self.verbose:
-                print(f"{(time() - self._start):.2f}s: Measuring pooled performance")
+        del self._score_data
 
-            true = [x[0] for x in self._score_data]
-            pred = [x[1] for x in self._score_data]
-
-            del self._score_data
-
-            all_true = np.concatenate(true)
-            all_pred = np.concatenate(pred)
-
-            if len(all_true) == 0:
-                warnings.warn(
-                    "No models fitted due to inability to fulfil imbalance rules.",
-                    stacklevel=2,
-                )
-                return self
-
-            # global pred scores
-            if self.measure_performance is True or (
-                "pooled_score" in metrics_to_measure
-            ):
-                self.pooled_score_ = metrics.accuracy_score(all_true, all_pred)
-
-            if self.measure_performance is True or (
-                "pooled_precision" in metrics_to_measure
-            ):
-                self.pooled_precision_ = metrics.precision_score(
-                    all_true, all_pred, zero_division=0
-                )
-
-            if self.measure_performance is True or (
-                "pooled_recall" in metrics_to_measure
-            ):
-                self.pooled_recall_ = metrics.recall_score(
-                    all_true, all_pred, zero_division=0
-                )
-
-            if self.measure_performance is True or (
-                "pooled_balanced_accuracy" in metrics_to_measure
-            ):
-                self.pooled_balanced_accuracy_ = metrics.balanced_accuracy_score(
-                    all_true, all_pred
-                )
-
-            if self.measure_performance is True or (
-                "pooled_f1_macro" in metrics_to_measure
-            ):
-                self.pooled_f1_macro_ = metrics.f1_score(
-                    all_true, all_pred, average="macro", zero_division=0
-                )
-
-            if self.measure_performance is True or (
-                "pooled_f1_micro" in metrics_to_measure
-            ):
-                self.pooled_f1_micro_ = metrics.f1_score(
-                    all_true, all_pred, average="micro", zero_division=0
-                )
-
-            if self.measure_performance is True or (
-                "pooled_f1_weighted" in metrics_to_measure
-            ):
-                self.pooled_f1_weighted_ = metrics.f1_score(
-                    all_true, all_pred, average="weighted", zero_division=0
-                )
-
-            if self.verbose:
-                print(
-                    f"{(time() - self._start):.2f}s: Measuring local pooled performance"
-                )
-
-            # local pred scores
-            if self.measure_performance is True:
-                local_cols = [
-                    "pooled_accuracy",
-                    "pooled_precision",
-                    "pooled_recall",
-                    "pooled_balanced_accuracy",
-                    "pooled_f1_macro",
-                    "pooled_f1_micro",
-                    "pooled_f1_weighted",
-                ]
-            else:
-                local_cols = [
-                    c[6:] for c in metrics_to_measure if c.startswith("local_")
-                ]
-            if local_cols:
-                local_score = pd.DataFrame(
-                    [
-                        self._scores(
-                            y_true,
-                            y_false,
-                            metrics_to_measure=[c[7:] for c in local_cols],
-                        )
-                        for y_true, y_false in zip(true, pred, strict=True)
-                    ],
-                    index=self._names,
-                    columns=local_cols,
-                )
-                if self.measure_performance is True or (
-                    "local_score" in metrics_to_measure
-                ):
-                    self.local_score_ = local_score["pooled_accuracy"]
-                if self.measure_performance is True or (
-                    "local_precision" in metrics_to_measure
-                ):
-                    self.local_precision_ = local_score["pooled_precision"]
-                if self.measure_performance is True or (
-                    "local_recall" in metrics_to_measure
-                ):
-                    self.local_recall_ = local_score["pooled_recall"]
-                if self.measure_performance is True or (
-                    "local_balanced_accuracy" in metrics_to_measure
-                ):
-                    self.local_balanced_accuracy_ = local_score[
-                        "pooled_balanced_accuracy"
-                    ]
-                if self.measure_performance is True or (
-                    "local_f1_macro" in metrics_to_measure
-                ):
-                    self.local_f1_macro_ = local_score["pooled_f1_macro"]
-                if self.measure_performance is True or (
-                    "local_f1_micro" in metrics_to_measure
-                ):
-                    self.local_f1_micro_ = local_score["pooled_f1_micro"]
-                if self.measure_performance is True or (
-                    "local_f1_weighted" in metrics_to_measure
-                ):
-                    self.local_f1_weighted_ = local_score["pooled_f1_weighted"]
-
-            if self.verbose:
-                print(f"{(time() - self._start):.2f}s: Finished")
+        self.y_pooled_ = np.concatenate(self._y_local)
+        self.pred_pooled_ = np.concatenate(self._pred_local)
 
         return self
 
@@ -441,10 +303,6 @@ class GWLinearRegression(BaseRegressor):
     fit_global_model : bool, optional
         Determines if the global baseline model shall be fitted alongside
         the geographically weighted, by default True
-    measure_performance : bool, optional
-        Calculate performance metrics for the model. If True, measures accuracy score,
-        precision, recall, balanced accuracy, and F1 scores (based on focal prediction,
-        pooled local predictions and individual local predictions). By default True
     strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``,
         by default False. None is treated as False but provides a warning if there are
@@ -469,6 +327,37 @@ class GWLinearRegression(BaseRegressor):
 
     Attributes
     ----------
+    pred_ : pd.Series
+        Focal predictions for each location.
+    resid_ : pd.Series
+        Residuals for each location (y - pred_).
+    RSS_ : pd.Series
+        Residual sum of squares for each location.
+    TSS_ : pd.Series
+        Total sum of squares for each location.
+    y_bar_ : pd.Series
+        Weighted mean of y for each location.
+    local_r2_ : pd.Series
+        Local R2 for each location.
+    focal_r2_ : float
+        Global R2 for focal predictions.
+    score_ : float
+        Alias for focal_r2_ (global R2 for focal predictions).
+    focal_adj_r2_ : float
+        Adjusted R2 for focal predictions.
+    hat_values_ : pd.Series
+        Hat values for each location (diagonal elements of hat matrix).
+    effective_df_ : float
+        Effective degrees of freedom (sum of hat values).
+    log_likelihood_ : float
+        Global log likelihood of the model.
+    aic_ : float
+        Akaike information criterion of the model.
+    aicc_ : float
+        Corrected Akaike information criterion to account for model
+        complexity (smaller bandwidths).
+    bic_ : float
+        Bayesian information criterion.
     local_coef_ : pd.DataFrame
         Local coefficient of the features in the decision function for each feature at
         each location
@@ -496,7 +385,6 @@ class GWLinearRegression(BaseRegressor):
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
-        measure_performance: bool = True,
         keep_models: bool = False,
         temp_folder: str | None = None,
         batch_size: int | None = None,
@@ -512,7 +400,6 @@ class GWLinearRegression(BaseRegressor):
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
-            measure_performance=measure_performance,
             keep_models=keep_models,
             temp_folder=temp_folder,
             batch_size=batch_size,

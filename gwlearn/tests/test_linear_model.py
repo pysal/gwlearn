@@ -122,78 +122,6 @@ def test_gwlogistic_coefficients_structure(sample_data):  # noqa: F811
         )
 
 
-def test_gwlogistic_prediction_metrics(sample_data):  # noqa: F811
-    """Test the prediction-specific metrics created by GWLogisticRegression."""
-    X, y, geometry = sample_data
-
-    model = GWLogisticRegression(
-        geometry=geometry,
-        bandwidth=150000,
-        fixed=True,
-        random_state=42,
-        strict=False,
-        max_iter=500,
-        include_focal=False,
-    )
-
-    model.fit(X, y)
-
-    # Check the prediction metrics attributes
-    assert hasattr(model, "pooled_score_")
-    assert hasattr(model, "pooled_precision_")
-    assert hasattr(model, "pooled_recall_")
-    assert hasattr(model, "pooled_f1_macro_")
-    assert hasattr(model, "pooled_f1_micro_")
-    assert hasattr(model, "pooled_f1_weighted_")
-
-    # Check that values are as expected
-    assert pytest.approx(0.859778597) == model.pooled_score_
-    assert pytest.approx(0.859437751) == model.pooled_precision_
-    assert pytest.approx(0.839215686) == model.pooled_recall_
-    assert pytest.approx(0.859085933) == model.pooled_f1_macro_
-    assert pytest.approx(0.859778597) == model.pooled_f1_micro_
-    assert pytest.approx(0.859669229) == model.pooled_f1_weighted_
-
-
-def test_gwlogistic_local_prediction_metrics(sample_data):  # noqa: F811
-    """Test the local prediction metrics."""
-    X, y, geometry = sample_data
-
-    model = GWLogisticRegression(
-        geometry=geometry,
-        bandwidth=150000,
-        fixed=True,
-        random_state=42,
-        strict=False,
-        max_iter=500,
-        include_focal=False,
-    )
-
-    model.fit(X, y)
-
-    # Check local prediction metrics attributes
-    assert hasattr(model, "local_score_")
-    assert hasattr(model, "local_precision_")
-    assert hasattr(model, "local_recall_")
-    assert hasattr(model, "local_f1_macro_")
-    assert hasattr(model, "local_f1_micro_")
-    assert hasattr(model, "local_f1_weighted_")
-
-    # Check structure and values
-    assert isinstance(model.local_score_, pd.Series)
-    assert len(model.local_score_) == len(X)
-    assert (model.local_score_.dropna() >= 0).all()
-    assert (model.local_score_.dropna() <= 1).all()
-
-    # Check that values are as expected
-    assert pytest.approx(0.879587166) == model.local_score_.mean()
-    assert pytest.approx(0.889862351) == model.local_precision_.mean()
-    assert pytest.approx(0.849844990) == model.local_recall_.mean()
-    assert pytest.approx(0.859829075) == model.local_f1_macro_.mean()
-    assert pytest.approx(0.879587166) == model.local_f1_micro_.mean()
-    assert pytest.approx(0.877102172) == model.local_f1_weighted_.mean()
-
-
 def test_gwlinear_init():
     """Test GWLinearRegression initialization."""
     model = GWLinearRegression(bandwidth=100)
@@ -313,60 +241,6 @@ def test_index_order_influence(sample_regression_data):
 #         assert local_model.intercept_ == pytest.approx(
 #             model.local_intercept_[sample_loc]
 #         )
-
-# def test_gwlinear_performance_metrics(sample_regression_data):
-#     """Test the performance metrics created by GWLinearRegression."""
-#     X, y, geometry = sample_regression_data
-
-#     model = GWLinearRegression(
-#         bandwidth=150000,
-#         fixed=True,
-#         include_focal=False,
-#     )
-
-#     model.fit(X, y, geometry)
-
-#     # Check the performance metrics attributes
-#     assert hasattr(model, "pred_mse_")
-#     assert hasattr(model, "pred_mae_")
-#     assert hasattr(model, "pred_r2_")
-
-#     # Check that values are reasonable
-#     assert isinstance(model.pred_mse_, float)
-#     assert isinstance(model.pred_mae_, float)
-#     assert isinstance(model.pred_r2_, float)
-#     assert model.pred_mse_ >= 0
-#     assert model.pred_mae_ >= 0
-
-# def test_gwlinear_local_performance_metrics(sample_regression_data):
-#     """Test the local performance metrics."""
-#     X, y, geometry = sample_regression_data
-
-#     model = GWLinearRegression(
-#         bandwidth=150000,
-#         fixed=True,
-#         include_focal=False,
-#     )
-
-#     model.fit(X, y, geometry)
-
-#     # Check local performance metrics attributes
-#     assert hasattr(model, "local_pred_mse_")
-#     assert hasattr(model, "local_pred_mae_")
-#     assert hasattr(model, "local_pred_r2_")
-
-#     # Check structure and values
-#     assert isinstance(model.local_pred_mse_, pd.Series)
-#     assert isinstance(model.local_pred_mae_, pd.Series)
-#     assert isinstance(model.local_pred_r2_, pd.Series)
-
-#     assert len(model.local_pred_mse_) == len(X)
-#     assert len(model.local_pred_mae_) == len(X)
-#     assert len(model.local_pred_r2_) == len(X)
-
-#     # Check that values are reasonable (non-negative for MSE and MAE)
-#     assert (model.local_pred_mse_.dropna() >= 0).all()
-#     assert (model.local_pred_mae_.dropna() >= 0).all()
 
 
 @pytest.mark.skipif(not HAS_MGWR, reason="needs mgwr")

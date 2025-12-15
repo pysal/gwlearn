@@ -34,7 +34,6 @@ def test_init_default_parameters():
     assert clf.kernel == "bisquare"
     assert clf.n_jobs == -1
     assert clf.fit_global_model is True
-    assert clf.measure_performance is True
     assert clf.strict is False
     assert clf.keep_models is False
     assert clf.temp_folder is None
@@ -53,7 +52,6 @@ def test_init_custom_parameters():
         kernel="gaussian",
         n_jobs=2,
         fit_global_model=False,
-        measure_performance=False,
         strict=True,
         keep_models=True,
         temp_folder="/tmp",
@@ -68,7 +66,6 @@ def test_init_custom_parameters():
     assert clf.kernel == "gaussian"
     assert clf.n_jobs == 2
     assert clf.fit_global_model is False
-    assert clf.measure_performance is False
     assert clf.strict is True
     assert clf.keep_models is True
     assert clf.temp_folder == "/tmp"
@@ -179,12 +176,7 @@ def test_fit_basic_functionality(sample_data):
     assert hasattr(clf, "global_model")
     assert isinstance(clf.global_model, RandomForestClassifier)
 
-    # Test that performance metrics were calculated
-    assert hasattr(clf, "focal_score_")
-    assert 0 <= clf.focal_score_ <= 1
-    assert hasattr(clf, "focal_f1_macro_")
-    assert hasattr(clf, "focal_f1_micro_")
-    assert hasattr(clf, "focal_f1_weighted_")
+    assert 0 <= clf.pred_.mean() <= 1
 
 
 def test_fit_with_keep_models(sample_data):
@@ -261,8 +253,7 @@ def test_fit_different_kernels(sample_data, kernel):
     clf.fit(X, y)
 
     # Check that the model was fit successfully
-    assert hasattr(clf, "focal_score_")
-    assert 0 <= clf.focal_score_ <= 1
+    assert 0 <= clf.pred_.mean() <= 1
 
 
 def test_fit_fixed_bandwidth(sample_data):
@@ -282,8 +273,7 @@ def test_fit_fixed_bandwidth(sample_data):
     clf.fit(X, y)
 
     # Check that the model was fit successfully
-    assert hasattr(clf, "focal_score_")
-    assert 0 <= clf.focal_score_ <= 1
+    assert 0 <= clf.pred_.mean() <= 1
 
 
 def test_fit_without_global_model(sample_data):
@@ -306,30 +296,6 @@ def test_fit_without_global_model(sample_data):
     assert not hasattr(clf, "global_model")
 
     # But local results should still be available
-    assert hasattr(clf, "proba_")
-
-
-def test_fit_without_performance_metrics(sample_data):
-    """Test fitting without computing performance metrics."""
-    X, y, geometry = sample_data
-
-    clf = BaseClassifier(
-        LogisticRegression,
-        geometry=geometry,
-        bandwidth=150000,
-        fixed=True,
-        measure_performance=False,
-        random_state=42,
-        strict=False,  # To avoid warnings on invariance
-    )
-
-    clf.fit(X, y)
-
-    # Check that performance metrics were not computed
-    assert not hasattr(clf, "focal_score_")
-    assert not hasattr(clf, "focal_f1_macro_")
-
-    # But focal probabilities should still be available
     assert hasattr(clf, "proba_")
 
 
@@ -430,8 +396,7 @@ def test_fit_with_batch_processing(sample_data):
 
     # Check that the model was fit successfully
     assert hasattr(clf, "proba_")
-    assert hasattr(clf, "focal_score_")
-    assert 0 <= clf.focal_score_ <= 1
+    assert 0 <= clf.pred_.mean() <= 1
 
     # Compare with a model without batching to ensure results are consistent
     clf_no_batch = BaseClassifier(
@@ -486,14 +451,6 @@ def test_fit_n_jobs_consistency(sample_data):
         check_exact=False,
         rtol=1e-5,
     )
-
-    # Check that performance metrics are also equal
-    assert clf_sequential.focal_score_ == pytest.approx(clf_parallel.focal_score_)
-    assert clf_sequential.focal_f1_macro_ == pytest.approx(clf_parallel.focal_f1_macro_)
-    assert clf_sequential.focal_f1_weighted_ == pytest.approx(
-        clf_parallel.focal_f1_weighted_
-    )
-
     # Check that global models have the same coefficients
     np.testing.assert_allclose(
         clf_sequential.global_model.coef_, clf_parallel.global_model.coef_, rtol=1e-5
@@ -694,9 +651,7 @@ def test_binary_target_zero_one(sample_data):
     fitted_clf = clf.fit(X, y_01)
     assert fitted_clf is clf
 
-    # Check that performance metrics were calculated
-    assert hasattr(clf, "focal_score_")
-    assert 0 <= clf.focal_score_ <= 1
+    assert 0 <= clf.pred_.mean() <= 1
 
     # propagation to prediction
     pd.testing.assert_index_equal(clf.proba_.columns, pd.Index([0, 1]))
@@ -765,8 +720,7 @@ def test_undersample_boolean(sample_data):
     clf.fit(X, y)
 
     # Check that the model was fit successfully
-    assert hasattr(clf, "focal_score_")
-    assert 0 <= clf.focal_score_ <= 1
+    assert 0 <= clf.pred_.mean() <= 1
 
 
 @pytest.mark.skipif(not HAS_IMBLEARN, reason="requires imblearn")
@@ -790,8 +744,7 @@ def test_undersample_ratio(sample_data):
     clf.fit(X, y)
 
     # Check that the model was fit successfully
-    assert hasattr(clf, "focal_score_")
-    assert 0 <= clf.focal_score_ <= 1
+    assert 0 <= clf.pred_.mean() <= 1
 
 
 def test_random_state_consistency(sample_data):
@@ -821,7 +774,6 @@ def test_random_state_consistency(sample_data):
 
     # Results should be identical
     pd.testing.assert_frame_equal(clf1.proba_, clf2.proba_)
-    assert clf1.focal_score_ == clf2.focal_score_
 
 
 def test_different_random_states(sample_data):
@@ -885,7 +837,6 @@ def test_random_state_with_undersample(sample_data):
 
     # Results should be identical
     pd.testing.assert_frame_equal(clf1.proba_, clf2.proba_)
-    assert clf1.focal_score_ == clf2.focal_score_
 
 
 def test_repr_basic():
@@ -1024,7 +975,6 @@ def test_regressor_init_default_parameters():
     assert reg.kernel == "bisquare"
     assert reg.n_jobs == -1
     assert reg.fit_global_model is True
-    assert reg.measure_performance is True
     assert reg.strict is False
     assert reg.keep_models is False
     assert reg.temp_folder is None
@@ -1042,7 +992,6 @@ def test_regressor_init_custom_parameters():
         kernel="gaussian",
         n_jobs=2,
         fit_global_model=False,
-        measure_performance=False,
         strict=True,
         keep_models=True,
         temp_folder="/tmp",
@@ -1056,7 +1005,6 @@ def test_regressor_init_custom_parameters():
     assert reg.kernel == "gaussian"
     assert reg.n_jobs == 2
     assert reg.fit_global_model is False
-    assert reg.measure_performance is False
     assert reg.strict is True
     assert reg.keep_models is True
     assert reg.temp_folder == "/tmp"
@@ -1087,12 +1035,6 @@ def test_regressor_fit_basic_functionality(sample_regression_data):
     # Test that the global model was fitted
     assert hasattr(reg, "global_model")
     assert isinstance(reg.global_model, RandomForestRegressor)
-
-    # TODO: Test that performance metrics were calculated
-    # assert hasattr(reg, "score_")
-    # assert hasattr(reg, "mae_")
-    # assert hasattr(reg, "mse_")
-    # assert hasattr(reg, "rmse_")
 
 
 def test_regressor_fit_with_keep_models(sample_regression_data):
@@ -1213,7 +1155,6 @@ def test_regressor_fit_without_performance_metrics(sample_regression_data):
         geometry=geometry,
         bandwidth=150000,
         fixed=True,
-        measure_performance=False,
         strict=False,  # To avoid warnings on invariance
     )
 
@@ -1548,7 +1489,6 @@ def test_custom_graph_baseclassifier(sample_data):
 
     # Check that the model was fit successfully
     assert hasattr(clf, "proba_")
-    assert hasattr(clf, "focal_score_")
 
 
 def test_leave_out_oos_log_loss(sample_data):
