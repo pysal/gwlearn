@@ -287,6 +287,8 @@ class BandwidthSearch:
 
                 diff = np.abs(score_b - score_d)
 
+            iters += 1
+
         self.scores_ = pd.Series(scores)
         self.metrics_ = pd.DataFrame(
             metrics,
