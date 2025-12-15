@@ -11,7 +11,6 @@ import pandas as pd
 from joblib import Parallel, delayed, dump, load
 from libpysal import graph
 from scipy.spatial import KDTree
-from sklearn import metrics
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 from sklearn.model_selection import train_test_split
 
@@ -99,7 +98,6 @@ class _BaseModel(BaseEstimator):
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
-        measure_performance: bool | list = True,
         strict: bool | None = False,
         keep_models: bool | str | Path = False,
         temp_folder: str | None = None,
@@ -117,7 +115,6 @@ class _BaseModel(BaseEstimator):
         self._model_kwargs = kwargs
         self.n_jobs = n_jobs
         self.fit_global_model = fit_global_model
-        self.measure_performance = measure_performance
         self.strict = strict
         if isinstance(keep_models, str):
             keep_models = Path(keep_models)
@@ -407,11 +404,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
     fit_global_model : bool, optional
         Determines if the global baseline model shall be fitted alongside the
         geographically weighted, by default True
-    measure_performance : bool | list, optional
-        Calculate performance metrics for the model. If True, measures accuracy score,
-        precision, recall, balanced accuracy, F1 scores and log loss based on focal
-        prediction. A subset of these can be specified by passing a list of strings.
-        By default True
     strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``, by
         default False. None is treated as False but provides a warning if there are
@@ -457,22 +449,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Hat values for each location (diagonal elements of hat matrix)
     effective_df_ : float
         Effective degrees of freedom (sum of hat values)
-    focal_score_ : float
-        Accuracy score of the model based on ``pred_``.
-    focal_precision_ : float
-        Precision score of the model based on ``pred_``.
-    focal_recall_ : float
-        Recall score of the model based on ``pred_``.
-    focal_balanced_accuracy_ : float
-        Balanced accuracy score of the model based on ``pred_``.
-    focal_f1_macro_ : float
-        F1 score with macro averaging based on ``pred_``.
-    focal_f1_micro_ : float
-        F1 score with micro averaging based on ``pred_``.
-    focal_f1_weighted_ : float
-        F1 score with weighted averaging based on ``pred_``.
-    focal_log_loss_ : float
-        Log loss of the model based on ``pred_``.
     log_likelihood_ : float
         Global log likelihood of the model
     aic_ : float
@@ -485,11 +461,14 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
-    oos_log_loss_ : float
-        Out-of-sample log loss of the model. It is based on pooled data of randomly left
-        out observations from training of local models. Log loss is measured as weighted
-        using the set bandwidth and a kernel. Available only when ``leave_out`` is not
-        None.
+    left_out_y_ : np.ndarray
+        Array of ``y`` values left out when ``leave_out`` is set.
+    left_out_proba_ : np.ndarray
+        Array of probabilites on left out observations in local models when
+        ``leave_out`` is set.
+    left_out_w_ : np.ndarray
+        Array of weights on left out observations in local models when
+        ``leave_out`` is set.
     """
 
     def __init__(
@@ -514,7 +493,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
-        measure_performance: bool = True,
         strict: bool | None = False,
         keep_models: bool | str | Path = False,
         temp_folder: str | None = None,
@@ -536,7 +514,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
-            measure_performance=measure_performance,
             strict=strict,
             keep_models=keep_models,
             temp_folder=temp_folder,
@@ -644,112 +621,22 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         col = True if True in self.proba_.columns else 1
         # global GW accuracy
         nan_mask = self.proba_[col].isna()
-        self.pred_ = self.proba_[col][~nan_mask] > 0.5
+
+        self.pred_ = pd.Series(pd.NA, index=y.index, dtype="boolean")
+        self.pred_.loc[~nan_mask] = self.proba_[col][~nan_mask] > 0.5
 
         self._n_fitted_models = (~self.proba_[col].isna()).sum()
         self.prediction_rate_ = self._n_fitted_models / nan_mask.shape[0]
 
-        if self.leave_out:
-            if self.prediction_rate_ > 0:
-                y_pred = np.concatenate([arr[0] for arr in left_out_proba])
-                y_true = np.concatenate([arr[1] for arr in left_out_proba])
-                w = np.concatenate([arr[2] for arr in left_out_proba])
-
-                # TODO: this could potentially follow the logic of measure_performance
-                # and measure more than log loss
-                self.oos_log_loss_ = metrics.log_loss(y_true, y_pred, sample_weight=w)
-            else:
-                self.oos_log_loss_ = np.nan
+        if self.leave_out and self.prediction_rate_ > 0:
+            self.left_out_y_ = np.concatenate([arr[1] for arr in left_out_proba])
+            self.left_out_proba_ = np.concatenate([arr[0] for arr in left_out_proba])
+            self.left_out_w_ = np.concatenate([arr[2] for arr in left_out_proba])
 
         if self.fit_global_model:
             if self.verbose:
                 print(f"{(time() - self._start):.2f}s: Fitting global model")
             self._fit_global_model(X, y)
-
-        if self.measure_performance:
-            if self.measure_performance is True:
-                metrics_to_measure = [
-                    "focal_score",
-                    "focal_precision",
-                    "focal_recall",
-                    "focal_balanced_accuracy",
-                    "focal_f1_macro",
-                    "focal_f1_micro",
-                    "focal_f1_weighted",
-                    "focal_log_loss",
-                ]
-            else:
-                metrics_to_measure = self.measure_performance
-            if self.verbose:
-                print(f"{(time() - self._start):.2f}s: Measuring focal performance")
-            masked_y = y[~nan_mask]
-
-            computable = (self.prediction_rate_ > 0) and masked_y.nunique() > 1
-
-            if "focal_score" in metrics_to_measure:
-                self.focal_score_ = (
-                    metrics.accuracy_score(masked_y, self.pred_)
-                    if computable
-                    else np.nan
-                )
-
-            if "focal_precision" in metrics_to_measure:
-                self.focal_precision_ = (
-                    metrics.precision_score(masked_y, self.pred_, zero_division=0)
-                    if computable
-                    else np.nan
-                )
-
-            if "focal_recall" in metrics_to_measure:
-                self.focal_recall_ = (
-                    metrics.recall_score(masked_y, self.pred_, zero_division=0)
-                    if computable
-                    else np.nan
-                )
-
-            if "focal_balanced_accuracy" in metrics_to_measure:
-                self.focal_balanced_accuracy_ = (
-                    metrics.balanced_accuracy_score(masked_y, self.pred_)
-                    if computable
-                    else np.nan
-                )
-
-            if "focal_f1_macro" in metrics_to_measure:
-                self.focal_f1_macro_ = (
-                    metrics.f1_score(
-                        masked_y, self.pred_, average="macro", zero_division=0
-                    )
-                    if computable
-                    else np.nan
-                )
-
-            if "focal_f1_micro" in metrics_to_measure:
-                self.focal_f1_micro_ = (
-                    metrics.f1_score(
-                        masked_y, self.pred_, average="micro", zero_division=0
-                    )
-                    if computable
-                    else np.nan
-                )
-
-            if "focal_f1_weighted" in metrics_to_measure:
-                self.focal_f1_weighted_ = (
-                    metrics.f1_score(
-                        masked_y, self.pred_, average="weighted", zero_division=0
-                    )
-                    if computable
-                    else np.nan
-                )
-
-            if "focal_log_loss" in metrics_to_measure:
-                self.focal_log_loss_ = (
-                    metrics.log_loss(
-                        masked_y,
-                        self.proba_[~nan_mask],
-                    )
-                    if computable
-                    else np.nan
-                )
 
         # Compute global log likelihood and information criteria
         if self.verbose:
@@ -989,53 +876,26 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         proba = self.predict_proba(X, geometry)
         return proba.idxmax(axis=1)
 
-    def _scores(
-        self,
-        y_true: np.ndarray,
-        y_pred: np.ndarray,
-        metrics_to_measure: list | None = None,
-    ) -> tuple:
-        if metrics_to_measure is None:
-            if self.measure_performance is True:
-                metrics_to_measure = [
-                    "accuracy",
-                    "precision",
-                    "recall",
-                    "balanced_accuracy",
-                    "f1_macro",
-                    "f1_micro",
-                    "f1_weighted",
-                ]
-            else:
-                metrics_to_measure = self.measure_performance
+    def local_metric(self, func: Callable, *args, **kwargs) -> np.ndarray:
+        """Measure local performance metrics
 
-        if y_true.shape[0] == 0:
-            return (np.nan,) * len(metrics_to_measure)
+        Parameters
+        ----------
+        func : callable
+            callable with a signature ``func(y_true, y_pred)``
 
+        Returns
+        -------
+        np.ndarray
+        """
         results = []
 
-        if "accuracy" in metrics_to_measure:
-            results.append(metrics.accuracy_score(y_true, y_pred))
-        if "precision" in metrics_to_measure:
-            results.append(metrics.precision_score(y_true, y_pred, zero_division=0))
-        if "recall" in metrics_to_measure:
-            results.append(metrics.recall_score(y_true, y_pred, zero_division=0))
-        if "balanced_accuracy" in metrics_to_measure:
-            results.append(metrics.balanced_accuracy_score(y_true, y_pred))
-        if "f1_macro" in metrics_to_measure:
-            results.append(
-                metrics.f1_score(y_true, y_pred, average="macro", zero_division=0)
-            )
-        if "f1_micro" in metrics_to_measure:
-            results.append(
-                metrics.f1_score(y_true, y_pred, average="micro", zero_division=0)
-            )
-        if "f1_weighted" in metrics_to_measure:
-            results.append(
-                metrics.f1_score(y_true, y_pred, average="weighted", zero_division=0)
-            )
-
-        return results
+        for y, y_pred in zip(self._y_local, self._pred_local, strict=True):
+            if y.shape[0] == 0:
+                results.append(np.nan)
+            else:
+                results.append(func(y, y_pred, *args, **kwargs))
+        return np.array(results)
 
 
 class BaseRegressor(_BaseModel, RegressorMixin):
@@ -1083,9 +943,6 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     fit_global_model : bool, optional
         Determines if the global baseline model shall be fitted alongside
         the geographically weighted, by default True
-    measure_performance : bool, optional
-        Calculate performance metrics for the model, by default True. If True, measures
-        R2 and adjusted R2.
     strict : bool | None, optional
         Do not fit any models if at least one neighborhood has invariant ``y``,
         by default False. None is treated as False but provides a warning if there are
@@ -1185,7 +1042,8 @@ class BaseRegressor(_BaseModel, RegressorMixin):
                 self._score_data,
             ) = zip(*training_output, strict=False)
 
-        self.pred_ = pd.Series(focal_pred, index=self._names)
+        self.pred_ = pd.Series(np.nan, index=y.index)
+        self.pred_.loc[np.array(self._names)] = focal_pred
         self.resid_ = y - self.pred_
         resids_ = (
             weights.adjacency.values
