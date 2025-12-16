@@ -10,8 +10,6 @@ dependencies:
   - scipy
   - scikit-learn
   - joblib
-  # optional
-  - imbalanced-learn
   # testing
   - geodatasets
   - mgwr
