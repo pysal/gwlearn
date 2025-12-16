@@ -3,6 +3,17 @@
 
 ```{toctree}
 :hidden:
+:caption: User Guide
+introduction
+linear
+ensemble
+predict
+imbalance
+search
+```
+
+```{toctree}
+:hidden:
 :caption: API
 api
 ```
