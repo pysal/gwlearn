@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gwlearn.base &#8212; gwlearn 0.1.dev79+gae39facc2 documentation</title>
+    <title>gwlearn.base &#8212; gwlearn 0.1.dev80+g780a7113e documentation</title>
   
   
   
@@ -38,7 +38,7 @@
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../_static/documentation_options.js?v=b6915c20"></script>
+    <script src="../../_static/documentation_options.js?v=4bd3d2c4"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -136,7 +136,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev79+gae39facc2 documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev80+g780a7113e documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -803,15 +803,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">leave_out</span> <span class="o">=</span> <span class="n">leave_out</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_empty_score_data</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_empty_feature_imp</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="k">if</span> <span class="n">undersample</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="kn">from</span><span class="w"> </span><span class="nn">imblearn.under_sampling</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomUnderSampler</span>  <span class="c1"># noqa: F401</span>
-            <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-                    <span class="s2">&quot;imbalance-learn is required for undersampling.&quot;</span>
-                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">err</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_empty_feature_imp</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="BaseClassifier.fit">
@@ -941,7 +933,7 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit individual local model&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">undersample</span><span class="p">:</span>
-            <span class="kn">from</span><span class="w"> </span><span class="nn">imblearn.under_sampling</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomUnderSampler</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">.undersample</span><span class="w"> </span><span class="kn">import</span> <span class="n">BinaryRandomUnderSampler</span>
 
         <span class="n">vc</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;_y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
         <span class="n">n_labels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vc</span><span class="p">)</span>
@@ -971,11 +963,11 @@ document.write(`
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">undersample</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">undersample</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
-                <span class="n">rus</span> <span class="o">=</span> <span class="n">RandomUnderSampler</span><span class="p">(</span>
+                <span class="n">rus</span> <span class="o">=</span> <span class="n">BinaryRandomUnderSampler</span><span class="p">(</span>
                     <span class="n">sampling_strategy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">undersample</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">rus</span> <span class="o">=</span> <span class="n">RandomUnderSampler</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+                <span class="n">rus</span> <span class="o">=</span> <span class="n">BinaryRandomUnderSampler</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
             <span class="n">data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rus</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;_y&quot;</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">leave_out</span><span class="p">:</span>
@@ -1273,12 +1265,6 @@ document.write(`
 <span class="sd">        Weighted mean of y for each location.</span>
 <span class="sd">    local_r2_ : pd.Series</span>
 <span class="sd">        Local R2 for each location.</span>
-<span class="sd">    focal_r2_ : float</span>
-<span class="sd">        Global R2 for focal predictions.</span>
-<span class="sd">    score_ : float</span>
-<span class="sd">        Alias for focal_r2_ (global R2 for focal predictions).</span>
-<span class="sd">    focal_adj_r2_ : float</span>
-<span class="sd">        Adjusted R2 for focal predictions.</span>
 <span class="sd">    hat_values_ : pd.Series</span>
 <span class="sd">        Hat values for each location (diagonal elements of hat matrix).</span>
 <span class="sd">    effective_df_ : float</span>
@@ -1348,10 +1334,6 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">TSS_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">tss</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_bar_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">y_bar</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">local_r2_</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TSS_</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">RSS_</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">TSS_</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">focal_r2_</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">pred_</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">score_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_r2_</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_global_model</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_fit_global_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -1362,14 +1344,14 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hat_values_</span><span class="p">)</span>
 
         <span class="c1"># adjusted R2</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pred_</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_r2_</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">n</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">focal_adj_r2_</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span>
-                    <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_r2_</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">effective_df_</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">focal_adj_r2_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="c1"># n = len(self.pred_)</span>
+        <span class="c1"># if not np.isnan(self.focal_r2_) and not np.isnan(self.effective_df_):</span>
+        <span class="c1">#     if n - self.effective_df_ - 1 &gt; 0:</span>
+        <span class="c1">#         self.focal_adj_r2_ = 1 - (</span>
+        <span class="c1">#             (1 - self.focal_r2_) * (n - 1) / (n - self.effective_df_ - 1)</span>
+        <span class="c1">#         )</span>
+        <span class="c1">#     else:</span>
+        <span class="c1">#         self.focal_adj_r2_ = np.nan</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">log_likelihood_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_global_log_likelihood</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_compute_information_criteria</span><span class="p">()</span>
