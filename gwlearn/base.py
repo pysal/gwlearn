@@ -528,14 +528,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self._empty_score_data = None
         self._empty_feature_imp = None
 
-        if undersample:
-            try:
-                from imblearn.under_sampling import RandomUnderSampler  # noqa: F401
-            except ImportError as err:
-                raise ImportError(
-                    "imbalance-learn is required for undersampling."
-                ) from err
-
     def fit(self, X: pd.DataFrame, y: pd.Series) -> "BaseClassifier":
         """Fit the geographically weighted model
 
@@ -660,7 +652,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         """Fit individual local model"""
 
         if self.undersample:
-            from imblearn.under_sampling import RandomUnderSampler
+            from .undersample import BinaryRandomUnderSampler
 
         vc = data["_y"].value_counts()
         n_labels = len(vc)
@@ -690,11 +682,11 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         if self.undersample:
             if isinstance(self.undersample, float):
-                rus = RandomUnderSampler(
+                rus = BinaryRandomUnderSampler(
                     sampling_strategy=self.undersample, random_state=self.random_state
                 )
             else:
-                rus = RandomUnderSampler(random_state=self.random_state)
+                rus = BinaryRandomUnderSampler(random_state=self.random_state)
             data, _ = rus.fit_resample(data, data["_y"])
 
         if self.leave_out:
@@ -980,12 +972,6 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         Weighted mean of y for each location.
     local_r2_ : pd.Series
         Local R2 for each location.
-    focal_r2_ : float
-        Global R2 for focal predictions.
-    score_ : float
-        Alias for focal_r2_ (global R2 for focal predictions).
-    focal_adj_r2_ : float
-        Adjusted R2 for focal predictions.
     hat_values_ : pd.Series
         Hat values for each location (diagonal elements of hat matrix).
     effective_df_ : float
@@ -1053,10 +1039,6 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         self.TSS_ = pd.Series(tss, index=self._names)
         self.y_bar_ = pd.Series(y_bar, index=self._names)
         self.local_r2_ = (self.TSS_ - self.RSS_) / self.TSS_
-        self.focal_r2_ = 1 - (
-            np.sum((self.pred_ - y) ** 2) / np.sum((y - y.mean()) ** 2)
-        )
-        self.score_ = self.focal_r2_
 
         if self.fit_global_model:
             self._fit_global_model(X, y)
@@ -1067,14 +1049,14 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         self.effective_df_ = np.nansum(self.hat_values_)
 
         # adjusted R2
-        n = len(self.pred_)
-        if not np.isnan(self.focal_r2_) and not np.isnan(self.effective_df_):
-            if n - self.effective_df_ - 1 > 0:
-                self.focal_adj_r2_ = 1 - (
-                    (1 - self.focal_r2_) * (n - 1) / (n - self.effective_df_ - 1)
-                )
-            else:
-                self.focal_adj_r2_ = np.nan
+        # n = len(self.pred_)
+        # if not np.isnan(self.focal_r2_) and not np.isnan(self.effective_df_):
+        #     if n - self.effective_df_ - 1 > 0:
+        #         self.focal_adj_r2_ = 1 - (
+        #             (1 - self.focal_r2_) * (n - 1) / (n - self.effective_df_ - 1)
+        #         )
+        #     else:
+        #         self.focal_adj_r2_ = np.nan
 
         self.log_likelihood_ = self._compute_global_log_likelihood()
         self._compute_information_criteria()

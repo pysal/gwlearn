@@ -16,13 +16,6 @@ from sklearn.linear_model import LinearRegression, LogisticRegression
 
 from gwlearn.base import BaseClassifier, BaseRegressor, _kernel_functions
 
-try:
-    import imblearn  # noqa: F401
-
-    HAS_IMBLEARN = True
-except ImportError:
-    HAS_IMBLEARN = False
-
 
 def test_init_default_parameters():
     """Test BaseClassifier initialization with default parameters."""
@@ -699,7 +692,6 @@ def test_binary_with_string_values_raises_error(sample_data):
         clf.fit(X, y_str)
 
 
-@pytest.mark.skipif(not HAS_IMBLEARN, reason="requires imblearn")
 def test_undersample_boolean(sample_data):
     """Test fitting with undersample=True option."""
     X, y, geometry = sample_data
@@ -723,7 +715,6 @@ def test_undersample_boolean(sample_data):
     assert 0 <= clf.pred_.mean() <= 1
 
 
-@pytest.mark.skipif(not HAS_IMBLEARN, reason="requires imblearn")
 def test_undersample_ratio(sample_data):
     """Test fitting with undersample as a float ratio."""
     X, y, geometry = sample_data
@@ -805,7 +796,6 @@ def test_different_random_states(sample_data):
     assert not clf1.proba_.equals(clf2.proba_)
 
 
-@pytest.mark.skipif(not HAS_IMBLEARN, reason="requires imblearn")
 def test_random_state_with_undersample(sample_data):
     """Test that random_state affects undersample consistently."""
     X, y, geometry = sample_data
