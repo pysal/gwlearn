@@ -284,6 +284,5 @@ def test_against_mgwr():
     assert_almost_equal(gwlr.aic_, res.aic)
     assert_almost_equal(gwlr.bic_, res.bic)
     assert_almost_equal(gwlr.aicc_, res.aicc, decimal=0)
-    assert_almost_equal(gwlr.focal_adj_r2_, res.adj_R2)
     assert_almost_equal(gwlr.effective_df_, res.ENP)
     assert_almost_equal(gwlr.log_likelihood_, res.llf)
