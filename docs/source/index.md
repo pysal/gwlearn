@@ -2,6 +2,10 @@
 ```
 
 ```{toctree}
+Home <self>
+```
+
+```{toctree}
 :hidden:
 :caption: User Guide
 introduction
@@ -15,7 +19,6 @@ network_graph
 
 ```{toctree}
 :hidden:
-:caption: API
 api
 ```
 
