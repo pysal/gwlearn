@@ -17,7 +17,7 @@
     
     
       
-        <title>gwlearn.linear_model - gwlearn 0.1.dev84 documentation</title>
+        <title>gwlearn.linear_model - gwlearn 0.1.dev85 documentation</title>
       
     
     
@@ -79,7 +79,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="gwlearn 0.1.dev84 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev84 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev85 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev85 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -90,7 +90,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.1.dev84 documentation
+            gwlearn 0.1.dev85 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -129,7 +129,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="light-blue"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="red"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
     
       <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
@@ -221,10 +221,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="gwlearn 0.1.dev84 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev84 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev85 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev85 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.1.dev84 documentation
+    gwlearn 0.1.dev85 documentation
   </label>
   
     <div class="md-nav__source">
@@ -272,15 +272,20 @@
   
     
     
+      
+        
+        
+      
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
@@ -507,15 +512,20 @@
   
     
     
+      
+        
+        
+      
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -617,10 +627,27 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">GWLogisticRegression</span><span class="p">(</span><span class="n">BaseClassifier</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Geographically weighted logistic regression</span>
 
+<span class="sd">    Fits one :class:`sklearn.linear_model.LogisticRegression` per focal observation</span>
+<span class="sd">    using spatially varying sample weights.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - ``y`` must be binary (``{0, 1}`` or boolean).</span>
+<span class="sd">    - To enable prediction on new data via :meth:`predict`/:meth:`predict_proba`, you</span>
+<span class="sd">      must set ``keep_models=True`` (store in memory) or ``keep_models=Path(...)``</span>
+<span class="sd">      (serialize to disk).</span>
+<span class="sd">    - Only point geometries are supported.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    bandwidth : int | float</span>
-<span class="sd">        Bandwidth value consisting of either a distance or N nearest neighbors</span>
+<span class="sd">    bandwidth : float | int | None</span>
+<span class="sd">        Bandwidth for defining neighborhoods.</span>
+
+<span class="sd">        - If ``fixed=True``, this is a distance threshold.</span>
+<span class="sd">        - If ``fixed=False``, this is the number of nearest neighbors used to form the</span>
+<span class="sd">          local neighborhood.</span>
+
+<span class="sd">        If ``graph`` is provided, ``bandwidth`` is ignored.</span>
 <span class="sd">    fixed : bool, optional</span>
 <span class="sd">        True for distance based bandwidth and False for adaptive (nearest neighbor)</span>
 <span class="sd">        bandwidth, by default False</span>
@@ -722,6 +749,31 @@
 <span class="sd">    left_out_w_ : np.ndarray</span>
 <span class="sd">        Array of weights on left out observations in local models when</span>
 <span class="sd">        ``leave_out`` is set.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import geopandas as gpd</span>
+<span class="sd">    &gt;&gt;&gt; from geodatasets import get_path</span>
+<span class="sd">    &gt;&gt;&gt; from gwlearn.linear_model import GWLogisticRegression</span>
+
+<span class="sd">    &gt;&gt;&gt; gdf = gpd.read_file(get_path(&#39;geoda.guerry&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; X = gdf[[&#39;Crm_prp&#39;, &#39;Litercy&#39;, &#39;Donatns&#39;, &#39;Lottery&#39;]]</span>
+<span class="sd">    &gt;&gt;&gt; y = gdf[&quot;Region&quot;] == &#39;E&#39;</span>
+
+<span class="sd">    &gt;&gt;&gt; gw = GWLogisticRegression(</span>
+<span class="sd">    ...     bandwidth=30,</span>
+<span class="sd">    ...     fixed=False,</span>
+<span class="sd">    ...     geometry=gdf.representative_point(),</span>
+<span class="sd">    ...     keep_models=True,</span>
+<span class="sd">    ...     max_iter=200,</span>
+<span class="sd">    ... ).fit(X, y)</span>
+<span class="sd">    &gt;&gt;&gt; gw.proba_.head()</span>
+<span class="sd">              False         True</span>
+<span class="sd">    0  5.490615e-02  9.450939e-01</span>
+<span class="sd">    1  1.000000e+00  1.795235e-08</span>
+<span class="sd">    2  9.999781e-01  2.191023e-05</span>
+<span class="sd">    3  8.003682e-02  9.199632e-01</span>
+<span class="sd">    4  2.809428e-07  9.999997e-01</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># TODO: score_ should be an alias of pooled_score_ - this is different from MGWR</span>
@@ -847,10 +899,25 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">GWLinearRegression</span><span class="p">(</span><span class="n">BaseRegressor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Geographically weighted linear regression</span>
 
+<span class="sd">    Fits one :class:`sklearn.linear_model.LinearRegression` per focal observation</span>
+<span class="sd">    using spatially varying sample weights.</span>
+
+<span class="sd">    The fitted object exposes focal predictions (``pred_``,  in-sample if</span>
+<span class="sd">    ``include_focal=True``) and local goodness-of-fit summaries.</span>
+
+<span class="sd">    Prediction for new (out-of-sample) observations is not currently implemented for</span>
+<span class="sd">    regressors.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    bandwidth : int | float</span>
-<span class="sd">        Bandwidth value consisting of either a distance or N nearest neighbors</span>
+<span class="sd">    bandwidth : float | int | None</span>
+<span class="sd">        Bandwidth for defining neighborhoods.</span>
+
+<span class="sd">        - If ``fixed=True``, this is a distance threshold.</span>
+<span class="sd">        - If ``fixed=False``, this is the number of nearest neighbors used to form the</span>
+<span class="sd">          local neighborhood.</span>
+
+<span class="sd">        If ``graph`` is provided, ``bandwidth`` is ignored.</span>
 <span class="sd">    fixed : bool, optional</span>
 <span class="sd">        True for distance based bandwidth and False for adaptive (nearest neighbor)</span>
 <span class="sd">        bandwidth, by default False</span>
@@ -936,6 +1003,29 @@
 <span class="sd">        each location</span>
 <span class="sd">    local_intercept_ : pd.Series</span>
 <span class="sd">        Local intercept values at each location</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import geopandas as gpd</span>
+<span class="sd">    &gt;&gt;&gt; from geodatasets import get_path</span>
+<span class="sd">    &gt;&gt;&gt; from gwlearn.linear_model import GWLinearRegression</span>
+
+<span class="sd">    &gt;&gt;&gt; gdf = gpd.read_file(get_path(&#39;geoda.guerry&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; X = gdf[[&#39;Crm_prp&#39;, &#39;Litercy&#39;, &#39;Donatns&#39;, &#39;Lottery&#39;]]</span>
+<span class="sd">    &gt;&gt;&gt; y = gdf[&quot;Suicids&quot;]</span>
+
+<span class="sd">    &gt;&gt;&gt; gwr = GWLinearRegression(</span>
+<span class="sd">    ...     bandwidth=30,</span>
+<span class="sd">    ...     fixed=False,</span>
+<span class="sd">    ...     geometry=gdf.representative_point(),</span>
+<span class="sd">    ... ).fit(X, y)</span>
+<span class="sd">    &gt;&gt;&gt; gwr.local_r2_.head()</span>
+<span class="sd">    0    0.614715</span>
+<span class="sd">    1    0.488495</span>
+<span class="sd">    2    0.599862</span>
+<span class="sd">    3    0.662435</span>
+<span class="sd">    4    0.662276</span>
+<span class="sd">    dtype: float64</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -1084,7 +1174,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "navigation.footer", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.top", "navigation.footer", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
       
         <script src="../../_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>

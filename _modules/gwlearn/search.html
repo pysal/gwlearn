@@ -17,7 +17,7 @@
     
     
       
-        <title>gwlearn.search - gwlearn 0.1.dev84 documentation</title>
+        <title>gwlearn.search - gwlearn 0.1.dev85 documentation</title>
       
     
     
@@ -79,7 +79,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="gwlearn 0.1.dev84 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev84 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev85 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev85 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -90,7 +90,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.1.dev84 documentation
+            gwlearn 0.1.dev85 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -129,7 +129,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="light-blue"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="red"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
     
       <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
@@ -221,10 +221,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="gwlearn 0.1.dev84 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev84 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev85 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev85 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.1.dev84 documentation
+    gwlearn 0.1.dev85 documentation
   </label>
   
     <div class="md-nav__source">
@@ -272,15 +272,20 @@
   
     
     
+      
+        
+        
+      
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
@@ -507,15 +512,20 @@
   
     
     
+      
+        
+        
+      
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -612,11 +622,11 @@
 <div class="viewcode-block" id="BandwidthSearch">
 <a class="viewcode-back" href="../../generated/gwlearn.search.BandwidthSearch.html#gwlearn.search.BandwidthSearch">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BandwidthSearch</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Optimal bandwidth search for geographically-weighted models</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Optimal bandwidth search for geographically weighted estimators.</span>
 
 <span class="sd">    Reports information criteria and (optionally) other scores from multiple models with</span>
-<span class="sd">    varying bandwidth. When using golden section search, minimizes one of</span>
-<span class="sd">    AIC, AICc, BIC based on prediction probability on focal geometries.</span>
+<span class="sd">    varying bandwidth. When using golden section search, it minimizes (or maximizes)</span>
+<span class="sd">    the chosen ``criterion``.</span>
 
 <span class="sd">    When using classification models with a defined ``min_proportion``, keep in mind</span>
 <span class="sd">    that some locations may be excluded from the final model. In such a case, the</span>
@@ -625,8 +635,11 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    model : model class</span>
-<span class="sd">        Scikit-learn model class or compatible estimator.</span>
+<span class="sd">    model : type</span>
+<span class="sd">        A geographically weighted estimator class (e.g.</span>
+<span class="sd">        :class:`gwlearn.linear_model.GWLogisticRegression`) that can be instantiated as</span>
+<span class="sd">        ``model(bandwidth=..., geometry=..., fixed=..., kernel=..., n_jobs=..., ...)``</span>
+<span class="sd">        and exposes information criteria attributes like ``aicc_``/``aic_``/``bic_``.</span>
 <span class="sd">    fixed : bool, optional</span>
 <span class="sd">        True for distance based bandwidth and False for adaptive (nearest neighbor)</span>
 <span class="sd">        bandwidth, by default ``False``</span>
@@ -642,15 +655,21 @@
 <span class="sd">        fits all models within the specified bandwidths at a set interval without any</span>
 <span class="sd">        attempt to optimize the selection. By default ``&quot;golden_section&quot;``.</span>
 <span class="sd">    criterion : str, optional</span>
-<span class="sd">        Vriterion used to select optimal bandwidth. Can be one of</span>
-<span class="sd">        ``{&quot;aicc&quot;, &quot;aic&quot;, &quot;bic&quot;}`` or any of ``metrics``. By default ``&quot;aicc&quot;``.</span>
+<span class="sd">        Criterion used to select the optimal bandwidth.</span>
+
+<span class="sd">        Supported values include</span>
+<span class="sd">        ``{&quot;aicc&quot;, &quot;aic&quot;, &quot;bic&quot;, &quot;prediction_rate&quot;, &quot;log_loss&quot;}``.</span>
+<span class="sd">        If you pass another string, it is interpreted as an attribute name ``m`` and</span>
+<span class="sd">        retrieved from the fitted model as ``getattr(model, m + &quot;_&quot;)``.</span>
+<span class="sd">        By default ``&quot;aicc&quot;``.</span>
 <span class="sd">    metrics : list[str] | None, optional</span>
-<span class="sd">        List of additional metrics beyond ``criterion`` to be reported. Has to be</span>
-<span class="sd">        an attribute supported by ``model`` or &#39;prediction_rate&#39;. By default ``None``.</span>
+<span class="sd">        Additional metrics to report for each bandwidth. Metrics follow the same</span>
+<span class="sd">        conventions as ``criterion`` (including special cases ``&quot;log_loss&quot;`` and</span>
+<span class="sd">        ``&quot;prediction_rate&quot;``). By default ``None``.</span>
 <span class="sd">    minimize : bool, optional</span>
 <span class="sd">        Minimize or maximize the ``criterion``. When using information criterions,</span>
 <span class="sd">        like AICc, the optimal solution is the lowest value. When using other metrics,</span>
-<span class="sd">        the optimal may the the highest value. By default True, assuming lower is</span>
+<span class="sd">        the optimal may be the highest value. By default True, assuming lower is</span>
 <span class="sd">        better.</span>
 <span class="sd">    min_bandwidth : int | float | None, optional</span>
 <span class="sd">        Minimum bandwidth to consider, by default ``None``</span>
@@ -674,8 +693,34 @@
 <span class="sd">    metrics_ : pd.DataFrame</span>
 <span class="sd">        DataFrame of additional metrics for each bandwidth tested.</span>
 <span class="sd">    optimal_bandwidth_ : int | float</span>
-<span class="sd">        The optimal bandwidth found by the search method (minimizing or maximizingt</span>
-<span class="sd">        the criterion).</span>
+<span class="sd">        The optimal bandwidth found by the search method.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Interval search over a small set of candidate bandwidths:</span>
+
+<span class="sd">    &gt;&gt;&gt; import geopandas as gpd</span>
+<span class="sd">    &gt;&gt;&gt; from geodatasets import get_path</span>
+<span class="sd">    &gt;&gt;&gt; from gwlearn.linear_model import GWLogisticRegression</span>
+<span class="sd">    &gt;&gt;&gt; from gwlearn.search import BandwidthSearch</span>
+
+<span class="sd">    &gt;&gt;&gt; gdf = gpd.read_file(get_path(&#39;geoda.guerry&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; X = gdf[[&#39;Crm_prp&#39;, &#39;Litercy&#39;, &#39;Donatns&#39;, &#39;Lottery&#39;]]</span>
+<span class="sd">    &gt;&gt;&gt; y = gdf[&quot;Region&quot;] == &#39;E&#39;</span>
+
+<span class="sd">    &gt;&gt;&gt; search = BandwidthSearch(</span>
+<span class="sd">    ...     GWLogisticRegression,</span>
+<span class="sd">    ...     geometry=gdf.representative_point(),</span>
+<span class="sd">    ...     fixed=False,</span>
+<span class="sd">    ...     search_method=&quot;interval&quot;,</span>
+<span class="sd">    ...     criterion=&quot;aicc&quot;,</span>
+<span class="sd">    ...     min_bandwidth=20,</span>
+<span class="sd">    ...     max_bandwidth=80,</span>
+<span class="sd">    ...     interval=10,</span>
+<span class="sd">    ...     max_iter=200,</span>
+<span class="sd">    ... ).fit(X, y)</span>
+<span class="sd">    &gt;&gt;&gt; search.optimal_bandwidth_</span>
+<span class="sd">    np.int64(40)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -728,6 +773,27 @@
 <div class="viewcode-block" id="BandwidthSearch.fit">
 <a class="viewcode-back" href="../../generated/gwlearn.search.BandwidthSearch.html#gwlearn.search.BandwidthSearch.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the searcher by evaluating candidate bandwidths on the provided data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : pd.DataFrame</span>
+<span class="sd">            Feature matrix used to evaluate candidate bandwidths (rows are samples).</span>
+<span class="sd">        y : pd.Series</span>
+<span class="sd">            Target values corresponding to X.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self</span>
+<span class="sd">            The fitted instance.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The optimal bandwidth is selected as the index of the minimum score if</span>
+<span class="sd">        ``minimize=True``, otherwise as the index of the maximum score.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_method</span> <span class="o">==</span> <span class="s2">&quot;interval&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_method</span> <span class="o">==</span> <span class="s2">&quot;golden_section&quot;</span><span class="p">:</span>
@@ -741,7 +807,7 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">bw</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the model ans report criterion score.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the model and report criterion score.</span>
 
 <span class="sd">        In case of invariant y in a local model, returns np.inf</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -969,7 +1035,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "navigation.footer", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.top", "navigation.footer", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
       
         <script src="../../_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>

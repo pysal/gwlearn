@@ -17,7 +17,7 @@
     
     
       
-        <title>gwlearn.base - gwlearn 0.1.dev84 documentation</title>
+        <title>gwlearn.base - gwlearn 0.1.dev85 documentation</title>
       
     
     
@@ -79,7 +79,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="gwlearn 0.1.dev84 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev84 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev85 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev85 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -90,7 +90,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.1.dev84 documentation
+            gwlearn 0.1.dev85 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -129,7 +129,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="light-blue"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="red"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
     
       <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
@@ -221,10 +221,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="gwlearn 0.1.dev84 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev84 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev85 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev85 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.1.dev84 documentation
+    gwlearn 0.1.dev85 documentation
   </label>
   
     <div class="md-nav__source">
@@ -272,15 +272,20 @@
   
     
     
+      
+        
+        
+      
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
@@ -507,15 +512,20 @@
   
     
     
+      
+        
+        
+      
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -876,9 +886,9 @@
 <span class="sd">        -----------</span>
 <span class="sd">        X : pd.DataFrame</span>
 <span class="sd">            Design matrix of the local neighborhood</span>
-<span class="sd">        weights : np.ndarray</span>
+<span class="sd">        weights : numpy.ndarray</span>
 <span class="sd">            Spatial weights for the neighborhood</span>
-<span class="sd">        focal_x : np.ndarray</span>
+<span class="sd">        focal_x : numpy.ndarray</span>
 <span class="sd">            Feature vector of the focal point</span>
 
 <span class="sd">        Returns:</span>
@@ -968,14 +978,36 @@
 <div class="viewcode-block" id="BaseClassifier">
 <a class="viewcode-back" href="../../generated/gwlearn.base.BaseClassifier.html#gwlearn.base.BaseClassifier">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BaseClassifier</span><span class="p">(</span><span class="n">ClassifierMixin</span><span class="p">,</span> <span class="n">_BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic geographically weighted classification meta-class</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic geographically weighted classification meta-estimator.</span>
+
+<span class="sd">    This class wraps a scikit-learn-compatible *classifier class* and fits one local</span>
+<span class="sd">    model per focal observation using spatially varying sample weights.</span>
+
+<span class="sd">    The spatial interaction is defined either by (a) ``geometry`` + bandwidth/kernel</span>
+<span class="sd">    settings or (b) a precomputed :class:`libpysal.graph.Graph` passed via ``graph``.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - ``y`` must be binary (``{0, 1}`` or boolean).</span>
+<span class="sd">    - To enable prediction on new data via :meth:`predict`/:meth:`predict_proba`, you</span>
+<span class="sd">      must set ``keep_models=True`` (store in memory) or ``keep_models=Path(...)``</span>
+<span class="sd">      (serialize to disk).</span>
+<span class="sd">    - Only point geometries are supported.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    model : model class</span>
-<span class="sd">        Scikit-learn model class</span>
-<span class="sd">    bandwidth : int | float</span>
-<span class="sd">        Bandwidth value consisting of either a distance or N nearest neighbors</span>
+<span class="sd">    model : ClassifierMixin</span>
+<span class="sd">        Class implementing the scikit-learn classifier API (e.g.</span>
+<span class="sd">        :class:`sklearn.linear_model.LogisticRegression`). The class (not an instance)</span>
+<span class="sd">        is instantiated internally for each local model.</span>
+<span class="sd">    bandwidth : float | int | None</span>
+<span class="sd">        Bandwidth for defining neighborhoods.</span>
+
+<span class="sd">        - If ``fixed=True``, this is a distance threshold.</span>
+<span class="sd">        - If ``fixed=False``, this is the number of nearest neighbors used to form the</span>
+<span class="sd">          local neighborhood.</span>
+
+<span class="sd">        If ``graph`` is provided, ``bandwidth`` is ignored.</span>
 <span class="sd">    fixed : bool, optional</span>
 <span class="sd">        True for distance based bandwidth and False for adaptive (nearest neighbor)</span>
 <span class="sd">        bandwidth, by default False</span>
@@ -1064,14 +1096,45 @@
 <span class="sd">    prediction_rate_ : float</span>
 <span class="sd">        Proportion of models that are fitted, where the rest are skipped due to not</span>
 <span class="sd">        fulfilling ``min_proportion``.</span>
-<span class="sd">    left_out_y_ : np.ndarray</span>
+<span class="sd">    left_out_y_ : numpy.ndarray</span>
 <span class="sd">        Array of ``y`` values left out when ``leave_out`` is set.</span>
-<span class="sd">    left_out_proba_ : np.ndarray</span>
+<span class="sd">    left_out_proba_ : numpy.ndarray</span>
 <span class="sd">        Array of probabilites on left out observations in local models when</span>
 <span class="sd">        ``leave_out`` is set.</span>
-<span class="sd">    left_out_w_ : np.ndarray</span>
+<span class="sd">    left_out_w_ : numpy.ndarray</span>
 <span class="sd">        Array of weights on left out observations in local models when</span>
 <span class="sd">        ``leave_out`` is set.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Fit a geographically weighted logistic regression by passing a scikit-learn</span>
+<span class="sd">    classifier class.</span>
+
+<span class="sd">    &gt;&gt;&gt; import geopandas as gpd</span>
+<span class="sd">    &gt;&gt;&gt; from geodatasets import get_path</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn.linear_model import LogisticRegression</span>
+<span class="sd">    &gt;&gt;&gt; from gwlearn.base import BaseClassifier</span>
+
+<span class="sd">    &gt;&gt;&gt; gdf = gpd.read_file(get_path(&#39;geoda.guerry&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; X = gdf[[&#39;Crm_prp&#39;, &#39;Litercy&#39;, &#39;Donatns&#39;, &#39;Lottery&#39;]]</span>
+<span class="sd">    &gt;&gt;&gt; y = gdf[&quot;Region&quot;] == &#39;E&#39;</span>
+
+<span class="sd">    &gt;&gt;&gt; gw = BaseClassifier(</span>
+<span class="sd">    ...     LogisticRegression,</span>
+<span class="sd">    ...     bandwidth=30,</span>
+<span class="sd">    ...     fixed=False,</span>
+<span class="sd">    ...     geometry=gdf.representative_point(),</span>
+<span class="sd">    ...     include_focal=True,</span>
+<span class="sd">    ...     keep_models=True,</span>
+<span class="sd">    ...     max_iter=200,</span>
+<span class="sd">    ... ).fit(X, y)</span>
+<span class="sd">    &gt;&gt;&gt; gw.pred_.head()</span>
+<span class="sd">    0     True</span>
+<span class="sd">    1    False</span>
+<span class="sd">    2    False</span>
+<span class="sd">    3     True</span>
+<span class="sd">    4     True</span>
+<span class="sd">    dtype: boolean</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -1134,14 +1197,27 @@
 <div class="viewcode-block" id="BaseClassifier.fit">
 <a class="viewcode-back" href="../../generated/gwlearn.base.BaseClassifier.html#gwlearn.base.BaseClassifier.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseClassifier&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the geographically weighted model</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit geographically weighted local classification models.</span>
+
+<span class="sd">        This fits one local model per focal observation (subject to local invariance</span>
+<span class="sd">        checks and ``min_proportion``) and stores focal predictions.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : pd.DataFrame</span>
-<span class="sd">            Independent variables</span>
-<span class="sd">        y : pd.Series</span>
-<span class="sd">            Dependent variable</span>
+<span class="sd">        X : pandas.DataFrame</span>
+<span class="sd">            Feature matrix.</span>
+<span class="sd">        y : pandas.Series</span>
+<span class="sd">            Binary target encoded as boolean or ``{0, 1}``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self</span>
+<span class="sd">            Fitted estimator.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The neighborhood definition comes from either ``self.graph`` or from</span>
+<span class="sd">        ``self.geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 
@@ -1354,9 +1430,7 @@
         <span class="k">return</span> <span class="n">output</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_compute_global_log_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute global log likelihood for classification</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute a pooled (global) log-likelihood from focal probabilities.&quot;&quot;&quot;</span>
         <span class="c1"># Get valid predictions (non-NaN)</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="o">~</span><span class="bp">self</span><span class="o">.</span><span class="n">proba_</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
@@ -1384,7 +1458,26 @@
 <div class="viewcode-block" id="BaseClassifier.predict_proba">
 <a class="viewcode-back" href="../../generated/gwlearn.base.BaseClassifier.html#gwlearn.base.BaseClassifier.predict_proba">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Predict probabiliies using the ensemble of local models&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Predict class probabilities for new observations.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : pandas.DataFrame</span>
+<span class="sd">            Feature matrix for new observations.</span>
+<span class="sd">        geometry : geopandas.GeoSeries</span>
+<span class="sd">            Point geometries for new observations.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pandas.DataFrame</span>
+<span class="sd">            Predicted probabilities with columns equal to the global classes observed</span>
+<span class="sd">            during fit.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Requires the estimator to have been fit with ``keep_models=True`` (or a</span>
+<span class="sd">        ``Path``) so local models can be used at prediction time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed</span><span class="p">:</span>
@@ -1476,6 +1569,27 @@
 <div class="viewcode-block" id="BaseClassifier.predict">
 <a class="viewcode-back" href="../../generated/gwlearn.base.BaseClassifier.html#gwlearn.base.BaseClassifier.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Predict classes for new observations.</span>
+
+<span class="sd">        This is equivalent to ``predict_proba(...).idxmax(axis=1)``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : pandas.DataFrame</span>
+<span class="sd">            Feature matrix for new observations.</span>
+<span class="sd">        geometry : geopandas.GeoSeries</span>
+<span class="sd">            Point geometries for new observations.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pandas.Series</span>
+<span class="sd">            Predicted class.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Requires the estimator to have been fit with ``keep_models=True`` (or a</span>
+<span class="sd">        ``Path``) so local models can be used at prediction time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">proba</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">geometry</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">proba</span><span class="o">.</span><span class="n">idxmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
@@ -1483,16 +1597,17 @@
 <div class="viewcode-block" id="BaseClassifier.local_metric">
 <a class="viewcode-back" href="../../generated/gwlearn.base.BaseClassifier.html#gwlearn.base.BaseClassifier.local_metric">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">local_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Measure local performance metrics</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute a metric per fitted local model.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        func : callable</span>
-<span class="sd">            callable with a signature ``func(y_true, y_pred)``</span>
+<span class="sd">            Callable with a signature ``func(y_true, y_pred, *args, **kwargs)``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        np.ndarray</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            One value per focal location (NaN for skipped / unfitted local models).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -1509,19 +1624,35 @@
 <div class="viewcode-block" id="BaseRegressor">
 <a class="viewcode-back" href="../../generated/gwlearn.base.BaseRegressor.html#gwlearn.base.BaseRegressor">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BaseRegressor</span><span class="p">(</span><span class="n">_BaseModel</span><span class="p">,</span> <span class="n">RegressorMixin</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic geographically weighted regression meta-class</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic geographically weighted regression meta-estimator.</span>
 
-<span class="sd">    TODO:</span>
-<span class="sd">        - tvalues &amp; adj_alpha &amp; critical_t val</span>
-<span class="sd">        - predict</span>
-<span class="sd">        - performance measurements</span>
+<span class="sd">    This class wraps a scikit-learn-compatible *regressor class* and fits one local</span>
+<span class="sd">    model per focal observation using spatially varying sample weights.</span>
+
+<span class="sd">    The fitted object exposes focal predictions (``pred_``,  in-sample if</span>
+<span class="sd">    ``include_focal=True``) and local goodness-of-fit summaries.</span>
+
+<span class="sd">    Prediction for new (out-of-sample) observations is not currently implemented for</span>
+<span class="sd">    regressors.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Only point geometries are supported.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    model : model class</span>
-<span class="sd">        Scikit-learn model class</span>
-<span class="sd">    bandwidth : int | float</span>
-<span class="sd">        Bandwidth value consisting of either a distance or N nearest neighbors</span>
+<span class="sd">    model : RegressorMixin</span>
+<span class="sd">        Class implementing the scikit-learn regressor API (e.g.</span>
+<span class="sd">        :class:`sklearn.linear_model.LinearRegression`). The class (not an instance)</span>
+<span class="sd">        is instantiated internally for each local model.</span>
+<span class="sd">    bandwidth : float | int | None</span>
+<span class="sd">        Bandwidth for defining neighborhoods.</span>
+
+<span class="sd">        - If ``fixed=True``, this is a distance threshold.</span>
+<span class="sd">        - If ``fixed=False``, this is the number of nearest neighbors used to form the</span>
+<span class="sd">          local neighborhood.</span>
+
+<span class="sd">        If ``graph`` is provided, ``bandwidth`` is ignored.</span>
 <span class="sd">    fixed : bool, optional</span>
 <span class="sd">        True for distance based bandwidth and False for adaptive (nearest neighbor)</span>
 <span class="sd">        bandwidth, by default False</span>
@@ -1601,19 +1732,58 @@
 <span class="sd">        complexity (smaller bandwidths).</span>
 <span class="sd">    bic_ : float</span>
 <span class="sd">        Bayesian information criterion.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import geopandas as gpd</span>
+<span class="sd">    &gt;&gt;&gt; from geodatasets import get_path</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn.linear_model import LinearRegression</span>
+<span class="sd">    &gt;&gt;&gt; from gwlearn.base import BaseRegressor</span>
+
+<span class="sd">    &gt;&gt;&gt; gdf = gpd.read_file(get_path(&#39;geoda.guerry&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; X = gdf[[&#39;Crm_prp&#39;, &#39;Litercy&#39;, &#39;Donatns&#39;, &#39;Lottery&#39;]]</span>
+<span class="sd">    &gt;&gt;&gt; y = gdf[&quot;Suicids&quot;]</span>
+
+<span class="sd">    &gt;&gt;&gt; gwr = BaseRegressor(</span>
+<span class="sd">    ...     LinearRegression,</span>
+<span class="sd">    ...     bandwidth=30,</span>
+<span class="sd">    ...     fixed=False,</span>
+<span class="sd">    ...     include_focal=True,</span>
+<span class="sd">    ...     geometry=gdf.representative_point(),</span>
+<span class="sd">    ... ).fit(X, y)</span>
+<span class="sd">    &gt;&gt;&gt; gwr.local_r2_.head()</span>
+<span class="sd">    0    0.614715</span>
+<span class="sd">    1    0.488495</span>
+<span class="sd">    2    0.599862</span>
+<span class="sd">    3    0.662435</span>
+<span class="sd">    4    0.662276</span>
+<span class="sd">    dtype: float64</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BaseRegressor.fit">
 <a class="viewcode-back" href="../../generated/gwlearn.base.BaseRegressor.html#gwlearn.base.BaseRegressor.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseRegressor&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the geographically weighted model</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit geographically weighted local regression models.</span>
+
+<span class="sd">        Fits one local model per focal observation and stores focal (in-sample if</span>
+<span class="sd">        ``include_focal=True``) predictions in ``pred_``.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : pd.DataFrame</span>
-<span class="sd">            Independent variables</span>
-<span class="sd">        y : pd.Series</span>
-<span class="sd">            Dependent variable</span>
+<span class="sd">        X : pandas.DataFrame</span>
+<span class="sd">            Feature matrix.</span>
+<span class="sd">        y : pandas.Series</span>
+<span class="sd">            Target values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self</span>
+<span class="sd">            Fitted estimator.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The neighborhood definition comes from either ``self.graph`` or from</span>
+<span class="sd">        ``self.geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_geometry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
 
@@ -1833,7 +2003,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "navigation.footer", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.top", "navigation.footer", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
       
         <script src="../../_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>

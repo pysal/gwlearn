@@ -17,7 +17,7 @@
     
     
       
-        <title>gwlearn.ensemble - gwlearn 0.1.dev84 documentation</title>
+        <title>gwlearn.ensemble - gwlearn 0.1.dev85 documentation</title>
       
     
     
@@ -79,7 +79,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="gwlearn 0.1.dev84 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev84 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev85 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev85 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -90,7 +90,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.1.dev84 documentation
+            gwlearn 0.1.dev85 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -129,7 +129,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="light-blue"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="red"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
     
       <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
@@ -221,10 +221,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="gwlearn 0.1.dev84 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev84 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev85 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev85 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.1.dev84 documentation
+    gwlearn 0.1.dev85 documentation
   </label>
   
     <div class="md-nav__source">
@@ -272,15 +272,20 @@
   
     
     
+      
+        
+        
+      
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
@@ -507,15 +512,20 @@
   
     
     
+      
+        
+        
+      
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -616,12 +626,32 @@
 <div class="viewcode-block" id="GWRandomForestClassifier">
 <a class="viewcode-back" href="../../generated/gwlearn.ensemble.GWRandomForestClassifier.html#gwlearn.ensemble.GWRandomForestClassifier">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GWRandomForestClassifier</span><span class="p">(</span><span class="n">BaseClassifier</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Geographically weighted random forest classifier</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Geographically weighted random forest classifier.</span>
+
+<span class="sd">    Fits one :class:`sklearn.ensemble.RandomForestClassifier` per focal observation</span>
+<span class="sd">    using spatially varying sample weights.</span>
+
+<span class="sd">    The spatial interaction is defined either by (a) ``geometry`` + bandwidth/kernel</span>
+<span class="sd">    settings or (b) a precomputed :class:`libpysal.graph.Graph` passed via ``graph``.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - ``y`` must be binary (``{0, 1}`` or boolean).</span>
+<span class="sd">    - To enable prediction on new data via :meth:`predict`/:meth:`predict_proba`, you</span>
+<span class="sd">      must set ``keep_models=True`` (store in memory) or ``keep_models=Path(...)``</span>
+<span class="sd">      (serialize to disk).</span>
+<span class="sd">    - Only point geometries are supported.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    bandwidth : int | float</span>
-<span class="sd">        bandwidth value consisting of either a distance or N nearest neighbors</span>
+<span class="sd">    bandwidth : float | int | None</span>
+<span class="sd">        Bandwidth for defining neighborhoods.</span>
+
+<span class="sd">        - If ``fixed=True``, this is a distance threshold.</span>
+<span class="sd">        - If ``fixed=False``, this is the number of nearest neighbors used to form the</span>
+<span class="sd">          local neighborhood.</span>
+
+<span class="sd">        If ``graph`` is provided, ``bandwidth`` is ignored.</span>
 <span class="sd">    fixed : bool, optional</span>
 <span class="sd">        True for distance based bandwidth and False for adaptive (nearest neighbor)</span>
 <span class="sd">        bandwidth, by default False</span>
@@ -712,20 +742,48 @@
 <span class="sd">    prediction_rate_ : float</span>
 <span class="sd">        Proportion of models that are fitted, where the rest are skipped due to not</span>
 <span class="sd">        fulfilling ``min_proportion``.</span>
-<span class="sd">    left_out_y_ : np.ndarray</span>
+<span class="sd">    left_out_y_ : numpy.ndarray</span>
 <span class="sd">        Array of ``y`` values left out when ``leave_out`` is set.</span>
-<span class="sd">    left_out_proba_ : np.ndarray</span>
+<span class="sd">    left_out_proba_ : numpy.ndarray</span>
 <span class="sd">        Array of probabilites on left out observations in local models when</span>
 <span class="sd">        ``leave_out`` is set.</span>
-<span class="sd">    left_out_w_ : np.ndarray</span>
+<span class="sd">    left_out_w_ : numpy.ndarray</span>
 <span class="sd">        Array of weights on left out observations in local models when</span>
 <span class="sd">        ``leave_out`` is set.</span>
+<span class="sd">    oob_y_pooled_ : numpy.ndarray</span>
+<span class="sd">        Pooled out-of-bag (OOB) true labels across all fitted local models.</span>
+<span class="sd">    oob_pred_pooled_ : numpy.ndarray</span>
+<span class="sd">        Pooled out-of-bag (OOB) predictions/scores across all fitted local models.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import geopandas as gpd</span>
+<span class="sd">    &gt;&gt;&gt; from geodatasets import get_path</span>
+<span class="sd">    &gt;&gt;&gt; from gwlearn.ensemble import GWRandomForestClassifier</span>
+
+<span class="sd">    &gt;&gt;&gt; gdf = gpd.read_file(get_path(&#39;geoda.guerry&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; X = gdf[[&#39;Crm_prp&#39;, &#39;Litercy&#39;, &#39;Donatns&#39;, &#39;Lottery&#39;]]</span>
+<span class="sd">    &gt;&gt;&gt; y = gdf[&quot;Region&quot;] == &#39;E&#39;</span>
+
+<span class="sd">    &gt;&gt;&gt; gw = GWRandomForestClassifier(</span>
+<span class="sd">    ...     bandwidth=30,</span>
+<span class="sd">    ...     fixed=False,</span>
+<span class="sd">    ...     geometry=gdf.representative_point(),</span>
+<span class="sd">    ...     random_state=0,</span>
+<span class="sd">    ... ).fit(X, y)</span>
+<span class="sd">    &gt;&gt;&gt; gw.pred_.head()</span>
+<span class="sd">    0    False</span>
+<span class="sd">    1    False</span>
+<span class="sd">    2    False</span>
+<span class="sd">    3     True</span>
+<span class="sd">    4     True</span>
+<span class="sd">    dtype: boolean</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">bandwidth</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">bandwidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">fixed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">kernel</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
             <span class="s2">&quot;triangular&quot;</span><span class="p">,</span>
@@ -782,19 +840,31 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_empty_score_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_oob_score_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Callback used by scikit-learn to collect OOB targets/predictions.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">true</span><span class="p">,</span> <span class="n">pred</span>
 
 <div class="viewcode-block" id="GWRandomForestClassifier.fit">
 <a class="viewcode-back" href="../../generated/gwlearn.ensemble.GWRandomForestClassifier.html#gwlearn.ensemble.GWRandomForestClassifier.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GWRandomForestClassifier&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the geographically weighted model</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit geographically weighted random forests.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : pd.DataFrame</span>
-<span class="sd">            Independent variables</span>
-<span class="sd">        y : pd.Series</span>
-<span class="sd">            Dependent variable</span>
+<span class="sd">        X : pandas.DataFrame</span>
+<span class="sd">            Feature matrix.</span>
+<span class="sd">        y : pandas.Series</span>
+<span class="sd">            Binary target encoded as boolean or ``{0, 1}``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        GWRandomForestClassifier</span>
+<span class="sd">            Fitted estimator.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        In addition to the base classifier outputs, this method also populates</span>
+<span class="sd">        ``oob_y_pooled_`` and ``oob_pred_pooled_`` by pooling OOB values across all</span>
+<span class="sd">        fitted local models.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_empty_feature_imp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
@@ -837,12 +907,32 @@
 <div class="viewcode-block" id="GWGradientBoostingClassifier">
 <a class="viewcode-back" href="../../generated/gwlearn.ensemble.GWGradientBoostingClassifier.html#gwlearn.ensemble.GWGradientBoostingClassifier">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GWGradientBoostingClassifier</span><span class="p">(</span><span class="n">BaseClassifier</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Geographically weighted gradient boosting classifier</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Geographically weighted gradient boosting classifier.</span>
+
+<span class="sd">    Fits one :class:`sklearn.ensemble.GradientBoostingClassifier` per focal observation</span>
+<span class="sd">    using spatially varying sample weights.</span>
+
+<span class="sd">    The spatial interaction is defined either by (a) ``geometry`` + bandwidth/kernel</span>
+<span class="sd">    settings or (b) a precomputed :class:`libpysal.graph.Graph` passed via ``graph``.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - ``y`` must be binary (``{0, 1}`` or boolean).</span>
+<span class="sd">    - To enable prediction on new data via :meth:`predict`/:meth:`predict_proba`, you</span>
+<span class="sd">      must set ``keep_models=True`` (store in memory) or ``keep_models=Path(...)``</span>
+<span class="sd">      (serialize to disk).</span>
+<span class="sd">    - Only point geometries are supported.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    bandwidth : int | float</span>
-<span class="sd">        bandwidth value consisting of either a distance or N nearest neighbors</span>
+<span class="sd">    bandwidth : float | int | None</span>
+<span class="sd">        Bandwidth for defining neighborhoods.</span>
+
+<span class="sd">        - If ``fixed=True``, this is a distance threshold.</span>
+<span class="sd">        - If ``fixed=False``, this is the number of nearest neighbors used to form the</span>
+<span class="sd">          local neighborhood.</span>
+
+<span class="sd">        If ``graph`` is provided, ``bandwidth`` is ignored.</span>
 <span class="sd">    fixed : bool, optional</span>
 <span class="sd">        True for distance based bandwidth and False for adaptive (nearest neighbor)</span>
 <span class="sd">        bandwidth, by default False</span>
@@ -927,12 +1017,36 @@
 <span class="sd">    prediction_rate_ : float</span>
 <span class="sd">        Proportion of models that are fitted, where the rest are skipped due to not</span>
 <span class="sd">        fulfilling ``min_proportion``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import geopandas as gpd</span>
+<span class="sd">    &gt;&gt;&gt; from geodatasets import get_path</span>
+<span class="sd">    &gt;&gt;&gt; from gwlearn.ensemble import GWGradientBoostingClassifier</span>
+
+<span class="sd">    &gt;&gt;&gt; gdf = gpd.read_file(get_path(&#39;geoda.guerry&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; X = gdf[[&#39;Crm_prp&#39;, &#39;Litercy&#39;, &#39;Donatns&#39;, &#39;Lottery&#39;]]</span>
+<span class="sd">    &gt;&gt;&gt; y = gdf[&quot;Region&quot;] == &#39;E&#39;</span>
+
+<span class="sd">    &gt;&gt;&gt; gw = GWGradientBoostingClassifier(</span>
+<span class="sd">    ...     bandwidth=30,</span>
+<span class="sd">    ...     fixed=False,</span>
+<span class="sd">    ...     geometry=gdf.representative_point(),</span>
+<span class="sd">    ...     random_state=0,</span>
+<span class="sd">    ... ).fit(X, y)</span>
+<span class="sd">    &gt;&gt;&gt; gw.pred_.head()</span>
+<span class="sd">    0    False</span>
+<span class="sd">    1    False</span>
+<span class="sd">    2    False</span>
+<span class="sd">    3     True</span>
+<span class="sd">    4     True</span>
+<span class="sd">    dtype: boolean</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">bandwidth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">bandwidth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">fixed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">kernel</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
             <span class="s2">&quot;triangular&quot;</span><span class="p">,</span>
@@ -987,14 +1101,23 @@
 <div class="viewcode-block" id="GWGradientBoostingClassifier.fit">
 <a class="viewcode-back" href="../../generated/gwlearn.ensemble.GWGradientBoostingClassifier.html#gwlearn.ensemble.GWGradientBoostingClassifier.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GWGradientBoostingClassifier&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the geographically weighted model</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit geographically weighted gradient boosting classifiers.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : pd.DataFrame</span>
-<span class="sd">            Independent variables</span>
-<span class="sd">        y : pd.Series</span>
-<span class="sd">            Dependent variable</span>
+<span class="sd">        X : pandas.DataFrame</span>
+<span class="sd">            Feature matrix.</span>
+<span class="sd">        y : pandas.Series</span>
+<span class="sd">            Binary target encoded as boolean or ``{0, 1}``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        GWGradientBoostingClassifier</span>
+<span class="sd">            Fitted estimator.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Populates ``feature_importances_`` from the fitted local models.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_empty_feature_imp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
@@ -1076,7 +1199,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "navigation.footer", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.top", "navigation.footer", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
       
         <script src="../../_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>
