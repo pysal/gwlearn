@@ -27,13 +27,13 @@ language = "en"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    "numpydoc",
     "myst_nb",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
     "sphinx.ext.mathjax",
+    "sphinx.ext.napoleon",
     "sphinxcontrib.bibtex",
     "sphinx_autosummary_accessors",
     "sphinx_copybutton",
@@ -63,18 +63,16 @@ intersphinx_mapping = {
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 autosummary_generate = True
-numpydoc_show_class_members = False
-numpydoc_use_plots = True
-class_members_toctree = True
-numpydoc_show_inherited_class_members = True
-numpydoc_xref_param_type = True
+napoleon_google_docstring = False
+napoleon_numpy_docstring = True
+napoleon_use_param = True
+napoleon_use_rtype = True
 autodoc_default_options = {
     "members": True,
     "undoc-members": True,
     "inherited-members": True,
     "exclude-members": "set_predict_request, set_score_request, set_predict_proba_request, set_fit_request, score",
 }
-plot_include_source = True
 suppress_warnings = ["ref.ref"]
 
 html_theme = "sphinx_immaterial"

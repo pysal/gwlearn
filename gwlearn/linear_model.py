@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from pathlib import Path
 from typing import Literal
 
 import geopandas as gpd
@@ -142,11 +143,14 @@ class GWLogisticRegression(BaseClassifier):
         n_jobs: int = -1,
         fit_global_model: bool = True,
         strict: bool = False,
-        keep_models: bool = False,
+        keep_models: bool | str | Path = False,
         temp_folder: str | None = None,
         batch_size: int | None = None,
+        min_proportion: float = 0.2,
         undersample: bool = False,
         leave_out: float | int | None = None,
+        random_state: int | None = None,
+        verbose: bool = False,
         **kwargs,
     ):
         super().__init__(
@@ -163,8 +167,11 @@ class GWLogisticRegression(BaseClassifier):
             keep_models=keep_models,
             temp_folder=temp_folder,
             batch_size=batch_size,
+            min_proportion=min_proportion,
             undersample=undersample,
             leave_out=leave_out,
+            random_state=random_state,
+            verbose=verbose,
             **kwargs,
         )
 
@@ -199,11 +206,15 @@ class GWLogisticRegression(BaseClassifier):
 
         # Check for empty arrays before concatenation to avoid unexpected shapes
         if self._y_local and any(arr.size > 0 for arr in self._y_local):
-            self.y_pooled_ = np.concatenate([arr for arr in self._y_local if arr.size > 0])
+            self.y_pooled_ = np.concatenate(
+                [arr for arr in self._y_local if arr.size > 0]
+            )
         else:
             self.y_pooled_ = np.array([])
         if self._pred_local and any(arr.size > 0 for arr in self._pred_local):
-            self.pred_pooled_ = np.concatenate([arr for arr in self._pred_local if arr.size > 0])
+            self.pred_pooled_ = np.concatenate(
+                [arr for arr in self._pred_local if arr.size > 0]
+            )
         else:
             self.pred_pooled_ = np.array([])
 
@@ -289,7 +300,7 @@ class GWLinearRegression(BaseRegressor):
     pred_ : pd.Series
         Focal predictions for each location.
     resid_ : pd.Series
-        Residuals for each location (y - pred_).
+        Residuals for each location (``y`` - ``pred_``).
     RSS_ : pd.Series
         Residual sum of squares for each location.
     TSS_ : pd.Series
@@ -298,12 +309,6 @@ class GWLinearRegression(BaseRegressor):
         Weighted mean of y for each location.
     local_r2_ : pd.Series
         Local R2 for each location.
-    focal_r2_ : float
-        Global R2 for focal predictions.
-    score_ : float
-        Alias for focal_r2_ (global R2 for focal predictions).
-    focal_adj_r2_ : float
-        Adjusted R2 for focal predictions.
     hat_values_ : pd.Series
         Hat values for each location (diagonal elements of hat matrix).
     effective_df_ : float
@@ -344,9 +349,11 @@ class GWLinearRegression(BaseRegressor):
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
+        strict: bool | None = False,
         keep_models: bool = False,
         temp_folder: str | None = None,
         batch_size: int | None = None,
+        verbose: bool = False,
         **kwargs,
     ):
         super().__init__(
@@ -359,9 +366,11 @@ class GWLinearRegression(BaseRegressor):
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
+            strict=strict,
             keep_models=keep_models,
             temp_folder=temp_folder,
             batch_size=batch_size,
+            verbose=verbose,
             **kwargs,
         )
 

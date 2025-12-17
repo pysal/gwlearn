@@ -190,8 +190,6 @@ class GWRandomForestClassifier(BaseClassifier):
             Independent variables
         y : pd.Series
             Dependent variable
-        geometry : gpd.GeoSeries
-            Geographic location
         """
         self._empty_feature_imp = np.array([np.nan] * (X.shape[1]))
         super().fit(X=X, y=y)
@@ -343,10 +341,14 @@ class GWGradientBoostingClassifier(BaseClassifier):
         graph: graph.Graph = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
-        strict: bool = False,
-        keep_models: bool = False,
+        strict: bool | None = False,
+        keep_models: bool | str | Path = False,
         temp_folder: str | None = None,
         batch_size: int | None = None,
+        min_proportion: float = 0.2,
+        undersample: bool = False,
+        random_state: int | None = None,
+        verbose: bool = False,
         **kwargs,
     ):
         super().__init__(
@@ -363,6 +365,10 @@ class GWGradientBoostingClassifier(BaseClassifier):
             keep_models=keep_models,
             temp_folder=temp_folder,
             batch_size=batch_size,
+            min_proportion=min_proportion,
+            undersample=undersample,
+            random_state=random_state,
+            verbose=verbose,
             **kwargs,
         )
 
@@ -378,8 +384,6 @@ class GWGradientBoostingClassifier(BaseClassifier):
             Independent variables
         y : pd.Series
             Dependent variable
-        geometry : gpd.GeoSeries
-            Geographic location
         """
         self._empty_feature_imp = np.array([np.nan] * (X.shape[1]))
         super().fit(X=X, y=y)
