@@ -17,6 +17,7 @@ dependencies:
   - pytest
   - pytest-cov
   - pytest-xdist
+  - pytest-doctestplus
   # docs
   - ipykernel
   - myst-nb

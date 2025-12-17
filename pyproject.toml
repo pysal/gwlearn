@@ -102,6 +102,7 @@ furo = ">=2024.8.6,<2025"
 pydata-sphinx-theme = ">=0.15.4,<0.16"
 pandarm = ">=0.0.3,<0.0.4"
 sphinx-immaterial = ">=0.13.8,<0.14"
+pytest-doctestplus = ">=1.6.0,<2"
 
 [tool.pixi.pypi-dependencies]
 gwlearn = { path = ".", editable = true }

@@ -9,11 +9,11 @@ from sklearn import metrics
 
 
 class BandwidthSearch:
-    """Optimal bandwidth search for geographically-weighted models
+    """Optimal bandwidth search for geographically weighted estimators.
 
     Reports information criteria and (optionally) other scores from multiple models with
-    varying bandwidth. When using golden section search, minimizes one of
-    AIC, AICc, BIC based on prediction probability on focal geometries.
+    varying bandwidth. When using golden section search, it minimizes (or maximizes)
+    the chosen ``criterion``.
 
     When using classification models with a defined ``min_proportion``, keep in mind
     that some locations may be excluded from the final model. In such a case, the
@@ -22,8 +22,11 @@ class BandwidthSearch:
 
     Parameters
     ----------
-    model : model class
-        Scikit-learn model class or compatible estimator.
+    model : type
+        A geographically weighted estimator class (e.g.
+        :class:`gwlearn.linear_model.GWLogisticRegression`) that can be instantiated as
+        ``model(bandwidth=..., geometry=..., fixed=..., kernel=..., n_jobs=..., ...)``
+        and exposes information criteria attributes like ``aicc_``/``aic_``/``bic_``.
     fixed : bool, optional
         True for distance based bandwidth and False for adaptive (nearest neighbor)
         bandwidth, by default ``False``
@@ -39,15 +42,21 @@ class BandwidthSearch:
         fits all models within the specified bandwidths at a set interval without any
         attempt to optimize the selection. By default ``"golden_section"``.
     criterion : str, optional
-        Vriterion used to select optimal bandwidth. Can be one of
-        ``{"aicc", "aic", "bic"}`` or any of ``metrics``. By default ``"aicc"``.
+        Criterion used to select the optimal bandwidth.
+
+        Supported values include
+        ``{"aicc", "aic", "bic", "prediction_rate", "log_loss"}``.
+        If you pass another string, it is interpreted as an attribute name ``m`` and
+        retrieved from the fitted model as ``getattr(model, m + "_")``.
+        By default ``"aicc"``.
     metrics : list[str] | None, optional
-        List of additional metrics beyond ``criterion`` to be reported. Has to be
-        an attribute supported by ``model`` or 'prediction_rate'. By default ``None``.
+        Additional metrics to report for each bandwidth. Metrics follow the same
+        conventions as ``criterion`` (including special cases ``"log_loss"`` and
+        ``"prediction_rate"``). By default ``None``.
     minimize : bool, optional
         Minimize or maximize the ``criterion``. When using information criterions,
         like AICc, the optimal solution is the lowest value. When using other metrics,
-        the optimal may the the highest value. By default True, assuming lower is
+        the optimal may be the highest value. By default True, assuming lower is
         better.
     min_bandwidth : int | float | None, optional
         Minimum bandwidth to consider, by default ``None``
@@ -71,8 +80,35 @@ class BandwidthSearch:
     metrics_ : pd.DataFrame
         DataFrame of additional metrics for each bandwidth tested.
     optimal_bandwidth_ : int | float
-        The optimal bandwidth found by the search method (minimizing or maximizingt
-        the criterion).
+        The optimal bandwidth found by the search method.
+
+    Examples
+    --------
+    Interval search over a small grid of candidate bandwidths:
+
+    >>> import numpy as np
+    >>> import geopandas as gpd
+    >>> import pandas as pd
+    >>> from gwlearn.linear_model import GWLogisticRegression
+    >>> from gwlearn.search import BandwidthSearch
+    >>> rng = np.random.default_rng(0)
+    >>> n = 60
+    >>> X = pd.DataFrame(rng.normal(size=(n, 2)), columns=["x1", "x2"])
+    >>> y = (X["x1"] + rng.normal(scale=0.5, size=n) > 0).astype(int)
+    >>> geometry = gpd.GeoSeries.from_xy(rng.uniform(0, 1, n), rng.uniform(0, 1, n)))
+    >>> search = BandwidthSearch(
+    ...     GWLogisticRegression,
+    ...     geometry=geometry,
+    ...     search_method="interval",
+    ...     criterion="aicc",
+    ...     min_bandwidth=20,
+    ...     max_bandwidth=60,
+    ...     interval=10,
+    ...     keep_models=False,
+    ...     max_iter=200,
+    ... ).fit(X, y)
+    >>> float(search.optimal_bandwidth_) in search.scores_.index
+    True
     """
 
     def __init__(

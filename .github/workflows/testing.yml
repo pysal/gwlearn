@@ -86,6 +86,10 @@ jobs:
           --cov-report term-missing \
           --cov-report xml . \
 
+      - name: doctest
+        run: |
+          pytest -v --color=yes --doctest-only gwlearn
+
       - name: codecov
         uses: codecov/codecov-action@v4
         with:

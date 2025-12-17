@@ -3,13 +3,33 @@ import pandas as pd
 
 
 class BinaryRandomUnderSampler:
-    """
-    Random undersampler for binary targets only.
+    """Random undersampling for binary targets.
 
-    sampling_strategy:
-      - True -> fully balanced (minority / majority = 1.0)
-      - float alpha in (0, 1) -> desired minority/majority ratio after resampling:
-        alpha = N_min / N_resampled_majority
+    This helper implements a minimal subset of the imbalanced-learn API
+    (``fit_resample``) used internally by geographically weighted classifiers.
+
+    Parameters
+    ----------
+    sampling_strategy : bool | float, default=True
+        If ``True``, undersample the majority class to match the minority class
+        (i.e., minority/majority ratio = 1.0).
+
+        If a float ``alpha > 0``, target a minority/majority ratio of ``alpha`` after
+        resampling, i.e. ``alpha = N_min / N_resampled_majority``.
+    random_state : int | numpy.random.Generator | None, default=None
+        Random seed (or RNG) used to subsample the majority class.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import pandas as pd
+    >>> from gwlearn.undersample import BinaryRandomUnderSampler
+    >>> X = pd.DataFrame({"x": [0, 1, 2, 3, 4, 5]})
+    >>> y = pd.Series([0, 0, 0, 0, 1, 1])
+    >>> rus = BinaryRandomUnderSampler(random_state=0)
+    >>> X_res, y_res = rus.fit_resample(X, y)
+    >>> y_res.value_counts().loc[0] == y_res.value_counts().loc[1]
+    np.True_
     """
 
     def __init__(
@@ -19,11 +39,21 @@ class BinaryRandomUnderSampler:
         self.random_state = random_state
 
     def fit_resample(self, X, y):
-        """
-        Returns X_resampled, y_resampled with majority class undersampled.
+        """Resample ``X`` and ``y`` by undersampling the majority class.
 
-        X can be a numpy array or pandas DataFrame/Series. y can be array-like or
-        pd.Series.
+        Parameters
+        ----------
+        X : array-like
+            Feature matrix.
+        y : array-like
+            Binary target.
+
+        Returns
+        -------
+        X_resampled : array-like
+            Resampled feature matrix.
+        y_resampled : array-like
+            Resampled target.
         """
         # convert y to numpy for processing but remember original types
         y_arr = np.asarray(y).ravel()

@@ -275,9 +275,9 @@ class _BaseModel(BaseEstimator):
         -----------
         X : pd.DataFrame
             Design matrix of the local neighborhood
-        weights : np.ndarray
+        weights : numpy.ndarray
             Spatial weights for the neighborhood
-        focal_x : np.ndarray
+        focal_x : numpy.ndarray
             Feature vector of the focal point
 
         Returns:
@@ -365,14 +365,36 @@ class _BaseModel(BaseEstimator):
 
 
 class BaseClassifier(ClassifierMixin, _BaseModel):
-    """Generic geographically weighted classification meta-class
+    """Generic geographically weighted classification meta-estimator.
+
+    This class wraps a scikit-learn-compatible *classifier class* and fits one local
+    model per focal observation using spatially varying sample weights.
+
+    The spatial interaction is defined either by (a) ``geometry`` + bandwidth/kernel
+    settings or (b) a precomputed :class:`libpysal.graph.Graph` passed via ``graph``.
+
+    Notes
+    -----
+    - ``y`` must be binary (``{0, 1}`` or boolean).
+    - To enable prediction on new data via :meth:`predict`/:meth:`predict_proba`, you
+      must set ``keep_models=True`` (store in memory) or ``keep_models=Path(...)``
+      (serialize to disk).
+    - Only point geometries are supported.
 
     Parameters
     ----------
-    model : model class
-        Scikit-learn model class
-    bandwidth : int | float
-        Bandwidth value consisting of either a distance or N nearest neighbors
+    model : ClassifierMixin
+        Class implementing the scikit-learn classifier API (e.g.
+        :class:`sklearn.linear_model.LogisticRegression`). The class (not an instance)
+        is instantiated internally for each local model.
+    bandwidth : float | int | None
+        Bandwidth for defining neighborhoods.
+
+        - If ``fixed=True``, this is a distance threshold.
+        - If ``fixed=False``, this is the number of nearest neighbors used to form the
+          local neighborhood.
+
+        If ``graph`` is provided, ``bandwidth`` is ignored.
     fixed : bool, optional
         True for distance based bandwidth and False for adaptive (nearest neighbor)
         bandwidth, by default False
@@ -461,14 +483,43 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
-    left_out_y_ : np.ndarray
+    left_out_y_ : numpy.ndarray
         Array of ``y`` values left out when ``leave_out`` is set.
-    left_out_proba_ : np.ndarray
+    left_out_proba_ : numpy.ndarray
         Array of probabilites on left out observations in local models when
         ``leave_out`` is set.
-    left_out_w_ : np.ndarray
+    left_out_w_ : numpy.ndarray
         Array of weights on left out observations in local models when
         ``leave_out`` is set.
+
+    Examples
+    --------
+    Fit a geographically weighted logistic regression by passing a scikit-learn
+    classifier class.
+
+    >>> import numpy as np
+    >>> import geopandas as gpd
+    >>> import pandas as pd
+    >>> from sklearn.linear_model import LogisticRegression
+    >>> from gwlearn.base import BaseClassifier
+    >>> rng = np.random.default_rng(0)
+    >>> n = 50
+    >>> X = pd.DataFrame(rng.normal(size=(n, 2)), columns=["x1", "x2"])
+    >>> y = (X["x1"] + rng.normal(scale=0.5, size=n) > 0).astype(int)
+    >>> geometry = gpd.GeoSeries(
+    ...     gpd.points_from_xy(rng.uniform(0, 1, n), rng.uniform(0, 1, n))
+    ... )
+    >>> gw = BaseClassifier(
+    ...     LogisticRegression,
+    ...     bandwidth=n,
+    ...     fixed=False,
+    ...     include_focal=True,
+    ...     geometry=geometry,
+    ...     keep_models=True,
+    ...     max_iter=200,
+    ... ).fit(X, y)
+    >>> gw.proba_.shape[0] == n
+    True
     """
 
     def __init__(
@@ -529,14 +580,27 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self._empty_feature_imp = None
 
     def fit(self, X: pd.DataFrame, y: pd.Series) -> "BaseClassifier":
-        """Fit the geographically weighted model
+        """Fit geographically weighted local classification models.
+
+        This fits one local model per focal observation (subject to local invariance
+        checks and ``min_proportion``) and stores focal predictions.
 
         Parameters
         ----------
-        X : pd.DataFrame
-            Independent variables
-        y : pd.Series
-            Dependent variable
+        X : pandas.DataFrame
+            Feature matrix.
+        y : pandas.Series
+            Binary target encoded as boolean or ``{0, 1}``.
+
+        Returns
+        -------
+        self
+            Fitted estimator.
+
+        Notes
+        -----
+        The neighborhood definition comes from either ``self.graph`` or from
+        ``self.geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
         self._start = time()
 
@@ -748,9 +812,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         return output
 
     def _compute_global_log_likelihood(self, y: pd.Series) -> float:
-        """
-        Compute global log likelihood for classification
-        """
+        """Compute a pooled (global) log-likelihood from focal probabilities."""
         # Get valid predictions (non-NaN)
         mask = ~self.proba_.isna().any(axis=1)
 
@@ -776,7 +838,26 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         return log_likelihood
 
     def predict_proba(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.DataFrame:
-        """Predict probabiliies using the ensemble of local models"""
+        """Predict class probabilities for new observations.
+
+        Parameters
+        ----------
+        X : pandas.DataFrame
+            Feature matrix for new observations.
+        geometry : geopandas.GeoSeries
+            Point geometries for new observations.
+
+        Returns
+        -------
+        pandas.DataFrame
+            Predicted probabilities with columns equal to the global classes observed
+            during fit.
+
+        Notes
+        -----
+        Requires the estimator to have been fit with ``keep_models=True`` (or a
+        ``Path``) so local models can be used at prediction time.
+        """
         self._validate_geometry(geometry)
 
         if self.fixed:
@@ -865,20 +946,42 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         return pd.Series(weighted, index=pred.columns)
 
     def predict(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.Series:
+        """Predict classes for new observations.
+
+        This is equivalent to ``predict_proba(...).idxmax(axis=1)``.
+
+        Parameters
+        ----------
+        X : pandas.DataFrame
+            Feature matrix for new observations.
+        geometry : geopandas.GeoSeries
+            Point geometries for new observations.
+
+        Returns
+        -------
+        pandas.Series
+            Predicted class.
+
+        Notes
+        -----
+        Requires the estimator to have been fit with ``keep_models=True`` (or a
+        ``Path``) so local models can be used at prediction time.
+        """
         proba = self.predict_proba(X, geometry)
         return proba.idxmax(axis=1)
 
     def local_metric(self, func: Callable, *args, **kwargs) -> np.ndarray:
-        """Measure local performance metrics
+        """Compute a metric per fitted local model.
 
         Parameters
         ----------
         func : callable
-            callable with a signature ``func(y_true, y_pred)``
+            Callable with a signature ``func(y_true, y_pred, *args, **kwargs)``.
 
         Returns
         -------
-        np.ndarray
+        numpy.ndarray
+            One value per focal location (NaN for skipped / unfitted local models).
         """
         results = []
 
@@ -891,19 +994,35 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
 
 class BaseRegressor(_BaseModel, RegressorMixin):
-    """Generic geographically weighted regression meta-class
+    """Generic geographically weighted regression meta-estimator.
 
-    TODO:
-        - tvalues & adj_alpha & critical_t val
-        - predict
-        - performance measurements
+    This class wraps a scikit-learn-compatible *regressor class* and fits one local
+    model per focal observation using spatially varying sample weights.
+
+    The fitted object exposes focal predictions (``pred_``,  in-sample if
+    ``include_focal=True``) and local goodness-of-fit summaries.
+
+    Prediction for new (out-of-sample) observations is not currently implemented for
+    regressors.
+
+    Notes
+    -----
+    - Only point geometries are supported.
 
     Parameters
     ----------
-    model : model class
-        Scikit-learn model class
-    bandwidth : int | float
-        Bandwidth value consisting of either a distance or N nearest neighbors
+    model : RegressorMixin
+        Class implementing the scikit-learn regressor API (e.g.
+        :class:`sklearn.linear_model.LinearRegression`). The class (not an instance)
+        is instantiated internally for each local model.
+    bandwidth : float | int | None
+        Bandwidth for defining neighborhoods.
+
+        - If ``fixed=True``, this is a distance threshold.
+        - If ``fixed=False``, this is the number of nearest neighbors used to form the
+          local neighborhood.
+
+        If ``graph`` is provided, ``bandwidth`` is ignored.
     fixed : bool, optional
         True for distance based bandwidth and False for adaptive (nearest neighbor)
         bandwidth, by default False
@@ -983,17 +1102,54 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         complexity (smaller bandwidths).
     bic_ : float
         Bayesian information criterion.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import geopandas as gpd
+    >>> import pandas as pd
+    >>> from sklearn.linear_model import LinearRegression
+    >>> from gwlearn.base import BaseRegressor
+    >>> rng = np.random.default_rng(0)
+    >>> n = 30
+    >>> X = pd.DataFrame(rng.normal(size=(n, 2)), columns=["x1", "x2"])
+    >>> y = 1.0 + 2.0 * X["x1"] - 0.5 * X["x2"] + rng.normal(scale=0.2, size=n)
+    >>> geometry = gpd.GeoSeries(
+    ...     gpd.points_from_xy(rng.uniform(0, 1, n), rng.uniform(0, 1, n))
+    ... )
+    >>> gwr = BaseRegressor(
+    ...     LinearRegression,
+    ...     bandwidth=n,
+    ...     fixed=False,
+    ...     include_focal=True,
+    ...     geometry=geometry,
+    ... ).fit(X, y)
+    >>> float(gwr.local_r2_.mean()) <= 1.0
+    True
     """
 
     def fit(self, X: pd.DataFrame, y: pd.Series) -> "BaseRegressor":
-        """Fit the geographically weighted model
+        """Fit geographically weighted local regression models.
+
+        Fits one local model per focal observation and stores focal (in-sample if
+        ``include_focal=True``) predictions in ``pred_``.
 
         Parameters
         ----------
-        X : pd.DataFrame
-            Independent variables
-        y : pd.Series
-            Dependent variable
+        X : pandas.DataFrame
+            Feature matrix.
+        y : pandas.Series
+            Target values.
+
+        Returns
+        -------
+        self
+            Fitted estimator.
+
+        Notes
+        -----
+        The neighborhood definition comes from either ``self.graph`` or from
+        ``self.geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
         self._validate_geometry(self.geometry)
 

@@ -13,12 +13,32 @@ from .base import BaseClassifier
 
 
 class GWRandomForestClassifier(BaseClassifier):
-    """Geographically weighted random forest classifier
+    """Geographically weighted random forest classifier.
+
+    Fits one :class:`sklearn.ensemble.RandomForestClassifier` per focal observation
+    using spatially varying sample weights.
+
+    The spatial interaction is defined either by (a) ``geometry`` + bandwidth/kernel
+    settings or (b) a precomputed :class:`libpysal.graph.Graph` passed via ``graph``.
+
+    Notes
+    -----
+    - ``y`` must be binary (``{0, 1}`` or boolean).
+    - To enable prediction on new data via :meth:`predict`/:meth:`predict_proba`, you
+      must set ``keep_models=True`` (store in memory) or ``keep_models=Path(...)``
+      (serialize to disk).
+    - Only point geometries are supported.
 
     Parameters
     ----------
-    bandwidth : int | float
-        bandwidth value consisting of either a distance or N nearest neighbors
+    bandwidth : float | int | None
+        Bandwidth for defining neighborhoods.
+
+        - If ``fixed=True``, this is a distance threshold.
+        - If ``fixed=False``, this is the number of nearest neighbors used to form the
+          local neighborhood.
+
+        If ``graph`` is provided, ``bandwidth`` is ignored.
     fixed : bool, optional
         True for distance based bandwidth and False for adaptive (nearest neighbor)
         bandwidth, by default False
@@ -109,20 +129,48 @@ class GWRandomForestClassifier(BaseClassifier):
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
-    left_out_y_ : np.ndarray
+    left_out_y_ : numpy.ndarray
         Array of ``y`` values left out when ``leave_out`` is set.
-    left_out_proba_ : np.ndarray
+    left_out_proba_ : numpy.ndarray
         Array of probabilites on left out observations in local models when
         ``leave_out`` is set.
-    left_out_w_ : np.ndarray
+    left_out_w_ : numpy.ndarray
         Array of weights on left out observations in local models when
         ``leave_out`` is set.
+    oob_y_pooled_ : numpy.ndarray
+        Pooled out-of-bag (OOB) true labels across all fitted local models.
+    oob_pred_pooled_ : numpy.ndarray
+        Pooled out-of-bag (OOB) predictions/scores across all fitted local models.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import geopandas as gpd
+    >>> import pandas as pd
+    >>> from gwlearn.ensemble import GWRandomForestClassifier
+    >>> rng = np.random.default_rng(0)
+    >>> n = 100
+    >>> X = pd.DataFrame(rng.normal(size=(n, 3)), columns=["x1", "x2", "x3"])
+    >>> y = (X["x1"] - 0.25 * X["x2"] + rng.normal(scale=0.5, size=n) > 0).astype(int)
+    >>> geometry = gpd.GeoSeries(
+    ...     gpd.points_from_xy(rng.uniform(0, 1, n), rng.uniform(0, 1, n))
+    ... )
+    >>> gw = GWRandomForestClassifier(
+    ...     bandwidth=n,
+    ...     include_focal=True,
+    ...     geometry=geometry,
+    ...     keep_models=True,
+    ...     n_estimators=50,
+    ...     random_state=0,
+    ... ).fit(X, y)
+    >>> gw.feature_importances_.shape[0] == n
+    True
     """
 
     def __init__(
         self,
         *,
-        bandwidth: float,
+        bandwidth: float | None = None,
         fixed: bool = False,
         kernel: Literal[
             "triangular",
@@ -179,17 +227,29 @@ class GWRandomForestClassifier(BaseClassifier):
         self._empty_score_data = (np.array([]).reshape(-1, 1), np.array([]))
 
     def _get_oob_score_data(self, true, pred):
+        """Callback used by scikit-learn to collect OOB targets/predictions."""
         return true, pred
 
     def fit(self, X: pd.DataFrame, y: pd.Series) -> "GWRandomForestClassifier":
-        """Fit the geographically weighted model
+        """Fit geographically weighted random forests.
 
         Parameters
         ----------
-        X : pd.DataFrame
-            Independent variables
-        y : pd.Series
-            Dependent variable
+        X : pandas.DataFrame
+            Feature matrix.
+        y : pandas.Series
+            Binary target encoded as boolean or ``{0, 1}``.
+
+        Returns
+        -------
+        GWRandomForestClassifier
+            Fitted estimator.
+
+        Notes
+        -----
+        In addition to the base classifier outputs, this method also populates
+        ``oob_y_pooled_`` and ``oob_pred_pooled_`` by pooling OOB values across all
+        fitted local models.
         """
         self._empty_feature_imp = np.array([np.nan] * (X.shape[1]))
         super().fit(X=X, y=y)
@@ -228,12 +288,32 @@ class GWRandomForestClassifier(BaseClassifier):
 
 
 class GWGradientBoostingClassifier(BaseClassifier):
-    """Geographically weighted gradient boosting classifier
+    """Geographically weighted gradient boosting classifier.
+
+    Fits one :class:`sklearn.ensemble.GradientBoostingClassifier` per focal observation
+    using spatially varying sample weights.
+
+    The spatial interaction is defined either by (a) ``geometry`` + bandwidth/kernel
+    settings or (b) a precomputed :class:`libpysal.graph.Graph` passed via ``graph``.
+
+    Notes
+    -----
+    - ``y`` must be binary (``{0, 1}`` or boolean).
+    - To enable prediction on new data via :meth:`predict`/:meth:`predict_proba`, you
+      must set ``keep_models=True`` (store in memory) or ``keep_models=Path(...)``
+      (serialize to disk).
+    - Only point geometries are supported.
 
     Parameters
     ----------
-    bandwidth : int | float
-        bandwidth value consisting of either a distance or N nearest neighbors
+    bandwidth : float | int | None
+        Bandwidth for defining neighborhoods.
+
+        - If ``fixed=True``, this is a distance threshold.
+        - If ``fixed=False``, this is the number of nearest neighbors used to form the
+          local neighborhood.
+
+        If ``graph`` is provided, ``bandwidth`` is ignored.
     fixed : bool, optional
         True for distance based bandwidth and False for adaptive (nearest neighbor)
         bandwidth, by default False
@@ -318,12 +398,35 @@ class GWGradientBoostingClassifier(BaseClassifier):
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import geopandas as gpd
+    >>> import pandas as pd
+    >>> from gwlearn.ensemble import GWGradientBoostingClassifier
+    >>> rng = np.random.default_rng(0)
+    >>> n = 80
+    >>> X = pd.DataFrame(rng.normal(size=(n, 2)), columns=["x1", "x2"])
+    >>> y = (X["x1"] + rng.normal(scale=0.5, size=n) > 0).astype(int)
+    >>> geometry = gpd.GeoSeries(
+    ...     gpd.points_from_xy(rng.uniform(0, 1, n), rng.uniform(0, 1, n))
+    ... )
+    >>> gw = GWGradientBoostingClassifier(
+    ...     bandwidth=n,
+    ...     include_focal=True,
+    ...     geometry=geometry,
+    ...     keep_models=True,
+    ...     random_state=0,
+    ... ).fit(X, y)
+    >>> gw.prediction_rate_ > 0
+    np.True_
     """
 
     def __init__(
         self,
         *,
-        bandwidth: int | float,
+        bandwidth: int | float | None = None,
         fixed: bool = False,
         kernel: Literal[
             "triangular",
@@ -376,14 +479,23 @@ class GWGradientBoostingClassifier(BaseClassifier):
         self._empty_score_data = np.nan
 
     def fit(self, X: pd.DataFrame, y: pd.Series) -> "GWGradientBoostingClassifier":
-        """Fit the geographically weighted model
+        """Fit geographically weighted gradient boosting classifiers.
 
         Parameters
         ----------
-        X : pd.DataFrame
-            Independent variables
-        y : pd.Series
-            Dependent variable
+        X : pandas.DataFrame
+            Feature matrix.
+        y : pandas.Series
+            Binary target encoded as boolean or ``{0, 1}``.
+
+        Returns
+        -------
+        GWGradientBoostingClassifier
+            Fitted estimator.
+
+        Notes
+        -----
+        Populates ``feature_importances_`` from the fitted local models.
         """
         self._empty_feature_imp = np.array([np.nan] * (X.shape[1]))
         super().fit(X=X, y=y)
