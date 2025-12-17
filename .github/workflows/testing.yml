@@ -87,6 +87,7 @@ jobs:
           --cov-report xml . \
 
       - name: doctest
+        if: contains(matrix.environment-file, 'latest')
         run: |
           pytest -v --color=yes --doctest-only gwlearn
 
