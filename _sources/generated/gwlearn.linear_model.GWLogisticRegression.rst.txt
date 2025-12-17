@@ -17,7 +17,6 @@
       ~GWLogisticRegression.predict
       ~GWLogisticRegression.predict_proba
       ~GWLogisticRegression.score
-      ~GWLogisticRegression.set_fit_request
       ~GWLogisticRegression.set_params
       ~GWLogisticRegression.set_predict_proba_request
       ~GWLogisticRegression.set_predict_request

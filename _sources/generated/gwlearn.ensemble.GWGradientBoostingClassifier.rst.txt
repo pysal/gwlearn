@@ -17,7 +17,6 @@
       ~GWGradientBoostingClassifier.predict
       ~GWGradientBoostingClassifier.predict_proba
       ~GWGradientBoostingClassifier.score
-      ~GWGradientBoostingClassifier.set_fit_request
       ~GWGradientBoostingClassifier.set_params
       ~GWGradientBoostingClassifier.set_predict_proba_request
       ~GWGradientBoostingClassifier.set_predict_request

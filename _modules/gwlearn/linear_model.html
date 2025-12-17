@@ -17,7 +17,7 @@
     
     
       
-        <title>gwlearn.linear_model - gwlearn 0.1.dev85 documentation</title>
+        <title>gwlearn.linear_model - gwlearn 0.1.dev86 documentation</title>
       
     
     
@@ -79,7 +79,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="gwlearn 0.1.dev85 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev85 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev86 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev86 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -90,7 +90,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.1.dev85 documentation
+            gwlearn 0.1.dev86 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -221,10 +221,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="gwlearn 0.1.dev85 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev85 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev86 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev86 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.1.dev85 documentation
+    gwlearn 0.1.dev86 documentation
   </label>
   
     <div class="md-nav__source">
@@ -767,13 +767,13 @@
 <span class="sd">    ...     keep_models=True,</span>
 <span class="sd">    ...     max_iter=200,</span>
 <span class="sd">    ... ).fit(X, y)</span>
-<span class="sd">    &gt;&gt;&gt; gw.proba_.head()</span>
-<span class="sd">              False         True</span>
-<span class="sd">    0  5.490615e-02  9.450939e-01</span>
-<span class="sd">    1  1.000000e+00  1.795235e-08</span>
-<span class="sd">    2  9.999781e-01  2.191023e-05</span>
-<span class="sd">    3  8.003682e-02  9.199632e-01</span>
-<span class="sd">    4  2.809428e-07  9.999997e-01</span>
+<span class="sd">    &gt;&gt;&gt; gw.pred_.head()</span>
+<span class="sd">    0     True</span>
+<span class="sd">    1    False</span>
+<span class="sd">    2    False</span>
+<span class="sd">    3     True</span>
+<span class="sd">    4     True</span>
+<span class="sd">    dtype: boolean</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># TODO: score_ should be an alias of pooled_score_ - this is different from MGWR</span>
@@ -794,7 +794,7 @@
         <span class="o">|</span> <span class="n">Callable</span> <span class="o">=</span> <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
         <span class="n">include_focal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">graph</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">graph</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">fit_global_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>

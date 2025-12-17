@@ -14,7 +14,6 @@
       ~BaseRegressor.get_metadata_routing
       ~BaseRegressor.get_params
       ~BaseRegressor.score
-      ~BaseRegressor.set_fit_request
       ~BaseRegressor.set_params
       ~BaseRegressor.set_score_request
 
