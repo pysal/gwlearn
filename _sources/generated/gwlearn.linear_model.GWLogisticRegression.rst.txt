@@ -5,10 +5,6 @@
 
 .. autoclass:: GWLogisticRegression
 
-   
-   .. automethod:: __init__
-
-   
    .. rubric:: Methods
 
    .. autosummary::
@@ -26,9 +22,8 @@
       ~GWLogisticRegression.set_predict_proba_request
       ~GWLogisticRegression.set_predict_request
       ~GWLogisticRegression.set_score_request
-   
-   
 
-   
-   
+   .. rubric:: Attributes
+
+   .. autosummary::
    

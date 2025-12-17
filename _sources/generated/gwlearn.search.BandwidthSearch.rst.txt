@@ -5,19 +5,14 @@
 
 .. autoclass:: BandwidthSearch
 
-   
-   .. automethod:: __init__
-
-   
    .. rubric:: Methods
 
    .. autosummary::
    
       ~BandwidthSearch.__init__
       ~BandwidthSearch.fit
-   
-   
 
-   
-   
+   .. rubric:: Attributes
+
+   .. autosummary::
    

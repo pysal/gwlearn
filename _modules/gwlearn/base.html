@@ -17,7 +17,7 @@
     
     
       
-        <title>gwlearn.base - gwlearn 0.1.dev83 documentation</title>
+        <title>gwlearn.base - gwlearn 0.1.dev84 documentation</title>
       
     
     
@@ -79,7 +79,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="gwlearn 0.1.dev83 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev83 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev84 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev84 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -90,7 +90,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.1.dev83 documentation
+            gwlearn 0.1.dev84 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -221,10 +221,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="gwlearn 0.1.dev83 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev83 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev84 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev84 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.1.dev83 documentation
+    gwlearn 0.1.dev84 documentation
   </label>
   
     <div class="md-nav__source">
@@ -1074,8 +1074,6 @@
 <span class="sd">        ``leave_out`` is set.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BaseClassifier.__init__">
-<a class="viewcode-back" href="../../generated/gwlearn.base.BaseClassifier.html#gwlearn.base.BaseClassifier.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model</span><span class="p">,</span>
@@ -1131,8 +1129,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">leave_out</span> <span class="o">=</span> <span class="n">leave_out</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_empty_score_data</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_empty_feature_imp</span> <span class="o">=</span> <span class="kc">None</span></div>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_empty_feature_imp</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="BaseClassifier.fit">
 <a class="viewcode-back" href="../../generated/gwlearn.base.BaseClassifier.html#gwlearn.base.BaseClassifier.fit">[docs]</a>
@@ -1572,8 +1569,6 @@
 <span class="sd">    batch_size : int | None, optional</span>
 <span class="sd">        Number of models to process in each batch. Specify batch_size if your models do</span>
 <span class="sd">        not fit into memory. By default None</span>
-<span class="sd">    random_state : int | None, optional</span>
-<span class="sd">        Random seed for reproducibility, by default None</span>
 <span class="sd">    verbose : bool, optional</span>
 <span class="sd">        Whether to print progress information, by default False</span>
 <span class="sd">    **kwargs</span>
@@ -1584,7 +1579,7 @@
 <span class="sd">    pred_ : pd.Series</span>
 <span class="sd">        Focal predictions for each location.</span>
 <span class="sd">    resid_ : pd.Series</span>
-<span class="sd">        Residuals for each location (y - pred_).</span>
+<span class="sd">        Residuals for each location (``y`` - ``pred_``).</span>
 <span class="sd">    RSS_ : pd.Series</span>
 <span class="sd">        Residual sum of squares for each location.</span>
 <span class="sd">    TSS_ : pd.Series</span>
@@ -1619,8 +1614,6 @@
 <span class="sd">            Independent variables</span>
 <span class="sd">        y : pd.Series</span>
 <span class="sd">            Dependent variable</span>
-<span class="sd">        geometry : gpd.GeoSeries</span>
-<span class="sd">            Geographic location</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_geometry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
 

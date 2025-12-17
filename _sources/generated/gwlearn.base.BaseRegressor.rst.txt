@@ -5,10 +5,6 @@
 
 .. autoclass:: BaseRegressor
 
-   
-   .. automethod:: __init__
-
-   
    .. rubric:: Methods
 
    .. autosummary::
@@ -21,9 +17,8 @@
       ~BaseRegressor.set_fit_request
       ~BaseRegressor.set_params
       ~BaseRegressor.set_score_request
-   
-   
 
-   
-   
+   .. rubric:: Attributes
+
+   .. autosummary::
    

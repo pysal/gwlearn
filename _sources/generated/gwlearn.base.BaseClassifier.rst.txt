@@ -5,10 +5,6 @@
 
 .. autoclass:: BaseClassifier
 
-   
-   .. automethod:: __init__
-
-   
    .. rubric:: Methods
 
    .. autosummary::
@@ -26,9 +22,8 @@
       ~BaseClassifier.set_predict_proba_request
       ~BaseClassifier.set_predict_request
       ~BaseClassifier.set_score_request
-   
-   
 
-   
-   
+   .. rubric:: Attributes
+
+   .. autosummary::
    

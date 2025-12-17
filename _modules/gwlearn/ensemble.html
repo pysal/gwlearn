@@ -17,7 +17,7 @@
     
     
       
-        <title>gwlearn.ensemble - gwlearn 0.1.dev83 documentation</title>
+        <title>gwlearn.ensemble - gwlearn 0.1.dev84 documentation</title>
       
     
     
@@ -79,7 +79,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="gwlearn 0.1.dev83 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev83 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev84 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev84 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -90,7 +90,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.1.dev83 documentation
+            gwlearn 0.1.dev84 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -221,10 +221,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="gwlearn 0.1.dev83 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev83 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev84 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev84 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.1.dev83 documentation
+    gwlearn 0.1.dev84 documentation
   </label>
   
     <div class="md-nav__source">
@@ -722,8 +722,6 @@
 <span class="sd">        ``leave_out`` is set.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GWRandomForestClassifier.__init__">
-<a class="viewcode-back" href="../../generated/gwlearn.ensemble.GWRandomForestClassifier.html#gwlearn.ensemble.GWRandomForestClassifier.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -781,8 +779,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_type</span> <span class="o">=</span> <span class="s2">&quot;random_forest&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_kwargs</span><span class="p">[</span><span class="s2">&quot;oob_score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_oob_score_data</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_empty_score_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]))</span></div>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_empty_score_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_oob_score_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">true</span><span class="p">,</span> <span class="n">pred</span>
@@ -798,8 +795,6 @@
 <span class="sd">            Independent variables</span>
 <span class="sd">        y : pd.Series</span>
 <span class="sd">            Dependent variable</span>
-<span class="sd">        geometry : gpd.GeoSeries</span>
-<span class="sd">            Geographic location</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_empty_feature_imp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
@@ -934,8 +929,6 @@
 <span class="sd">        fulfilling ``min_proportion``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GWGradientBoostingClassifier.__init__">
-<a class="viewcode-back" href="../../generated/gwlearn.ensemble.GWGradientBoostingClassifier.html#gwlearn.ensemble.GWGradientBoostingClassifier.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -957,10 +950,14 @@
         <span class="n">graph</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">fit_global_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">keep_models</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">keep_models</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">temp_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">min_proportion</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">undersample</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -977,12 +974,15 @@
             <span class="n">keep_models</span><span class="o">=</span><span class="n">keep_models</span><span class="p">,</span>
             <span class="n">temp_folder</span><span class="o">=</span><span class="n">temp_folder</span><span class="p">,</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">min_proportion</span><span class="o">=</span><span class="n">min_proportion</span><span class="p">,</span>
+            <span class="n">undersample</span><span class="o">=</span><span class="n">undersample</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_type</span> <span class="o">=</span> <span class="s2">&quot;gradient_boosting&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_empty_score_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span></div>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_empty_score_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
 <div class="viewcode-block" id="GWGradientBoostingClassifier.fit">
 <a class="viewcode-back" href="../../generated/gwlearn.ensemble.GWGradientBoostingClassifier.html#gwlearn.ensemble.GWGradientBoostingClassifier.fit">[docs]</a>
@@ -995,8 +995,6 @@
 <span class="sd">            Independent variables</span>
 <span class="sd">        y : pd.Series</span>
 <span class="sd">            Dependent variable</span>
-<span class="sd">        geometry : gpd.GeoSeries</span>
-<span class="sd">            Geographic location</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_empty_feature_imp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>

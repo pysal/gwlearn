@@ -5,10 +5,6 @@
 
 .. autoclass:: GWGradientBoostingClassifier
 
-   
-   .. automethod:: __init__
-
-   
    .. rubric:: Methods
 
    .. autosummary::
@@ -26,9 +22,8 @@
       ~GWGradientBoostingClassifier.set_predict_proba_request
       ~GWGradientBoostingClassifier.set_predict_request
       ~GWGradientBoostingClassifier.set_score_request
-   
-   
 
-   
-   
+   .. rubric:: Attributes
+
+   .. autosummary::
    

@@ -5,10 +5,6 @@
 
 .. autoclass:: GWRandomForestClassifier
 
-   
-   .. automethod:: __init__
-
-   
    .. rubric:: Methods
 
    .. autosummary::
@@ -26,9 +22,8 @@
       ~GWRandomForestClassifier.set_predict_proba_request
       ~GWRandomForestClassifier.set_predict_request
       ~GWRandomForestClassifier.set_score_request
-   
-   
 
-   
-   
+   .. rubric:: Attributes
+
+   .. autosummary::
    

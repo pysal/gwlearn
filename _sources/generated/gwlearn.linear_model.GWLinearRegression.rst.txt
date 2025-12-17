@@ -5,10 +5,6 @@
 
 .. autoclass:: GWLinearRegression
 
-   
-   .. automethod:: __init__
-
-   
    .. rubric:: Methods
 
    .. autosummary::
@@ -21,9 +17,8 @@
       ~GWLinearRegression.set_fit_request
       ~GWLinearRegression.set_params
       ~GWLinearRegression.set_score_request
-   
-   
 
-   
-   
+   .. rubric:: Attributes
+
+   .. autosummary::
    

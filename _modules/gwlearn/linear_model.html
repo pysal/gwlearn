@@ -17,7 +17,7 @@
     
     
       
-        <title>gwlearn.linear_model - gwlearn 0.1.dev83 documentation</title>
+        <title>gwlearn.linear_model - gwlearn 0.1.dev84 documentation</title>
       
     
     
@@ -79,7 +79,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="gwlearn 0.1.dev83 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev83 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev84 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev84 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -90,7 +90,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.1.dev83 documentation
+            gwlearn 0.1.dev84 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -221,10 +221,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="gwlearn 0.1.dev83 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev83 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev84 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev84 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.1.dev83 documentation
+    gwlearn 0.1.dev84 documentation
   </label>
   
     <div class="md-nav__source">
@@ -600,6 +600,7 @@
 
 <h1>Source code for gwlearn.linear_model</h1><div class="highlight"><pre>
 <span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
@@ -724,8 +725,6 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># TODO: score_ should be an alias of pooled_score_ - this is different from MGWR</span>
-<div class="viewcode-block" id="GWLogisticRegression.__init__">
-<a class="viewcode-back" href="../../generated/gwlearn.linear_model.GWLogisticRegression.html#gwlearn.linear_model.GWLogisticRegression.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">bandwidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -747,11 +746,14 @@
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">fit_global_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">keep_models</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">keep_models</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">temp_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">min_proportion</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
         <span class="n">undersample</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">leave_out</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -768,13 +770,15 @@
             <span class="n">keep_models</span><span class="o">=</span><span class="n">keep_models</span><span class="p">,</span>
             <span class="n">temp_folder</span><span class="o">=</span><span class="n">temp_folder</span><span class="p">,</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">min_proportion</span><span class="o">=</span><span class="n">min_proportion</span><span class="p">,</span>
             <span class="n">undersample</span><span class="o">=</span><span class="n">undersample</span><span class="p">,</span>
             <span class="n">leave_out</span><span class="o">=</span><span class="n">leave_out</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_model_type</span> <span class="o">=</span> <span class="s2">&quot;logistic&quot;</span></div>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_type</span> <span class="o">=</span> <span class="s2">&quot;logistic&quot;</span>
 
 <div class="viewcode-block" id="GWLogisticRegression.fit">
 <a class="viewcode-back" href="../../generated/gwlearn.linear_model.GWLogisticRegression.html#gwlearn.linear_model.GWLogisticRegression.fit">[docs]</a>
@@ -807,11 +811,15 @@
 
         <span class="c1"># Check for empty arrays before concatenation to avoid unexpected shapes</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_local</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_local</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">y_pooled_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">arr</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_local</span> <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y_pooled_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">arr</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_local</span> <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">y_pooled_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pred_local</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pred_local</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pred_pooled_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">arr</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pred_local</span> <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pred_pooled_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">arr</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pred_local</span> <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pred_pooled_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
 
@@ -901,7 +909,7 @@
 <span class="sd">    pred_ : pd.Series</span>
 <span class="sd">        Focal predictions for each location.</span>
 <span class="sd">    resid_ : pd.Series</span>
-<span class="sd">        Residuals for each location (y - pred_).</span>
+<span class="sd">        Residuals for each location (``y`` - ``pred_``).</span>
 <span class="sd">    RSS_ : pd.Series</span>
 <span class="sd">        Residual sum of squares for each location.</span>
 <span class="sd">    TSS_ : pd.Series</span>
@@ -910,12 +918,6 @@
 <span class="sd">        Weighted mean of y for each location.</span>
 <span class="sd">    local_r2_ : pd.Series</span>
 <span class="sd">        Local R2 for each location.</span>
-<span class="sd">    focal_r2_ : float</span>
-<span class="sd">        Global R2 for focal predictions.</span>
-<span class="sd">    score_ : float</span>
-<span class="sd">        Alias for focal_r2_ (global R2 for focal predictions).</span>
-<span class="sd">    focal_adj_r2_ : float</span>
-<span class="sd">        Adjusted R2 for focal predictions.</span>
 <span class="sd">    hat_values_ : pd.Series</span>
 <span class="sd">        Hat values for each location (diagonal elements of hat matrix).</span>
 <span class="sd">    effective_df_ : float</span>
@@ -936,8 +938,6 @@
 <span class="sd">        Local intercept values at each location</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GWLinearRegression.__init__">
-<a class="viewcode-back" href="../../generated/gwlearn.linear_model.GWLinearRegression.html#gwlearn.linear_model.GWLinearRegression.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">bandwidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -958,9 +958,11 @@
         <span class="n">graph</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">fit_global_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">keep_models</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">temp_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -973,14 +975,15 @@
             <span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span>
             <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
             <span class="n">fit_global_model</span><span class="o">=</span><span class="n">fit_global_model</span><span class="p">,</span>
+            <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">,</span>
             <span class="n">keep_models</span><span class="o">=</span><span class="n">keep_models</span><span class="p">,</span>
             <span class="n">temp_folder</span><span class="o">=</span><span class="n">temp_folder</span><span class="p">,</span>
             <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_model_type</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span></div>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_type</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_score_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>  <span class="c1"># noqa: ARG002</span>
         <span class="k">return</span> <span class="p">(</span>
