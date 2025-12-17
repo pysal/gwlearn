@@ -95,7 +95,7 @@ class BandwidthSearch:
     >>> n = 60
     >>> X = pd.DataFrame(rng.normal(size=(n, 2)), columns=["x1", "x2"])
     >>> y = (X["x1"] + rng.normal(scale=0.5, size=n) > 0).astype(int)
-    >>> geometry = gpd.GeoSeries.from_xy(rng.uniform(0, 1, n), rng.uniform(0, 1, n)))
+    >>> geometry = gpd.GeoSeries.from_xy(rng.uniform(0, 1, n), rng.uniform(0, 1, n))
     >>> search = BandwidthSearch(
     ...     GWLogisticRegression,
     ...     geometry=geometry,
