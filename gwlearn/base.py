@@ -95,7 +95,7 @@ class _BaseModel(BaseEstimator):
         | Callable = "bisquare",
         include_focal: bool = False,
         geometry: gpd.GeoSeries | None = None,
-        graph: graph.Graph = None,
+        graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
         strict: bool | None = False,
@@ -349,10 +349,10 @@ class _BaseModel(BaseEstimator):
         name: Hashable,
         focal_x: np.ndarray,
         model_kwargs: dict,
-    ) -> tuple:
+    ) -> list[Hashable]:
         raise NotImplementedError("Subclasses must implement _fit_local")
 
-    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries):
+    def fit(self, X: pd.DataFrame, y: pd.Series):
         raise NotImplementedError("Subclasses must implement fit")
 
     def _get_score_data(self, local_model, X, y):  # noqa: ARG002
@@ -543,7 +543,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         | Callable = "bisquare",
         include_focal: bool = False,
         geometry: gpd.GeoSeries | None = None,
-        graph: graph.Graph = None,
+        graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
         strict: bool | None = False,
@@ -714,7 +714,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         name: Hashable,
         focal_x: np.ndarray,
         model_kwargs: dict,
-    ) -> tuple:
+    ) -> list[Hashable]:
         """Fit individual local model"""
 
         if self.undersample:
@@ -1226,7 +1226,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         name: Hashable,
         focal_x: np.ndarray,
         model_kwargs: dict,
-    ) -> tuple:
+    ) -> list[Hashable]:
         local_model = model(**model_kwargs)
 
         X = data.drop(columns=["_y", "_weight"])
