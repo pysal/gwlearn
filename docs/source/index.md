@@ -9,7 +9,8 @@ linear
 ensemble
 predict
 imbalance
-search
+bandwidth_search
+network_graph
 ```
 
 ```{toctree}

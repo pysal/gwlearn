@@ -4,10 +4,10 @@ Geographically weighted modeling based on `scikit-learn`.
 
 The aim of the package is to provide implementations of spatially-explicit modelling.
 
-:::{caution}
+## Status
+
 Current development status is early beta. API of the package can change without a
 warning. Use with caution.
-:::
 
 ## Features
 
