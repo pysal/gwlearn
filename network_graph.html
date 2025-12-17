@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Using custom, network-based graph &#8212; gwlearn 0.1.dev80+g780a7113e documentation</title>
+    <title>Using custom graphs &#8212; gwlearn 0.1.dev81+gef1dbfdf2 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=4bd3d2c4"></script>
+    <script src="_static/documentation_options.js?v=25976c84"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -48,6 +48,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'network_graph';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API reference" href="api.html" />
+    <link rel="prev" title="Bandwidth search" href="bandwidth_search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -110,8 +112,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev80+g780a7113e documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev81+gef1dbfdf2 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -153,16 +153,26 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to prototyping geographically weighted models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear.html">Linear models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensemble.html">Ensemble models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="predict.html">Prediction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imbalance.html">Class imbalance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bandwidth_search.html">Bandwidth search</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Using custom graphs</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseClassifier.html">gwlearn.base.BaseClassifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseRegressor.html">gwlearn.base.BaseRegressor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.linear_model.GWLinearRegression.html">gwlearn.linear_model.GWLinearRegression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.linear_model.GWLogisticRegression.html">gwlearn.linear_model.GWLogisticRegression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.ensemble.GWRandomForestClassifier.html">gwlearn.ensemble.GWRandomForestClassifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.ensemble.GWGradientBoostingClassifier.html">gwlearn.ensemble.GWGradientBoostingClassifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.search.BandwidthSearch.html">gwlearn.search.BandwidthSearch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseClassifier.html">gwlearn.base.BaseClassifier</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseRegressor.html">gwlearn.base.BaseRegressor</a></li>
 </ul>
 </details></li>
 </ul>
@@ -305,7 +315,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Using custom, network-based graph</h1>
+    <h1>Using custom graphs</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -319,15 +329,15 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="using-custom-network-based-graph">
-<h1>Using custom, network-based graph<a class="headerlink" href="#using-custom-network-based-graph" title="Link to this heading">#</a></h1>
-<p>Very basic example using linear regression and a graph redived from travel cost.</p>
+  <section id="using-custom-graphs">
+<h1>Using custom graphs<a class="headerlink" href="#using-custom-graphs" title="Link to this heading">#</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">gwlearn</span></code>’s geographically weighted modelling framework is built on top of <code class="docutils literal notranslate"><span class="pre">libpysal.graph.Graph</span></code> objects, which are typically generated on-the-fly based on the bandwidth and kernel specification. However, you can easily derive the graph in other way and use it wihtin the model, instead of relying on its limited distance and KNN builders.</p>
+<p>Below is a basic example using linear regression and a graph redived from travel cost.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">geodatasets</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">osmnx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ox</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandana</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandarm</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">libpysal.graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">gwlearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">GWLinearRegression</span>
@@ -338,35 +348,23 @@ document.write(`
 <p>Get some data you want to model. This dataset is assumed to contain both dependent and independent variables.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">geodatasets</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;geoda Cincinnati&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="mi">4326</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">geodatasets</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;geoda Cincinnati&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Here I am getting nodes and edges forming a street network graph using OSMnx but this can be done in any way. Check pandana’s documentation on how to construct a network.</p>
+<p>Generate a <code class="docutils literal notranslate"><span class="pre">pandarm.Network</span></code> based on the extent of the dataset. This will automatically pull the data for street network from OpenStretMap and prepare a network that can be later queried. All points will be linked to this network and accessibility will be measured alongside its edges.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">osm_graph</span> <span class="o">=</span> <span class="n">ox</span><span class="o">.</span><span class="n">graph_from_polygon</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">union_all</span><span class="p">(),</span> <span class="n">network_type</span><span class="o">=</span><span class="s2">&quot;walk&quot;</span><span class="p">)</span>
-<span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">ox</span><span class="o">.</span><span class="n">convert</span><span class="o">.</span><span class="n">graph_to_gdfs</span><span class="p">(</span><span class="n">osm_graph</span><span class="p">)</span>
-<span class="n">edges</span> <span class="o">=</span> <span class="n">edges</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Generate a pandana network. All points will be linked to this network and accessibility will be measured alongside its edges.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">network</span> <span class="o">=</span> <span class="n">pandana</span><span class="o">.</span><span class="n">Network</span><span class="p">(</span>
-    <span class="n">edge_from</span><span class="o">=</span><span class="n">edges</span><span class="p">[</span><span class="s2">&quot;u&quot;</span><span class="p">],</span>
-    <span class="n">edge_to</span><span class="o">=</span><span class="n">edges</span><span class="p">[</span><span class="s2">&quot;v&quot;</span><span class="p">],</span>
-    <span class="n">edge_weights</span><span class="o">=</span><span class="n">edges</span><span class="p">[[</span><span class="s2">&quot;length&quot;</span><span class="p">]],</span>
-    <span class="n">node_x</span><span class="o">=</span><span class="n">nodes</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">],</span>
-    <span class="n">node_y</span><span class="o">=</span><span class="n">nodes</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">],</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">network</span> <span class="o">=</span> <span class="n">pandarm</span><span class="o">.</span><span class="n">Network</span><span class="o">.</span><span class="n">from_gdf</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/martin/dev/pandarm/pandarm/loaders/osm.py:68: UserWarning: GeoDataFrame is stored in coordinate system PROJCS[&quot;Lambert_Conformal_Conic&quot;,GEOGCS[&quot;GCS_GRS 1980(IUGG, 1980)&quot;,DATUM[&quot;unknown&quot;,SPHEROID[&quot;GRS80&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]],PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;],PARAMETER[&quot;latitude_of_origin&quot;,38],PARAMETER[&quot;central_meridian&quot;,-82.5],PARAMETER[&quot;standard_parallel_1&quot;,40.0333333333333],PARAMETER[&quot;standard_parallel_2&quot;,38.7333333333333],PARAMETER[&quot;false_easting&quot;,1968500],PARAMETER[&quot;false_northing&quot;,0],UNIT[&quot;US survey foot&quot;,0.304800609601219,AUTHORITY[&quot;EPSG&quot;,&quot;9003&quot;]],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH]] so the pandana.Network will also be stored in this system
+  warn(
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating contraction hierarchies with 8 threads.
 Setting CH node vector of size 6004
 Setting CH edge vector of size 17060
@@ -380,13 +378,13 @@ Range graph removed 17492 edges of 34120
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">build_travel_cost</span><span class="p">(</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()),</span> <span class="n">network</span><span class="p">,</span> <span class="mi">1500</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;bisquare&quot;</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()),</span> <span class="n">network</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mi">1500</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;bisquare&quot;</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Check the properties of the resulting graph. You can see that on average, you have 129 neighbors.</p>
+<p>Check the properties of the resulting graph. You can see that on average, you have approximately 130 neighbors.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
@@ -403,7 +401,7 @@ Range graph removed 17492 edges of 34120
                 </tr>
                 <tr>
                     <td>Number of edges:</td>
-                    <td>       59741</td>
+                    <td>       60055</td>
                 </tr>
                 <tr>
                     <td>Number of connected components:</td>
@@ -415,11 +413,11 @@ Range graph removed 17492 edges of 34120
                 </tr>
                 <tr>
                     <td>Number of non-zero edges:</td>
-                    <td>       59741</td>
+                    <td>       60055</td>
                 </tr>
                 <tr>
                     <td>Percentage of non-zero edges:</td>
-                    <td>      28.60%</td>
+                    <td>      28.76%</td>
                 </tr>
                 <tr>
                     <td>Number of asymmetries:</td>
@@ -432,24 +430,24 @@ Range graph removed 17492 edges of 34120
                     <td>Mean:</td>
                     <td>      131</td>
                     <td>25%:</td>
-                    <td>       79</td>
+                    <td>       80</td>
                 </tr>
                 <tr>
                     <td>Standard deviation:</td>
                     <td>       60</td>
                     <td>50%</td>
-                    <td>      136
+                    <td>      137
                     <td>
                 </tr>
                 <tr>
                     <td>Min:</td>
-                    <td>       12</td>
+                    <td>       13</td>
                     <td>75%:</td>
-                    <td>      180</td>
+                    <td>      182</td>
                 </tr>
                 <tr>
                     <td>Max:</td>
-                    <td>      238</td>
+                    <td>      237</td>
                 </tr>
             </table>
             <table>
@@ -480,21 +478,21 @@ Range graph removed 17492 edges of 34120
                 <caption>Sum of weights and Traces</caption>
                 <tr>
                     <td>S0:</td>
-                    <td>       20111</td>
+                    <td>       20238</td>
                     <td>GG:</td>
-                    <td>       11775</td>
+                    <td>       11847</td>
                 </tr>
                 <tr>
                     <td>S1:</td>
-                    <td>       23549</td>
+                    <td>       23694</td>
                     <td>G'G:</td>
-                    <td>       11775</td>
+                    <td>       11847</td>
                 </tr>
                 <tr>
                     <td>S3:</td>
-                    <td>     4500114</td>
+                    <td>     4546775</td>
                     <td>G'G + GG:</td>
-                    <td>       23549</td>
+                    <td>       23694</td>
                 </tr>
             </table>
             <div>
@@ -532,215 +530,814 @@ Range graph removed 17492 edges of 34120
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/IPython/core/formatters.py:1036,</span> in <span class="ni">MimeBundleFormatter.__call__</span><span class="nt">(self, obj, include, exclude)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1033</span>     <span class="n">method</span> <span class="o">=</span> <span class="n">get_real_method</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_method</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1035</span>     <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1036</span>         <span class="k">return</span> <span class="n">method</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1037</span>     <span class="k">return</span> <span class="kc">None</span>
-<span class="g g-Whitespace">   </span><span class="mi">1038</span> <span class="k">else</span><span class="p">:</span>
+<div class="output text_html"><style>#sk-container-id-1 {
+  /* Definition of color scheme common for light and dark mode */
+  --sklearn-color-text: #000;
+  --sklearn-color-text-muted: #666;
+  --sklearn-color-line: gray;
+  /* Definition of color scheme for unfitted estimators */
+  --sklearn-color-unfitted-level-0: #fff5e6;
+  --sklearn-color-unfitted-level-1: #f6e4d2;
+  --sklearn-color-unfitted-level-2: #ffe0b3;
+  --sklearn-color-unfitted-level-3: chocolate;
+  /* Definition of color scheme for fitted estimators */
+  --sklearn-color-fitted-level-0: #f0f8ff;
+  --sklearn-color-fitted-level-1: #d4ebff;
+  --sklearn-color-fitted-level-2: #b3dbfd;
+  --sklearn-color-fitted-level-3: cornflowerblue;
+}
 
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/sklearn/utils/_repr_html/base.py:151,</span> in <span class="ni">ReprHTMLMixin._repr_mimebundle_</span><span class="nt">(self, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">149</span> <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;text/plain&quot;</span><span class="p">:</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)}</span>
-<span class="g g-Whitespace">    </span><span class="mi">150</span> <span class="k">if</span> <span class="n">get_config</span><span class="p">()[</span><span class="s2">&quot;display&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;diagram&quot;</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">151</span>     <span class="n">output</span><span class="p">[</span><span class="s2">&quot;text/html&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_html_repr</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">152</span> <span class="k">return</span> <span class="n">output</span>
+#sk-container-id-1.light {
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: black;
+  --sklearn-color-background: white;
+  --sklearn-color-border-box: black;
+  --sklearn-color-icon: #696969;
+}
 
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/sklearn/utils/_repr_html/estimator.py:480,</span> in <span class="ni">estimator_html_repr</span><span class="nt">(estimator)</span>
-<span class="g g-Whitespace">    </span><span class="mi">469</span> <span class="n">html_template</span> <span class="o">=</span> <span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">470</span>     <span class="sa">f</span><span class="s2">&quot;&lt;style&gt;</span><span class="si">{</span><span class="n">style_with_id</span><span class="si">}</span><span class="s2">&lt;/style&gt;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">471</span>     <span class="sa">f</span><span class="s2">&quot;&lt;body&gt;&quot;</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="mi">476</span>     <span class="s1">&#39;&lt;div class=&quot;sk-container&quot; hidden&gt;&#39;</span>
-<span class="g g-Whitespace">    </span><span class="mi">477</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">479</span> <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html_template</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">480</span> <span class="n">_write_estimator_html</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">481</span>     <span class="n">out</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">482</span>     <span class="n">estimator</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">483</span>     <span class="n">estimator</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">484</span>     <span class="n">estimator_str</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">485</span>     <span class="n">first_call</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">486</span>     <span class="n">is_fitted_css_class</span><span class="o">=</span><span class="n">is_fitted_css_class</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">487</span>     <span class="n">is_fitted_icon</span><span class="o">=</span><span class="n">is_fitted_icon</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">488</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">489</span> <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;estimator.js&quot;</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">490</span>     <span class="n">script</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+#sk-container-id-1.dark {
+  --sklearn-color-text-on-default-background: white;
+  --sklearn-color-background: #111;
+  --sklearn-color-border-box: white;
+  --sklearn-color-icon: #878787;
+}
 
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/sklearn/utils/_repr_html/estimator.py:386,</span> in <span class="ni">_write_estimator_html</span><span class="nt">(out, estimator, estimator_label, estimator_label_details, is_fitted_css_class, is_fitted_icon, first_call, param_prefix)</span>
-<span class="g g-Whitespace">    </span><span class="mi">384</span> <span class="k">elif</span> <span class="n">est_block</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;single&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">385</span>     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="s2">&quot;_get_params_html&quot;</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">386</span>         <span class="n">params</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">_get_params_html</span><span class="p">(</span><span class="n">doc_link</span><span class="o">=</span><span class="n">doc_link</span><span class="p">)</span><span class="o">.</span><span class="n">_repr_html_inner</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">387</span>     <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">388</span>         <span class="n">params</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+#sk-container-id-1 {
+  color: var(--sklearn-color-text);
+}
 
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/sklearn/base.py:328,</span> in <span class="ni">BaseEstimator._get_params_html</span><span class="nt">(self, deep, doc_link)</span>
-<span class="g g-Whitespace">    </span><span class="mi">324</span> <span class="n">ordered_out</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">out</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">init_default_params</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">out</span><span class="p">}</span>
-<span class="g g-Whitespace">    </span><span class="mi">325</span> <span class="n">ordered_out</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">out</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">remaining_params</span><span class="p">})</span>
-<span class="g g-Whitespace">    </span><span class="mi">327</span> <span class="n">non_default_ls</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-<span class="ne">--&gt; </span><span class="mi">328</span>     <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">ordered_out</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">is_non_default</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)]</span>
-<span class="g g-Whitespace">    </span><span class="mi">329</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">331</span> <span class="k">return</span> <span class="n">ParamsDict</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">332</span>     <span class="n">params</span><span class="o">=</span><span class="n">ordered_out</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">333</span>     <span class="n">non_default</span><span class="o">=</span><span class="n">non_default_ls</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">334</span>     <span class="n">estimator_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">335</span>     <span class="n">doc_link</span><span class="o">=</span><span class="n">doc_link</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">336</span> <span class="p">)</span>
+#sk-container-id-1 pre {
+  padding: 0;
+}
 
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/sklearn/base.py:311,</span> in <span class="ni">BaseEstimator._get_params_html.&lt;locals&gt;.is_non_default</span><span class="nt">(param_name, param_value)</span>
-<span class="g g-Whitespace">    </span><span class="mi">307</span> <span class="k">if</span> <span class="n">is_pandas_na</span><span class="p">(</span><span class="n">param_value</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_pandas_na</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">308</span>     <span class="n">init_default_params</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span>
-<span class="g g-Whitespace">    </span><span class="mi">309</span> <span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">310</span>     <span class="k">return</span> <span class="kc">True</span>
-<span class="ne">--&gt; </span><span class="mi">311</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">312</span>     <span class="n">param_value</span><span class="p">,</span> <span class="n">init_default_params</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span>
-<span class="g g-Whitespace">    </span><span class="mi">313</span> <span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">314</span>     <span class="n">is_scalar_nan</span><span class="p">(</span><span class="n">init_default_params</span><span class="p">[</span><span class="n">param_name</span><span class="p">])</span>
-<span class="g g-Whitespace">    </span><span class="mi">315</span>     <span class="ow">and</span> <span class="n">is_scalar_nan</span><span class="p">(</span><span class="n">param_value</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">316</span> <span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">317</span>     <span class="k">return</span> <span class="kc">True</span>
-<span class="g g-Whitespace">    </span><span class="mi">319</span> <span class="k">return</span> <span class="kc">False</span>
+#sk-container-id-1 input.sk-hidden--visually {
+  border: 0;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
 
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/numpy/_core/numeric.py:2590,</span> in <span class="ni">array_equal</span><span class="nt">(a1, a2, equal_nan)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2588</span>     <span class="k">return</span> <span class="kc">False</span>
-<span class="g g-Whitespace">   </span><span class="mi">2589</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">equal_nan</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">2590</span>     <span class="k">return</span> <span class="n">builtins</span><span class="o">.</span><span class="n">bool</span><span class="p">((</span><span class="n">asanyarray</span><span class="p">(</span><span class="n">a1</span> <span class="o">==</span> <span class="n">a2</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
-<span class="g g-Whitespace">   </span><span class="mi">2592</span> <span class="k">if</span> <span class="n">a1</span> <span class="ow">is</span> <span class="n">a2</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2593</span>     <span class="c1"># nan will compare equal so an array will compare equal to itself.</span>
-<span class="g g-Whitespace">   </span><span class="mi">2594</span>     <span class="k">return</span> <span class="kc">True</span>
+#sk-container-id-1 div.sk-dashed-wrapped {
+  border: 1px dashed var(--sklearn-color-line);
+  margin: 0 0.4em 0.5em 0.4em;
+  box-sizing: border-box;
+  padding-bottom: 0.4em;
+  background-color: var(--sklearn-color-background);
+}
 
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/libpysal/graph/_set_ops.py:28,</span> in <span class="ni">SetOpsMixin.__eq__</span><span class="nt">(self, other)</span>
-<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>  <span class="c1"># ==</span>
-<span class="ne">---&gt; </span><span class="mi">28</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+#sk-container-id-1 div.sk-container {
+  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
+     but bootstrap.min.css set `[hidden] { display: none !important; }`
+     so we also need the `!important` here to be able to override the
+     default hidden behavior on the sphinx rendered scikit-learn.org.
+     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
+  display: inline-block !important;
+  position: relative;
+}
 
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/libpysal/graph/_set_ops.py:182,</span> in <span class="ni">SetOpsMixin.equals</span><span class="nt">(self, right)</span>
-<span class="g g-Whitespace">    </span><span class="mi">169</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">170</span><span class="sd"> Check that two graphs are identical. This reqiures them to have</span>
-<span class="g g-Whitespace">    </span><span class="mi">171</span><span class="sd"> 1. the same edge labels and node labels</span>
-<span class="sd">   (...)    178 (focal, neighbor, weight) for the two graphs are the same.</span>
-<span class="g g-Whitespace">    </span><span class="mi">179</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">180</span> <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">181</span>     <span class="n">pandas</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_series_equal</span><span class="p">(</span>
-<span class="ne">--&gt; </span><span class="mi">182</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_adjacency</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">_adjacency</span><span class="p">,</span> <span class="n">check_dtype</span><span class="o">=</span><span class="kc">False</span>
-<span class="g g-Whitespace">    </span><span class="mi">183</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">184</span> <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">185</span>     <span class="k">return</span> <span class="kc">False</span>
+#sk-container-id-1 div.sk-text-repr-fallback {
+  display: none;
+}
 
-<span class="ne">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;_adjacency&#39;
-</pre></div>
+div.sk-parallel-item,
+div.sk-serial,
+div.sk-item {
+  /* draw centered vertical line to link estimators */
+  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Parallel-specific style estimator block */
+
+#sk-container-id-1 div.sk-parallel-item::after {
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
+  flex-grow: 1;
+}
+
+#sk-container-id-1 div.sk-parallel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: var(--sklearn-color-background);
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-parallel-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#sk-container-id-1 div.sk-parallel-item:first-child::after {
+  align-self: flex-end;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:last-child::after {
+  align-self: flex-start;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:only-child::after {
+  width: 0;
+}
+
+/* Serial-specific style estimator block */
+
+#sk-container-id-1 div.sk-serial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--sklearn-color-background);
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+
+/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
+clickable and can be expanded/collapsed.
+- Pipeline and ColumnTransformer use this feature and define the default style
+- Estimators will overwrite some part of the style using the `sk-estimator` class
+*/
+
+/* Pipeline and ColumnTransformer style (default) */
+
+#sk-container-id-1 div.sk-toggleable {
+  /* Default theme specific background. It is overwritten whether we have a
+  specific estimator or a Pipeline/ColumnTransformer */
+  background-color: var(--sklearn-color-background);
+}
+
+/* Toggleable label */
+#sk-container-id-1 label.sk-toggleable__label {
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+#sk-container-id-1 label.sk-toggleable__label .caption {
+  font-size: 0.6rem;
+  font-weight: lighter;
+  color: var(--sklearn-color-text-muted);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:before {
+  /* Arrow on the left of the label */
+  content: "▸";
+  float: left;
+  margin-right: 0.25em;
+  color: var(--sklearn-color-icon);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
+  color: var(--sklearn-color-text);
+}
+
+/* Toggleable content - dropdown */
+
+#sk-container-id-1 div.sk-toggleable__content {
+  display: none;
+  text-align: left;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content pre {
+  margin: 0.2em;
+  border-radius: 0.25em;
+  color: var(--sklearn-color-text);
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted pre {
+  /* unfitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+  /* Expand drop-down */
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+  content: "▾";
+}
+
+/* Pipeline/ColumnTransformer-specific style */
+
+#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator-specific style */
+
+/* Colorize estimator box */
+#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label label.sk-toggleable__label,
+#sk-container-id-1 div.sk-label label {
+  /* The background is the default theme color */
+  color: var(--sklearn-color-text-on-default-background);
+}
+
+/* On hover, darken the color of the background */
+#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+/* Label box, darken color on hover, fitted */
+#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator label */
+
+#sk-container-id-1 div.sk-label label {
+  font-family: monospace;
+  font-weight: bold;
+  line-height: 1.2em;
+}
+
+#sk-container-id-1 div.sk-label-container {
+  text-align: center;
+}
+
+/* Estimator-specific */
+#sk-container-id-1 div.sk-estimator {
+  font-family: monospace;
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+/* on hover */
+#sk-container-id-1 div.sk-estimator:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Specification for estimator info (e.g. "i" and "?") */
+
+/* Common style for "i" and "?" */
+
+.sk-estimator-doc-link,
+a:link.sk-estimator-doc-link,
+a:visited.sk-estimator-doc-link {
+  float: right;
+  font-size: smaller;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-unfitted-level-0);
+  border-radius: 1em;
+  height: 1em;
+  width: 1em;
+  text-decoration: none !important;
+  margin-left: 0.5em;
+  text-align: center;
+  /* unfitted */
+  border: var(--sklearn-color-unfitted-level-3) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted,
+a:link.sk-estimator-doc-link.fitted,
+a:visited.sk-estimator-doc-link.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3) 1pt solid;
+  color: var(--sklearn-color-fitted-level-3);
+}
+
+/* On hover */
+div.sk-estimator:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover,
+div.sk-label-container:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-0);
+  text-decoration: none;
+}
+
+div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover,
+div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-fitted-level-0);
+  text-decoration: none;
+}
+
+/* Span, style for the box shown on hovering the info icon */
+.sk-estimator-doc-link span {
+  display: none;
+  z-index: 9999;
+  position: relative;
+  font-weight: normal;
+  right: .2ex;
+  padding: .5ex;
+  margin: .5ex;
+  width: min-content;
+  min-width: 20ex;
+  max-width: 50ex;
+  color: var(--sklearn-color-text);
+  box-shadow: 2pt 2pt 4pt #999;
+  /* unfitted */
+  background: var(--sklearn-color-unfitted-level-0);
+  border: .5pt solid var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted span {
+  /* fitted */
+  background: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3);
+}
+
+.sk-estimator-doc-link:hover span {
+  display: block;
+}
+
+/* "?"-specific style due to the `<a>` HTML tag */
+
+#sk-container-id-1 a.estimator_doc_link {
+  float: right;
+  font-size: 1rem;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-unfitted-level-0);
+  border-radius: 1rem;
+  height: 1rem;
+  width: 1rem;
+  text-decoration: none;
+  /* unfitted */
+  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+#sk-container-id-1 a.estimator_doc_link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+}
+
+.estimator-table {
+    font-family: monospace;
+}
+
+.estimator-table summary {
+    padding: .5rem;
+    cursor: pointer;
+}
+
+.estimator-table summary::marker {
+    font-size: 0.7rem;
+}
+
+.estimator-table details[open] {
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+    padding-bottom: 0.3rem;
+}
+
+.estimator-table .parameters-table {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 0;
+}
+
+.estimator-table .parameters-table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.estimator-table .parameters-table tr:nth-child(even) {
+    background-color: #f6f6f6;
+}
+
+.estimator-table .parameters-table tr:hover {
+    background-color: #e0e0e0;
+}
+
+.estimator-table table td {
+    border: 1px solid rgba(106, 105, 104, 0.232);
+}
+
+/*
+    `table td`is set in notebook with right text-align.
+    We need to overwrite it.
+*/
+.estimator-table table td.param {
+    text-align: left;
+    position: relative;
+    padding: 0;
+}
+
+.user-set td {
+    color:rgb(255, 94, 0);
+    text-align: left !important;
+}
+
+.user-set td.value {
+    color:rgb(255, 94, 0);
+    background-color: transparent;
+}
+
+.default td {
+    color: black;
+    text-align: left !important;
+}
+
+.user-set td i,
+.default td i {
+    color: black;
+}
+
+/*
+    Styles for parameter documentation links
+    We need styling for visited so jupyter doesn't overwrite it
+*/
+a.param-doc-link,
+a.param-doc-link:link,
+a.param-doc-link:visited {
+    text-decoration: underline dashed;
+    text-underline-offset: .3em;
+    color: inherit;
+    display: block;
+    padding: .5em;
+}
+
+/* "hack" to make the entire area of the cell containing the link clickable */
+a.param-doc-link::before {
+    position: absolute;
+    content: "";
+    inset: 0;
+}
+
+.param-doc-description {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    left: 0;
+    padding: .5ex;
+    margin-left: 1.5em;
+    color: var(--sklearn-color-text);
+    box-shadow: .3em .3em .4em #999;
+    width: max-content;
+    text-align: left;
+    max-height: 10em;
+    overflow-y: auto;
+
+    /* unfitted */
+    background: var(--sklearn-color-unfitted-level-0);
+    border: thin solid var(--sklearn-color-unfitted-level-3);
+}
+
+/* Fitted state for parameter tooltips */
+.fitted .param-doc-description {
+    /* fitted */
+    background: var(--sklearn-color-fitted-level-0);
+    border: thin solid var(--sklearn-color-fitted-level-3);
+}
+
+.param-doc-link:hover .param-doc-description {
+    display: block;
+}
+
+.copy-paste-icon {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNy4yIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjUgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTIwOCAwTDMzMi4xIDBjMTIuNyAwIDI0LjkgNS4xIDMzLjkgMTQuMWw2Ny45IDY3LjljOSA5IDE0LjEgMjEuMiAxNC4xIDMzLjlMNDQ4IDMzNmMwIDI2LjUtMjEuNSA0OC00OCA0OGwtMTkyIDBjLTI2LjUgMC00OC0yMS41LTQ4LTQ4bDAtMjg4YzAtMjYuNSAyMS41LTQ4IDQ4LTQ4ek00OCAxMjhsODAgMCAwIDY0LTY0IDAgMCAyNTYgMTkyIDAgMC0zMiA2NCAwIDAgNDhjMCAyNi41LTIxLjUgNDgtNDggNDhMNDggNTEyYy0yNi41IDAtNDgtMjEuNS00OC00OEwwIDE3NmMwLTI2LjUgMjEuNS00OCA0OC00OHoiLz48L3N2Zz4=);
+    background-repeat: no-repeat;
+    background-size: 14px 14px;
+    background-position: 0;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLinearRegression(graph=&lt;Graph of 457 nodes and 60055 nonzero edges indexed by
+ [0, 1, 2, 3, 4, ...]&gt;)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLinearRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+        <div class="estimator-table">
+            <details>
+                <summary>Parameters</summary>
+                <table class="parameters-table">
+                  <tbody>
+                    
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('bandwidth',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">bandwidth</td>
+            <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('fixed',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">fixed</td>
+            <td class="value">False</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('kernel',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">kernel</td>
+            <td class="value">&#x27;bisquare&#x27;</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('include_focal',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">include_focal</td>
+            <td class="value">True</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('geometry',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">geometry</td>
+            <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('graph',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">graph</td>
+            <td class="value">&lt;Graph of 457...2, 3, 4, ...]&gt;</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('n_jobs',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">n_jobs</td>
+            <td class="value">-1</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('fit_global_model',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">fit_global_model</td>
+            <td class="value">True</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('keep_models',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">keep_models</td>
+            <td class="value">False</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('temp_folder',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">temp_folder</td>
+            <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('batch_size',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">batch_size</td>
+            <td class="value">None</td>
+        </tr>
+    
+                  </tbody>
+                </table>
+            </details>
+        </div>
+    </div></div></div></div></div><script>function copyToClipboard(text, element) {
+    // Get the parameter prefix from the closest toggleable content
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const fullParamName = paramPrefix ? `${paramPrefix}${text}` : text;
+
+    const originalStyle = element.style;
+    const computedStyle = window.getComputedStyle(element);
+    const originalWidth = computedStyle.width;
+    const originalHTML = element.innerHTML.replace('Copied!', '');
+
+    navigator.clipboard.writeText(fullParamName)
+        .then(() => {
+            element.style.width = originalWidth;
+            element.style.color = 'green';
+            element.innerHTML = "Copied!";
+
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        })
+        .catch(err => {
+            console.error('Failed to copy:', err);
+            element.style.color = 'red';
+            element.innerHTML = "Failed!";
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        });
+    return false;
+}
+
+document.querySelectorAll('.copy-paste-icon').forEach(function(element) {
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const paramName = element.parentElement.nextElementSibling
+        .textContent.trim().split(' ')[0];
+    const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
+
+    element.setAttribute('title', fullParamName);
+});
+
+
+/**
+ * Adapted from Skrub
+ * https://github.com/skrub-data/skrub/blob/403466d1d5d4dc76a7ef569b3f8228db59a31dc3/skrub/_reporting/_data/templates/report.js#L789
+ * @returns "light" or "dark"
+ */
+function detectTheme(element) {
+    const body = document.querySelector('body');
+
+    // Check VSCode theme
+    const themeKindAttr = body.getAttribute('data-vscode-theme-kind');
+    const themeNameAttr = body.getAttribute('data-vscode-theme-name');
+
+    if (themeKindAttr && themeNameAttr) {
+        const themeKind = themeKindAttr.toLowerCase();
+        const themeName = themeNameAttr.toLowerCase();
+
+        if (themeKind.includes("dark") || themeName.includes("dark")) {
+            return "dark";
+        }
+        if (themeKind.includes("light") || themeName.includes("light")) {
+            return "light";
+        }
+    }
+
+    // Check Jupyter theme
+    if (body.getAttribute('data-jp-theme-light') === 'false') {
+        return 'dark';
+    } else if (body.getAttribute('data-jp-theme-light') === 'true') {
+        return 'light';
+    }
+
+    // Guess based on a parent element's color
+    const color = window.getComputedStyle(element.parentNode, null).getPropertyValue('color');
+    const match = color.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i);
+    if (match) {
+        const [r, g, b] = [
+            parseFloat(match[1]),
+            parseFloat(match[2]),
+            parseFloat(match[3])
+        ];
+
+        // https://en.wikipedia.org/wiki/HSL_and_HSV#Lightness
+        const luma = 0.299 * r + 0.587 * g + 0.114 * b;
+
+        if (luma > 180) {
+            // If the text is very bright we have a dark theme
+            return 'dark';
+        }
+        if (luma < 75) {
+            // If the text is very dark we have a light theme
+            return 'light';
+        }
+        // Otherwise fall back to the next heuristic.
+    }
+
+    // Fallback to system preference
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+
+function forceTheme(elementId) {
+    const estimatorElement = document.querySelector(`#${elementId}`);
+    if (estimatorElement === null) {
+        console.error(`Element with id ${elementId} not found.`);
+    } else {
+        const theme = detectTheme(estimatorElement);
+        estimatorElement.classList.add(theme);
+    }
+}
+
+forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/IPython/core/formatters.py:406,</span> in <span class="ni">BaseFormatter.__call__</span><span class="nt">(self, obj)</span>
-<span class="g g-Whitespace">    </span><span class="mi">404</span>     <span class="n">method</span> <span class="o">=</span> <span class="n">get_real_method</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_method</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">405</span>     <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">406</span>         <span class="k">return</span> <span class="n">method</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">407</span>     <span class="k">return</span> <span class="kc">None</span>
-<span class="g g-Whitespace">    </span><span class="mi">408</span> <span class="k">else</span><span class="p">:</span>
-
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/sklearn/utils/_repr_html/base.py:145,</span> in <span class="ni">ReprHTMLMixin._repr_html_inner</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">140</span> <span class="k">def</span><span class="w"> </span><span class="nf">_repr_html_inner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">141</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;This function is returned by the @property `_repr_html_` to make</span>
-<span class="g g-Whitespace">    </span><span class="mi">142</span><span class="sd">     `hasattr(estimator, &quot;_repr_html_&quot;) return `True` or `False` depending</span>
-<span class="g g-Whitespace">    </span><span class="mi">143</span><span class="sd">     on `get_config()[&quot;display&quot;]`.</span>
-<span class="g g-Whitespace">    </span><span class="mi">144</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">145</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_html_repr</span><span class="p">()</span>
-
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/sklearn/utils/_repr_html/estimator.py:480,</span> in <span class="ni">estimator_html_repr</span><span class="nt">(estimator)</span>
-<span class="g g-Whitespace">    </span><span class="mi">469</span> <span class="n">html_template</span> <span class="o">=</span> <span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">470</span>     <span class="sa">f</span><span class="s2">&quot;&lt;style&gt;</span><span class="si">{</span><span class="n">style_with_id</span><span class="si">}</span><span class="s2">&lt;/style&gt;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">471</span>     <span class="sa">f</span><span class="s2">&quot;&lt;body&gt;&quot;</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="mi">476</span>     <span class="s1">&#39;&lt;div class=&quot;sk-container&quot; hidden&gt;&#39;</span>
-<span class="g g-Whitespace">    </span><span class="mi">477</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">479</span> <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html_template</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">480</span> <span class="n">_write_estimator_html</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">481</span>     <span class="n">out</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">482</span>     <span class="n">estimator</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">483</span>     <span class="n">estimator</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">484</span>     <span class="n">estimator_str</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">485</span>     <span class="n">first_call</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">486</span>     <span class="n">is_fitted_css_class</span><span class="o">=</span><span class="n">is_fitted_css_class</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">487</span>     <span class="n">is_fitted_icon</span><span class="o">=</span><span class="n">is_fitted_icon</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">488</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">489</span> <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;estimator.js&quot;</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">490</span>     <span class="n">script</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/sklearn/utils/_repr_html/estimator.py:386,</span> in <span class="ni">_write_estimator_html</span><span class="nt">(out, estimator, estimator_label, estimator_label_details, is_fitted_css_class, is_fitted_icon, first_call, param_prefix)</span>
-<span class="g g-Whitespace">    </span><span class="mi">384</span> <span class="k">elif</span> <span class="n">est_block</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;single&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">385</span>     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="s2">&quot;_get_params_html&quot;</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">386</span>         <span class="n">params</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">_get_params_html</span><span class="p">(</span><span class="n">doc_link</span><span class="o">=</span><span class="n">doc_link</span><span class="p">)</span><span class="o">.</span><span class="n">_repr_html_inner</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">387</span>     <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">388</span>         <span class="n">params</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/sklearn/base.py:328,</span> in <span class="ni">BaseEstimator._get_params_html</span><span class="nt">(self, deep, doc_link)</span>
-<span class="g g-Whitespace">    </span><span class="mi">324</span> <span class="n">ordered_out</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">out</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">init_default_params</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">out</span><span class="p">}</span>
-<span class="g g-Whitespace">    </span><span class="mi">325</span> <span class="n">ordered_out</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">out</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">remaining_params</span><span class="p">})</span>
-<span class="g g-Whitespace">    </span><span class="mi">327</span> <span class="n">non_default_ls</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-<span class="ne">--&gt; </span><span class="mi">328</span>     <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">ordered_out</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">is_non_default</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)]</span>
-<span class="g g-Whitespace">    </span><span class="mi">329</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">331</span> <span class="k">return</span> <span class="n">ParamsDict</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">332</span>     <span class="n">params</span><span class="o">=</span><span class="n">ordered_out</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">333</span>     <span class="n">non_default</span><span class="o">=</span><span class="n">non_default_ls</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">334</span>     <span class="n">estimator_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">335</span>     <span class="n">doc_link</span><span class="o">=</span><span class="n">doc_link</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">336</span> <span class="p">)</span>
-
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/sklearn/base.py:311,</span> in <span class="ni">BaseEstimator._get_params_html.&lt;locals&gt;.is_non_default</span><span class="nt">(param_name, param_value)</span>
-<span class="g g-Whitespace">    </span><span class="mi">307</span> <span class="k">if</span> <span class="n">is_pandas_na</span><span class="p">(</span><span class="n">param_value</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_pandas_na</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">308</span>     <span class="n">init_default_params</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span>
-<span class="g g-Whitespace">    </span><span class="mi">309</span> <span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">310</span>     <span class="k">return</span> <span class="kc">True</span>
-<span class="ne">--&gt; </span><span class="mi">311</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">312</span>     <span class="n">param_value</span><span class="p">,</span> <span class="n">init_default_params</span><span class="p">[</span><span class="n">param_name</span><span class="p">]</span>
-<span class="g g-Whitespace">    </span><span class="mi">313</span> <span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">314</span>     <span class="n">is_scalar_nan</span><span class="p">(</span><span class="n">init_default_params</span><span class="p">[</span><span class="n">param_name</span><span class="p">])</span>
-<span class="g g-Whitespace">    </span><span class="mi">315</span>     <span class="ow">and</span> <span class="n">is_scalar_nan</span><span class="p">(</span><span class="n">param_value</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">316</span> <span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">317</span>     <span class="k">return</span> <span class="kc">True</span>
-<span class="g g-Whitespace">    </span><span class="mi">319</span> <span class="k">return</span> <span class="kc">False</span>
-
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/numpy/_core/numeric.py:2590,</span> in <span class="ni">array_equal</span><span class="nt">(a1, a2, equal_nan)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2588</span>     <span class="k">return</span> <span class="kc">False</span>
-<span class="g g-Whitespace">   </span><span class="mi">2589</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">equal_nan</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">2590</span>     <span class="k">return</span> <span class="n">builtins</span><span class="o">.</span><span class="n">bool</span><span class="p">((</span><span class="n">asanyarray</span><span class="p">(</span><span class="n">a1</span> <span class="o">==</span> <span class="n">a2</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
-<span class="g g-Whitespace">   </span><span class="mi">2592</span> <span class="k">if</span> <span class="n">a1</span> <span class="ow">is</span> <span class="n">a2</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">2593</span>     <span class="c1"># nan will compare equal so an array will compare equal to itself.</span>
-<span class="g g-Whitespace">   </span><span class="mi">2594</span>     <span class="k">return</span> <span class="kc">True</span>
-
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/libpysal/graph/_set_ops.py:28,</span> in <span class="ni">SetOpsMixin.__eq__</span><span class="nt">(self, other)</span>
-<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>  <span class="c1"># ==</span>
-<span class="ne">---&gt; </span><span class="mi">28</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
-
-<span class="nn">File ~/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/libpysal/graph/_set_ops.py:182,</span> in <span class="ni">SetOpsMixin.equals</span><span class="nt">(self, right)</span>
-<span class="g g-Whitespace">    </span><span class="mi">169</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">170</span><span class="sd"> Check that two graphs are identical. This reqiures them to have</span>
-<span class="g g-Whitespace">    </span><span class="mi">171</span><span class="sd"> 1. the same edge labels and node labels</span>
-<span class="sd">   (...)    178 (focal, neighbor, weight) for the two graphs are the same.</span>
-<span class="g g-Whitespace">    </span><span class="mi">179</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">180</span> <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">181</span>     <span class="n">pandas</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_series_equal</span><span class="p">(</span>
-<span class="ne">--&gt; </span><span class="mi">182</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_adjacency</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">_adjacency</span><span class="p">,</span> <span class="n">check_dtype</span><span class="o">=</span><span class="kc">False</span>
-<span class="g g-Whitespace">    </span><span class="mi">183</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">184</span> <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">185</span>     <span class="k">return</span> <span class="kc">False</span>
-
-<span class="ne">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;_adjacency&#39;
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GWLinearRegression(graph=&lt;Graph of 457 nodes and 59741 nonzero edges indexed by
- [0, 1, 2, 3, 4, ...]&gt;)
-</pre></div>
-</div>
-</div>
-</div>
-<p>Done. Now you can extract whatever the object contain. Like focal R2.</p>
+<p>Done. Now you can extract whatever the object contain. Like prediction.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">focal_r2_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">pred_</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.9381298385291307)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      384.603824
+1       17.493468
+2       17.012252
+3       17.465274
+4       46.531855
+          ...    
+452      5.448992
+453      0.418611
+454      0.304021
+455      1.147532
+456      2.536903
+Length: 457, dtype: float64
 </pre></div>
 </div>
 </div>
@@ -753,17 +1350,17 @@ Range graph removed 17492 edges of 34120
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      0.833815
-1      0.986429
-2      0.988289
-3      0.974424
-4      0.983153
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      0.951705
+1      0.986416
+2      0.988294
+3      0.974153
+4      0.983152
          ...   
-452    0.797097
-453    0.671675
-454    0.709559
-455    0.796124
-456    0.859937
+452    0.792927
+453    0.674607
+454    0.715204
+455    0.873481
+456    0.856795
 Length: 457, dtype: float64
 </pre></div>
 </div>
@@ -772,65 +1369,12 @@ Length: 457, dtype: float64
 <p>That can be plotted.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwlr</span><span class="o">.</span><span class="n">local_r2_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwlr</span><span class="o">.</span><span class="n">local_r2_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
-</pre></div>
-</div>
-<img alt="_images/68d29547bf1022f17108e24be24dc7b2c2c746aabf79eeb2ae59a7999397da32.png" src="_images/68d29547bf1022f17108e24be24dc7b2c2c746aabf79eeb2ae59a7999397da32.png" />
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1072f53a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1035e13a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1066e13a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1077193a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1030193a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x104fa53a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1059d13a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1069e93a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-</pre></div>
-</div>
+<img alt="_images/819f038f35220f8e831b1906fc5c489b2ee45c2b01a1f06cc8409cacc94dcbdf.png" src="_images/819f038f35220f8e831b1906fc5c489b2ee45c2b01a1f06cc8409cacc94dcbdf.png" />
 </div>
 </div>
 </section>
@@ -846,6 +1390,24 @@ ChildProcessError: [Errno 10] No child processes
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="bandwidth_search.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Bandwidth search</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="api.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               

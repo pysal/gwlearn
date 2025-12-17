@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>gwlearn &#8212; gwlearn 0.1.dev80+g780a7113e documentation</title>
+    <title>gwlearn &#8212; gwlearn 0.1.dev81+gef1dbfdf2 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=4bd3d2c4"></script>
+    <script src="_static/documentation_options.js?v=25976c84"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -48,7 +48,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API reference" href="api.html" />
+    <link rel="next" title="Introduction to prototyping geographically weighted models" href="introduction.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -138,7 +138,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev80+g780a7113e documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev81+gef1dbfdf2 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -154,16 +154,26 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to prototyping geographically weighted models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear.html">Linear models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensemble.html">Ensemble models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="predict.html">Prediction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imbalance.html">Class imbalance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bandwidth_search.html">Bandwidth search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network_graph.html">Using custom graphs</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseClassifier.html">gwlearn.base.BaseClassifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseRegressor.html">gwlearn.base.BaseRegressor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.linear_model.GWLinearRegression.html">gwlearn.linear_model.GWLinearRegression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.linear_model.GWLogisticRegression.html">gwlearn.linear_model.GWLogisticRegression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.ensemble.GWRandomForestClassifier.html">gwlearn.ensemble.GWRandomForestClassifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.ensemble.GWGradientBoostingClassifier.html">gwlearn.ensemble.GWGradientBoostingClassifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.search.BandwidthSearch.html">gwlearn.search.BandwidthSearch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseClassifier.html">gwlearn.base.BaseClassifier</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseRegressor.html">gwlearn.base.BaseRegressor</a></li>
 </ul>
 </details></li>
 </ul>
@@ -295,7 +305,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -311,6 +323,21 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#status">Status</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bug-reports">Bug reports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-in-touch">Get in touch</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license">License</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -323,12 +350,85 @@ document.write(`
   <section id="gwlearn">
 <h1>gwlearn<a class="headerlink" href="#gwlearn" title="Link to this heading">#</a></h1>
 <p>Geographically weighted modeling based on <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> provides geographically weighted extension of regression and classification models based on <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>. At least that is the aim. It does that only partially at the moment.</p>
-<p>Pre-alpha state of development.</p>
+<p>The aim of the package is to provide implementations of spatially-explicit modelling.</p>
+<section id="status">
+<h2>Status<a class="headerlink" href="#status" title="Link to this heading">#</a></h2>
+<p>Current development status is early beta. API of the package can change without a
+warning. Use with caution.</p>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> provides a framework for prototyping geographically weighted extensions of
+regression and classification models based on <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> and <code class="docutils literal notranslate"><span class="pre">libpysal.graph</span></code> and a
+subset of models implemented on top of this framework. For example, you can run
+geographically weighted linear regression in a following manner.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">geodatasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">data</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">gwlearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">GWLinearRegression</span>
+
+
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">geoda</span><span class="o">.</span><span class="n">guerry</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
+<span class="n">adaptive</span> <span class="o">=</span> <span class="n">GWLinearRegression</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
+    <span class="n">bandwidth</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+    <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;tricube&#39;</span>
+<span class="p">)</span>
+<span class="n">adaptive</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">gdf</span><span class="p">[[</span><span class="s1">&#39;Crm_prp&#39;</span><span class="p">,</span> <span class="s1">&#39;Litercy&#39;</span><span class="p">,</span> <span class="s1">&#39;Donatns&#39;</span><span class="p">,</span> <span class="s1">&#39;Lottery&#39;</span><span class="p">]],</span>
+    <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;Suicids&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>For details, see the <a class="reference external" href="https://pysal.org/gwlearn">documentation</a>.</p>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
+<p>The package is currently not released, so you will need to install it from source.</p>
+<p>You can either clone the repository:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/pysal/gwlearn.git
+<span class="nb">cd</span><span class="w"> </span>gwlearn
+pip<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+<p>Or install directly from Github:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/pysal/gwlearn.git
+</pre></div>
+</div>
+<p>The package depends on:</p>
+<div class="highlight-yml notranslate"><div class="highlight"><pre><span></span>geopandas&gt;=1.0.0
+joblib&gt;=1.4.0
+libpysal&gt;=4.12
+numpy&gt;=1.26.0
+scipy&gt;=1.12.0
+scikit-learn&gt;=1.4.0
+pandas&gt;=2.1.0
+</pre></div>
+</div>
+</section>
+<section id="bug-reports">
+<h2>Bug reports<a class="headerlink" href="#bug-reports" title="Link to this heading">#</a></h2>
+<p>To search for or report bugs, please see the
+<a class="reference external" href="https://github.com/pysal/gwlearn/issues">Github issue tracker</a>.</p>
+</section>
+<section id="get-in-touch">
+<h2>Get in touch<a class="headerlink" href="#get-in-touch" title="Link to this heading">#</a></h2>
+<p>If you have a question regarding <code class="docutils literal notranslate"><span class="pre">gwlearn</span></code>, feel free to open an issue or join a chat on
+<a class="reference external" href="https://discord.gg/he6Y8D2ap3">Discord</a>.</p>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Link to this heading">#</a></h2>
+<p>The package is licensed under BSD 3-Clause License (Copyright (c) 2025, Martin
+Fleischmann &amp; PySAL Developers)</p>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
 </div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
 </section>
 
 
@@ -343,11 +443,11 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="right-next"
-       href="api.html"
+       href="introduction.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">API reference</p>
+        <p class="prev-next-title">Introduction to prototyping geographically weighted models</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -357,6 +457,28 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#status">Status</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bug-reports">Bug reports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-in-touch">Get in touch</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license">License</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

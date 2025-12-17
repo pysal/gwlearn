@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API reference &#8212; gwlearn 0.1.dev80+g780a7113e documentation</title>
+    <title>API reference &#8212; gwlearn 0.1.dev81+gef1dbfdf2 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=4bd3d2c4"></script>
+    <script src="_static/documentation_options.js?v=25976c84"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -48,8 +48,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="gwlearn.linear_model.GWLinearRegression" href="generated/gwlearn.linear_model.GWLinearRegression.html" />
-    <link rel="prev" title="gwlearn" href="index.html" />
+    <link rel="next" title="gwlearn.base.BaseClassifier" href="generated/gwlearn.base.BaseClassifier.html" />
+    <link rel="prev" title="Using custom graphs" href="network_graph.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev80+g780a7113e documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev81+gef1dbfdf2 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -153,16 +153,26 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to prototyping geographically weighted models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear.html">Linear models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensemble.html">Ensemble models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="predict.html">Prediction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imbalance.html">Class imbalance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bandwidth_search.html">Bandwidth search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network_graph.html">Using custom graphs</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">API reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseClassifier.html">gwlearn.base.BaseClassifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseRegressor.html">gwlearn.base.BaseRegressor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.linear_model.GWLinearRegression.html">gwlearn.linear_model.GWLinearRegression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.linear_model.GWLogisticRegression.html">gwlearn.linear_model.GWLogisticRegression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.ensemble.GWRandomForestClassifier.html">gwlearn.ensemble.GWRandomForestClassifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.ensemble.GWGradientBoostingClassifier.html">gwlearn.ensemble.GWGradientBoostingClassifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.search.BandwidthSearch.html">gwlearn.search.BandwidthSearch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseClassifier.html">gwlearn.base.BaseClassifier</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseRegressor.html">gwlearn.base.BaseRegressor</a></li>
 </ul>
 </details></li>
 </ul>
@@ -317,12 +327,12 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-classes">Base classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-modelling">Regression modelling</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification-modelling">Classification modelling</a><ul class="nav section-nav flex-column">
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bandwidth-search">Bandwidth search</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-classes">Base classes</a></li>
 </ul>
             </nav>
         </div>
@@ -337,6 +347,20 @@ document.write(`
   <section id="api-reference">
 <span id="reference"></span><h1>API reference<a class="headerlink" href="#api-reference" title="Link to this heading">#</a></h1>
 <p>The API reference provides an overview of all public functions in <code class="docutils literal notranslate"><span class="pre">gwlearn</span></code>.</p>
+<section id="base-classes">
+<h2>Base classes<a class="headerlink" href="#base-classes" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/gwlearn.base.BaseClassifier.html#gwlearn.base.BaseClassifier" title="gwlearn.base.BaseClassifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseClassifier</span></code></a>(model, *[, bandwidth, fixed, ...])</p></td>
+<td><p>Generic geographically weighted classification meta-class</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/gwlearn.base.BaseRegressor.html#gwlearn.base.BaseRegressor" title="gwlearn.base.BaseRegressor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseRegressor</span></code></a>(model, *[, bandwidth, fixed, ...])</p></td>
+<td><p>Generic geographically weighted regression meta-class</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="regression-modelling">
 <h2>Regression modelling<a class="headerlink" href="#regression-modelling" title="Link to this heading">#</a></h2>
 <p>Linear models:</p>
@@ -384,20 +408,6 @@ document.write(`
 </table>
 </div>
 </section>
-<section id="base-classes">
-<h2>Base classes<a class="headerlink" href="#base-classes" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/gwlearn.base.BaseClassifier.html#gwlearn.base.BaseClassifier" title="gwlearn.base.BaseClassifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseClassifier</span></code></a>(model, *[, bandwidth, fixed, ...])</p></td>
-<td><p>Generic geographically weighted classification meta-class</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/gwlearn.base.BaseRegressor.html#gwlearn.base.BaseRegressor" title="gwlearn.base.BaseRegressor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseRegressor</span></code></a>(model, *[, bandwidth, fixed, ...])</p></td>
-<td><p>Generic geographically weighted regression meta-class</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
 </section>
 
 
@@ -412,20 +422,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="index.html"
+       href="network_graph.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">gwlearn</p>
+        <p class="prev-next-title">Using custom graphs</p>
       </div>
     </a>
     <a class="right-next"
-       href="generated/gwlearn.linear_model.GWLinearRegression.html"
+       href="generated/gwlearn.base.BaseClassifier.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">gwlearn.linear_model.GWLinearRegression</p>
+        <p class="prev-next-title">gwlearn.base.BaseClassifier</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -445,12 +455,12 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-classes">Base classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-modelling">Regression modelling</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classification-modelling">Classification modelling</a><ul class="nav section-nav flex-column">
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bandwidth-search">Bandwidth search</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#base-classes">Base classes</a></li>
 </ul>
   </nav></div>
 

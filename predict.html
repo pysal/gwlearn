@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Comparison of GWLinearRegression to MGWR’s implementation &#8212; gwlearn 0.1.dev80+g780a7113e documentation</title>
+    <title>Prediction &#8212; gwlearn 0.1.dev81+gef1dbfdf2 documentation</title>
   
   
   
@@ -39,15 +39,17 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=4bd3d2c4"></script>
+    <script src="_static/documentation_options.js?v=25976c84"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'mgwr_comparison';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'predict';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Class imbalance" href="imbalance.html" />
+    <link rel="prev" title="Ensemble models" href="ensemble.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -110,8 +112,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">gwlearn 0.1.dev80+g780a7113e documentation</p>
+    <p class="title logo__title">gwlearn 0.1.dev81+gef1dbfdf2 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -153,16 +153,26 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to prototyping geographically weighted models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear.html">Linear models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensemble.html">Ensemble models</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Prediction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imbalance.html">Class imbalance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bandwidth_search.html">Bandwidth search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="network_graph.html">Using custom graphs</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseClassifier.html">gwlearn.base.BaseClassifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseRegressor.html">gwlearn.base.BaseRegressor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.linear_model.GWLinearRegression.html">gwlearn.linear_model.GWLinearRegression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.linear_model.GWLogisticRegression.html">gwlearn.linear_model.GWLogisticRegression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.ensemble.GWRandomForestClassifier.html">gwlearn.ensemble.GWRandomForestClassifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.ensemble.GWGradientBoostingClassifier.html">gwlearn.ensemble.GWGradientBoostingClassifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.search.BandwidthSearch.html">gwlearn.search.BandwidthSearch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseClassifier.html">gwlearn.base.BaseClassifier</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/gwlearn.base.BaseRegressor.html">gwlearn.base.BaseRegressor</a></li>
 </ul>
 </details></li>
 </ul>
@@ -223,7 +233,7 @@
       
       
       
-      <li><a href="_sources/mgwr_comparison.ipynb" target="_blank"
+      <li><a href="_sources/predict.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -294,9 +304,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -307,19 +315,11 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Comparison of GWLinearRegression to MGWR’s implementation</h1>
+    <h1>Prediction</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-bisquare">Adaptive bisquare</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -329,69 +329,63 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="comparison-of-gwlinearregression-to-mgwr-s-implementation">
-<h1>Comparison of GWLinearRegression to MGWR’s implementation<a class="headerlink" href="#comparison-of-gwlinearregression-to-mgwr-s-implementation" title="Link to this heading">#</a></h1>
-<p>Both should yield the same results.</p>
+  <section id="prediction">
+<h1>Prediction<a class="headerlink" href="#prediction" title="Link to this heading">#</a></h1>
+<p>Classification models implement tools for prediction, to get both probabilities (<code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>) and label (<code class="docutils literal notranslate"><span class="pre">predict</span></code>). Both derive the prediction based on the ensemble of local models.</p>
+<ol class="arabic simple">
+<li><p>For a new location on which you want a prediction, identify local models with a bandwidth used to train the model.</p></li>
+<li><p>Apply the kernel function used to train the model to derive weights of each of the local models.</p></li>
+<li><p>Make prediction using each of the local models in the bandwidth.</p></li>
+<li><p>Make weighted average of prediction based on the kernel weights.</p></li>
+<li><p>Normalize the result to ensure sum of probabilities is 1.</p></li>
+</ol>
+<p>See that in action:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">geodatasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">mgwr.gwr</span><span class="w"> </span><span class="kn">import</span> <span class="n">GWR</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">gwlearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">GWLinearRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gwlearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">GWRandomForestClassifier</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>Get sample data</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;geoda.ncovr&quot;</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;geoda.ncovr&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="mi">5070</span><span class="p">)</span>
+
+<span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;point&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="s1">&#39;point&#39;</span><span class="p">)</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;FH90&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;FH90&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">9</span><span class="p">:</span><span class="mi">15</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>Leave out some locations for prediction later.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(3085, 70)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">geom_train</span><span class="p">,</span> <span class="n">geom_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">.1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>Fit the model using the training subset. If you plan to do the prediction, you need to store the local models, which is False by default. When set to True, all the models are kept in memory, so be careful with large datasets. If given a path, all the models will be stored on disk instead, freeing the memory load.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># It is in the geographic coords in the  US and we need to work with distances. Re-project and use only points as the graph builder will require points anyway.</span>
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">())</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="mi">5070</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;FH90&quot;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<section id="adaptive-bisquare">
-<h2>Adaptive bisquare<a class="headerlink" href="#adaptive-bisquare" title="Link to this heading">#</a></h2>
-<p>gwlearn</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span> <span class="o">=</span> <span class="n">GWLinearRegression</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
-    <span class="n">bandwidth</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwrf</span> <span class="o">=</span> <span class="n">GWRandomForestClassifier</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">geom_train</span><span class="p">,</span>
+    <span class="n">bandwidth</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">keep_models</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">keep_models</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">gwlr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-    <span class="n">gdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">9</span><span class="p">:</span><span class="mi">15</span><span class="p">],</span>
-    <span class="n">y</span><span class="p">,</span>
+<span class="n">gwrf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">X_train</span><span class="p">,</span>
+    <span class="n">y_train</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -947,19 +941,20 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLinearRegression(bandwidth=300,
-                   geometry=0          POINT (82379.611 2869738.377)
-1       POINT (-1668934.975 3018181.842)
-2       POINT (-1619958.935 3006537.453)
-3         POINT (-1755117.16 3050487.11)
-4       POINT (-1577383.387 2998650.582)
-                      ...               
-3080    POINT (-1657849.621 1282663.159)
-3081    POINT (-1087856.066 1384868.843)
-3082      POINT (1699672.63 1751264.588)
-3083      POINT (1582459.36 1898177.771)
-3084     POINT (-1155816.554 2564833.36)
-Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLinearRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWRandomForestClassifier(bandwidth=250,
+                         geometry=1989    POINT (-384564.533 1369397.395)
+2659        POINT (82854.77 892472.294)
+275     POINT (1778051.919 2632546.856)
+1967    POINT (1004467.569 1443277.098)
+902      POINT (723688.803 1954767.539)
+                     ...               
+939     POINT (1472608.546 2016499.638)
+1433     POINT (575941.177 1692254.138)
+2754     POINT (-231950.603 796277.137)
+1309      POINT (387282.83 1733563.097)
+942     POINT (1651190.784 2062911.326)
+Name: point, Length: 2776, dtype: geometry,
+                         keep_models=True)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWRandomForestClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -972,7 +967,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">bandwidth</td>
-            <td class="value">300</td>
+            <td class="value">250</td>
         </tr>
     
 
@@ -1002,7 +997,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">include_focal</td>
-            <td class="value">True</td>
+            <td class="value">False</td>
         </tr>
     
 
@@ -1012,7 +1007,7 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">geometry</td>
-            <td class="value">0          PO...type: geometry</td>
+            <td class="value">1989    POINT...type: geometry</td>
         </tr>
     
 
@@ -1048,11 +1043,21 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
 
         <tr class="default">
             <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('strict',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">strict</td>
+            <td class="value">False</td>
+        </tr>
+    
+
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('keep_models',
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">keep_models</td>
-            <td class="value">False</td>
+            <td class="value">True</td>
         </tr>
     
 
@@ -1073,6 +1078,56 @@ Name: geometry, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment,
             ></i></td>
             <td class="param">batch_size</td>
             <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('min_proportion',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">min_proportion</td>
+            <td class="value">0.2</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('undersample',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">undersample</td>
+            <td class="value">False</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('leave_out',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">leave_out</td>
+            <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('random_state',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">random_state</td>
+            <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('verbose',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">verbose</td>
+            <td class="value">False</td>
         </tr>
     
                   </tbody>
@@ -1196,192 +1251,137 @@ function forceTheme(elementId) {
 
 forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
-<p>mgwr</p>
+<p>Now, you can use the test subset to get the prediction. Note that given the prediction is pulled from an ensemble of local models, it is not particularly performant. However, it shall be spatially robust.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwr</span> <span class="o">=</span> <span class="n">GWR</span><span class="p">(</span>
-    <span class="n">coords</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">get_coordinates</span><span class="p">(),</span>
-    <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">X</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">9</span><span class="p">:</span><span class="mi">15</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-    <span class="n">bw</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
-    <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">res</span> <span class="o">=</span> <span class="n">gwr</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">effective_df_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">proba</span> <span class="o">=</span> <span class="n">gwrf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geom_test</span><span class="p">)</span>
+<span class="n">proba</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(169.4012409632127)
-</pre></div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>False</th>
+      <th>True</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>805</th>
+      <td>0.811815</td>
+      <td>0.188185</td>
+    </tr>
+    <tr>
+      <th>1704</th>
+      <td>0.096184</td>
+      <td>0.903816</td>
+    </tr>
+    <tr>
+      <th>2872</th>
+      <td>0.833818</td>
+      <td>0.166182</td>
+    </tr>
+    <tr>
+      <th>394</th>
+      <td>0.350391</td>
+      <td>0.649609</td>
+    </tr>
+    <tr>
+      <th>2569</th>
+      <td>0.053624</td>
+      <td>0.946376</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>2231</th>
+      <td>0.077666</td>
+      <td>0.922334</td>
+    </tr>
+    <tr>
+      <th>2682</th>
+      <td>0.251958</td>
+      <td>0.748042</td>
+    </tr>
+    <tr>
+      <th>1263</th>
+      <td>0.992466</td>
+      <td>0.007534</td>
+    </tr>
+    <tr>
+      <th>2782</th>
+      <td>0.103060</td>
+      <td>0.896940</td>
+    </tr>
+    <tr>
+      <th>2352</th>
+      <td>0.135677</td>
+      <td>0.864323</td>
+    </tr>
+  </tbody>
+</table>
+<p>309 rows × 2 columns</p>
+</div></div></div>
 </div>
-</div>
-</div>
+<p>You can then check the accuracy of this prediction. Note that similarly to fitting, there might be locations that return NA, if all of the local models within its bandwidth are not fitted.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span><span class="o">.</span><span class="n">ENP</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">proba</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geom_test</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">missing_kwds</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(169.40124096321267)
-</pre></div>
+<img alt="_images/5579e2178e82cdbca342d012a9d7d125bb656768a7d734d598b07864d039c9e7.png" src="_images/5579e2178e82cdbca342d012a9d7d125bb656768a7d734d598b07864d039c9e7.png" />
 </div>
 </div>
-</div>
+<p>That one red dot, is in the middle of unfittable area.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">log_likelihood_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">geom_train</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwrf</span><span class="o">.</span><span class="n">pred_</span><span class="p">,</span> <span class="n">missing_kwds</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(-7682.442495799134)
-</pre></div>
+<img alt="_images/0910c8a95996553933758f9f509b0c2deb2bbb39066031616b255a9bc7865955.png" src="_images/0910c8a95996553933758f9f509b0c2deb2bbb39066031616b255a9bc7865955.png" />
 </div>
 </div>
-</div>
+<p>Filter it out and measure the performance on the left-out sample.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span><span class="o">.</span><span class="n">llf</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">na_mask</span> <span class="o">=</span> <span class="n">proba</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">pred</span> <span class="o">=</span> <span class="n">proba</span><span class="p">[</span><span class="o">~</span><span class="n">na_mask</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+
+<span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">[</span><span class="o">~</span><span class="n">na_mask</span><span class="p">],</span> <span class="n">pred</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(-7682.442495799136)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.819672131147541
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">aic_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(15705.687473524693)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span><span class="o">.</span><span class="n">aic</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(15705.687473524697)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">aicc_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(15725.495470485743)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span><span class="o">.</span><span class="n">aicc</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(15725.73620815034)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gwlr</span><span class="o">.</span><span class="n">bic_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(16733.940863829863)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span><span class="o">.</span><span class="n">bic</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(16733.940863829866)
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1044213a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1073793a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x102ab93a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1052f53a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x103ab53a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1053c93a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x106ead3a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-Exception ignored in: &lt;function ResourceTracker.__del__ at 0x1048793a0&gt;
-Traceback (most recent call last):
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 77, in __del__
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 86, in _stop
-  File &quot;/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/multiprocessing/resource_tracker.py&quot;, line 111, in _stop_locked
-ChildProcessError: [Errno 10] No child processes
-</pre></div>
-</div>
-</div>
-</div>
-</section>
 </section>
 
 
@@ -1395,27 +1395,30 @@ ChildProcessError: [Errno 10] No child processes
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="ensemble.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Ensemble models</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="imbalance.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Class imbalance</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
             </div>
             
             
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adaptive-bisquare">Adaptive bisquare</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>
