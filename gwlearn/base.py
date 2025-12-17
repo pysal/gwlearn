@@ -951,8 +951,6 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     batch_size : int | None, optional
         Number of models to process in each batch. Specify batch_size if your models do
         not fit into memory. By default None
-    random_state : int | None, optional
-        Random seed for reproducibility, by default None
     verbose : bool, optional
         Whether to print progress information, by default False
     **kwargs
@@ -963,7 +961,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     pred_ : pd.Series
         Focal predictions for each location.
     resid_ : pd.Series
-        Residuals for each location (y - pred_).
+        Residuals for each location (``y`` - ``pred_``).
     RSS_ : pd.Series
         Residual sum of squares for each location.
     TSS_ : pd.Series
@@ -996,8 +994,6 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             Independent variables
         y : pd.Series
             Dependent variable
-        geometry : gpd.GeoSeries
-            Geographic location
         """
         self._validate_geometry(self.geometry)
 
