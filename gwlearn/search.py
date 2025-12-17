@@ -159,6 +159,27 @@ class BandwidthSearch:
         self.verbose = verbose
 
     def fit(self, X: pd.DataFrame, y: pd.Series) -> None:
+        """
+        Fit the searcher by evaluating candidate bandwidths on the provided data.
+
+        Parameters
+        ----------
+        X : pd.DataFrame
+            Feature matrix used to evaluate candidate bandwidths (rows are samples).
+        y : pd.Series
+            Target values corresponding to X.
+
+        Returns
+        -------
+        self
+            The fitted instance.
+
+        Notes
+        -----
+        The optimal bandwidth is selected as the index of the minimum score if
+        ``minimize=True``, otherwise as the index of the maximum score.
+        """
+
         if self.search_method == "interval":
             self._interval(X=X, y=y)
         elif self.search_method == "golden_section":
@@ -171,7 +192,7 @@ class BandwidthSearch:
         return self
 
     def _score(self, X: pd.DataFrame, y: pd.Series, bw: int | float) -> float:
-        """Fit the model ans report criterion score.
+        """Fit the model and report criterion score.
 
         In case of invariant y in a local model, returns np.inf
         """
