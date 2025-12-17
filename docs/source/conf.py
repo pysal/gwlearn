@@ -71,8 +71,11 @@ numpydoc_xref_param_type = True
 autodoc_default_options = {
     "members": True,
     "undoc-members": True,
+    "inherited-members": True,
+    "exclude-members": "set_predict_request, set_score_request, set_predict_proba_request, set_fit_request, score",
 }
 plot_include_source = True
+suppress_warnings = ["ref.ref"]
 
 html_theme = "sphinx_immaterial"
 html_static_path = ["_static"]
