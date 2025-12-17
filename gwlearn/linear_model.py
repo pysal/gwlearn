@@ -154,13 +154,13 @@ class GWLogisticRegression(BaseClassifier):
     ...     keep_models=True,
     ...     max_iter=200,
     ... ).fit(X, y)
-    >>> gw.proba_.head()
-              False         True
-    0  5.490615e-02  9.450939e-01
-    1  1.000000e+00  1.795235e-08
-    2  9.999781e-01  2.191023e-05
-    3  8.003682e-02  9.199632e-01
-    4  2.809428e-07  9.999997e-01
+    >>> gw.pred_.head()
+    0     True
+    1    False
+    2    False
+    3     True
+    4     True
+    dtype: boolean
     """
 
     # TODO: score_ should be an alias of pooled_score_ - this is different from MGWR
