@@ -139,27 +139,28 @@ class GWLogisticRegression(BaseClassifier):
 
     Examples
     --------
-    >>> import numpy as np
     >>> import geopandas as gpd
-    >>> import pandas as pd
+    >>> from geodatasets import get_path
     >>> from gwlearn.linear_model import GWLogisticRegression
-    >>> rng = np.random.default_rng(0)
-    >>> n = 80
-    >>> X = pd.DataFrame(rng.normal(size=(n, 2)), columns=["x1", "x2"])
-    >>> y = (X["x1"] + rng.normal(scale=0.5, size=n) > 0).astype(int)
-    >>> geometry = gpd.GeoSeries(
-    ...     gpd.points_from_xy(rng.uniform(0, 1, n), rng.uniform(0, 1, n))
-    ... )
+
+    >>> gdf = gpd.read_file(get_path('geoda.guerry'))
+    >>> X = gdf[['Crm_prp', 'Litercy', 'Donatns', 'Lottery']]
+    >>> y = gdf["Region"] == 'E'
+
     >>> gw = GWLogisticRegression(
-    ...     bandwidth=n,
+    ...     bandwidth=30,
     ...     fixed=False,
-    ...     include_focal=True,
-    ...     geometry=geometry,
+    ...     geometry=gdf.representative_point(),
     ...     keep_models=True,
     ...     max_iter=200,
     ... ).fit(X, y)
-    >>> gw.pred_.isna().any()
-    np.False_
+    >>> gw.proba_.head()
+              False         True
+    0  5.490615e-02  9.450939e-01
+    1  1.000000e+00  1.795235e-08
+    2  9.999781e-01  2.191023e-05
+    3  8.003682e-02  9.199632e-01
+    4  2.809428e-07  9.999997e-01
     """
 
     # TODO: score_ should be an alias of pooled_score_ - this is different from MGWR
@@ -386,25 +387,26 @@ class GWLinearRegression(BaseRegressor):
 
     Examples
     --------
-    >>> import numpy as np
     >>> import geopandas as gpd
-    >>> import pandas as pd
+    >>> from geodatasets import get_path
     >>> from gwlearn.linear_model import GWLinearRegression
-    >>> rng = np.random.default_rng(0)
-    >>> n = 60
-    >>> X = pd.DataFrame(rng.normal(size=(n, 2)), columns=["x1", "x2"])
-    >>> y = 1.0 + 2.0 * X["x1"] - 0.5 * X["x2"] + rng.normal(scale=0.2, size=n)
-    >>> geometry = gpd.GeoSeries(
-    ...     gpd.points_from_xy(rng.uniform(0, 1, n), rng.uniform(0, 1, n))
-    ... )
+
+    >>> gdf = gpd.read_file(get_path('geoda.guerry'))
+    >>> X = gdf[['Crm_prp', 'Litercy', 'Donatns', 'Lottery']]
+    >>> y = gdf["Suicids"]
+
     >>> gwr = GWLinearRegression(
-    ...     bandwidth=n,
+    ...     bandwidth=30,
     ...     fixed=False,
-    ...     include_focal=True,
-    ...     geometry=geometry,
+    ...     geometry=gdf.representative_point(),
     ... ).fit(X, y)
-    >>> gwr.pred_.shape[0] == n
-    True
+    >>> gwr.local_r2_.head()
+    0    0.614715
+    1    0.488495
+    2    0.599862
+    3    0.662435
+    4    0.662276
+    dtype: float64
     """
 
     def __init__(

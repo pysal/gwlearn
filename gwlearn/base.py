@@ -497,29 +497,31 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
     Fit a geographically weighted logistic regression by passing a scikit-learn
     classifier class.
 
-    >>> import numpy as np
     >>> import geopandas as gpd
-    >>> import pandas as pd
+    >>> from geodatasets import get_path
     >>> from sklearn.linear_model import LogisticRegression
     >>> from gwlearn.base import BaseClassifier
-    >>> rng = np.random.default_rng(0)
-    >>> n = 50
-    >>> X = pd.DataFrame(rng.normal(size=(n, 2)), columns=["x1", "x2"])
-    >>> y = (X["x1"] + rng.normal(scale=0.5, size=n) > 0).astype(int)
-    >>> geometry = gpd.GeoSeries(
-    ...     gpd.points_from_xy(rng.uniform(0, 1, n), rng.uniform(0, 1, n))
-    ... )
+
+    >>> gdf = gpd.read_file(get_path('geoda.guerry'))
+    >>> X = gdf[['Crm_prp', 'Litercy', 'Donatns', 'Lottery']]
+    >>> y = gdf["Region"] == 'E'
+
     >>> gw = BaseClassifier(
     ...     LogisticRegression,
-    ...     bandwidth=n,
+    ...     bandwidth=30,
     ...     fixed=False,
+    ...     geometry=gdf.representative_point(),
     ...     include_focal=True,
-    ...     geometry=geometry,
     ...     keep_models=True,
     ...     max_iter=200,
     ... ).fit(X, y)
-    >>> gw.proba_.shape[0] == n
-    True
+    >>> gw.pred_.head()
+    0     True
+    1    False
+    2    False
+    3     True
+    4     True
+    dtype: boolean
     """
 
     def __init__(
@@ -1105,27 +1107,29 @@ class BaseRegressor(_BaseModel, RegressorMixin):
 
     Examples
     --------
-    >>> import numpy as np
     >>> import geopandas as gpd
-    >>> import pandas as pd
+    >>> from geodatasets import get_path
     >>> from sklearn.linear_model import LinearRegression
     >>> from gwlearn.base import BaseRegressor
-    >>> rng = np.random.default_rng(0)
-    >>> n = 30
-    >>> X = pd.DataFrame(rng.normal(size=(n, 2)), columns=["x1", "x2"])
-    >>> y = 1.0 + 2.0 * X["x1"] - 0.5 * X["x2"] + rng.normal(scale=0.2, size=n)
-    >>> geometry = gpd.GeoSeries(
-    ...     gpd.points_from_xy(rng.uniform(0, 1, n), rng.uniform(0, 1, n))
-    ... )
+
+    >>> gdf = gpd.read_file(get_path('geoda.guerry'))
+    >>> X = gdf[['Crm_prp', 'Litercy', 'Donatns', 'Lottery']]
+    >>> y = gdf["Suicids"]
+
     >>> gwr = BaseRegressor(
     ...     LinearRegression,
-    ...     bandwidth=n,
+    ...     bandwidth=30,
     ...     fixed=False,
     ...     include_focal=True,
-    ...     geometry=geometry,
+    ...     geometry=gdf.representative_point(),
     ... ).fit(X, y)
-    >>> float(gwr.local_r2_.mean()) <= 1.0
-    True
+    >>> gwr.local_r2_.head()
+    0    0.614715
+    1    0.488495
+    2    0.599862
+    3    0.662435
+    4    0.662276
+    dtype: float64
     """
 
     def fit(self, X: pd.DataFrame, y: pd.Series) -> "BaseRegressor":

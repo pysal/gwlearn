@@ -144,27 +144,27 @@ class GWRandomForestClassifier(BaseClassifier):
 
     Examples
     --------
-    >>> import numpy as np
     >>> import geopandas as gpd
-    >>> import pandas as pd
+    >>> from geodatasets import get_path
     >>> from gwlearn.ensemble import GWRandomForestClassifier
-    >>> rng = np.random.default_rng(0)
-    >>> n = 100
-    >>> X = pd.DataFrame(rng.normal(size=(n, 3)), columns=["x1", "x2", "x3"])
-    >>> y = (X["x1"] - 0.25 * X["x2"] + rng.normal(scale=0.5, size=n) > 0).astype(int)
-    >>> geometry = gpd.GeoSeries(
-    ...     gpd.points_from_xy(rng.uniform(0, 1, n), rng.uniform(0, 1, n))
-    ... )
+
+    >>> gdf = gpd.read_file(get_path('geoda.guerry'))
+    >>> X = gdf[['Crm_prp', 'Litercy', 'Donatns', 'Lottery']]
+    >>> y = gdf["Region"] == 'E'
+
     >>> gw = GWRandomForestClassifier(
-    ...     bandwidth=n,
-    ...     include_focal=True,
-    ...     geometry=geometry,
-    ...     keep_models=True,
-    ...     n_estimators=50,
+    ...     bandwidth=30,
+    ...     fixed=False,
+    ...     geometry=gdf.representative_point(),
     ...     random_state=0,
     ... ).fit(X, y)
-    >>> gw.feature_importances_.shape[0] == n
-    True
+    >>> gw.pred_.head()
+    0    False
+    1    False
+    2    False
+    3     True
+    4     True
+    dtype: boolean
     """
 
     def __init__(
@@ -401,26 +401,27 @@ class GWGradientBoostingClassifier(BaseClassifier):
 
     Examples
     --------
-    >>> import numpy as np
     >>> import geopandas as gpd
-    >>> import pandas as pd
+    >>> from geodatasets import get_path
     >>> from gwlearn.ensemble import GWGradientBoostingClassifier
-    >>> rng = np.random.default_rng(0)
-    >>> n = 80
-    >>> X = pd.DataFrame(rng.normal(size=(n, 2)), columns=["x1", "x2"])
-    >>> y = (X["x1"] + rng.normal(scale=0.5, size=n) > 0).astype(int)
-    >>> geometry = gpd.GeoSeries(
-    ...     gpd.points_from_xy(rng.uniform(0, 1, n), rng.uniform(0, 1, n))
-    ... )
+
+    >>> gdf = gpd.read_file(get_path('geoda.guerry'))
+    >>> X = gdf[['Crm_prp', 'Litercy', 'Donatns', 'Lottery']]
+    >>> y = gdf["Region"] == 'E'
+
     >>> gw = GWGradientBoostingClassifier(
-    ...     bandwidth=n,
-    ...     include_focal=True,
-    ...     geometry=geometry,
-    ...     keep_models=True,
+    ...     bandwidth=30,
+    ...     fixed=False,
+    ...     geometry=gdf.representative_point(),
     ...     random_state=0,
     ... ).fit(X, y)
-    >>> gw.prediction_rate_ > 0
-    np.True_
+    >>> gw.pred_.head()
+    0    False
+    1    False
+    2    False
+    3     True
+    4     True
+    dtype: boolean
     """
 
     def __init__(

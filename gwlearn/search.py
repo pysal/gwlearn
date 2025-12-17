@@ -84,31 +84,30 @@ class BandwidthSearch:
 
     Examples
     --------
-    Interval search over a small grid of candidate bandwidths:
+    Interval search over a small set of candidate bandwidths:
 
-    >>> import numpy as np
     >>> import geopandas as gpd
-    >>> import pandas as pd
+    >>> from geodatasets import get_path
     >>> from gwlearn.linear_model import GWLogisticRegression
     >>> from gwlearn.search import BandwidthSearch
-    >>> rng = np.random.default_rng(0)
-    >>> n = 60
-    >>> X = pd.DataFrame(rng.normal(size=(n, 2)), columns=["x1", "x2"])
-    >>> y = (X["x1"] + rng.normal(scale=0.5, size=n) > 0).astype(int)
-    >>> geometry = gpd.GeoSeries.from_xy(rng.uniform(0, 1, n), rng.uniform(0, 1, n))
+
+    >>> gdf = gpd.read_file(get_path('geoda.guerry'))
+    >>> X = gdf[['Crm_prp', 'Litercy', 'Donatns', 'Lottery']]
+    >>> y = gdf["Region"] == 'E'
+
     >>> search = BandwidthSearch(
     ...     GWLogisticRegression,
-    ...     geometry=geometry,
+    ...     geometry=gdf.representative_point(),
+    ...     fixed=False,
     ...     search_method="interval",
     ...     criterion="aicc",
     ...     min_bandwidth=20,
-    ...     max_bandwidth=60,
+    ...     max_bandwidth=80,
     ...     interval=10,
-    ...     keep_models=False,
     ...     max_iter=200,
     ... ).fit(X, y)
-    >>> float(search.optimal_bandwidth_) in search.scores_.index
-    True
+    >>> search.optimal_bandwidth_
+    np.int64(40)
     """
 
     def __init__(

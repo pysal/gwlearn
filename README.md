@@ -18,12 +18,12 @@ geographically weighted linear regression in a following manner.
 
 ```py
 import geopandas as gpd
-from geodatasets import data
+from geodatasets import get_path
 
 from gwlearn.linear_model import GWLinearRegression
 
 
-gdf = gpd.read_file(data.geoda.guerry.path)
+gdf = gpd.read_file(get_path('geoda.guerry'))
 
 adaptive = GWLinearRegression(
     geometry=gdf.representative_point(),
