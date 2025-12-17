@@ -25,4 +25,4 @@ dependencies:
   - sphinxcontrib-bibtex
   - sphinx-autosummary-accessors
   - sphinx-copybutton
-  - sphinx-book-theme
+  - sphinx-immaterial
