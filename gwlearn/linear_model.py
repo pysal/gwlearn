@@ -181,7 +181,7 @@ class GWLogisticRegression(BaseClassifier):
         | Callable = "bisquare",
         include_focal: bool = True,
         geometry: gpd.GeoSeries | None = None,
-        graph: graph.Graph = None,
+        graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
         strict: bool = False,

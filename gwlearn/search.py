@@ -157,7 +157,7 @@ class BandwidthSearch:
         self.metrics = metrics
         self.verbose = verbose
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> None:
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> "BandwidthSearch":
         """
         Fit the searcher by evaluating candidate bandwidths on the provided data.
 
@@ -190,7 +190,7 @@ class BandwidthSearch:
 
         return self
 
-    def _score(self, X: pd.DataFrame, y: pd.Series, bw: int | float) -> float:
+    def _score(self, X: pd.DataFrame, y: pd.Series, bw: int | float) -> tuple | float:
         """Fit the model and report criterion score.
 
         In case of invariant y in a local model, returns np.inf
