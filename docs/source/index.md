@@ -3,6 +3,18 @@
 
 ```{toctree}
 :hidden:
+:caption: User Guide
+introduction
+linear
+ensemble
+predict
+imbalance
+bandwidth_search
+network_graph
+```
+
+```{toctree}
+:hidden:
 :caption: API
 api
 ```

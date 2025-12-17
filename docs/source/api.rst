@@ -5,6 +5,16 @@ API reference
 
 The API reference provides an overview of all public functions in ``gwlearn``.
 
+Base classes
+------------
+
+.. currentmodule:: gwlearn.base
+.. autosummary::
+   :toctree: generated/
+
+   BaseClassifier
+   BaseRegressor
+
 Regression modelling
 --------------------
 
@@ -44,13 +54,3 @@ Bandwidth search
    :toctree: generated/
 
    BandwidthSearch
-
-Base classes
-------------
-
-.. currentmodule:: gwlearn.base
-.. autosummary::
-   :toctree: generated/
-
-   BaseClassifier
-   BaseRegressor

@@ -798,7 +798,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
             # Flatten arrays for consistent format
             input_ids = np.repeat(np.arange(len(geometry)), self.bandwidth)
-            local_ids = indices_array.flatten()
+            local_ids = self._local_models.index[indices_array.flatten()].to_numpy()
             distances = distances.flatten()
 
             # For adaptive KNN, determine the bandwidth for each neighborhood
