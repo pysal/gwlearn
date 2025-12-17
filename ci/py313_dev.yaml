@@ -13,6 +13,7 @@ dependencies:
   - pytest
   - pytest-cov
   - pytest-xdist
+  - pytest-doctestplus
   - pip:
       # dev versions of packages
       - --pre \

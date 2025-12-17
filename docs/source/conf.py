@@ -18,7 +18,7 @@ project = "gwlearn"
 copyright = "2025-, Martin Fleischmann & PySAL Developers"
 author = "Martin Fleischmann"
 
-version = gwlearn.__version__.split("+", 1)[0]
+version = gwlearn.__version__.split("+", 1)[0]  # remove commit hash
 release = version
 
 language = "en"
@@ -57,6 +57,7 @@ intersphinx_mapping = {
         "https://pysal.org/libpysal//objects.inv",
     ),
     "python": ("https://docs.python.org/3", None),
+    "sklearn": ("https://scikit-learn.org/stable", None),
 }
 
 # -- Options for HTML output -------------------------------------------------
@@ -93,7 +94,7 @@ html_theme_options = {
         # "navigation.tabs",
         # "navigation.tabs.sticky",
         # "toc.integrate",
-        # "navigation.sections",
+        "navigation.sections",
         # "navigation.instant",
         # "header.autohide",
         "navigation.top",
@@ -132,8 +133,8 @@ html_theme_options = {
         {
             "media": "(prefers-color-scheme: dark)",
             "scheme": "slate",
-            "primary": "red",
-            "accent": "light-blue",
+            "primary": "black",
+            "accent": "red",
             "toggle": {
                 "icon": "material/lightbulb-outline",
                 "name": "Switch to system preference",

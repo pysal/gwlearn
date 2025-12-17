@@ -14,10 +14,27 @@ from .base import BaseClassifier, BaseRegressor
 class GWLogisticRegression(BaseClassifier):
     """Geographically weighted logistic regression
 
+    Fits one :class:`sklearn.linear_model.LogisticRegression` per focal observation
+    using spatially varying sample weights.
+
+    Notes
+    -----
+    - ``y`` must be binary (``{0, 1}`` or boolean).
+    - To enable prediction on new data via :meth:`predict`/:meth:`predict_proba`, you
+      must set ``keep_models=True`` (store in memory) or ``keep_models=Path(...)``
+      (serialize to disk).
+    - Only point geometries are supported.
+
     Parameters
     ----------
-    bandwidth : int | float
-        Bandwidth value consisting of either a distance or N nearest neighbors
+    bandwidth : float | int | None
+        Bandwidth for defining neighborhoods.
+
+        - If ``fixed=True``, this is a distance threshold.
+        - If ``fixed=False``, this is the number of nearest neighbors used to form the
+          local neighborhood.
+
+        If ``graph`` is provided, ``bandwidth`` is ignored.
     fixed : bool, optional
         True for distance based bandwidth and False for adaptive (nearest neighbor)
         bandwidth, by default False
@@ -119,6 +136,31 @@ class GWLogisticRegression(BaseClassifier):
     left_out_w_ : np.ndarray
         Array of weights on left out observations in local models when
         ``leave_out`` is set.
+
+    Examples
+    --------
+    >>> import geopandas as gpd
+    >>> from geodatasets import get_path
+    >>> from gwlearn.linear_model import GWLogisticRegression
+
+    >>> gdf = gpd.read_file(get_path('geoda.guerry'))
+    >>> X = gdf[['Crm_prp', 'Litercy', 'Donatns', 'Lottery']]
+    >>> y = gdf["Region"] == 'E'
+
+    >>> gw = GWLogisticRegression(
+    ...     bandwidth=30,
+    ...     fixed=False,
+    ...     geometry=gdf.representative_point(),
+    ...     keep_models=True,
+    ...     max_iter=200,
+    ... ).fit(X, y)
+    >>> gw.proba_.head()
+              False         True
+    0  5.490615e-02  9.450939e-01
+    1  1.000000e+00  1.795235e-08
+    2  9.999781e-01  2.191023e-05
+    3  8.003682e-02  9.199632e-01
+    4  2.809428e-07  9.999997e-01
     """
 
     # TODO: score_ should be an alias of pooled_score_ - this is different from MGWR
@@ -238,10 +280,25 @@ class GWLogisticRegression(BaseClassifier):
 class GWLinearRegression(BaseRegressor):
     """Geographically weighted linear regression
 
+    Fits one :class:`sklearn.linear_model.LinearRegression` per focal observation
+    using spatially varying sample weights.
+
+    The fitted object exposes focal predictions (``pred_``,  in-sample if
+    ``include_focal=True``) and local goodness-of-fit summaries.
+
+    Prediction for new (out-of-sample) observations is not currently implemented for
+    regressors.
+
     Parameters
     ----------
-    bandwidth : int | float
-        Bandwidth value consisting of either a distance or N nearest neighbors
+    bandwidth : float | int | None
+        Bandwidth for defining neighborhoods.
+
+        - If ``fixed=True``, this is a distance threshold.
+        - If ``fixed=False``, this is the number of nearest neighbors used to form the
+          local neighborhood.
+
+        If ``graph`` is provided, ``bandwidth`` is ignored.
     fixed : bool, optional
         True for distance based bandwidth and False for adaptive (nearest neighbor)
         bandwidth, by default False
@@ -327,6 +384,29 @@ class GWLinearRegression(BaseRegressor):
         each location
     local_intercept_ : pd.Series
         Local intercept values at each location
+
+    Examples
+    --------
+    >>> import geopandas as gpd
+    >>> from geodatasets import get_path
+    >>> from gwlearn.linear_model import GWLinearRegression
+
+    >>> gdf = gpd.read_file(get_path('geoda.guerry'))
+    >>> X = gdf[['Crm_prp', 'Litercy', 'Donatns', 'Lottery']]
+    >>> y = gdf["Suicids"]
+
+    >>> gwr = GWLinearRegression(
+    ...     bandwidth=30,
+    ...     fixed=False,
+    ...     geometry=gdf.representative_point(),
+    ... ).fit(X, y)
+    >>> gwr.local_r2_.head()
+    0    0.614715
+    1    0.488495
+    2    0.599862
+    3    0.662435
+    4    0.662276
+    dtype: float64
     """
 
     def __init__(
