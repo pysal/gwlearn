@@ -19,6 +19,7 @@ network_graph
 
 ```{toctree}
 :hidden:
+:caption: API
 api
 ```
 
