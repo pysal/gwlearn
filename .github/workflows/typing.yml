@@ -28,4 +28,4 @@ jobs:
               uses: astral-sh/setup-uv@v7
 
             - name: Run tests
-              run: uvx ty check
+              run: uvx ty check gwlearn
