@@ -17,7 +17,7 @@
     
     
       
-        <title>gwlearn.linear_model - gwlearn 0.1.dev87 documentation</title>
+        <title>gwlearn.linear_model - gwlearn 0.1.dev88 documentation</title>
       
     
     
@@ -79,7 +79,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="gwlearn 0.1.dev87 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev87 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev88 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.1.dev88 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -90,7 +90,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.1.dev87 documentation
+            gwlearn 0.1.dev88 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -228,10 +228,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="gwlearn 0.1.dev87 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev87 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.1.dev88 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.1.dev88 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.1.dev87 documentation
+    gwlearn 0.1.dev88 documentation
   </label>
   
     <div class="md-nav__source">
@@ -704,8 +704,15 @@
 <span class="sd">        not fit into memory. By default None</span>
 <span class="sd">    min_proportion : float, optional</span>
 <span class="sd">        Minimum proportion of minority class for a model to be fitted, by default 0.2</span>
-<span class="sd">    undersample : bool, optional</span>
-<span class="sd">        Whether to apply random undersampling to balance classes, by default False</span>
+<span class="sd">    undersample : bool | float, optional</span>
+<span class="sd">        Whether to apply random undersampling to balance classes.</span>
+
+<span class="sd">        If ``True``, undersample the majority class to match the minority class</span>
+<span class="sd">        (i.e., minority/majority ratio = 1.0).</span>
+
+<span class="sd">        If a float ``alpha &gt; 0``, target a minority/majority ratio of ``alpha`` after</span>
+<span class="sd">        resampling, i.e. ``alpha = N_min / N_resampled_majority``.</span>
+<span class="sd">        By default False</span>
 <span class="sd">    leave_out : float | int, optional</span>
 <span class="sd">        Leave out a fraction (when float) or a set number (when int) of random</span>
 <span class="sd">        observations from each local model to be used to measure out-of-sample log loss</span>
@@ -809,7 +816,7 @@
         <span class="n">temp_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">min_proportion</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-        <span class="n">undersample</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">undersample</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">leave_out</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -1052,7 +1059,7 @@
         <span class="o">|</span> <span class="n">Callable</span> <span class="o">=</span> <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
         <span class="n">include_focal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">graph</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">graph</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">fit_global_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
