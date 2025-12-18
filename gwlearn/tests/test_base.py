@@ -42,7 +42,7 @@ def test_init_custom_parameters():
         LogisticRegression,
         bandwidth=50,
         fixed=True,
-        kernel="gaussian",
+        kernel="tricube",
         n_jobs=2,
         fit_global_model=False,
         strict=True,
@@ -56,7 +56,7 @@ def test_init_custom_parameters():
     assert clf.model == LogisticRegression
     assert clf.bandwidth == 50
     assert clf.fixed is True
-    assert clf.kernel == "gaussian"
+    assert clf.kernel == "tricube"
     assert clf.n_jobs == 2
     assert clf.fit_global_model is False
     assert clf.strict is True
@@ -87,7 +87,11 @@ def test_init_kernel_validation():
     """Test BaseClassifier initialization with various kernel options."""
     # Test with each predefined kernel
     for kernel_name in _kernel_functions:
-        clf = BaseClassifier(LogisticRegression, bandwidth=100, kernel=kernel_name)
+        clf = BaseClassifier(
+            LogisticRegression,
+            bandwidth=100,
+            kernel=kernel_name,  # ty:ignore[invalid-argument-type]
+        )
         assert clf.kernel == kernel_name
 
     # Test with a custom kernel function
@@ -979,7 +983,7 @@ def test_regressor_init_custom_parameters():
         LinearRegression,
         bandwidth=50,
         fixed=True,
-        kernel="gaussian",
+        kernel="tricube",
         n_jobs=2,
         fit_global_model=False,
         strict=True,
@@ -992,7 +996,7 @@ def test_regressor_init_custom_parameters():
     assert reg.model == LinearRegression
     assert reg.bandwidth == 50
     assert reg.fixed is True
-    assert reg.kernel == "gaussian"
+    assert reg.kernel == "tricube"
     assert reg.n_jobs == 2
     assert reg.fit_global_model is False
     assert reg.strict is True

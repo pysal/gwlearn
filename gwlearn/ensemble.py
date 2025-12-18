@@ -88,8 +88,15 @@ class GWRandomForestClassifier(BaseClassifier):
         not fit into memory. By default None
     min_proportion : float, optional
         Minimum proportion of minority class for a model to be fitted, by default 0.2
-    undersample : bool, optional
-        Whether to apply random undersampling to balance classes, by default False
+    undersample : bool | float, optional
+        Whether to apply random undersampling to balance classes.
+
+        If ``True``, undersample the majority class to match the minority class
+        (i.e., minority/majority ratio = 1.0).
+
+        If a float ``alpha > 0``, target a minority/majority ratio of ``alpha`` after
+        resampling, i.e. ``alpha = N_min / N_resampled_majority``.
+        By default False
     leave_out : float | int, optional
         Leave out a fraction (when float) or a set number (when int) of random
         observations from each local model to be used to measure out-of-sample log loss
@@ -193,7 +200,7 @@ class GWRandomForestClassifier(BaseClassifier):
         temp_folder: str | None = None,
         batch_size: int | None = None,
         min_proportion: float = 0.2,
-        undersample: bool = False,
+        undersample: bool | float = False,
         leave_out: float | int | None = None,
         random_state: int | None = None,
         verbose: bool = False,
@@ -266,7 +273,7 @@ class GWRandomForestClassifier(BaseClassifier):
             self.oob_y_pooled_ = np.concatenate(non_empty_y)
         else:
             # Set to empty array with same dtype as y
-            self.oob_y_pooled_ = np.array([], dtype=y.dtype)
+            self.oob_y_pooled_ = np.array([], dtype=y.dtype)  # ty:ignore[no-matching-overload]
         if non_empty_pred:
             self.oob_pred_pooled_ = np.concatenate(non_empty_pred)
         else:
@@ -363,8 +370,15 @@ class GWGradientBoostingClassifier(BaseClassifier):
         not fit into memory. By default None
     min_proportion : float, optional
         Minimum proportion of minority class for a model to be fitted, by default 0.2
-    undersample : bool, optional
-        Whether to apply random undersampling to balance classes, by default False
+    undersample : bool | float, optional
+        Whether to apply random undersampling to balance classes.
+
+        If ``True``, undersample the majority class to match the minority class
+        (i.e., minority/majority ratio = 1.0).
+
+        If a float ``alpha > 0``, target a minority/majority ratio of ``alpha`` after
+        resampling, i.e. ``alpha = N_min / N_resampled_majority``.
+        By default False
     random_state : int | None, optional
         Random seed for reproducibility, by default None
     verbose : bool, optional
@@ -450,7 +464,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
         temp_folder: str | None = None,
         batch_size: int | None = None,
         min_proportion: float = 0.2,
-        undersample: bool = False,
+        undersample: bool | float = False,
         random_state: int | None = None,
         verbose: bool = False,
         **kwargs,

@@ -52,6 +52,11 @@ ignore = ["N803", "N806"] # name {} should be lowercase
     "F401",  # imported but unused
 ]
 
+[tool.ty.rules]
+unresolved-attribute = "ignore"
+no-matching-overload = "ignore"
+unresolved-import = "ignore"
+
 [tool.coverage.run]
 source = ["./gwlearn"]
 
@@ -100,10 +105,10 @@ osmnx = ">=2.0.7,<3"
 pandana = ">=0.7,<0.8"
 furo = ">=2024.8.6,<2025"
 pydata-sphinx-theme = ">=0.15.4,<0.16"
-pandarm = ">=0.0.3,<0.0.4"
+pandarm = ">=0.0.3"
 sphinx-immaterial = ">=0.13.8,<0.14"
 pytest-doctestplus = ">=1.6.0,<2"
-ty = ">=0.0.2,<0.0.3"
+ty = ">=0.0.2"
 
 [tool.pixi.pypi-dependencies]
 gwlearn = { path = ".", editable = true }

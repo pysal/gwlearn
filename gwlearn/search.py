@@ -27,6 +27,10 @@ class BandwidthSearch:
         :class:`gwlearn.linear_model.GWLogisticRegression`) that can be instantiated as
         ``model(bandwidth=..., geometry=..., fixed=..., kernel=..., n_jobs=..., ...)``
         and exposes information criteria attributes like ``aicc_``/``aic_``/``bic_``.
+    geometry : gpd.GeoSeries, optional
+        Geographic location of the observations in the sample. Used to determine the
+        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
+        ``kernel``, and ``include_focal`` keywords.
     fixed : bool, optional
         True for distance based bandwidth and False for adaptive (nearest neighbor)
         bandwidth, by default ``False``
@@ -114,6 +118,7 @@ class BandwidthSearch:
         self,
         model,
         *,
+        geometry: gpd.GeoSeries,
         fixed: bool = False,
         kernel: Literal[
             "triangular",
@@ -126,7 +131,6 @@ class BandwidthSearch:
             # "exponential",
         ]
         | Callable = "bisquare",
-        geometry: gpd.GeoSeries | None = None,
         n_jobs: int = -1,
         search_method: Literal["golden_section", "interval"] = "golden_section",
         criterion: str = "aicc",
@@ -190,13 +194,15 @@ class BandwidthSearch:
 
         return self
 
-    def _score(self, X: pd.DataFrame, y: pd.Series, bw: int | float) -> tuple | float:
+    def _score(
+        self, X: pd.DataFrame, y: pd.Series, bw: int | float
+    ) -> tuple[float, list[float]]:
         """Fit the model and report criterion score.
 
         In case of invariant y in a local model, returns np.inf
         """
         if len(np.unique(y)) == 1:
-            return np.inf
+            return (np.inf, [])
 
         gwm = self.model(
             bandwidth=bw,
@@ -246,6 +252,16 @@ class BandwidthSearch:
         y : pd.Series
             Dependent variable
         """
+        if not (
+            isinstance(self.min_bandwidth, float | int)
+            and isinstance(self.max_bandwidth, float | int)
+            and isinstance(self.interval, float | int)
+        ):
+            raise ValueError(
+                "All 'min_bandwidth', 'max_bandwidth' and 'interval' need "
+                "to be set when using interval search method."
+            )
+
         scores = {}
         metrics = {}
         bw = self.min_bandwidth
@@ -259,9 +275,11 @@ class BandwidthSearch:
         self.scores_ = pd.Series(scores, name=self.criterion)
         self.metrics_ = pd.DataFrame(
             metrics,
-            index=["aicc", "aic", "bic"] + self.metrics
-            if self.metrics
-            else ["aicc", "aic", "bic"],
+            index=pd.Index(
+                ["aicc", "aic", "bic"] + self.metrics
+                if self.metrics
+                else ["aicc", "aic", "bic"]
+            ),
         ).T
 
     def _golden_section(self, X: pd.DataFrame, y: pd.Series, tolerance: float) -> None:
@@ -348,7 +366,9 @@ class BandwidthSearch:
         self.scores_ = pd.Series(scores)
         self.metrics_ = pd.DataFrame(
             metrics,
-            index=["aicc", "aic", "bic"] + self.metrics
-            if self.metrics
-            else ["aicc", "aic", "bic"],
+            index=pd.Index(
+                ["aicc", "aic", "bic"] + self.metrics
+                if self.metrics
+                else ["aicc", "aic", "bic"]
+            ),
         ).T
