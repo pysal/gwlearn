@@ -27,5 +27,8 @@ jobs:
             - name: Install uv
               uses: astral-sh/setup-uv@v7
 
+            - name: Install gwlearn
+              run: uv pip install .
+
             - name: Run tests
               run: uvx ty check gwlearn
