@@ -18,7 +18,7 @@ on:
 
 jobs:
     ty-check:
-        name: python
+        name: Type checking
         runs-on: ubuntu-latest
 
         steps:
@@ -33,5 +33,5 @@ jobs:
                   uv pip install ty
                   uv pip install .
 
-            - name: Run tests
+            - name: Run checks
               run: uv run ty check gwlearn

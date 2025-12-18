@@ -35,7 +35,7 @@ def test_bandwidth_search_init_custom_params(sample_data):
 
     search = BandwidthSearch(
         model=GWLogisticRegression,
-        geometry=geometry,
+        # geometry=geometry,
         fixed=True,
         kernel="tricube",
         n_jobs=2,
