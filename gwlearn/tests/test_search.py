@@ -237,7 +237,7 @@ def test_model_invariant_y_returns_inf(sample_data):  # noqa: F811
     score = search._score(X, y_invariant, bw=100000)
 
     # Check that the score is np.inf for invariant y
-    assert score == np.inf
+    assert score[0] == np.inf
 
 
 def test_bandwidth_search_returns_self(sample_data):  # noqa: F811
@@ -285,7 +285,7 @@ def test_bandwidth_search_accepts_model_params(sample_data):  # noqa: F811
         max_bandwidth=200000,
         interval=100000,
         verbose=False,
-        **custom_params,
+        **custom_params,  # type: ignore
     )
 
     # Check that parameters were stored correctly

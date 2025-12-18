@@ -133,6 +133,12 @@ class _BaseModel(BaseEstimator):
 
     def _build_weights(self) -> graph.Graph:
         """Build spatial weights graph"""
+        if not isinstance(self.bandwidth, float | int):
+            raise ValueError(
+                "Bandwidth is not a valid value. Needs to be float or int, "
+                f"got {self.bandwidth}."
+            )
+
         if self.fixed:  # fixed distance
             weights = graph.Graph.build_kernel(
                 self.geometry,
@@ -893,7 +899,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         split_indices = np.where(np.diff(input_ids))[0] + 1
         local_model_ids = np.split(local_ids, split_indices)
-        distances = np.split(distance.values, split_indices)
+        distances = np.split(np.asarray(distance.values, split_indices))
         data = np.split(X.to_numpy(), range(1, len(X)))
 
         probabilities = []
