@@ -34,4 +34,4 @@ jobs:
                   uv pip install .
 
             - name: Run tests
-              run: ty check gwlearn
+              run: uv run ty check gwlearn
