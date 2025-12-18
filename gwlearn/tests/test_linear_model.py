@@ -30,11 +30,11 @@ def test_gwlogistic_init():
 
     # Check custom parameters
     model = GWLogisticRegression(
-        bandwidth=50, fixed=True, kernel="gaussian", C=0.5, max_iter=200
+        bandwidth=50, fixed=True, kernel="tricube", C=0.5, max_iter=200
     )
     assert model.bandwidth == 50
     assert model.fixed is True
-    assert model.kernel == "gaussian"
+    assert model.kernel == "tricube"
     assert model._model_kwargs["C"] == 0.5
     assert model._model_kwargs["max_iter"] == 200
 
@@ -135,11 +135,11 @@ def test_gwlinear_init():
 
     # Check custom parameters
     model = GWLinearRegression(
-        bandwidth=50, fixed=True, kernel="gaussian", fit_intercept=False
+        bandwidth=50, fixed=True, kernel="tricube", fit_intercept=False
     )
     assert model.bandwidth == 50
     assert model.fixed is True
-    assert model.kernel == "gaussian"
+    assert model.kernel == "tricube"
     assert model._model_kwargs["fit_intercept"] is False
 
 

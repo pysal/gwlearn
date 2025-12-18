@@ -1,0 +1,37 @@
+---
+name: Typing
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches:
+            - "*"
+    schedule:
+        - cron: "59 23 * * *"
+    workflow_dispatch:
+        inputs:
+            version:
+                description: Manual CI Run
+                default: test
+                required: false
+
+jobs:
+    ty-check:
+        name: Type checking
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v6
+
+            - name: Install uv
+              uses: astral-sh/setup-uv@v7
+
+            - name: Install gwlearn
+              run: |
+                  uv venv
+                  uv pip install ty
+                  uv pip install .
+
+            - name: Run checks
+              run: uv run ty check gwlearn

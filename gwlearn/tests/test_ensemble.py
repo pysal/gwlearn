@@ -15,11 +15,11 @@ def test_gwrf_init():
 
     # Check custom parameters
     model = GWRandomForestClassifier(
-        bandwidth=50, fixed=True, kernel="gaussian", n_estimators=100, max_depth=5
+        bandwidth=50, fixed=True, kernel="tricube", n_estimators=100, max_depth=5
     )
     assert model.bandwidth == 50
     assert model.fixed is True
-    assert model.kernel == "gaussian"
+    assert model.kernel == "tricube"
     assert model._model_kwargs["n_estimators"] == 100
     assert model._model_kwargs["max_depth"] == 5
 
@@ -78,14 +78,14 @@ def test_gwgb_init():
     model = GWGradientBoostingClassifier(
         bandwidth=50,
         fixed=True,
-        kernel="gaussian",
+        kernel="tricube",
         n_estimators=100,
         learning_rate=0.1,
         subsample=0.8,
     )
     assert model.bandwidth == 50
     assert model.fixed is True
-    assert model.kernel == "gaussian"
+    assert model.kernel == "tricube"
     assert model._model_kwargs["n_estimators"] == 100
     assert model._model_kwargs["learning_rate"] == 0.1
     assert model._model_kwargs["subsample"] == 0.8

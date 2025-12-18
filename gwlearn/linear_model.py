@@ -84,8 +84,15 @@ class GWLogisticRegression(BaseClassifier):
         not fit into memory. By default None
     min_proportion : float, optional
         Minimum proportion of minority class for a model to be fitted, by default 0.2
-    undersample : bool, optional
-        Whether to apply random undersampling to balance classes, by default False
+    undersample : bool | float, optional
+        Whether to apply random undersampling to balance classes.
+
+        If ``True``, undersample the majority class to match the minority class
+        (i.e., minority/majority ratio = 1.0).
+
+        If a float ``alpha > 0``, target a minority/majority ratio of ``alpha`` after
+        resampling, i.e. ``alpha = N_min / N_resampled_majority``.
+        By default False
     leave_out : float | int, optional
         Leave out a fraction (when float) or a set number (when int) of random
         observations from each local model to be used to measure out-of-sample log loss
@@ -189,7 +196,7 @@ class GWLogisticRegression(BaseClassifier):
         temp_folder: str | None = None,
         batch_size: int | None = None,
         min_proportion: float = 0.2,
-        undersample: bool = False,
+        undersample: bool | float = False,
         leave_out: float | int | None = None,
         random_state: int | None = None,
         verbose: bool = False,
@@ -426,7 +433,7 @@ class GWLinearRegression(BaseRegressor):
         | Callable = "bisquare",
         include_focal: bool = True,
         geometry: gpd.GeoSeries | None = None,
-        graph: graph.Graph = None,
+        graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
         strict: bool | None = False,

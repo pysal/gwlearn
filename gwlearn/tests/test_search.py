@@ -9,9 +9,10 @@ from gwlearn.linear_model import GWLogisticRegression
 from gwlearn.search import BandwidthSearch
 
 
-def test_bandwidth_search_init():
+def test_bandwidth_search_init(sample_data):
     """Test BandwidthSearch initialization with default parameters."""
-    search = BandwidthSearch(GWLogisticRegression)
+    X, y, geometry = sample_data
+    search = BandwidthSearch(GWLogisticRegression, geometry=geometry)
 
     # Check default parameters
     assert search.model == GWLogisticRegression
@@ -28,12 +29,15 @@ def test_bandwidth_search_init():
     assert search.verbose is False
 
 
-def test_bandwidth_search_init_custom_params():
+def test_bandwidth_search_init_custom_params(sample_data):
     """Test BandwidthSearch initialization with custom parameters."""
+    X, y, geometry = sample_data
+
     search = BandwidthSearch(
         model=GWLogisticRegression,
+        geometry=geometry,
         fixed=True,
-        kernel="gaussian",
+        kernel="tricube",
         n_jobs=2,
         search_method="interval",
         criterion="bic",
@@ -49,7 +53,7 @@ def test_bandwidth_search_init_custom_params():
     # Check custom parameters
     assert search.model == GWLogisticRegression
     assert search.fixed is True
-    assert search.kernel == "gaussian"
+    assert search.kernel == "tricube"
     assert search.n_jobs == 2
     assert search.search_method == "interval"
     assert search.criterion == "bic"
@@ -89,11 +93,21 @@ def test_interval_search_basic(sample_data):  # noqa: F811
 
     # Check that optimal bandwidth was found
     assert hasattr(search, "optimal_bandwidth_")
-    assert search.min_bandwidth <= search.optimal_bandwidth_ <= search.max_bandwidth
+    assert (
+        search.min_bandwidth
+        <= search.optimal_bandwidth_  # ty:ignore[unsupported-operator]
+        <= search.max_bandwidth  # ty:ignore[unsupported-operator]
+    )
 
     # Check the number of bandwidths tested
     expected_n_bandwidths = (
-        int((search.max_bandwidth - search.min_bandwidth) / search.interval) + 1
+        int(
+            (
+                search.max_bandwidth - search.min_bandwidth  # ty:ignore[unsupported-operator]
+            )
+            / search.interval
+        )
+        + 1
     )
     assert len(search.scores_) == expected_n_bandwidths
 
@@ -126,8 +140,11 @@ def test_golden_section_search_basic(sample_data):  # noqa: F811
 
     # Check that optimal bandwidth was found
     assert hasattr(search, "optimal_bandwidth_")
-    assert search.min_bandwidth <= search.optimal_bandwidth_ <= search.max_bandwidth
-
+    assert (
+        search.min_bandwidth
+        <= search.optimal_bandwidth_  # ty:ignore[unsupported-operator]
+        <= search.max_bandwidth  # ty:ignore[unsupported-operator]
+    )
     # Golden section should evaluate fewer points than interval search
     assert len(search.scores_) <= search.max_iterations * 2
 
@@ -237,7 +254,7 @@ def test_model_invariant_y_returns_inf(sample_data):  # noqa: F811
     score = search._score(X, y_invariant, bw=100000)
 
     # Check that the score is np.inf for invariant y
-    assert score == np.inf
+    assert score[0] == np.inf
 
 
 def test_bandwidth_search_returns_self(sample_data):  # noqa: F811
@@ -285,7 +302,7 @@ def test_bandwidth_search_accepts_model_params(sample_data):  # noqa: F811
         max_bandwidth=200000,
         interval=100000,
         verbose=False,
-        **custom_params,
+        **custom_params,  # type: ignore
     )
 
     # Check that parameters were stored correctly
@@ -422,4 +439,4 @@ def test_maximize_custom_metric(sample_data):
     search.fit(X, y)
 
     # Check that metrics were tracked correctly
-    assert search.optimal_bandwidth_ > 400000
+    assert search.optimal_bandwidth_ > 400000  # ty:ignore[unsupported-operator]

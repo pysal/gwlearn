@@ -126,6 +126,10 @@ class _BaseModel(BaseEstimator):
 
     def _validate_geometry(self, geometry):
         """Validate that geometry contains only Point geometries"""
+        if not isinstance(geometry, gpd.GeoSeries):
+            raise ValueError(
+                f"geometry needs to be geopandas.GeoSeries. Got {type(geometry)}."
+            )
         if geometry is not None and not (geometry.geom_type == "Point").all():
             raise ValueError(
                 "Unsupported geometry type. Only point geometry is allowed."
@@ -133,6 +137,12 @@ class _BaseModel(BaseEstimator):
 
     def _build_weights(self) -> graph.Graph:
         """Build spatial weights graph"""
+        if not isinstance(self.bandwidth, float | int):
+            raise ValueError(
+                "Bandwidth is not a valid value. Needs to be float or int, "
+                f"got {self.bandwidth}."
+            )
+
         if self.fixed:  # fixed distance
             weights = graph.Graph.build_kernel(
                 self.geometry,
@@ -324,6 +334,7 @@ class _BaseModel(BaseEstimator):
             self.aic_ = 2 * (k + 1) - 2 * self.log_likelihood_
 
             # Bayesian Information Criterion
+            # Cast n to float to avoid overload resolution issues with numpy.log
             self.bic_ = np.log(n) * (k + 1) - 2 * self.log_likelihood_
 
             # Corrected AIC for small samples
@@ -444,8 +455,15 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         not fit into memory. By default None
     min_proportion : float, optional
         Minimum proportion of minority class for a model to be fitted, by default 0.2
-    undersample : bool, optional
-        Whether to apply random undersampling to balance classes, by default False
+    undersample : bool | float, optional
+        Whether to apply random undersampling to balance classes.
+
+        If ``True``, undersample the majority class to match the minority class
+        (i.e., minority/majority ratio = 1.0).
+
+        If a float ``alpha > 0``, target a minority/majority ratio of ``alpha`` after
+        resampling, i.e. ``alpha = N_min / N_resampled_majority``.
+        By default False
     leave_out : float | int, optional
         Leave out a fraction (when float) or a set number (when int) of random
         observations from each local model to be used to measure out-of-sample log loss
@@ -551,7 +569,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         temp_folder: str | None = None,
         batch_size: int | None = None,
         min_proportion: float = 0.2,
-        undersample: bool = False,
+        undersample: bool | float = False,
         leave_out: float | int | None = None,
         random_state: int | None = None,
         verbose: bool = False,
@@ -617,15 +635,18 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             # Check for 0, 1 encoding
             return bool(unique_values.issubset({0, 1}))
 
-        self._validate_geometry(self.geometry)
-
         if not _is_binary(y):
             raise ValueError("Only binary dependent variable is supported.")
 
         if self.verbose:
             print(f"{(time() - self._start):.2f}s: Building weights")
 
-        weights = self.graph if self.graph is not None else self._build_weights()
+        if self.graph is not None:
+            weights = self.graph
+        else:
+            self._validate_geometry(self.geometry)
+            weights = self._build_weights()
+
         if self.verbose:
             print(f"{(time() - self._start):.2f}s: Weights ready")
         self._setup_model_storage()
@@ -773,16 +794,12 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             y=y,
             sample_weight=data["_weight"],
         )
-        focal_x = pd.DataFrame(
-            focal_x.reshape(1, -1),
-            columns=X.columns,
-            index=[name],
-        )
+        focal_x = focal_x.reshape(1, -1)
         focal_proba = pd.Series(
             local_model.predict_proba(focal_x).flatten(), index=local_model.classes_
         )
 
-        hat_value = self._compute_hat_value(X, data["_weight"], focal_x.values)
+        hat_value = self._compute_hat_value(X, data["_weight"], focal_x)
 
         if self.leave_out:
             left_out_proba = local_model.predict_proba(
@@ -862,6 +879,14 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         """
         self._validate_geometry(geometry)
 
+        if not (
+            isinstance(self.bandwidth, float | int)
+            and isinstance(self.geometry, gpd.GeoSeries)
+        ):
+            raise ValueError(
+                "Bandwidth and geometry need to be specified to enable prediction."
+            )
+
         if self.fixed:
             input_ids, local_ids = self.geometry.sindex.query(
                 geometry, predicate="dwithin", distance=self.bandwidth
@@ -893,16 +918,14 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         split_indices = np.where(np.diff(input_ids))[0] + 1
         local_model_ids = np.split(local_ids, split_indices)
-        distances = np.split(distance.values, split_indices)
+        distances = np.split(np.asarray(distance), split_indices)
         data = np.split(X.to_numpy(), range(1, len(X)))
 
         probabilities = []
         for x_, models_, distances_ in zip(
             data, local_model_ids, distances, strict=True
         ):
-            probabilities.append(
-                self._predict_proba(x_, models_, distances_, X.columns)
-            )
+            probabilities.append(self._predict_proba(x_, models_, distances_))
 
         return pd.DataFrame(probabilities, columns=self._global_classes, index=X.index)
 
@@ -911,9 +934,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         x_: np.ndarray,
         models_: np.ndarray,
         distances_: np.ndarray,
-        columns: pd.Index,
     ) -> pd.Series:
-        x_ = pd.DataFrame(np.array(x_).reshape(1, -1), columns=columns)
         pred = []
         for i in models_:
             local_model = self._local_models[i]
@@ -924,7 +945,9 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             if local_model is not None:
                 pred.append(
                     pd.Series(
-                        local_model.predict_proba(x_).flatten(),
+                        local_model.predict_proba(
+                            np.array(x_).reshape(1, -1)
+                        ).flatten(),
                         index=local_model.classes_,
                     )
                 )
@@ -1237,18 +1260,14 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             y=y,
             sample_weight=data["_weight"],
         )
-        focal_x = pd.DataFrame(
-            focal_x.reshape(1, -1),
-            columns=X.columns,
-            index=[name],
-        )
+        focal_x = focal_x.reshape(1, -1)
         focal_pred = local_model.predict(focal_x).flatten()[0]
 
         y_bar = self._y_bar(y, data["_weight"])
         tss = self._tss(y, y_bar, data["_weight"])
 
         # Compute hat value for this location
-        hat_value = self._compute_hat_value(X, data["_weight"], focal_x.values)
+        hat_value = self._compute_hat_value(X, data["_weight"], focal_x)
 
         output = [
             name,
