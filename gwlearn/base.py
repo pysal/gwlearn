@@ -794,11 +794,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             y=y,
             sample_weight=data["_weight"],
         )
-        # focal_x = pd.DataFrame(
-        #     focal_x.reshape(1, -1),
-        #     columns=X.columns,
-        #     index=[name],
-        # )
         focal_x = focal_x.reshape(1, -1)
         focal_proba = pd.Series(
             local_model.predict_proba(focal_x).flatten(), index=local_model.classes_
