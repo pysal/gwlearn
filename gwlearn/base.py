@@ -801,9 +801,9 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             y=y,
             sample_weight=data["_weight"],
         )
-        focal_x = focal_x.reshape(1, -1)
+        focal_x_df = pd.DataFrame(focal_x.reshape(1, -1), columns=X.columns)
         focal_proba = pd.Series(
-            local_model.predict_proba(focal_x).flatten(), index=local_model.classes_
+            local_model.predict_proba(focal_x_df).flatten(), index=local_model.classes_
         )
 
         hat_value = self._compute_hat_value(X, data["_weight"], focal_x)
@@ -926,7 +926,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         split_indices = np.where(np.diff(input_ids))[0] + 1
         local_model_ids = np.split(local_ids, split_indices)
         distances = np.split(np.asarray(distance), split_indices)
-        data = np.split(X.to_numpy(), range(1, len(X)))
+        data = [X.iloc[[i]] for i in range(len(X))]
 
         probabilities = []
         for x_, models_, distances_ in zip(
@@ -938,7 +938,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
     def _predict_proba(
         self,
-        x_: np.ndarray,
+        x_: pd.DataFrame,
         models_: np.ndarray,
         distances_: np.ndarray,
     ) -> pd.Series:
@@ -952,9 +952,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             if local_model is not None:
                 pred.append(
                     pd.Series(
-                        local_model.predict_proba(
-                            np.array(x_).reshape(1, -1)
-                        ).flatten(),
+                        local_model.predict_proba(x_).flatten(),
                         index=local_model.classes_,
                     )
                 )
@@ -1267,8 +1265,8 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             y=y,
             sample_weight=data["_weight"],
         )
-        focal_x = focal_x.reshape(1, -1)
-        focal_pred = local_model.predict(focal_x).flatten()[0]
+        focal_x_df = pd.DataFrame(focal_x.reshape(1, -1), columns=X.columns)
+        focal_pred = local_model.predict(focal_x_df).flatten()[0]
 
         y_bar = self._y_bar(y, data["_weight"])
         tss = self._tss(y, y_bar, data["_weight"])

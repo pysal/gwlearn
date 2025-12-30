@@ -115,6 +115,8 @@ gwlearn = { path = ".", editable = true }
 
 [tool.pytest.ini_options]
 filterwarnings = [
+    "error",
     "ignore:The 'shapely.geos' module is deprecated*:DeprecationWarning",
     "ignore:This process \\(pid=\\d+\\) is multi-threaded*:DeprecationWarning",
+    "ignore:divide by zero encountered in power:RuntimeWarning"
 ]
