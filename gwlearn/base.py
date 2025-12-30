@@ -256,7 +256,14 @@ class _BaseModel(BaseEstimator):
         else:
             self.global_model = self.model(**self._model_kwargs)
 
-        self.global_model.fit(X=X, y=y)
+        # see gh#44 - remove filter once oldest sklearn is 1.10
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                "ignore",
+                message="'n_jobs' has no effect since 1.8 and will be removed in 1.10.",
+                category=FutureWarning,
+            )
+            self.global_model.fit(X=X, y=y)
 
     def _store_model(self, local_model, name: Hashable):
         """Store or serialize local model"""
