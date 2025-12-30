@@ -17,7 +17,7 @@
     
     
       
-        <title>gwlearn.base - gwlearn 0.0.1 documentation</title>
+        <title>gwlearn.base - gwlearn 0.0.2.dev1 documentation</title>
       
     
     
@@ -79,7 +79,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="gwlearn 0.0.1 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.1 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.0.2.dev1 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev1 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -90,7 +90,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.1 documentation
+            gwlearn 0.0.2.dev1 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -228,10 +228,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="gwlearn 0.0.1 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.1 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.0.2.dev1 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev1 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.1 documentation
+    gwlearn 0.0.2.dev1 documentation
   </label>
   
     <div class="md-nav__source">
@@ -924,7 +924,14 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">global_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_model_kwargs</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">global_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+        <span class="c1"># see gh#44 - remove filter once oldest sklearn is 1.10</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span>
+                <span class="s2">&quot;ignore&quot;</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;&#39;n_jobs&#39; has no effect since 1.8 and will be removed in 1.10.&quot;</span><span class="p">,</span>
+                <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">global_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_store_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_model</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Hashable</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Store or serialize local model&quot;&quot;&quot;</span>
