@@ -1,4 +1,3 @@
-import inspect
 import warnings
 from collections.abc import Callable, Hashable
 from pathlib import Path
@@ -251,10 +250,7 @@ class _BaseModel(BaseEstimator):
         if self._model_type == "random_forest":
             self._model_kwargs["oob_score"] = True
         # fit global model as a baseline
-        if "n_jobs" in inspect.signature(self.model).parameters:
-            self.global_model = self.model(n_jobs=self.n_jobs, **self._model_kwargs)
-        else:
-            self.global_model = self.model(**self._model_kwargs)
+        self.global_model = self.model(**self._model_kwargs)
 
         self.global_model.fit(X=X, y=y)
 
