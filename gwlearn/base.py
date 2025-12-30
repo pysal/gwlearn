@@ -13,10 +13,14 @@ from libpysal import graph
 from scipy.spatial import KDTree
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 from sklearn.model_selection import train_test_split
+import sklearn
 
-# TODO: summary
-# TODO: formal documentation
-# TODO: comments in code
+# Enable metadata routing (sklearn >= 1.3)
+try:
+    sklearn.set_config(enable_metadata_routing=True)
+except Exception:
+    pass
+
 
 __all__ = ["BaseClassifier", "BaseRegressor"]
 
@@ -126,14 +130,37 @@ class _BaseModel(BaseEstimator):
 
     def _validate_geometry(self, geometry):
         """Validate that geometry contains only Point geometries"""
+        if geometry is None:
+            return
         if not isinstance(geometry, gpd.GeoSeries):
             raise ValueError(
                 f"geometry needs to be geopandas.GeoSeries. Got {type(geometry)}."
             )
-        if geometry is not None and not (geometry.geom_type == "Point").all():
+        if not (geometry.geom_type == "Point").all():
             raise ValueError(
                 "Unsupported geometry type. Only point geometry is allowed."
             )
+
+    # Metadata routing helpers (sklearn >= 1.3)
+    def set_fit_request(self, **requests):
+        """Register fit-time requests for metadata routing.
+
+        Example: estimator.set_fit_request(geometry=True)
+        """
+        self._fit_request = requests
+        return self
+
+    def set_predict_request(self, **requests):
+        self._predict_request = requests
+        return self
+
+    def set_predict_proba_request(self, **requests):
+        self._predict_proba_request = requests
+        return self
+
+    def set_score_request(self, **requests):
+        self._score_request = requests
+        return self
 
     def _build_weights(self) -> graph.Graph:
         """Build spatial weights graph"""
@@ -219,7 +246,8 @@ class _BaseModel(BaseEstimator):
         """Fit a batch of local models"""
         data = X.copy()
         data["_y"] = y
-        data = data.loc[index.get_level_values(1)]
+        # The Junior Fix: Reindex and drop missing rows (the ones in the test set)
+        data = data.reindex(index.get_level_values(1)).dropna()
         data["_weight"] = _weight
         grouper = data.groupby(index.get_level_values(0), sort=False)
 
@@ -235,7 +263,7 @@ class _BaseModel(BaseEstimator):
                     stacklevel=3,
                 )
 
-        return Parallel(n_jobs=self.n_jobs, temp_folder=self.temp_folder)(
+        return list(Parallel(n_jobs=self.n_jobs, temp_folder=self.temp_folder)(
             delayed(self._fit_local)(
                 self.model,
                 group,
@@ -244,7 +272,7 @@ class _BaseModel(BaseEstimator):
                 self._model_kwargs,
             )
             for (name, group), focal_x in zip(grouper, X_focals, strict=False)
-        )
+        ))
 
     def _fit_global_model(self, X: pd.DataFrame, y: pd.Series):
         """Fit global baseline model"""
@@ -363,9 +391,7 @@ class _BaseModel(BaseEstimator):
     ) -> list[Hashable]:
         raise NotImplementedError("Subclasses must implement _fit_local")
 
-    def fit(self, X: pd.DataFrame, y: pd.Series):
-        raise NotImplementedError("Subclasses must implement fit")
-
+    
     def _get_score_data(self, local_model, X, y):  # noqa: ARG002
         """Subclasses should implement custom function"""
         return np.nan
@@ -599,7 +625,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self._empty_score_data = None
         self._empty_feature_imp = None
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> "BaseClassifier":
+    def fit(self, X: pd.DataFrame, y: pd.Series, **fit_kwargs) -> "BaseClassifier":
         """Fit geographically weighted local classification models.
 
         This fits one local model per focal observation (subject to local invariance
@@ -622,6 +648,10 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         The neighborhood definition comes from either ``self.graph`` or from
         ``self.geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
+        # Accept routed metadata (e.g., geometry) via fit kwargs
+        if "geometry" in fit_kwargs:
+            self.geometry = fit_kwargs.pop("geometry")
+
         self._start = time()
 
         def _is_binary(series: pd.Series) -> bool:
@@ -1155,7 +1185,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     dtype: float64
     """
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> "BaseRegressor":
+    def fit(self, X: pd.DataFrame, y: pd.Series, **fit_kwargs) -> "BaseRegressor":
         """Fit geographically weighted local regression models.
 
         Fits one local model per focal observation and stores focal (in-sample if
@@ -1178,6 +1208,10 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         The neighborhood definition comes from either ``self.graph`` or from
         ``self.geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
+        # Accept routed metadata (e.g., geometry) via fit kwargs
+        if "geometry" in fit_kwargs:
+            self.geometry = fit_kwargs.pop("geometry")
+
         self._validate_geometry(self.geometry)
 
         weights = self.graph if self.graph is not None else self._build_weights()
