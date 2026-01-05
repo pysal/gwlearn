@@ -21,7 +21,7 @@
     
     
       
-        <title>gwlearn.base.BaseClassifier - gwlearn 0.0.2.dev3 documentation</title>
+        <title>gwlearn.base.BaseClassifier - gwlearn 0.0.2.dev4 documentation</title>
       
     
     
@@ -88,7 +88,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../index.html" title="gwlearn 0.0.2.dev3 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev3 documentation" data-md-component="logo">
+    <a href="../index.html" title="gwlearn 0.0.2.dev4 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev4 documentation" data-md-component="logo">
       <img src="../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -99,7 +99,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.2.dev3 documentation
+            gwlearn 0.0.2.dev4 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -237,10 +237,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="gwlearn 0.0.2.dev3 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev3 documentation" data-md-component="logo">
+    <a href="../index.html" title="gwlearn 0.0.2.dev4 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev4 documentation" data-md-component="logo">
       <img src="../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.2.dev3 documentation
+    gwlearn 0.0.2.dev4 documentation
   </label>
   
     <div class="md-nav__source">
@@ -3075,7 +3075,7 @@
 <p>This class wraps a scikit-learn-compatible <em>classifier class</em> and fits one local
 model per focal observation using spatially varying sample weights.</p>
 <p>The spatial interaction is defined either by (a) <code class="docutils literal notranslate"><span class="pre">geometry</span></code> + bandwidth/kernel
-settings or (b) a precomputed <a class="reference external" href="https://pysal.org/libpysal/generated/libpysal.graph.Graph.html#libpysal.graph.Graph" title="(in libpysal v4.13.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">libpysal.graph.Graph</span></code></a> passed via <code class="docutils literal notranslate"><span class="pre">graph</span></code>.</p>
+settings or (b) a precomputed <a class="reference external" href="https://pysal.org/libpysal/generated/libpysal.graph.Graph.html#libpysal.graph.Graph" title="(in libpysal v4.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">libpysal.graph.Graph</span></code></a> passed via <code class="docutils literal notranslate"><span class="pre">graph</span></code>.</p>
 <p class="rubric">Notes</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">y</span></code> must be binary (<code class="docutils literal notranslate"><span class="pre">{0,</span> <span class="pre">1}</span></code> or boolean).</p></li>
@@ -3483,7 +3483,7 @@ contained subobjects that are estimators.</p>
 <dd class="field-odd"><dl class="simple api-field highlight">
 <dt id="gwlearn.base.BaseClassifier.predict.X"><span class="sig-name descname">X</span><span class="p"> : </span><span class="desctype"><span class="desctype">pandas.DataFrame</span></span><a class="headerlink" href="#gwlearn.base.BaseClassifier.predict.X" title="Permalink to this definition">¶</a></dt><dd><p>Feature matrix for new observations.</p>
 </dd>
-<dt id="gwlearn.base.BaseClassifier.predict.geometry"><span class="sig-name descname">geometry</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://geopandas.org/en/latest/docs/reference/api/geopandas.GeoSeries.html#geopandas.GeoSeries" title="(in GeoPandas v1.1.2.dev55.dev+gc46108082)">geopandas.GeoSeries</a></span></span><a class="headerlink" href="#gwlearn.base.BaseClassifier.predict.geometry" title="Permalink to this definition">¶</a></dt><dd><p>Point geometries for new observations.</p>
+<dt id="gwlearn.base.BaseClassifier.predict.geometry"><span class="sig-name descname">geometry</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://geopandas.org/en/latest/docs/reference/api/geopandas.GeoSeries.html#geopandas.GeoSeries" title="(in GeoPandas v1.1.2.dev57.dev+g26e38dd8e)">geopandas.GeoSeries</a></span></span><a class="headerlink" href="#gwlearn.base.BaseClassifier.predict.geometry" title="Permalink to this definition">¶</a></dt><dd><p>Point geometries for new observations.</p>
 </dd>
 </dl>
 </dd>
@@ -3508,7 +3508,7 @@ contained subobjects that are estimators.</p>
 <dd class="field-odd"><dl class="simple api-field highlight">
 <dt id="gwlearn.base.BaseClassifier.predict_proba.X"><span class="sig-name descname">X</span><span class="p"> : </span><span class="desctype"><span class="desctype">pandas.DataFrame</span></span><a class="headerlink" href="#gwlearn.base.BaseClassifier.predict_proba.X" title="Permalink to this definition">¶</a></dt><dd><p>Feature matrix for new observations.</p>
 </dd>
-<dt id="gwlearn.base.BaseClassifier.predict_proba.geometry"><span class="sig-name descname">geometry</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://geopandas.org/en/latest/docs/reference/api/geopandas.GeoSeries.html#geopandas.GeoSeries" title="(in GeoPandas v1.1.2.dev55.dev+gc46108082)">geopandas.GeoSeries</a></span></span><a class="headerlink" href="#gwlearn.base.BaseClassifier.predict_proba.geometry" title="Permalink to this definition">¶</a></dt><dd><p>Point geometries for new observations.</p>
+<dt id="gwlearn.base.BaseClassifier.predict_proba.geometry"><span class="sig-name descname">geometry</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://geopandas.org/en/latest/docs/reference/api/geopandas.GeoSeries.html#geopandas.GeoSeries" title="(in GeoPandas v1.1.2.dev57.dev+g26e38dd8e)">geopandas.GeoSeries</a></span></span><a class="headerlink" href="#gwlearn.base.BaseClassifier.predict_proba.geometry" title="Permalink to this definition">¶</a></dt><dd><p>Point geometries for new observations.</p>
 </dd>
 </dl>
 </dd>

@@ -13,8 +13,10 @@
       ~BaseRegressor.fit
       ~BaseRegressor.get_metadata_routing
       ~BaseRegressor.get_params
+      ~BaseRegressor.predict
       ~BaseRegressor.score
       ~BaseRegressor.set_params
+      ~BaseRegressor.set_predict_request
       ~BaseRegressor.set_score_request
 
    .. rubric:: Attributes

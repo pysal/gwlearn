@@ -13,8 +13,10 @@
       ~GWLinearRegression.fit
       ~GWLinearRegression.get_metadata_routing
       ~GWLinearRegression.get_params
+      ~GWLinearRegression.predict
       ~GWLinearRegression.score
       ~GWLinearRegression.set_params
+      ~GWLinearRegression.set_predict_request
       ~GWLinearRegression.set_score_request
 
    .. rubric:: Attributes

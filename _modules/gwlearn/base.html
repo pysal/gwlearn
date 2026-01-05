@@ -17,7 +17,7 @@
     
     
       
-        <title>gwlearn.base - gwlearn 0.0.2.dev3 documentation</title>
+        <title>gwlearn.base - gwlearn 0.0.2.dev4 documentation</title>
       
     
     
@@ -79,7 +79,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="gwlearn 0.0.2.dev3 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev3 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.0.2.dev4 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev4 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -90,7 +90,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.2.dev3 documentation
+            gwlearn 0.0.2.dev4 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -228,10 +228,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="gwlearn 0.0.2.dev3 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev3 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.0.2.dev4 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev4 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.2.dev3 documentation
+    gwlearn 0.0.2.dev4 documentation
   </label>
   
     <div class="md-nav__source">
@@ -1027,6 +1027,94 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">bic_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">aicc_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_prepare_prediction_neighborhoods</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prepare neighborhood information for prediction on new observations.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        geometry : geopandas.GeoSeries</span>
+<span class="sd">            Point geometries for new observations.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            - local_model_ids: list of arrays with local model indices per observation</span>
+<span class="sd">            - distances: list of arrays with kernel weights per observation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span><span class="p">,</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Bandwidth and geometry need to be specified to enable prediction.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed</span><span class="p">:</span>
+            <span class="n">input_ids</span><span class="p">,</span> <span class="n">local_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">sindex</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+                <span class="n">geometry</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="s2">&quot;dwithin&quot;</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span>
+            <span class="p">)</span>
+            <span class="n">distance</span> <span class="o">=</span> <span class="n">_kernel_functions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">](</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">local_ids</span><span class="p">]</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span>
+                    <span class="n">geometry</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">input_ids</span><span class="p">],</span> <span class="n">align</span><span class="o">=</span><span class="kc">False</span>
+                <span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">training_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">get_coordinates</span><span class="p">()</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">KDTree</span><span class="p">(</span><span class="n">training_coords</span><span class="p">)</span>
+            <span class="n">query_coords</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">get_coordinates</span><span class="p">()</span>
+
+            <span class="n">distances</span><span class="p">,</span> <span class="n">indices_array</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">query_coords</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span><span class="p">)</span>
+
+            <span class="c1"># Flatten arrays for consistent format</span>
+            <span class="n">input_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">geometry</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span><span class="p">)</span>
+            <span class="n">local_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_local_models</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">indices_array</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="n">distances</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+            <span class="c1"># For adaptive KNN, determine the bandwidth for each neighborhood</span>
+            <span class="c1"># by finding the max distance in each neighborhood</span>
+            <span class="n">kernel_bandwidth</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1e-6</span>
+            <span class="p">)</span>  <span class="c1"># can&#39;t have 0</span>
+            <span class="n">distance</span> <span class="o">=</span> <span class="n">_kernel_functions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">](</span><span class="n">distances</span><span class="p">,</span> <span class="n">kernel_bandwidth</span><span class="p">)</span>
+
+        <span class="n">split_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">input_ids</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">local_model_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">local_ids</span><span class="p">,</span> <span class="n">split_indices</span><span class="p">)</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">distance</span><span class="p">),</span> <span class="n">split_indices</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">local_model_ids</span><span class="p">,</span> <span class="n">distances</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_predict_local</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x_</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">models_</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">distances_</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make prediction for a single observation using local models.</span>
+
+<span class="sd">        Must be implemented by subclasses.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x_ : pd.DataFrame</span>
+<span class="sd">            Single-row DataFrame with features for the observation.</span>
+<span class="sd">        models_ : np.ndarray</span>
+<span class="sd">            Array of local model indices to use for prediction.</span>
+<span class="sd">        distances_ : np.ndarray</span>
+<span class="sd">            Array of kernel weights for each local model.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Prediction result (type depends on subclass implementation).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Subclasses must implement _predict_local&quot;</span><span class="p">)</span>
+
     <span class="c1"># Abstract methods that subclasses must implement</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_fit_local</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1559,60 +1647,19 @@
 <span class="sd">        Requires the estimator to have been fit with ``keep_models=True`` (or a</span>
 <span class="sd">        ``Path``) so local models can be used at prediction time.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
-            <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span><span class="p">,</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span>
-            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">)</span>
-        <span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Bandwidth and geometry need to be specified to enable prediction.&quot;</span>
-            <span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed</span><span class="p">:</span>
-            <span class="n">input_ids</span><span class="p">,</span> <span class="n">local_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">sindex</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
-                <span class="n">geometry</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="s2">&quot;dwithin&quot;</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span>
-            <span class="p">)</span>
-            <span class="n">distance</span> <span class="o">=</span> <span class="n">_kernel_functions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">](</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">local_ids</span><span class="p">]</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span>
-                    <span class="n">geometry</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">input_ids</span><span class="p">],</span> <span class="n">align</span><span class="o">=</span><span class="kc">False</span>
-                <span class="p">),</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">training_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">get_coordinates</span><span class="p">()</span>
-            <span class="n">tree</span> <span class="o">=</span> <span class="n">KDTree</span><span class="p">(</span><span class="n">training_coords</span><span class="p">)</span>
-            <span class="n">query_coords</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">get_coordinates</span><span class="p">()</span>
-
-            <span class="n">distances</span><span class="p">,</span> <span class="n">indices_array</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">query_coords</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span><span class="p">)</span>
-
-            <span class="c1"># Flatten arrays for consistent format</span>
-            <span class="n">input_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">geometry</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span><span class="p">)</span>
-            <span class="n">local_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_local_models</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">indices_array</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
-            <span class="n">distances</span> <span class="o">=</span> <span class="n">distances</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-
-            <span class="c1"># For adaptive KNN, determine the bandwidth for each neighborhood</span>
-            <span class="c1"># by finding the max distance in each neighborhood</span>
-            <span class="n">kernel_bandwidth</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1e-6</span>
-            <span class="p">)</span>  <span class="c1"># can&#39;t have 0</span>
-            <span class="n">distance</span> <span class="o">=</span> <span class="n">_kernel_functions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">](</span><span class="n">distances</span><span class="p">,</span> <span class="n">kernel_bandwidth</span><span class="p">)</span>
-
-        <span class="n">split_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">input_ids</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="n">local_model_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">local_ids</span><span class="p">,</span> <span class="n">split_indices</span><span class="p">)</span>
-        <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">distance</span><span class="p">),</span> <span class="n">split_indices</span><span class="p">)</span>
+        <span class="n">local_model_ids</span><span class="p">,</span> <span class="n">distances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_prediction_neighborhoods</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))]</span>
 
         <span class="n">probabilities</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">x_</span><span class="p">,</span> <span class="n">models_</span><span class="p">,</span> <span class="n">distances_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
             <span class="n">data</span><span class="p">,</span> <span class="n">local_model_ids</span><span class="p">,</span> <span class="n">distances</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">):</span>
-            <span class="n">probabilities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_predict_proba</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">models_</span><span class="p">,</span> <span class="n">distances_</span><span class="p">))</span>
+            <span class="n">probabilities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_predict_local</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">models_</span><span class="p">,</span> <span class="n">distances_</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">probabilities</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_global_classes</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_predict_proba</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_predict_local</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">x_</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
         <span class="n">models_</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -1934,6 +1981,66 @@
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
+
+<div class="viewcode-block" id="BaseRegressor.predict">
+<a class="viewcode-back" href="../../generated/gwlearn.base.BaseRegressor.html#gwlearn.base.BaseRegressor.predict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Predict target values for new observations.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : pandas.DataFrame</span>
+<span class="sd">            Feature matrix for new observations.</span>
+<span class="sd">        geometry : geopandas.GeoSeries</span>
+<span class="sd">            Point geometries for new observations.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pandas.Series</span>
+<span class="sd">            Predicted values.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Requires the estimator to have been fit with ``keep_models=True`` (or a</span>
+<span class="sd">        ``Path``) so local models can be used at prediction time.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">local_model_ids</span><span class="p">,</span> <span class="n">distances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_prediction_neighborhoods</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))]</span>
+
+        <span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">x_</span><span class="p">,</span> <span class="n">models_</span><span class="p">,</span> <span class="n">distances_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span> <span class="n">local_model_ids</span><span class="p">,</span> <span class="n">distances</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">):</span>
+            <span class="n">predictions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_predict_local</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">models_</span><span class="p">,</span> <span class="n">distances_</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_predict_local</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x_</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">models_</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">distances_</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">models_</span><span class="p">:</span>
+            <span class="n">local_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_local_models</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">local_model</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_model</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">local_model</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">local_model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">pred</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">local_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pred</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+        <span class="n">weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">pred</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">],</span> <span class="n">weights</span><span class="o">=</span><span class="n">distances_</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">weighted</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_fit_local</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
