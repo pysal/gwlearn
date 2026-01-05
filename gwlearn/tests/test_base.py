@@ -1194,103 +1194,155 @@ def test_regressor_fit_with_batch_processing(sample_regression_data):
     assert hasattr(reg, "local_r2_")
 
 
-# def test_regressor_predict_basic(sample_regression_data):
-#     """Test basic functionality of predict method."""
-#     X, y, geometry = sample_regression_data
+def test_regressor_predict_basic(sample_regression_data):
+    """Test basic functionality of predict method."""
+    X, y, geometry = sample_regression_data
 
-#     # Create and fit regressor with keep_models=True (required for prediction)
-#     reg = BaseRegressor(
-#         LinearRegression,
-#         bandwidth=150000,
-#         fixed=True,
-#         keep_models=True,
-#     )
-#     reg.fit(X, y)
+    # Create and fit regressor with keep_models=True (required for prediction)
+    reg = BaseRegressor(
+        LinearRegression,
+        geometry=geometry,
+        bandwidth=150000,
+        fixed=True,
+        keep_models=True,
+    )
+    reg.fit(X, y)
 
-#     # Predict values for first 5 samples
-#     pred = reg.predict(X.iloc[:5], geometry.iloc[:5])
+    # Predict values for first 5 samples
+    pred = reg.predict(X.iloc[:5], geometry.iloc[:5])
 
-#     # Check output format
-#     assert isinstance(pred, pd.Series)
-#     assert len(pred) == 5
+    # Check output format
+    assert isinstance(pred, pd.Series)
+    assert len(pred) == 5
 
-#     # Check all predicted values are numeric
-#     assert pd.api.types.is_numeric_dtype(pred)
-
-
-# def test_regressor_predict_adaptive(sample_regression_data):
-#     """Test basic functionality of predict method using adaptive kernel."""
-#     X, y, geometry = sample_regression_data
-
-#     # Create and fit regressor with keep_models=True (required for prediction)
-#     reg = BaseRegressor(
-#         LinearRegression,
-#         bandwidth=7,
-#         fixed=False,
-#         keep_models=True,
-#         strict=False,  # To avoid warnings on invariance
-#     )
-#     reg.fit(X, y)
-
-#     # Predict values for first 5 samples
-#     pred = reg.predict(X.iloc[:5], geometry.iloc[:5])
-
-#     # Check output format
-#     assert isinstance(pred, pd.Series)
-#     assert len(pred) == 5
-
-#     # Check all predicted values are numeric
-#     assert pd.api.types.is_numeric_dtype(pred)
+    # Check all predicted values are numeric
+    assert pd.api.types.is_numeric_dtype(pred)
 
 
-# def test_regressor_predict_with_models_on_disk(sample_regression_data):
-#     """Test prediction with models stored on disk."""
-#     X, y, geometry = sample_regression_data
+def test_regressor_predict_adaptive(sample_regression_data):
+    """Test basic functionality of predict method using adaptive kernel."""
+    X, y, geometry = sample_regression_data
 
-#     with tempfile.TemporaryDirectory() as temp_dir:
-#         # Create and fit regressor with keep_models as a path
-#         reg = BaseRegressor(
-#             LinearRegression,
-#             bandwidth=150000,
-#             fixed=True,
-#             keep_models=temp_dir,
-#             strict=False,  # To avoid warnings on invariance
-#         )
-#         reg.fit(X, y)
+    # Create and fit regressor with keep_models=True (required for prediction)
+    reg = BaseRegressor(
+        LinearRegression,
+        geometry=geometry,
+        bandwidth=7,
+        fixed=False,
+        keep_models=True,
+    )
+    reg.fit(X, y)
 
-#         # Predict values
-#         pred = reg.predict(X.iloc[:5], geometry.iloc[:5])
+    # Predict values for first 5 samples
+    pred = reg.predict(X.iloc[:5], geometry.iloc[:5])
 
-#         # Check output
-#         assert isinstance(pred, pd.Series)
-#         assert len(pred) == 5
+    # Check output format
+    assert isinstance(pred, pd.Series)
+    assert len(pred) == 5
+
+    # Check all predicted values are numeric
+    assert pd.api.types.is_numeric_dtype(pred)
 
 
-# def test_regressor_predict_comparison_with_focal_pred(sample_regression_data):
-#     """Test that prediction for training data matches focal predictions."""
-#     X, y, geometry = sample_regression_data
+def test_regressor_predict_with_models_on_disk(sample_regression_data):
+    """Test prediction with models stored on disk."""
+    X, y, geometry = sample_regression_data
 
-#     # Create and fit regressor
-#     reg = BaseRegressor(
-#         LinearRegression,
-#         bandwidth=150000,
-#         fixed=True,
-#         keep_models=True,
-#         strict=False,  # To avoid warnings on invariance
-#     )
-#     reg.fit(X, y)
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Create and fit regressor with keep_models as a path
+        reg = BaseRegressor(
+            LinearRegression,
+            geometry=geometry,
+            bandwidth=150000,
+            fixed=True,
+            keep_models=temp_dir,
+        )
+        reg.fit(X, y)
 
-#     # Get predictions for the same data used for training
-#     predicted_values = reg.predict(X, geometry)
+        # Predict values
+        pred = reg.predict(X.iloc[:5], geometry.iloc[:5])
 
-#     # Compare with pred_ (should be very similar but not identical
-#     # because pred_ is calculated during training without using the focal point)
-#     pd.testing.assert_series_equal(
-#         predicted_values.loc[[2]],
-#         reg.pred_.loc[[2]],
-#         check_exact=False,
-#         atol=0.1,  # Allow some tolerance because they're not identical
-#     )
+        # Check output
+        assert isinstance(pred, pd.Series)
+        assert len(pred) == 5
+
+
+def test_regressor_predict_comparison_with_focal_pred(sample_regression_data):
+    """Test that prediction for training data is close to focal predictions."""
+    X, y, geometry = sample_regression_data
+
+    # Create and fit regressor with include_focal=True for fair comparison
+    reg = BaseRegressor(
+        LinearRegression,
+        geometry=geometry,
+        bandwidth=150000,
+        fixed=True,
+        keep_models=True,
+        include_focal=True,
+    )
+    reg.fit(X, y)
+
+    # Get predictions for the same data used for training
+    predicted_values = reg.predict(X, geometry)
+
+    # Compare with pred_ (should be similar since include_focal=True)
+    # The values won't be identical because predict uses weighted average of
+    # multiple local models while pred_ uses only the focal model
+    correlation = predicted_values.corr(reg.pred_)
+    assert correlation > 0.9  # Should be highly correlated
+
+
+def test_regressor_predict_invalid_geometry(sample_regression_data):
+    """Test that prediction raises error with non-point geometries."""
+    X, y, geometry = sample_regression_data
+
+    # Get the original polygons instead of centroids
+    gdf = gpd.read_file(get_path("geoda.guerry"))
+    polygon_geometry = gdf.geometry
+
+    # Create and fit regressor with point geometries
+    reg = BaseRegressor(
+        LinearRegression,
+        geometry=geometry,
+        bandwidth=150000,
+        fixed=True,
+        keep_models=True,
+    )
+    reg.fit(X, y)
+
+    # Attempt to predict with polygon geometries
+    with pytest.raises(ValueError, match="Unsupported geometry type"):
+        reg.predict(X.iloc[:5], polygon_geometry.iloc[:5])
+
+
+def test_regressor_predict_values(sample_regression_data):
+    """Test that predicted values are reasonable and match expected results."""
+    X, y, geometry = sample_regression_data
+
+    # Create and fit regressor
+    reg = BaseRegressor(
+        LinearRegression,
+        geometry=geometry,
+        bandwidth=150000,
+        fixed=True,
+        keep_models=True,
+        include_focal=True,
+    )
+    reg.fit(X, y)
+
+    # Predict values for first 5 samples
+    pred = reg.predict(X.iloc[:5], geometry.iloc[:5])
+
+    # Check predictions are within a reasonable range of the target variable
+    assert pred.min() > y.min() - y.std() * 2
+    assert pred.max() < y.max() + y.std() * 2
+
+    # Check specific expected values (computed from the implementation)
+    expected_values = pd.Series(
+        [5229.26, 7171.34, 10342.14, 2779.31, 6557.50],
+        index=X.iloc[:5].index,
+    )
+    pd.testing.assert_series_equal(pred, expected_values, check_exact=False, rtol=0.01)
 
 
 def test_regressor_random_state_consistency(sample_regression_data):
