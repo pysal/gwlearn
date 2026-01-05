@@ -359,6 +359,94 @@ class _BaseModel(BaseEstimator):
             self.bic_ = np.nan
             self.aicc_ = np.nan
 
+    def _prepare_prediction_neighborhoods(
+        self, geometry: gpd.GeoSeries
+    ) -> tuple[list, list]:
+        """
+        Prepare neighborhood information for prediction on new observations.
+
+        Parameters
+        ----------
+        geometry : geopandas.GeoSeries
+            Point geometries for new observations.
+
+        Returns
+        -------
+        tuple
+            - local_model_ids: list of arrays with local model indices per observation
+            - distances: list of arrays with kernel weights per observation
+        """
+        self._validate_geometry(geometry)
+
+        if not (
+            isinstance(self.bandwidth, float | int)
+            and isinstance(self.geometry, gpd.GeoSeries)
+        ):
+            raise ValueError(
+                "Bandwidth and geometry need to be specified to enable prediction."
+            )
+
+        if self.fixed:
+            input_ids, local_ids = self.geometry.sindex.query(
+                geometry, predicate="dwithin", distance=self.bandwidth
+            )
+            distance = _kernel_functions[self.kernel](
+                self.geometry.iloc[local_ids].distance(
+                    geometry.iloc[input_ids], align=False
+                ),
+                self.bandwidth,
+            )
+        else:
+            training_coords = self.geometry.get_coordinates()
+            tree = KDTree(training_coords)
+            query_coords = geometry.get_coordinates()
+
+            distances, indices_array = tree.query(query_coords, k=self.bandwidth)
+
+            # Flatten arrays for consistent format
+            input_ids = np.repeat(np.arange(len(geometry)), self.bandwidth)
+            local_ids = self._local_models.index[indices_array.flatten()].to_numpy()
+            distances = distances.flatten()
+
+            # For adaptive KNN, determine the bandwidth for each neighborhood
+            # by finding the max distance in each neighborhood
+            kernel_bandwidth = (
+                pd.Series(distances).groupby(input_ids).transform("max") + 1e-6
+            )  # can't have 0
+            distance = _kernel_functions[self.kernel](distances, kernel_bandwidth)
+
+        split_indices = np.where(np.diff(input_ids))[0] + 1
+        local_model_ids = np.split(local_ids, split_indices)
+        distances = np.split(np.asarray(distance), split_indices)
+
+        return local_model_ids, distances
+
+    def _predict_local(
+        self,
+        x_: pd.DataFrame,
+        models_: np.ndarray,
+        distances_: np.ndarray,
+    ):
+        """
+        Make prediction for a single observation using local models.
+
+        Must be implemented by subclasses.
+
+        Parameters
+        ----------
+        x_ : pd.DataFrame
+            Single-row DataFrame with features for the observation.
+        models_ : np.ndarray
+            Array of local model indices to use for prediction.
+        distances_ : np.ndarray
+            Array of kernel weights for each local model.
+
+        Returns
+        -------
+        Prediction result (type depends on subclass implementation).
+        """
+        raise NotImplementedError("Subclasses must implement _predict_local")
+
     # Abstract methods that subclasses must implement
     def _fit_local(
         self,
@@ -884,59 +972,18 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Requires the estimator to have been fit with ``keep_models=True`` (or a
         ``Path``) so local models can be used at prediction time.
         """
-        self._validate_geometry(geometry)
-
-        if not (
-            isinstance(self.bandwidth, float | int)
-            and isinstance(self.geometry, gpd.GeoSeries)
-        ):
-            raise ValueError(
-                "Bandwidth and geometry need to be specified to enable prediction."
-            )
-
-        if self.fixed:
-            input_ids, local_ids = self.geometry.sindex.query(
-                geometry, predicate="dwithin", distance=self.bandwidth
-            )
-            distance = _kernel_functions[self.kernel](
-                self.geometry.iloc[local_ids].distance(
-                    geometry.iloc[input_ids], align=False
-                ),
-                self.bandwidth,
-            )
-        else:
-            training_coords = self.geometry.get_coordinates()
-            tree = KDTree(training_coords)
-            query_coords = geometry.get_coordinates()
-
-            distances, indices_array = tree.query(query_coords, k=self.bandwidth)
-
-            # Flatten arrays for consistent format
-            input_ids = np.repeat(np.arange(len(geometry)), self.bandwidth)
-            local_ids = self._local_models.index[indices_array.flatten()].to_numpy()
-            distances = distances.flatten()
-
-            # For adaptive KNN, determine the bandwidth for each neighborhood
-            # by finding the max distance in each neighborhood
-            kernel_bandwidth = (
-                pd.Series(distances).groupby(input_ids).transform("max") + 1e-6
-            )  # can't have 0
-            distance = _kernel_functions[self.kernel](distances, kernel_bandwidth)
-
-        split_indices = np.where(np.diff(input_ids))[0] + 1
-        local_model_ids = np.split(local_ids, split_indices)
-        distances = np.split(np.asarray(distance), split_indices)
+        local_model_ids, distances = self._prepare_prediction_neighborhoods(geometry)
         data = [X.iloc[[i]] for i in range(len(X))]
 
         probabilities = []
         for x_, models_, distances_ in zip(
             data, local_model_ids, distances, strict=True
         ):
-            probabilities.append(self._predict_proba(x_, models_, distances_))
+            probabilities.append(self._predict_local(x_, models_, distances_))
 
         return pd.DataFrame(probabilities, columns=self._global_classes, index=X.index)
 
-    def _predict_proba(
+    def _predict_local(
         self,
         x_: pd.DataFrame,
         models_: np.ndarray,
@@ -1246,6 +1293,63 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         self._compute_information_criteria()
 
         return self
+
+    def predict(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.Series:
+        """Predict target values for new observations.
+
+        Parameters
+        ----------
+        X : pandas.DataFrame
+            Feature matrix for new observations.
+        geometry : geopandas.GeoSeries
+            Point geometries for new observations.
+
+        Returns
+        -------
+        pandas.Series
+            Predicted values.
+
+        Notes
+        -----
+        Requires the estimator to have been fit with ``keep_models=True`` (or a
+        ``Path``) so local models can be used at prediction time.
+        """
+        local_model_ids, distances = self._prepare_prediction_neighborhoods(geometry)
+        data = [X.iloc[[i]] for i in range(len(X))]
+
+        predictions = []
+        for x_, models_, distances_ in zip(
+            data, local_model_ids, distances, strict=True
+        ):
+            predictions.append(self._predict_local(x_, models_, distances_))
+
+        return pd.Series(predictions, index=X.index)
+
+    def _predict_local(
+        self,
+        x_: pd.DataFrame,
+        models_: np.ndarray,
+        distances_: np.ndarray,
+    ) -> float:
+        pred = []
+        for i in models_:
+            local_model = self._local_models[i]
+            if isinstance(local_model, str):
+                with open(local_model, "rb") as f:
+                    local_model = load(f)
+
+            if local_model is not None:
+                pred.append(local_model.predict(x_).flatten()[0])
+            else:
+                pred.append(np.nan)
+
+        pred = np.array(pred)
+        mask = np.isnan(pred)
+        if mask.all():
+            return np.nan
+
+        weighted = np.average(pred[~mask], weights=distances_[~mask])
+        return weighted
 
     def _fit_local(
         self,
