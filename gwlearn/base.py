@@ -860,7 +860,10 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         if skip:
             return output
 
-        local_model = model(random_state=self.random_state, **model_kwargs)
+        if "random_state" in inspect.signature(self.model).parameters:
+            local_model = model(random_state=self.random_state, **model_kwargs)
+        else:
+            local_model = model(**model_kwargs)
 
         if self.undersample:
             if isinstance(self.undersample, float):
@@ -1412,7 +1415,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         focal_x: np.ndarray,
         model_kwargs: dict,
     ) -> list[Hashable]:
-        if self.random_state is not None:
+        if "random_state" in inspect.signature(self.model).parameters:
             local_model = model(random_state=self.random_state, **model_kwargs)
         else:
             local_model = model(**model_kwargs)

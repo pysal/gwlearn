@@ -712,10 +712,10 @@ class GWRandomForestRegressor(BaseRegressor):
             keep_models=keep_models,
             temp_folder=temp_folder,
             batch_size=batch_size,
+            random_state=random_state,
             verbose=verbose,
             **kwargs,
         )
-        self.random_state = random_state
 
         self._model_type = "random_forest"
         self._model_kwargs["oob_score"] = self._get_oob_score_data
@@ -747,7 +747,6 @@ class GWRandomForestRegressor(BaseRegressor):
         ``oob_y_pooled_`` and ``oob_pred_pooled_`` by pooling OOB values across all
         fitted local models.
         """
-        self._empty_feature_imp = np.array([np.nan] * (X.shape[1]))
         super().fit(X=X, y=y)
 
         # Handle OOB data
