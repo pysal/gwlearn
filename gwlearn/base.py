@@ -860,7 +860,10 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         if skip:
             return output
 
-        local_model = model(random_state=self.random_state, **model_kwargs)
+        if "random_state" in inspect.signature(self.model).parameters:
+            local_model = model(random_state=self.random_state, **model_kwargs)
+        else:
+            local_model = model(**model_kwargs)
 
         if self.undersample:
             if isinstance(self.undersample, float):
@@ -1147,6 +1150,8 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     batch_size : int | None, optional
         Number of models to process in each batch. Specify batch_size if your models do
         not fit into memory. By default None
+    random_state : int | None, optional
+        Random seed for reproducibility, by default None
     verbose : bool, optional
         Whether to print progress information, by default False
     **kwargs
@@ -1207,6 +1212,55 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     dtype: float64
     """
 
+    def __init__(
+        self,
+        model,
+        *,
+        bandwidth: float | None = None,
+        fixed: bool = False,
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            # "gaussian",
+            "bisquare",
+            "tricube",
+            "cosine",
+            "boxcar",
+            # "exponential",
+        ]
+        | Callable = "bisquare",
+        include_focal: bool = False,
+        geometry: gpd.GeoSeries | None = None,
+        graph: graph.Graph | None = None,
+        n_jobs: int = -1,
+        fit_global_model: bool = True,
+        strict: bool | None = False,
+        keep_models: bool | str | Path = False,
+        temp_folder: str | None = None,
+        batch_size: int | None = None,
+        random_state: int | None = None,
+        verbose: bool = False,
+        **kwargs,
+    ):
+        super().__init__(
+            model=model,
+            bandwidth=bandwidth,
+            fixed=fixed,
+            kernel=kernel,
+            include_focal=include_focal,
+            geometry=geometry,
+            graph=graph,
+            n_jobs=n_jobs,
+            fit_global_model=fit_global_model,
+            strict=strict,
+            keep_models=keep_models,
+            temp_folder=temp_folder,
+            batch_size=batch_size,
+            verbose=verbose,
+            **kwargs,
+        )
+        self.random_state = random_state
+
     def fit(self, X: pd.DataFrame, y: pd.Series) -> "BaseRegressor":
         """Fit geographically weighted local regression models.
 
@@ -1244,8 +1298,9 @@ class BaseRegressor(_BaseModel, RegressorMixin):
                 focal_pred,
                 y_bar,
                 tss,
-                hat_values,  # Add this
+                hat_values,
                 self._score_data,
+                self._feature_importances,
                 models,
             ) = zip(*training_output, strict=False)
             self._local_models = pd.Series(models, index=self._names)
@@ -1255,8 +1310,9 @@ class BaseRegressor(_BaseModel, RegressorMixin):
                 focal_pred,
                 y_bar,
                 tss,
-                hat_values,  # Add this
+                hat_values,
                 self._score_data,
+                self._feature_importances,
             ) = zip(*training_output, strict=False)
 
         self.pred_ = pd.Series(np.nan, index=y.index)
@@ -1359,7 +1415,10 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         focal_x: np.ndarray,
         model_kwargs: dict,
     ) -> list[Hashable]:
-        local_model = model(**model_kwargs)
+        if "random_state" in inspect.signature(self.model).parameters:
+            local_model = model(random_state=self.random_state, **model_kwargs)
+        else:
+            local_model = model(**model_kwargs)
 
         X = data.drop(columns=["_y", "_weight"])
         y = data["_y"]
@@ -1385,6 +1444,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             tss,
             hat_value,  # Add hat value to output
             self._get_score_data(local_model, X, y),
+            getattr(local_model, "feature_importances_", None),
         ]
 
         if self.keep_models:
