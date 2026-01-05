@@ -17,7 +17,7 @@
     
     
       
-        <title>gwlearn.ensemble - gwlearn 0.0.2.dev5 documentation</title>
+        <title>gwlearn.ensemble - gwlearn 0.0.2.dev6 documentation</title>
       
     
     
@@ -79,7 +79,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="gwlearn 0.0.2.dev5 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev5 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.0.2.dev6 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev6 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -90,7 +90,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.2.dev5 documentation
+            gwlearn 0.0.2.dev6 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -228,10 +228,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="gwlearn 0.0.2.dev5 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev5 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.0.2.dev6 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev6 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.2.dev5 documentation
+    gwlearn 0.0.2.dev6 documentation
   </label>
   
     <div class="md-nav__source">
@@ -675,9 +675,13 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">libpysal</span><span class="w"> </span><span class="kn">import</span> <span class="n">graph</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">GradientBoostingClassifier</span><span class="p">,</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">GradientBoostingClassifier</span><span class="p">,</span>
+    <span class="n">RandomForestClassifier</span><span class="p">,</span>
+    <span class="n">RandomForestRegressor</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseClassifier</span><span class="p">,</span> <span class="n">BaseRegressor</span>
 
 
 <div class="viewcode-block" id="GWRandomForestClassifier">
@@ -1203,6 +1207,265 @@
 
         <span class="k">return</span> <span class="bp">self</span></div>
 </div>
+
+
+
+<div class="viewcode-block" id="GWRandomForestRegressor">
+<a class="viewcode-back" href="../../generated/gwlearn.ensemble.GWRandomForestRegressor.html#gwlearn.ensemble.GWRandomForestRegressor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GWRandomForestRegressor</span><span class="p">(</span><span class="n">BaseRegressor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Geographically weighted random forest regressor.</span>
+
+<span class="sd">    Fits one :class:`sklearn.ensemble.RandomForestRegressor` per focal observation</span>
+<span class="sd">    using spatially varying sample weights.</span>
+
+<span class="sd">    The spatial interaction is defined either by (a) ``geometry`` + bandwidth/kernel</span>
+<span class="sd">    settings or (b) a precomputed :class:`libpysal.graph.Graph` passed via ``graph``.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - To enable prediction on new data via :meth:`predict`, you must set</span>
+<span class="sd">      ``keep_models=True`` (store in memory) or ``keep_models=Path(...)`` (serialize</span>
+<span class="sd">      to disk).</span>
+<span class="sd">    - Only point geometries are supported.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    bandwidth : float | int | None</span>
+<span class="sd">        Bandwidth for defining neighborhoods.</span>
+
+<span class="sd">        - If ``fixed=True``, this is a distance threshold.</span>
+<span class="sd">        - If ``fixed=False``, this is the number of nearest neighbors used to form the</span>
+<span class="sd">          local neighborhood.</span>
+
+<span class="sd">        If ``graph`` is provided, ``bandwidth`` is ignored.</span>
+<span class="sd">    fixed : bool, optional</span>
+<span class="sd">        True for distance based bandwidth and False for adaptive (nearest neighbor)</span>
+<span class="sd">        bandwidth, by default False</span>
+<span class="sd">    kernel : str | Callable, optional</span>
+<span class="sd">        type of kernel function used to weight observations, by default &quot;bisquare&quot;</span>
+<span class="sd">    include_focal : bool, optional</span>
+<span class="sd">        Include focal in the local model training. Excluding it allows assessment of</span>
+<span class="sd">        geographically weighted metrics on unseen data without a need for train/test</span>
+<span class="sd">        split, hence providing value for all samples. This is needed for further spatial</span>
+<span class="sd">        analysis of the model performance (and generalises to models that do not support</span>
+<span class="sd">        OOB scoring). However, it leaves out the most representative sample. By default</span>
+<span class="sd">        True</span>
+<span class="sd">    geometry : gpd.GeoSeries, optional</span>
+<span class="sd">        Geographic location of the observations in the sample. Used to determine the</span>
+<span class="sd">        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,</span>
+<span class="sd">        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``</span>
+<span class="sd">        need to be specified. To allow prediction, it is required to specify</span>
+<span class="sd">        ``geometry``.</span>
+<span class="sd">    graph : Graph, optional</span>
+<span class="sd">        Custom libpysal.graph.Graph object encoding the spatial interaction between</span>
+<span class="sd">        observations in the sample. If given, it is used directly and ``bandwidth``,</span>
+<span class="sd">        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either</span>
+<span class="sd">        ``geometry`` or ``graph`` need to be specified. To allow prediction, it is</span>
+<span class="sd">        required to specify ``geometry``. Potentially, both can be specified where</span>
+<span class="sd">        ``graph`` encodes spatial interaction between observations in ``geometry``.</span>
+<span class="sd">    n_jobs : int, optional</span>
+<span class="sd">        The number of jobs to run in parallel. ``-1`` means using all processors by</span>
+<span class="sd">        default ``-1``</span>
+<span class="sd">    fit_global_model : bool, optional</span>
+<span class="sd">        Determines if the global baseline model shall be fitted alongside the</span>
+<span class="sd">        geographically weighted, by default True</span>
+<span class="sd">    strict : bool | None, optional</span>
+<span class="sd">        Do not fit any models if at least one neighborhood has invariant ``y``, by</span>
+<span class="sd">        default False. None is treated as False but provides a warning if there are</span>
+<span class="sd">        invariant models.</span>
+<span class="sd">    keep_models : bool | str | Path, optional</span>
+<span class="sd">        Keep all local models (required for prediction), by default False. Note that for</span>
+<span class="sd">        some models, like random forests, the objects can be large. If string or Path is</span>
+<span class="sd">        provided, the local models are not held in memory but serialized to the disk</span>
+<span class="sd">        from which they are loaded in prediction.</span>
+<span class="sd">    temp_folder : str | None, optional</span>
+<span class="sd">        Folder to be used by the pool for memmapping large arrays for sharing memory</span>
+<span class="sd">        with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default</span>
+<span class="sd">        None</span>
+<span class="sd">    batch_size : int | None, optional</span>
+<span class="sd">        Number of models to process in each batch. Specify batch_size if your models do</span>
+<span class="sd">        not fit into memory. By default None</span>
+<span class="sd">    random_state : int | None, optional</span>
+<span class="sd">        Random seed for reproducibility, by default None</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Whether to print progress information, by default False</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Additional keyword arguments passed to ``model`` initialisation</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pred_ : pd.Series</span>
+<span class="sd">        Focal predictions for each location.</span>
+<span class="sd">    resid_ : pd.Series</span>
+<span class="sd">        Residuals for each location (``y`` - ``pred_``).</span>
+<span class="sd">    RSS_ : pd.Series</span>
+<span class="sd">        Residual sum of squares for each location.</span>
+<span class="sd">    TSS_ : pd.Series</span>
+<span class="sd">        Total sum of squares for each location.</span>
+<span class="sd">    y_bar_ : pd.Series</span>
+<span class="sd">        Weighted mean of y for each location.</span>
+<span class="sd">    local_r2_ : pd.Series</span>
+<span class="sd">        Local R2 for each location.</span>
+<span class="sd">    hat_values_ : pd.Series</span>
+<span class="sd">        Hat values for each location (diagonal elements of hat matrix)</span>
+<span class="sd">    effective_df_ : float</span>
+<span class="sd">        Effective degrees of freedom (sum of hat values)</span>
+<span class="sd">    log_likelihood_ : float</span>
+<span class="sd">        Global log likelihood of the model</span>
+<span class="sd">    aic_ : float</span>
+<span class="sd">        Akaike information criterion of the model</span>
+<span class="sd">    aicc_ : float</span>
+<span class="sd">        Corrected Akaike information criterion to account for model</span>
+<span class="sd">        complexity (smaller bandwidths)</span>
+<span class="sd">    bic_ : float</span>
+<span class="sd">        Bayesian information criterion</span>
+<span class="sd">    feature_importances_ : pd.DataFrame</span>
+<span class="sd">        Feature importance values for each local model</span>
+<span class="sd">    oob_y_pooled_ : numpy.ndarray</span>
+<span class="sd">        Pooled out-of-bag (OOB) true values across all fitted local models.</span>
+<span class="sd">    oob_pred_pooled_ : numpy.ndarray</span>
+<span class="sd">        Pooled out-of-bag (OOB) predictions across all fitted local models.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import geopandas as gpd</span>
+<span class="sd">    &gt;&gt;&gt; from geodatasets import get_path</span>
+<span class="sd">    &gt;&gt;&gt; from gwlearn.ensemble import GWRandomForestRegressor</span>
+
+<span class="sd">    &gt;&gt;&gt; gdf = gpd.read_file(get_path(&#39;geoda.guerry&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; X = gdf[[&#39;Crm_prp&#39;, &#39;Litercy&#39;, &#39;Donatns&#39;, &#39;Lottery&#39;]]</span>
+<span class="sd">    &gt;&gt;&gt; y = gdf[&quot;Suicids&quot;]</span>
+
+<span class="sd">    &gt;&gt;&gt; gw = GWRandomForestRegressor(</span>
+<span class="sd">    ...     bandwidth=30,</span>
+<span class="sd">    ...     fixed=False,</span>
+<span class="sd">    ...     geometry=gdf.representative_point(),</span>
+<span class="sd">    ...     random_state=0,</span>
+<span class="sd">    ... ).fit(X, y)</span>
+<span class="sd">    &gt;&gt;&gt; gw.local_r2_.head()</span>
+<span class="sd">    0    0.810035</span>
+<span class="sd">    1    0.801906</span>
+<span class="sd">    2    0.833586</span>
+<span class="sd">    3    0.824119</span>
+<span class="sd">    4    0.813884</span>
+<span class="sd">    dtype: float64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">bandwidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">fixed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">kernel</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
+            <span class="s2">&quot;triangular&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;parabolic&quot;</span><span class="p">,</span>
+            <span class="c1"># &quot;gaussian&quot;,</span>
+            <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tricube&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cosine&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;boxcar&quot;</span><span class="p">,</span>
+            <span class="c1"># &quot;exponential&quot;,</span>
+        <span class="p">]</span>
+        <span class="o">|</span> <span class="n">Callable</span> <span class="o">=</span> <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
+        <span class="n">include_focal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">graph</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">fit_global_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">keep_models</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">temp_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="n">RandomForestRegressor</span><span class="p">,</span>
+            <span class="n">bandwidth</span><span class="o">=</span><span class="n">bandwidth</span><span class="p">,</span>
+            <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span>
+            <span class="n">kernel</span><span class="o">=</span><span class="n">kernel</span><span class="p">,</span>
+            <span class="n">include_focal</span><span class="o">=</span><span class="n">include_focal</span><span class="p">,</span>
+            <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span>
+            <span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span>
+            <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
+            <span class="n">fit_global_model</span><span class="o">=</span><span class="n">fit_global_model</span><span class="p">,</span>
+            <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">,</span>
+            <span class="n">keep_models</span><span class="o">=</span><span class="n">keep_models</span><span class="p">,</span>
+            <span class="n">temp_folder</span><span class="o">=</span><span class="n">temp_folder</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_type</span> <span class="o">=</span> <span class="s2">&quot;random_forest&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_kwargs</span><span class="p">[</span><span class="s2">&quot;oob_score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_oob_score_data</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_empty_score_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_oob_score_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Callback used by scikit-learn to collect OOB targets/predictions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">true</span><span class="p">,</span> <span class="n">pred</span>
+
+<div class="viewcode-block" id="GWRandomForestRegressor.fit">
+<a class="viewcode-back" href="../../generated/gwlearn.ensemble.GWRandomForestRegressor.html#gwlearn.ensemble.GWRandomForestRegressor.fit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GWRandomForestRegressor&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit geographically weighted random forests.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : pandas.DataFrame</span>
+<span class="sd">            Feature matrix.</span>
+<span class="sd">        y : pandas.Series</span>
+<span class="sd">            Target values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        GWRandomForestRegressor</span>
+<span class="sd">            Fitted estimator.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        In addition to the base regressor outputs, this method also populates</span>
+<span class="sd">        ``oob_y_pooled_`` and ``oob_pred_pooled_`` by pooling OOB values across all</span>
+<span class="sd">        fitted local models.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="c1"># Handle OOB data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y_local</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score_data</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pred_local</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score_data</span><span class="p">]</span>
+
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score_data</span>
+
+        <span class="c1"># Filter out empty arrays before concatenation</span>
+        <span class="n">non_empty_y</span> <span class="o">=</span> <span class="p">[</span><span class="n">arr</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_local</span> <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">non_empty_pred</span> <span class="o">=</span> <span class="p">[</span><span class="n">arr</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pred_local</span> <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">non_empty_y</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">oob_y_pooled_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">non_empty_y</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Set to empty array with same dtype as y</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">oob_y_pooled_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>  <span class="c1"># type:ignore[no-matching-overload]</span>
+        <span class="k">if</span> <span class="n">non_empty_pred</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">oob_pred_pooled_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">non_empty_pred</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Set to empty array with float dtype (typical for predictions)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">oob_pred_pooled_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="c1"># feature importances</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_importances_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_feature_importances</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_start</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s: Finished&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_score_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>  <span class="c1"># noqa: ARG002</span>
+        <span class="k">return</span> <span class="n">local_model</span><span class="o">.</span><span class="n">oob_score_</span></div>
 
 </code></pre></div>
 

@@ -26,6 +26,14 @@ Linear models:
 
    GWLinearRegression
 
+Ensembles:
+
+.. currentmodule:: gwlearn.ensemble
+.. autosummary::
+   :toctree: generated/
+
+   GWRandomForestRegressor
+
 Classification modelling
 ------------------------
 
