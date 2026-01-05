@@ -661,11 +661,11 @@ class GWRandomForestRegressor(BaseRegressor):
     ...     random_state=0,
     ... ).fit(X, y)
     >>> gw.local_r2_.head()
-    0    0.809256
-    1    0.796821
-    2    0.832071
-    3    0.824411
-    4    0.814056
+    0    0.810035
+    1    0.801906
+    2    0.833586
+    3    0.824119
+    4    0.813884
     dtype: float64
     """
 
