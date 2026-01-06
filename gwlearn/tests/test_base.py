@@ -1651,3 +1651,47 @@ def test_leave_out_attributes(sample_data):
     assert hasattr(clf, "left_out_y_")
     assert hasattr(clf, "left_out_proba_")
     assert hasattr(clf, "left_out_w_")
+
+
+def test_classifier_score(sample_data):
+    """Test the score method of BaseClassifier with geometry argument."""
+    X, y, geometry = sample_data
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=10,
+        fixed=False,
+        keep_models=True,
+        random_state=42,
+        max_iter=200,
+        strict=False,
+    )
+    clf.fit(
+        X,
+        y,
+        geometry=geometry,
+    )
+    acc = clf.score(X, y, geometry)
+    assert 0.0 <= acc <= 1.0
+    # Should be perfect on training data with include_focal=True, but not required
+    assert isinstance(acc, float)
+
+
+def test_regressor_score(sample_regression_data):
+    """Test the score method of BaseRegressor with geometry argument."""
+    X, y, geometry = sample_regression_data
+    reg = BaseRegressor(
+        LinearRegression,
+        bandwidth=10,
+        fixed=False,
+        keep_models=True,
+        random_state=42,
+        strict=False,
+    )
+    reg.fit(
+        X,
+        y,
+        geometry=geometry,
+    )
+    r2 = reg.score(X, y, geometry)
+    assert -1.0 <= r2 <= 1.0
+    assert isinstance(r2, float)
