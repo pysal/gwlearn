@@ -10,16 +10,13 @@ import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed, dump, load
 from libpysal import graph
+import sklearn
+
 from scipy.spatial import KDTree
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 from sklearn.model_selection import train_test_split
-import sklearn
 
-# Enable metadata routing (sklearn >= 1.3)
-try:
-    sklearn.set_config(enable_metadata_routing=True)
-except Exception:
-    pass
+
 
 
 __all__ = ["BaseClassifier", "BaseRegressor"]
@@ -98,7 +95,6 @@ class _BaseModel(BaseEstimator):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
-        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -113,7 +109,8 @@ class _BaseModel(BaseEstimator):
         self.bandwidth = bandwidth
         self.kernel = kernel
         self.include_focal = include_focal
-        self.geometry = geometry
+        # geometry is provided at fit time (via fit(..., geometry=...))
+        self.geometry = None
         self.graph = graph
         self.fixed = fixed
         self._model_kwargs = kwargs
@@ -129,19 +126,28 @@ class _BaseModel(BaseEstimator):
         self._model_type = None
 
     def _validate_geometry(self, geometry):
-        """Validate that geometry contains only Point geometries"""
+        """Validate that geometry is provided and contains only Point geometries.
+
+        This accepts a GeoSeries at fit()/predict() time. If a precomputed
+        ``graph`` is supplied, geometry may be omitted.
+        """
         if geometry is None:
-            return
-        if not isinstance(geometry, gpd.GeoSeries):
             raise ValueError(
-                f"geometry needs to be geopandas.GeoSeries. Got {type(geometry)}."
-            )
-        if not (geometry.geom_type == "Point").all():
-            raise ValueError(
-                "Unsupported geometry type. Only point geometry is allowed."
+                "geometry must be provided (GeoSeries of Points) unless a precomputed 'graph' is used."
             )
 
-    # Metadata routing helpers (sklearn >= 1.3)
+        if not isinstance(geometry, gpd.GeoSeries):
+            raise ValueError(
+                f"geometry must be a geopandas.GeoSeries. Got {type(geometry)}."
+            )
+
+        if not (geometry.geom_type == "Point").all():
+            raise ValueError(
+                "Unsupported geometry type. Only Point geometries are allowed."
+            )
+
+
+   
     def set_fit_request(self, **requests):
         """Register fit-time requests for metadata routing.
 
@@ -389,6 +395,9 @@ class _BaseModel(BaseEstimator):
         focal_x: np.ndarray,
         model_kwargs: dict,
     ) -> list[Hashable]:
+        # Defensive: remove geometry from model_kwargs to prevent it from
+        # leaking into sklearn model constructors (geometry is fit-time routed metadata)
+        model_kwargs = {k: v for k, v in model_kwargs.items() if k != "geometry"}
         raise NotImplementedError("Subclasses must implement _fit_local")
 
     
@@ -444,10 +453,10 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         analysis of the model performance (and generalises to models that do not support
         OOB scoring). However, it leaves out the most representative sample. By default
         False
-    geometry : gpd.GeoSeries, optional
+
+            geometry : gpd.GeoSeries, optional
         Geographic location of the observations in the sample. Used to determine the
-        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
+        spatial interaction weight based on specification by ``bandwidth``, ``fixed``, ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
         need to be specified. To allow prediction, it is required to specify
         ``geometry``.
     graph : Graph, optional
@@ -586,7 +595,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
-        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -607,7 +615,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
-            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -625,7 +632,13 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self._empty_score_data = None
         self._empty_feature_imp = None
 
-    def fit(self, X: pd.DataFrame, y: pd.Series, **fit_kwargs) -> "BaseClassifier":
+    def fit(
+        self,
+        X: pd.DataFrame,
+        y: pd.Series,
+        *,
+        geometry: gpd.GeoSeries | None = None,
+    ) -> "BaseClassifier":
         """Fit geographically weighted local classification models.
 
         This fits one local model per focal observation (subject to local invariance
@@ -637,21 +650,16 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             Feature matrix.
         y : pandas.Series
             Binary target encoded as boolean or ``{0, 1}``.
+        geometry : gpd.GeoSeries, optional
+            Geographic location of observations. Required unless a precomputed
+            ``graph`` is supplied.
 
         Returns
         -------
         self
             Fitted estimator.
-
-        Notes
-        -----
-        The neighborhood definition comes from either ``self.graph`` or from
-        ``self.geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
-        # Accept routed metadata (e.g., geometry) via fit kwargs
-        if "geometry" in fit_kwargs:
-            self.geometry = fit_kwargs.pop("geometry")
-
+        # Geometry is provided as a keyword-only arg (metadata routing).
         self._start = time()
 
         def _is_binary(series: pd.Series) -> bool:
@@ -674,7 +682,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         if self.graph is not None:
             weights = self.graph
         else:
-            self._validate_geometry(self.geometry)
+            self._validate_geometry(geometry)
+            self.geometry = geometry
             weights = self._build_weights()
 
         if self.verbose:
@@ -770,6 +779,10 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         if self.undersample:
             from .undersample import BinaryRandomUnderSampler
+
+        # Defensive: remove geometry from model_kwargs to prevent it from
+        # leaking into sklearn model constructors (geometry is fit-time routed metadata)
+        model_kwargs = {k: v for k, v in model_kwargs.items() if k != "geometry"}
 
         vc = data["_y"].value_counts()
         n_labels = len(vc)
@@ -886,7 +899,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         return log_likelihood
 
-    def predict_proba(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.DataFrame:
+    def predict_proba(self, X: pd.DataFrame, *, geometry: gpd.GeoSeries, **predict_kwargs) -> pd.DataFrame:
         """Predict class probabilities for new observations.
 
         Parameters
@@ -1000,7 +1013,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         weighted = weighted / weighted.sum()
         return pd.Series(weighted, index=pred.columns)
 
-    def predict(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.Series:
+    def predict(self, X: pd.DataFrame, *, geometry: gpd.GeoSeries, **predict_kwargs) -> pd.Series:
         """Predict classes for new observations.
 
         This is equivalent to ``predict_proba(...).idxmax(axis=1)``.
@@ -1022,7 +1035,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Requires the estimator to have been fit with ``keep_models=True`` (or a
         ``Path``) so local models can be used at prediction time.
         """
-        proba = self.predict_proba(X, geometry)
+        proba = self.predict_proba(X, geometry=geometry, **predict_kwargs)
         return proba.idxmax(axis=1)
 
     def local_metric(self, func: Callable, *args, **kwargs) -> np.ndarray:
@@ -1092,8 +1105,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         sample. By default False
     geometry : gpd.GeoSeries, optional
         Geographic location of the observations in the sample. Used to determine the
-        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
+        spatial interaction weight based on specification by ``bandwidth``, ``fixed``, ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
         need to be specified. To allow prediction, it is required to specify
         ``geometry``.
     graph : Graph, optional
@@ -1185,7 +1197,13 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     dtype: float64
     """
 
-    def fit(self, X: pd.DataFrame, y: pd.Series, **fit_kwargs) -> "BaseRegressor":
+    def fit(
+        self,
+        X: pd.DataFrame,
+        y: pd.Series,
+        *,
+        geometry: gpd.GeoSeries | None = None,
+    ) -> "BaseRegressor":
         """Fit geographically weighted local regression models.
 
         Fits one local model per focal observation and stores focal (in-sample if
@@ -1197,24 +1215,22 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             Feature matrix.
         y : pandas.Series
             Target values.
+        geometry : gpd.GeoSeries, optional
+            Geographic location of observations. Required unless a precomputed
+            ``graph`` is supplied.
 
         Returns
         -------
         self
             Fitted estimator.
-
-        Notes
-        -----
-        The neighborhood definition comes from either ``self.graph`` or from
-        ``self.geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
-        # Accept routed metadata (e.g., geometry) via fit kwargs
-        if "geometry" in fit_kwargs:
-            self.geometry = fit_kwargs.pop("geometry")
-
-        self._validate_geometry(self.geometry)
-
-        weights = self.graph if self.graph is not None else self._build_weights()
+        # Geometry is provided as a keyword-only arg (metadata routing).
+        if self.graph is not None:
+            weights = self.graph
+        else:
+            self._validate_geometry(geometry)
+            self.geometry = geometry
+            weights = self._build_weights()
         self._setup_model_storage()
 
         # fit the models
@@ -1284,6 +1300,9 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         focal_x: np.ndarray,
         model_kwargs: dict,
     ) -> list[Hashable]:
+        # Defensive: remove geometry from model_kwargs to prevent it from
+        # leaking into sklearn model constructors (geometry is fit-time routed metadata)
+        model_kwargs = {k: v for k, v in model_kwargs.items() if k != "geometry"}
         local_model = model(**model_kwargs)
 
         X = data.drop(columns=["_y", "_weight"])
