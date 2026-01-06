@@ -454,8 +454,8 @@ def test_fit_n_jobs_consistency(sample_data):
     )
 
 
-@pytest.mark.parametrize("method", ["nearest", "ensemble"])
-def test_predict_proba_basic(sample_data, method):
+@pytest.mark.parametrize("bandwidth", ["nearest", 100000, None])
+def test_predict_proba_basic(sample_data, bandwidth):
     """Test basic functionality of predict_proba method."""
     X, y, geometry = sample_data
 
@@ -473,7 +473,7 @@ def test_predict_proba_basic(sample_data, method):
     clf.fit(X, y)
 
     # Predict probabilities for first 5 samples
-    proba = clf.predict_proba(X.iloc[:5], geometry.iloc[:5], method=method)
+    proba = clf.predict_proba(X.iloc[:5], geometry.iloc[:5], bandwidth=bandwidth)
 
     # Check output format
     assert isinstance(proba, pd.DataFrame)
@@ -483,8 +483,8 @@ def test_predict_proba_basic(sample_data, method):
     assert np.allclose(proba.dropna().sum(axis=1), 1.0)
 
 
-@pytest.mark.parametrize("method", ["nearest", "ensemble"])
-def test_predict_proba_adaptive(sample_data, method):
+@pytest.mark.parametrize("bandwidth", ["nearest", 8, None])
+def test_predict_proba_adaptive(sample_data, bandwidth):
     """Test basic functionality of predict_proba method using adaptive kernel."""
     X, y, geometry = sample_data
 
@@ -502,7 +502,7 @@ def test_predict_proba_adaptive(sample_data, method):
     clf.fit(X, y)
 
     # Predict probabilities for first 5 samples
-    proba = clf.predict_proba(X.iloc[:5], geometry.iloc[:5], method=method)
+    proba = clf.predict_proba(X.iloc[:5], geometry.iloc[:5], bandwidth=bandwidth)
 
     # Check output format
     assert isinstance(proba, pd.DataFrame)
@@ -513,8 +513,8 @@ def test_predict_proba_adaptive(sample_data, method):
     assert np.allclose(proba.dropna().sum(axis=1), 1.0)
 
 
-@pytest.mark.parametrize("method", ["nearest", "ensemble"])
-def test_predict_basic(sample_data, method):
+@pytest.mark.parametrize("bandwidth", ["nearest", 100000, None])
+def test_predict_basic(sample_data, bandwidth):
     """Test basic functionality of predict method."""
     X, y, geometry = sample_data
 
@@ -531,19 +531,19 @@ def test_predict_basic(sample_data, method):
     clf.fit(X, y)
 
     # Predict classes for first 5 samples
-    pred = clf.predict(X.iloc[:5], geometry.iloc[:5], method=method)
+    pred = clf.predict(X.iloc[:5], geometry.iloc[:5], bandwidth=bandwidth)
 
     # Check output format
     assert isinstance(pred, pd.Series)
     assert len(pred) == 5
 
-    if method == "ensemble":
+    if bandwidth is None:
         # Check all predicted values are either True or False
         assert pred.isin([True, False]).all()
 
 
-@pytest.mark.parametrize("method", ["nearest", "ensemble"])
-def test_predict_with_models_on_disk(sample_data, method):
+@pytest.mark.parametrize("bandwidth", ["nearest", 100000, None])
+def test_predict_with_models_on_disk(sample_data, bandwidth):
     """Test prediction with models stored on disk."""
     X, y, geometry = sample_data
 
@@ -561,7 +561,7 @@ def test_predict_with_models_on_disk(sample_data, method):
         clf.fit(X, y)
 
         # Predict probabilities
-        proba = clf.predict_proba(X.iloc[:5], geometry.iloc[:5], method=method)
+        proba = clf.predict_proba(X.iloc[:5], geometry.iloc[:5], bandwidth=bandwidth)
 
         # Check output
         assert isinstance(proba, pd.DataFrame)
@@ -573,8 +573,8 @@ def test_predict_with_models_on_disk(sample_data, method):
         assert len(pred) == 5
 
 
-@pytest.mark.parametrize("method", ["nearest", "ensemble"])
-def test_predict_invalid_geometry(sample_data, method):
+@pytest.mark.parametrize("bandwidth", ["nearest", 100000, None])
+def test_predict_invalid_geometry(sample_data, bandwidth):
     """Test that prediction raises error with non-point geometries."""
     X, y, _ = sample_data
 
@@ -596,11 +596,11 @@ def test_predict_invalid_geometry(sample_data, method):
 
     # Attempt to predict with polygon geometries
     with pytest.raises(ValueError, match="Unsupported geometry type"):
-        clf.predict_proba(X.iloc[:5], polygon_geometry.iloc[:5], method=method)
+        clf.predict_proba(X.iloc[:5], polygon_geometry.iloc[:5], bandwidth=bandwidth)
 
 
-@pytest.mark.parametrize("method", ["nearest", "ensemble"])
-def test_predict_comparison_with_focal_proba(sample_data, method):
+@pytest.mark.parametrize("bandwidth", ["nearest", None])
+def test_predict_comparison_with_focal_proba(sample_data, bandwidth):
     """Test that prediction for training data matches focal probabilities."""
     X, y, geometry = sample_data
 
@@ -618,7 +618,7 @@ def test_predict_comparison_with_focal_proba(sample_data, method):
     clf.fit(X, y)
 
     # Get predictions for the same data used for training
-    predicted_proba = clf.predict_proba(X, geometry, method=method)
+    predicted_proba = clf.predict_proba(X, geometry, bandwidth=bandwidth)
 
     # Compare with proba_ (should be very similar but not identical
     # because proba_ is calculated during training without using the focal point)
@@ -1196,8 +1196,8 @@ def test_regressor_fit_with_batch_processing(sample_regression_data):
     assert hasattr(reg, "local_r2_")
 
 
-@pytest.mark.parametrize("method", ["nearest", "ensemble"])
-def test_regressor_predict_basic(sample_regression_data, method):
+@pytest.mark.parametrize("bandwidth", ["nearest", 100000, None])
+def test_regressor_predict_basic(sample_regression_data, bandwidth):
     """Test basic functionality of predict method."""
     X, y, geometry = sample_regression_data
 
@@ -1212,7 +1212,7 @@ def test_regressor_predict_basic(sample_regression_data, method):
     reg.fit(X, y)
 
     # Predict values for first 5 samples
-    pred = reg.predict(X.iloc[:5], geometry.iloc[:5], method=method)
+    pred = reg.predict(X.iloc[:5], geometry.iloc[:5], bandwidth=bandwidth)
 
     # Check output format
     assert isinstance(pred, pd.Series)
@@ -1222,8 +1222,8 @@ def test_regressor_predict_basic(sample_regression_data, method):
     assert pd.api.types.is_numeric_dtype(pred)
 
 
-@pytest.mark.parametrize("method", ["nearest", "ensemble"])
-def test_regressor_predict_adaptive(sample_regression_data, method):
+@pytest.mark.parametrize("bandwidth", ["nearest", 8, None])
+def test_regressor_predict_adaptive(sample_regression_data, bandwidth):
     """Test basic functionality of predict method using adaptive kernel."""
     X, y, geometry = sample_regression_data
 
@@ -1238,7 +1238,7 @@ def test_regressor_predict_adaptive(sample_regression_data, method):
     reg.fit(X, y)
 
     # Predict values for first 5 samples
-    pred = reg.predict(X.iloc[:5], geometry.iloc[:5], method=method)
+    pred = reg.predict(X.iloc[:5], geometry.iloc[:5], bandwidth=bandwidth)
 
     # Check output format
     assert isinstance(pred, pd.Series)
@@ -1248,8 +1248,8 @@ def test_regressor_predict_adaptive(sample_regression_data, method):
     assert pd.api.types.is_numeric_dtype(pred)
 
 
-@pytest.mark.parametrize("method", ["nearest", "ensemble"])
-def test_regressor_predict_with_models_on_disk(sample_regression_data, method):
+@pytest.mark.parametrize("bandwidth", ["nearest", 100000, None])
+def test_regressor_predict_with_models_on_disk(sample_regression_data, bandwidth):
     """Test prediction with models stored on disk."""
     X, y, geometry = sample_regression_data
 
@@ -1265,15 +1265,17 @@ def test_regressor_predict_with_models_on_disk(sample_regression_data, method):
         reg.fit(X, y)
 
         # Predict values
-        pred = reg.predict(X.iloc[:5], geometry.iloc[:5], method=method)
+        pred = reg.predict(X.iloc[:5], geometry.iloc[:5], bandwidth=bandwidth)
 
         # Check output
         assert isinstance(pred, pd.Series)
         assert len(pred) == 5
 
 
-@pytest.mark.parametrize("method", ["nearest", "ensemble"])
-def test_regressor_predict_comparison_with_focal_pred(sample_regression_data, method):
+@pytest.mark.parametrize("bandwidth", ["nearest", 100000, None])
+def test_regressor_predict_comparison_with_focal_pred(
+    sample_regression_data, bandwidth
+):
     """Test that prediction for training data is close to focal predictions."""
     X, y, geometry = sample_regression_data
 
@@ -1289,9 +1291,9 @@ def test_regressor_predict_comparison_with_focal_pred(sample_regression_data, me
     reg.fit(X, y)
 
     # Get predictions for the same data used for training
-    predicted_values = reg.predict(X, geometry, method=method)
+    predicted_values = reg.predict(X, geometry, bandwidth=bandwidth)
 
-    if method == "ensemble":
+    if bandwidth != "nearest":
         # Compare with pred_ (should be similar since include_focal=True)
         # The values won't be identical because predict uses weighted average of
         # multiple local models while pred_ uses only the focal model
@@ -1301,8 +1303,8 @@ def test_regressor_predict_comparison_with_focal_pred(sample_regression_data, me
         pd.testing.assert_series_equal(predicted_values, reg.pred_)
 
 
-@pytest.mark.parametrize("method", ["nearest", "ensemble"])
-def test_regressor_predict_invalid_geometry(sample_regression_data, method):
+@pytest.mark.parametrize("bandwidth", ["nearest", 100000, None])
+def test_regressor_predict_invalid_geometry(sample_regression_data, bandwidth):
     """Test that prediction raises error with non-point geometries."""
     X, y, geometry = sample_regression_data
 
@@ -1322,7 +1324,7 @@ def test_regressor_predict_invalid_geometry(sample_regression_data, method):
 
     # Attempt to predict with polygon geometries
     with pytest.raises(ValueError, match="Unsupported geometry type"):
-        reg.predict(X.iloc[:5], polygon_geometry.iloc[:5], method=method)
+        reg.predict(X.iloc[:5], polygon_geometry.iloc[:5], bandwidth=bandwidth)
 
 
 def test_regressor_predict_values_ensemble(sample_regression_data):
@@ -1341,7 +1343,7 @@ def test_regressor_predict_values_ensemble(sample_regression_data):
     reg.fit(X, y)
 
     # Predict values for first 5 samples
-    pred = reg.predict(X.iloc[:5], geometry.iloc[:5], method="ensemble")
+    pred = reg.predict(X.iloc[:5], geometry.iloc[:5], bandwidth=None)
 
     # Check predictions are within a reasonable range of the target variable
     assert pred.min() > y.min() - y.std() * 2
@@ -1371,7 +1373,7 @@ def test_regressor_predict_values_nearest(sample_regression_data):
     reg.fit(X, y)
 
     # Predict values for first 5 samples
-    pred = reg.predict(X.iloc[:5], geometry.iloc[:5], method="nearest")
+    pred = reg.predict(X.iloc[:5], geometry.iloc[:5], bandwidth="nearest")
 
     # Check predictions are within a reasonable range of the target variable
     assert pred.min() > y.min() - y.std() * 2

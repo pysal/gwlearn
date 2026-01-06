@@ -366,7 +366,8 @@ class _BaseModel(BaseEstimator):
 
         Returns
         -------
-        np.ndarray: 1-D array of local model identifiers corresponding to the nearest
+        np.ndarray:
+            1-D array of local model identifiers corresponding to the nearest
             training geometry for each input geometry. The order aligns with the input
             GeoSeries.
         """
@@ -374,13 +375,13 @@ class _BaseModel(BaseEstimator):
         self._validate_geometry(geometry)
 
         if not (isinstance(self.geometry, gpd.GeoSeries)):
-            raise ValueError("Geometry need to be specified to enable prediction.")
+            raise ValueError("Geometry needs to be specified to enable prediction.")
         indices_array = self.geometry.sindex.nearest(geometry, return_all=False)[1]
         local_ids = self._local_models.index[indices_array.flatten()].to_numpy()
         return local_ids
 
     def _prepare_prediction_neighborhoods(
-        self, geometry: gpd.GeoSeries
+        self, geometry: gpd.GeoSeries, bandwidth: float | int | None = None
     ) -> tuple[list, list]:
         """
         Prepare neighborhood information for prediction on new observations.
@@ -389,6 +390,8 @@ class _BaseModel(BaseEstimator):
         ----------
         geometry : geopandas.GeoSeries
             Point geometries for new observations.
+        bandwidth : float
+            Custom bandwidth overriding self.bandwidth
 
         Returns
         -------
@@ -399,12 +402,17 @@ class _BaseModel(BaseEstimator):
         self._validate_geometry(geometry)
 
         if not (
-            isinstance(self.bandwidth, float | int)
+            (isinstance(self.bandwidth, float | int) or bandwidth)
             and isinstance(self.geometry, gpd.GeoSeries)
         ):
             raise ValueError(
                 "Bandwidth and geometry need to be specified to enable prediction."
             )
+
+        bw = bandwidth if bandwidth is not None else self.bandwidth
+
+        if bw is None or not isinstance(bw, int | float):
+            raise ValueError(f"Bandwidth {bw} is not valid.")
 
         if self.fixed:
             input_ids, indices_array = self.geometry.sindex.query(
@@ -415,17 +423,17 @@ class _BaseModel(BaseEstimator):
                 self.geometry.iloc[indices_array].distance(
                     geometry.iloc[input_ids], align=False
                 ),
-                self.bandwidth,
+                bw,
             )
         else:
             training_coords = self.geometry.get_coordinates()
             tree = KDTree(training_coords)
             query_coords = geometry.get_coordinates()
 
-            distances, indices_array = tree.query(query_coords, k=self.bandwidth)
+            distances, indices_array = tree.query(query_coords, k=bw)
 
             # Flatten arrays for consistent format
-            input_ids = np.repeat(np.arange(len(geometry)), self.bandwidth)
+            input_ids = np.repeat(np.arange(len(geometry)), bw)
             local_ids = self._local_models.index[indices_array.flatten()].to_numpy()
             distances = distances.flatten()
 
@@ -979,7 +987,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self,
         X: pd.DataFrame,
         geometry: gpd.GeoSeries,
-        method: Literal["nearest", "ensemble"] = "nearest",
+        bandwidth: Literal["nearest"] | int | float | None = "nearest",
     ) -> pd.DataFrame:
         """Predict class probabilities for new observations.
 
@@ -1005,12 +1013,12 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             Feature matrix for new observations.
         geometry : geopandas.GeoSeries
             Point geometries for new observations.
-        method : str {"nearest", "ensemble"}
+        bandwidth : "nearest", float or None
             Prediction method. Nearest uses the nearest location available at the fit
-            time and does prediction using its single model. Ensemble uses an ensemble
-            of local models available within the bandwidth set at the fit time, with
+            time and does prediction using its single model. When set to a numeric
+            value, uses an ensemble of local models available within the bandwidth, with
             predictions from individual models being weighted based on the distance and
-            a set kernel.
+            a set kernel. When ``None``, uses the bandwidth set at the fit time.
 
         Returns
         -------
@@ -1026,9 +1034,14 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         data = [X.iloc[[i]] for i in range(len(X))]
 
         probabilities = []
-        if method == "ensemble":
+        if bandwidth == "nearest":
+            local_model_ids = self._prepare_prediction_nearest(geometry)
+
+            for x_, model_id in zip(data, local_model_ids, strict=True):
+                probabilities.append(self._predict_local_nearest(x_, model_id))
+        else:
             local_model_ids, distances = self._prepare_prediction_neighborhoods(
-                geometry
+                geometry, bandwidth=bandwidth
             )
 
             for x_, models_, distances_ in zip(
@@ -1037,12 +1050,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                 probabilities.append(
                     self._predict_local_ensemble(x_, models_, distances_)
                 )
-
-        elif method == "nearest":
-            local_model_ids = self._prepare_prediction_nearest(geometry)
-
-            for x_, model_id in zip(data, local_model_ids, strict=True):
-                probabilities.append(self._predict_local_nearest(x_, model_id))
 
         return pd.DataFrame(probabilities, columns=self._global_classes, index=X.index)
 
@@ -1106,7 +1113,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self,
         X: pd.DataFrame,
         geometry: gpd.GeoSeries,
-        method: Literal["nearest", "ensemble"] = "nearest",
+        bandwidth: Literal["nearest"] | int | float | None = "nearest",
     ) -> pd.Series:
         """Predict classes for new observations.
 
@@ -1134,12 +1141,12 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             Feature matrix for new observations.
         geometry : geopandas.GeoSeries
             Point geometries for new observations.
-        method : str {"nearest", "ensemble"}
+        bandwidth : "nearest", float or None
             Prediction method. Nearest uses the nearest location available at the fit
-            time and does prediction using its single model. Ensemble uses an ensemble
-            of local models available within the bandwidth set at the fit time, with
+            time and does prediction using its single model. When set to a numeric
+            value, uses an ensemble of local models available within the bandwidth, with
             predictions from individual models being weighted based on the distance and
-            a set kernel.
+            a set kernel. When ``None``, uses the bandwidth set at the fit time.
 
         Returns
         -------
@@ -1151,7 +1158,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Requires the estimator to have been fit with ``keep_models=True`` (or a
         ``Path``) so local models can be used at prediction time.
         """
-        proba = self.predict_proba(X, geometry, method=method)
+        proba = self.predict_proba(X, geometry, bandwidth=bandwidth)
 
         mask = proba.iloc[:, 0].notna()
         if not mask.all():
@@ -1465,7 +1472,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         self,
         X: pd.DataFrame,
         geometry: gpd.GeoSeries,
-        method: Literal["nearest", "ensemble"] = "nearest",
+        bandwidth: Literal["nearest"] | int | float | None = "nearest",
     ) -> pd.Series:
         """Predict target values for new observations.
 
@@ -1479,7 +1486,6 @@ class BaseRegressor(_BaseModel, RegressorMixin):
            each of the local models.
         3. Make prediction using each of the local models in the bandwidth.
         4. Make weighted average of predictions based on the kernel weights.
-        5. Normalize the result to ensure sum of probabilities is 1.
 
         The results from the nearest and ensemble predictions are typically similar,
         with the ensemble being significantly slower due to the required number of
@@ -1491,12 +1497,13 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             Feature matrix for new observations.
         geometry : geopandas.GeoSeries
             Point geometries for new observations.
-        method : str {"nearest", "ensemble"}
+        bandwidth : "nearest", float or None
             Prediction method. Nearest uses the nearest location available at the fit
-            time and does prediction using its single model. Ensemble uses an ensemble
-            of local models available within the bandwidth set at the fit time, with
+            time and does prediction using its single model. When set to a numeric
+            value, uses an ensemble of local models available within the bandwidth, with
             predictions from individual models being weighted based on the distance and
-            a set kernel.
+            a set kernel. When ``None``, uses the bandwidth set at the fit time.
+
 
         Returns
         -------
@@ -1511,9 +1518,14 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         data = [X.iloc[[i]] for i in range(len(X))]
 
         predictions = []
-        if method == "ensemble":
+        if bandwidth == "nearest":
+            local_model_ids = self._prepare_prediction_nearest(geometry)
+
+            for x_, model_id in zip(data, local_model_ids, strict=True):
+                predictions.append(self._predict_local_nearest(x_, model_id))
+        else:
             local_model_ids, distances = self._prepare_prediction_neighborhoods(
-                geometry
+                geometry, bandwidth=bandwidth
             )
 
             for x_, models_, distances_ in zip(
@@ -1522,11 +1534,6 @@ class BaseRegressor(_BaseModel, RegressorMixin):
                 predictions.append(
                     self._predict_local_ensemble(x_, models_, distances_)
                 )
-        elif method == "nearest":
-            local_model_ids = self._prepare_prediction_nearest(geometry)
-
-            for x_, model_id in zip(data, local_model_ids, strict=True):
-                predictions.append(self._predict_local_nearest(x_, model_id))
 
         return pd.Series(predictions, index=X.index)
 
