@@ -14,10 +14,6 @@ from scipy.spatial import KDTree
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 from sklearn.model_selection import train_test_split
 
-# TODO: summary
-# TODO: formal documentation
-# TODO: comments in code
-
 __all__ = ["BaseClassifier", "BaseRegressor"]
 
 
@@ -991,13 +987,13 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         the ensemble of local models. In the latter case, the prediction process works
         as follows:
 
-            1. For a new location on which you want a prediction, identify local models
-               within the bandwidth used to train the model.
-            2. Apply the kernel function used to train the model to derive weights of
-               each of the local models.
-            3. Make prediction using each of the local models in the bandwidth.
-            4. Make weighted average of predictions based on the kernel weights.
-            5. Normalize the result to ensure sum of probabilities is 1.
+        1. For a new location on which you want a prediction, identify local models
+           within the bandwidth used to train the model.
+        2. Apply the kernel function used to train the model to derive weights of
+           each of the local models.
+        3. Make prediction using each of the local models in the bandwidth.
+        4. Make weighted average of predictions based on the kernel weights.
+        5. Normalize the result to ensure sum of probabilities is 1.
 
         The results from the nearest and ensemble predictions are typically similar,
         with the ensemble being significantly slower due to the required number of
@@ -1120,13 +1116,13 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         the ensemble of local models. In the latter case, the prediction process works
         as follows:
 
-            1. For a new location on which you want a prediction, identify local models
-               within the bandwidth used to train the model.
-            2. Apply the kernel function used to train the model to derive weights of
-               each of the local models.
-            3. Make prediction using each of the local models in the bandwidth.
-            4. Make weighted average of predictions based on the kernel weights.
-            5. Normalize the result to ensure sum of probabilities is 1.
+        1. For a new location on which you want a prediction, identify local models
+           within the bandwidth used to train the model.
+        2. Apply the kernel function used to train the model to derive weights of
+           each of the local models.
+        3. Make prediction using each of the local models in the bandwidth.
+        4. Make weighted average of predictions based on the kernel weights.
+        5. Normalize the result to ensure sum of probabilities is 1.
 
         The results from the nearest and ensemble predictions are typically similar,
         with the ensemble being significantly slower due to the required number of
@@ -1477,13 +1473,13 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         the ensemble of local models. In the latter case, the prediction process works
         as follows:
 
-            1. For a new location on which you want a prediction, identify local models
-               within the bandwidth used to train the model.
-            2. Apply the kernel function used to train the model to derive weights of
-               each of the local models.
-            3. Make prediction using each of the local models in the bandwidth.
-            4. Make weighted average of predictions based on the kernel weights.
-            5. Normalize the result to ensure sum of probabilities is 1.
+        1. For a new location on which you want a prediction, identify local models
+           within the bandwidth used to train the model.
+        2. Apply the kernel function used to train the model to derive weights of
+           each of the local models.
+        3. Make prediction using each of the local models in the bandwidth.
+        4. Make weighted average of predictions based on the kernel weights.
+        5. Normalize the result to ensure sum of probabilities is 1.
 
         The results from the nearest and ensemble predictions are typically similar,
         with the ensemble being significantly slower due to the required number of
