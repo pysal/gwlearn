@@ -90,7 +90,6 @@ class _BaseModel(BaseEstimator):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
-        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -105,7 +104,6 @@ class _BaseModel(BaseEstimator):
         self.bandwidth = bandwidth
         self.kernel = kernel
         self.include_focal = include_focal
-        self.geometry = geometry
         self.graph = graph
         self.fixed = fixed
         self._model_kwargs = kwargs
@@ -487,16 +485,52 @@ class _BaseModel(BaseEstimator):
     ) -> list[Hashable]:
         raise NotImplementedError("Subclasses must implement _fit_local")
 
-    def fit(self, X: pd.DataFrame, y: pd.Series):
+    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None):
         raise NotImplementedError("Subclasses must implement fit")
 
     def _get_score_data(self, local_model, X, y):  # noqa: ARG002
         """Subclasses should implement custom function"""
         return np.nan
 
-    # def __sklearn_tags__(self):
-    #     tags = super().__sklearn_tags__(self)
-    #     return tags
+    def set_fit_request(self, **requests):
+        """Register fit-time requests for metadata routing.
+
+        Examples
+        --------
+        >>> estimator.set_fit_request(geometry=True) # doctest: +SKIP
+        """
+        self._fit_request = requests
+        return self
+
+    def set_predict_request(self, **requests):
+        """Register predict-time requests for metadata routing.
+
+        Examples
+        --------
+        >>> estimator.set_predict_request(geometry=True) # doctest: +SKIP
+        """
+        self._predict_request = requests
+        return self
+
+    def set_predict_proba_request(self, **requests):
+        """Register predict_proba-time requests for metadata routing.
+
+        Examples
+        --------
+        >>> estimator.set_predict_proba_request(geometry=True) # doctest: +SKIP
+        """
+        self._predict_proba_request = requests
+        return self
+
+    def set_score_request(self, **requests):
+        """Register score-time requests for metadata routing.
+
+        Examples
+        --------
+        >>> estimator.set_score_request(geometry=True) # doctest: +SKIP
+        """
+        self._score_request = requests
+        return self
 
 
 class BaseClassifier(ClassifierMixin, _BaseModel):
@@ -542,12 +576,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         analysis of the model performance (and generalises to models that do not support
         OOB scoring). However, it leaves out the most representative sample. By default
         False
-    geometry : gpd.GeoSeries, optional
-        Geographic location of the observations in the sample. Used to determine the
-        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
-        need to be specified. To allow prediction, it is required to specify
-        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -652,11 +680,10 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
     ...     LogisticRegression,
     ...     bandwidth=30,
     ...     fixed=False,
-    ...     geometry=gdf.representative_point(),
     ...     include_focal=True,
     ...     keep_models=True,
     ...     max_iter=200,
-    ... ).fit(X, y)
+    ... ).fit(X, y, geometry=gdf.representative_point())
     >>> gw.pred_.head()
     0     True
     1    False
@@ -684,7 +711,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
-        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -705,7 +731,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
-            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -723,7 +748,9 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self._empty_score_data = None
         self._empty_feature_imp = None
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> "BaseClassifier":
+    def fit(
+        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
+    ) -> "BaseClassifier":
         """Fit geographically weighted local classification models.
 
         This fits one local model per focal observation (subject to local invariance
@@ -735,6 +762,14 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             Feature matrix.
         y : pandas.Series
             Binary target encoded as boolean or ``{0, 1}``.
+        geometry : geopandas.GeoSeries | None
+            Geographic location of the observations in the sample. Used to determine the
+            spatial interaction weight based on specification by ``bandwidth``,
+            ``fixed``, ``kernel``, and ``include_focal`` keywords.  If `None`,
+            a precomputed ``graph`` needs to be specified. To allow prediction,
+            it is required to specify ``geometry``. If both ``graph`` and ``geometry``
+            are specified, ``graph`` is used at the fit time, while ``geometry`` is
+            used for prediction.
 
         Returns
         -------
@@ -744,9 +779,11 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Notes
         -----
         The neighborhood definition comes from either ``self.graph`` or from
-        ``self.geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
+        ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
         self._start = time()
+
+        self.geometry = geometry
 
         def _is_binary(series: pd.Series) -> bool:
             """Check if a pandas Series encodes a binary variable (bool or 0/1)."""
@@ -1205,6 +1242,43 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         return proba.idxmax(axis=1)
 
+    def score(
+        self,
+        X: pd.DataFrame,
+        y: pd.Series,
+        geometry: gpd.GeoSeries,
+        bandwidth: Literal["nearest"] | int | float | None = "nearest",
+        global_model_weight: float = 0,
+    ) -> float:  # ty:ignore[invalid-method-override]
+        """Return the mean accuracy on the given test data and labels.
+
+        Parameters
+        ----------
+        X : pandas.DataFrame
+            Feature matrix for new observations.
+        y : pandas.Series
+            True labels for X.
+        geometry : geopandas.GeoSeries
+            Point geometries for new observations.
+        bandwidth : "nearest", float or None
+            Prediction method. See predict().
+        global_model_weight : float
+            Weight of the prediction from the global model.
+
+        Returns
+        -------
+        float
+            Mean accuracy of self.predict(X, geometry).
+        """
+        y_pred = self.predict(
+            X, geometry, bandwidth=bandwidth, global_model_weight=global_model_weight
+        )
+        # Handle missing predictions (pd.NA)
+        mask = ~pd.isna(y_pred)
+        if not mask.any():
+            return float("nan")
+        return (y_pred[mask] == y[mask]).mean()
+
     def local_metric(self, func: Callable, *args, **kwargs) -> np.ndarray:
         """Compute a metric per fitted local model.
 
@@ -1270,12 +1344,6 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default False
-    geometry : gpd.GeoSeries, optional
-        Geographic location of the observations in the sample. Used to determine the
-        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
-        need to be specified. To allow prediction, it is required to specify
-        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -1356,8 +1424,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     ...     bandwidth=30,
     ...     fixed=False,
     ...     include_focal=True,
-    ...     geometry=gdf.representative_point(),
-    ... ).fit(X, y)
+    ... ).fit(X, y, geometry=gdf.representative_point())
     >>> gwr.local_r2_.head()
     0    0.614715
     1    0.488495
@@ -1385,7 +1452,6 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
-        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -1403,7 +1469,6 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
-            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -1416,7 +1481,9 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         )
         self.random_state = random_state
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> "BaseRegressor":
+    def fit(
+        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
+    ) -> "BaseRegressor":
         """Fit geographically weighted local regression models.
 
         Fits one local model per focal observation and stores focal (in-sample if
@@ -1428,6 +1495,14 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             Feature matrix.
         y : pandas.Series
             Target values.
+        geometry : geopandas.GeoSeries | None
+            Geographic location of the observations in the sample. Used to determine the
+            spatial interaction weight based on specification by ``bandwidth``,
+            ``fixed``, ``kernel``, and ``include_focal`` keywords.  If `None`,
+            a precomputed ``graph`` needs to be specified. To allow prediction,
+            it is required to specify ``geometry``. If both ``graph`` and ``geometry``
+            are specified, ``graph`` is used at the fit time, while ``geometry`` is
+            used for prediction.
 
         Returns
         -------
@@ -1437,9 +1512,12 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         Notes
         -----
         The neighborhood definition comes from either ``self.graph`` or from
-        ``self.geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
+        ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
-        self._validate_geometry(self.geometry)
+        if self.graph is None:
+            self._validate_geometry(geometry)
+
+        self.geometry = geometry
 
         weights = self.graph if self.graph is not None else self._build_weights()
         self._setup_model_storage()
@@ -1714,3 +1792,44 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     def _tss(self, y, y_bar, w_i):
         """geographically weighted total sum of squares"""
         return np.sum(w_i * (y - y_bar) ** 2)
+
+    def score(
+        self,
+        X: pd.DataFrame,
+        y: pd.Series,
+        geometry: gpd.GeoSeries,
+        bandwidth: Literal["nearest"] | int | float | None = "nearest",
+        global_model_weight: float = 0,
+    ) -> float:  # ty:ignore[invalid-method-override]
+        """Return the coefficient of determination R^2 of the prediction.
+
+        Parameters
+        ----------
+        X : pandas.DataFrame
+            Feature matrix for new observations.
+        y : pandas.Series
+            True values for X.
+        geometry : geopandas.GeoSeries
+            Point geometries for new observations.
+        bandwidth : "nearest", float or None
+            Prediction method. See predict().
+        global_model_weight : float
+            Weight of the prediction from the global model.
+
+        Returns
+        -------
+        float
+            R^2 of self.predict(X, geometry).
+        """
+        y_pred = self.predict(
+            X, geometry, bandwidth=bandwidth, global_model_weight=global_model_weight
+        )
+        # Handle missing predictions (np.nan)
+        mask = ~pd.isna(y_pred)
+        if not mask.any():
+            return float("nan")
+        y_true = y[mask]
+        y_pred = y_pred[mask]
+        ss_res = ((y_true - y_pred) ** 2).sum()
+        ss_tot = ((y_true - y_true.mean()) ** 2).sum()
+        return 1 - ss_res / ss_tot if ss_tot != 0 else float("nan")

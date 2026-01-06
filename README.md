@@ -3,8 +3,10 @@
 [![Continuous Integration](https://github.com/pysal/gwlearn/actions/workflows/testing.yml/badge.svg)](https://github.com/pysal/gwlearn/actions/workflows/testing.yml)
 [![codecov](https://codecov.io/gh/pysal/gwlearn/branch/main/graph/badge.svg)](https://codecov.io/gh/pysal/gwlearn)
 [![PyPI version](https://badge.fury.io/py/gwlearn.svg)](https://badge.fury.io/py/gwlearn)
-<!-- [![Conda Version](https://img.shields.io/conda/vn/conda-forge/gwlearn.svg)](https://anaconda.org/conda-forge/gwlearn)
-[![DOI](https://zenodo.org/badge/81501824.svg)](https://zenodo.org/badge/latestdoi/81501824) -->
+<!--
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/gwlearn.svg)](https://anaconda.org/conda-forge/gwlearn)
+[![DOI](https://zenodo.org/badge/81501824.svg)](https://zenodo.org/badge/latestdoi/81501824)
+-->
 [![Discord](https://img.shields.io/badge/Discord-join%20chat-7289da?style=flat&logo=discord&logoColor=cccccc&link=https://discord.gg/BxFTEPFFZn)](https://discord.gg/BxFTEPFFZn)
 [![SPEC 0 — Minimum Supported Dependencies](https://img.shields.io/badge/SPEC-0-green?labelColor=%23004811&color=%235CA038)](https://scientific-python.org/specs/spec-0000/)
 
@@ -34,7 +36,6 @@ from gwlearn.linear_model import GWLinearRegression
 gdf = gpd.read_file(get_path('geoda.guerry'))
 
 adaptive = GWLinearRegression(
-    geometry=gdf.representative_point(),
     bandwidth=25,
     fixed=False,
     kernel='tricube'
@@ -42,6 +43,7 @@ adaptive = GWLinearRegression(
 adaptive.fit(
     gdf[['Crm_prp', 'Litercy', 'Donatns', 'Lottery']],
     gdf["Suicids"],
+    geometry=gdf.representative_point(),
 )
 ```
 

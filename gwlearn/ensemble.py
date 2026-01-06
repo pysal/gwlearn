@@ -55,12 +55,6 @@ class GWRandomForestClassifier(BaseClassifier):
         analysis of the model performance (and generalises to models that do not support
         OOB scoring). However, it leaves out the most representative sample. By default
         False
-    geometry : gpd.GeoSeries, optional
-        Geographic location of the observations in the sample. Used to determine the
-        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
-        need to be specified. To allow prediction, it is required to specify
-        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -166,9 +160,8 @@ class GWRandomForestClassifier(BaseClassifier):
     >>> gw = GWRandomForestClassifier(
     ...     bandwidth=30,
     ...     fixed=False,
-    ...     geometry=gdf.representative_point(),
     ...     random_state=0,
-    ... ).fit(X, y)
+    ... ).fit(X, y, geometry=gdf.representative_point())
     >>> gw.pred_.head()
     0    False
     1    False
@@ -195,7 +188,6 @@ class GWRandomForestClassifier(BaseClassifier):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
-        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -216,7 +208,6 @@ class GWRandomForestClassifier(BaseClassifier):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
-            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -241,7 +232,9 @@ class GWRandomForestClassifier(BaseClassifier):
         """Callback used by scikit-learn to collect OOB targets/predictions."""
         return true, pred
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> "GWRandomForestClassifier":
+    def fit(
+        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
+    ) -> "GWRandomForestClassifier":
         """Fit geographically weighted random forests.
 
         Parameters
@@ -250,6 +243,14 @@ class GWRandomForestClassifier(BaseClassifier):
             Feature matrix.
         y : pandas.Series
             Binary target encoded as boolean or ``{0, 1}``.
+        geometry : geopandas.GeoSeries | None
+            Geographic location of the observations in the sample. Used to determine the
+            spatial interaction weight based on specification by ``bandwidth``,
+            ``fixed``, ``kernel``, and ``include_focal`` keywords.  If `None`,
+            a precomputed ``graph`` needs to be specified. To allow prediction,
+            it is required to specify ``geometry``. If both ``graph`` and ``geometry``
+            are specified, ``graph`` is used at the fit time, while ``geometry`` is
+            used for prediction.
 
         Returns
         -------
@@ -263,7 +264,7 @@ class GWRandomForestClassifier(BaseClassifier):
         fitted local models.
         """
         self._empty_feature_imp = np.array([np.nan] * (X.shape[1]))
-        super().fit(X=X, y=y)
+        super().fit(X=X, y=y, geometry=geometry)
 
         self._y_local = [x[0] for x in self._score_data]
         self._pred_local = [x[1] for x in self._score_data]
@@ -337,12 +338,6 @@ class GWGradientBoostingClassifier(BaseClassifier):
         futher spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default False
-    geometry : gpd.GeoSeries, optional
-        Geographic location of the observations in the sample. Used to determine the
-        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
-        need to be specified. To allow prediction, it is required to specify
-        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -430,9 +425,8 @@ class GWGradientBoostingClassifier(BaseClassifier):
     >>> gw = GWGradientBoostingClassifier(
     ...     bandwidth=30,
     ...     fixed=False,
-    ...     geometry=gdf.representative_point(),
     ...     random_state=0,
-    ... ).fit(X, y)
+    ... ).fit(X, y, geometry=gdf.representative_point())
     >>> gw.pred_.head()
     0    False
     1    False
@@ -459,7 +453,6 @@ class GWGradientBoostingClassifier(BaseClassifier):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
-        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -479,7 +472,6 @@ class GWGradientBoostingClassifier(BaseClassifier):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
-            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -497,7 +489,9 @@ class GWGradientBoostingClassifier(BaseClassifier):
         self._model_type = "gradient_boosting"
         self._empty_score_data = np.nan
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> "GWGradientBoostingClassifier":
+    def fit(
+        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
+    ) -> "GWGradientBoostingClassifier":
         """Fit geographically weighted gradient boosting classifiers.
 
         Parameters
@@ -506,6 +500,14 @@ class GWGradientBoostingClassifier(BaseClassifier):
             Feature matrix.
         y : pandas.Series
             Binary target encoded as boolean or ``{0, 1}``.
+        geometry : geopandas.GeoSeries | None
+            Geographic location of the observations in the sample. Used to determine the
+            spatial interaction weight based on specification by ``bandwidth``,
+            ``fixed``, ``kernel``, and ``include_focal`` keywords.  If `None`,
+            a precomputed ``graph`` needs to be specified. To allow prediction,
+            it is required to specify ``geometry``. If both ``graph`` and ``geometry``
+            are specified, ``graph`` is used at the fit time, while ``geometry`` is
+            used for prediction.
 
         Returns
         -------
@@ -517,7 +519,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
         Populates ``feature_importances_`` from the fitted local models.
         """
         self._empty_feature_imp = np.array([np.nan] * (X.shape[1]))
-        super().fit(X=X, y=y)
+        super().fit(X=X, y=y, geometry=geometry)
 
         # feature importances
         self.feature_importances_ = pd.DataFrame(
@@ -568,12 +570,6 @@ class GWRandomForestRegressor(BaseRegressor):
         analysis of the model performance (and generalises to models that do not support
         OOB scoring). However, it leaves out the most representative sample. By default
         True
-    geometry : gpd.GeoSeries, optional
-        Geographic location of the observations in the sample. Used to determine the
-        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
-        need to be specified. To allow prediction, it is required to specify
-        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -657,9 +653,8 @@ class GWRandomForestRegressor(BaseRegressor):
     >>> gw = GWRandomForestRegressor(
     ...     bandwidth=30,
     ...     fixed=False,
-    ...     geometry=gdf.representative_point(),
     ...     random_state=0,
-    ... ).fit(X, y)
+    ... ).fit(X, y, geometry=gdf.representative_point())
     >>> gw.local_r2_.head()
     0    0.810035
     1    0.801906
@@ -686,7 +681,6 @@ class GWRandomForestRegressor(BaseRegressor):
         ]
         | Callable = "bisquare",
         include_focal: bool = True,
-        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -704,7 +698,6 @@ class GWRandomForestRegressor(BaseRegressor):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
-            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -726,7 +719,9 @@ class GWRandomForestRegressor(BaseRegressor):
         """Callback used by scikit-learn to collect OOB targets/predictions."""
         return true, pred
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> "GWRandomForestRegressor":
+    def fit(
+        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
+    ) -> "GWRandomForestRegressor":
         """Fit geographically weighted random forests.
 
         Parameters
@@ -735,6 +730,14 @@ class GWRandomForestRegressor(BaseRegressor):
             Feature matrix.
         y : pandas.Series
             Target values.
+        geometry : geopandas.GeoSeries | None
+            Geographic location of the observations in the sample. Used to determine the
+            spatial interaction weight based on specification by ``bandwidth``,
+            ``fixed``, ``kernel``, and ``include_focal`` keywords.  If `None`,
+            a precomputed ``graph`` needs to be specified. To allow prediction,
+            it is required to specify ``geometry``. If both ``graph`` and ``geometry``
+            are specified, ``graph`` is used at the fit time, while ``geometry`` is
+            used for prediction.
 
         Returns
         -------
@@ -747,7 +750,7 @@ class GWRandomForestRegressor(BaseRegressor):
         ``oob_y_pooled_`` and ``oob_pred_pooled_`` by pooling OOB values across all
         fitted local models.
         """
-        super().fit(X=X, y=y)
+        super().fit(X=X, y=y, geometry=geometry)
 
         # Handle OOB data
         self._y_local = [x[0] for x in self._score_data]
