@@ -988,6 +988,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         X: pd.DataFrame,
         geometry: gpd.GeoSeries,
         bandwidth: Literal["nearest"] | int | float | None = "nearest",
+        global_model_weight: float = 0,
     ) -> pd.DataFrame:
         """Predict class probabilities for new observations.
 
@@ -1007,6 +1008,10 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         with the ensemble being significantly slower due to the required number of
         inference calls.
 
+        Furhter the prediction can be a result of a fusion of local and global models
+        when ``global_model_weight`` is set to a non-zero value, following
+        :cite:t:`georganos2021Geographical`.
+
         Parameters
         ----------
         X : pandas.DataFrame
@@ -1019,6 +1024,11 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             value, uses an ensemble of local models available within the bandwidth, with
             predictions from individual models being weighted based on the distance and
             a set kernel. When ``None``, uses the bandwidth set at the fit time.
+        global_model_weight : float
+            Weight of the prediction from the global model. When non-zero, the
+            resulting prediction is a weighted average of the values from local model(s)
+            and from global model, where local prediction has a weight of 1 and global
+            model has a weight equal to ``global_model_weight``.
 
         Returns
         -------
@@ -1051,7 +1061,22 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                     self._predict_local_ensemble(x_, models_, distances_)
                 )
 
-        return pd.DataFrame(probabilities, columns=self._global_classes, index=X.index)
+        proba = pd.DataFrame(probabilities, columns=self._global_classes, index=X.index)
+
+        if global_model_weight:
+            global_proba = self.global_model.predict_proba(X)
+            local = proba.values
+            # where local is NaN, use global; otherwise use weighted average
+            mask = np.isnan(local)
+            denom = 1.0 + global_model_weight
+            combined = np.empty_like(local, dtype=float)
+            combined[~mask] = (
+                local[~mask] + global_model_weight * global_proba[~mask]
+            ) / denom
+            combined[mask] = global_proba[mask]
+            proba = pd.DataFrame(combined, columns=self._global_classes, index=X.index)
+
+        return proba
 
     def _predict_local_ensemble(
         self,
@@ -1114,6 +1139,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         X: pd.DataFrame,
         geometry: gpd.GeoSeries,
         bandwidth: Literal["nearest"] | int | float | None = "nearest",
+        global_model_weight: float = 0,
     ) -> pd.Series:
         """Predict classes for new observations.
 
@@ -1135,6 +1161,10 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         with the ensemble being significantly slower due to the required number of
         inference calls.
 
+        Furhter the prediction can be a result of a fusion of local and global models
+        when ``global_model_weight`` is set to a non-zero value, following
+        :cite:t:`georganos2021Geographical`.
+
         Parameters
         ----------
         X : pandas.DataFrame
@@ -1147,6 +1177,11 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             value, uses an ensemble of local models available within the bandwidth, with
             predictions from individual models being weighted based on the distance and
             a set kernel. When ``None``, uses the bandwidth set at the fit time.
+        global_model_weight : float
+            Weight of the prediction from the global model. When non-zero, the
+            resulting prediction is a weighted average of the values from local model(s)
+            and from global model, where local prediction has a weight of 1 and global
+            model has a weight equal to ``global_model_weight``.
 
         Returns
         -------
@@ -1158,7 +1193,9 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Requires the estimator to have been fit with ``keep_models=True`` (or a
         ``Path``) so local models can be used at prediction time.
         """
-        proba = self.predict_proba(X, geometry, bandwidth=bandwidth)
+        proba = self.predict_proba(
+            X, geometry, bandwidth=bandwidth, global_model_weight=global_model_weight
+        )
 
         mask = proba.iloc[:, 0].notna()
         if not mask.all():
@@ -1473,6 +1510,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         X: pd.DataFrame,
         geometry: gpd.GeoSeries,
         bandwidth: Literal["nearest"] | int | float | None = "nearest",
+        global_model_weight: float = 0,
     ) -> pd.Series:
         """Predict target values for new observations.
 
@@ -1491,6 +1529,10 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         with the ensemble being significantly slower due to the required number of
         inference calls.
 
+        Furhter the prediction can be a result of a fusion of local and global models
+        when ``global_model_weight`` is set to a non-zero value, following
+        :cite:t:`georganos2021Geographical`.
+
         Parameters
         ----------
         X : pandas.DataFrame
@@ -1503,7 +1545,11 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             value, uses an ensemble of local models available within the bandwidth, with
             predictions from individual models being weighted based on the distance and
             a set kernel. When ``None``, uses the bandwidth set at the fit time.
-
+        global_model_weight : float
+            Weight of the prediction from the global model. When non-zero, the
+            resulting prediction is a weighted average of the values from local model(s)
+            and from global model, where local prediction has a weight of 1 and global
+            model has a weight equal to ``global_model_weight``.
 
         Returns
         -------
@@ -1535,7 +1581,16 @@ class BaseRegressor(_BaseModel, RegressorMixin):
                     self._predict_local_ensemble(x_, models_, distances_)
                 )
 
-        return pd.Series(predictions, index=X.index)
+        pred = pd.Series(predictions, index=X.index)
+
+        if global_model_weight:
+            global_pred = self.global_model.predict(X)
+            combined_pred = np.column_stack([pred, global_pred])
+            pred = np.average(combined_pred, axis=1, weights=[1, global_model_weight])
+
+            return pd.Series(pred, index=X.index)
+
+        return pred
 
     def _predict_local_ensemble(
         self,
