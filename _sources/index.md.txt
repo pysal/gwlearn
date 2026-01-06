@@ -15,6 +15,7 @@ predict
 imbalance
 bandwidth_search
 network_graph
+references
 ```
 
 ```{toctree}
@@ -28,3 +29,4 @@ api
 :caption: For contributors
 GitHub <https://github.com/uscuni/gwlearn>
 ```
+

@@ -21,7 +21,7 @@
     
     
       
-        <title>Prediction - gwlearn 0.0.2.dev8 documentation</title>
+        <title>Prediction - gwlearn 0.0.2.dev9 documentation</title>
       
     
     
@@ -88,7 +88,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="gwlearn 0.0.2.dev8 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev8 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -99,7 +99,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.2.dev8 documentation
+            gwlearn 0.0.2.dev9 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -237,10 +237,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="gwlearn 0.0.2.dev8 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev8 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.2.dev8 documentation
+    gwlearn 0.0.2.dev9 documentation
   </label>
   
     <div class="md-nav__source">
@@ -480,6 +480,16 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#fusing-with-the-global-model" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Fusing with the global model</span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -566,6 +576,30 @@
   
   <span class="md-ellipsis">
     <span>Using custom graphs</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="references.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>References</span>
     
   </span>
   
@@ -784,6 +818,16 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#fusing-with-the-global-model" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Fusing with the global model</span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -816,8 +860,8 @@
 
 
 <h1 id="prediction">Prediction<a class="headerlink" href="#prediction" title="Link to this heading">¶</a></h1>
-<p>Both classification and regression models implement tools for prediction. Classifiers provide <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> (probabilities) and <code class="docutils literal notranslate"><span class="pre">predict</span></code> (labels), while regressors provide <code class="docutils literal notranslate"><span class="pre">predict</span></code> (continuous values).</p>
-<p>The prediction can be either done using a single nearest local model or using the ensemble of local models available within the bandwidth.</p>
+<p>Both classification and regression models implement tools for prediction. Classifiers provide <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> (probabilities) and <code class="docutils literal notranslate"><span class="pre">predict</span></code> (labels), while regressors provide <code class="docutils literal notranslate"><span class="pre">predict</span></code> (continuous values) as any scikit-learn estimator would. However, they are retrieved differently.</p>
+<p>The prediction can be either done using a single nearest local model or using the ensemble of local models available within the bandwidth. At the same time, the prediction from local model(s) can be fused with the global model to combine the best from both worlds, following Georganos et al (2021).</p>
 <h2 id="classification-prediction">Classification prediction<a class="headerlink" href="#classification-prediction" title="Link to this heading">¶</a></h2>
 <p>See that in action with a classifier:</p>
 <div class="cell docutils container">
@@ -1424,17 +1468,17 @@ a.param-doc-link::before {
 }
 </style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLogisticRegression(bandwidth=250,
                      geometry=FIPS
-26135      POINT (936512.375 2469191.038)
-38073     POINT (-127975.621 2608719.164)
-47145     POINT (1024948.113 1486875.944)
-46079      POINT (-90462.925 2337045.147)
-06019     POINT (-2061043.86 1784558.073)
+35003    POINT (-1131648.837 1291918.881)
+48351        POINT (215543.818 852338.42)
+38075     POINT (-421698.566 2870062.156)
+18071       POINT (853578.73 1808451.447)
+13075       POINT (1191866.64 980475.052)
                        ...               
-28115       POINT (636407.261 1267649.59)
-49013    POINT (-1210801.648 2017273.075)
-20041       POINT (-98165.04 1765280.993)
-48221     POINT (-170022.925 1040564.004)
-18017        POINT (803700.432 2019269.6)
+54019     POINT (1292912.552 1768809.795)
+29161      POINT (367238.724 1659729.842)
+06105    POINT (-2246906.966 2274084.564)
+25013     POINT (1903945.621 2362113.699)
+34017     POINT (1819341.888 2180779.785)
 Name: point, Length: 2776, dtype: geometry,
                      keep_models=True)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLogisticRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
@@ -1490,7 +1534,7 @@ Name: point, Length: 2776, dtype: geometry,
             ></i></td>
             <td class="param">geometry</td>
             <td class="value">FIPS
-26135   ...type: geometry</td>
+35003   ...type: geometry</td>
         </tr>
     
 
@@ -1773,29 +1817,29 @@ forceTheme('sk-container-id-1');</script></body></div></div>
   </thead>
   <tbody>
     <tr>
-      <th>36121</th>
-      <td>3.446761e-01</td>
-      <td>0.655324</td>
+      <th>37033</th>
+      <td>0.204040</td>
+      <td>0.795960</td>
     </tr>
     <tr>
-      <th>55127</th>
-      <td>9.480432e-01</td>
-      <td>0.051957</td>
+      <th>47167</th>
+      <td>0.002960</td>
+      <td>0.997040</td>
     </tr>
     <tr>
-      <th>42025</th>
-      <td>5.444216e-01</td>
-      <td>0.455578</td>
+      <th>05145</th>
+      <td>0.638361</td>
+      <td>0.361639</td>
     </tr>
     <tr>
-      <th>13023</th>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>42101</th>
+      <td>0.000000</td>
+      <td>1.000000</td>
     </tr>
     <tr>
-      <th>48369</th>
-      <td>8.467173e-01</td>
-      <td>0.153283</td>
+      <th>24045</th>
+      <td>0.327287</td>
+      <td>0.672713</td>
     </tr>
     <tr>
       <th>...</th>
@@ -1803,29 +1847,29 @@ forceTheme('sk-container-id-1');</script></body></div></div>
       <td>...</td>
     </tr>
     <tr>
-      <th>23027</th>
-      <td>4.230040e-01</td>
-      <td>0.576996</td>
+      <th>48031</th>
+      <td>0.629890</td>
+      <td>0.370110</td>
     </tr>
     <tr>
-      <th>48303</th>
-      <td>5.140688e-11</td>
-      <td>1.000000</td>
+      <th>48003</th>
+      <td>0.745356</td>
+      <td>0.254644</td>
     </tr>
     <tr>
-      <th>12023</th>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>42051</th>
+      <td>0.042062</td>
+      <td>0.957938</td>
     </tr>
     <tr>
-      <th>24047</th>
-      <td>1.001080e-01</td>
-      <td>0.899892</td>
+      <th>13285</th>
+      <td>0.002619</td>
+      <td>0.997381</td>
     </tr>
     <tr>
-      <th>21159</th>
-      <td>1.477317e-01</td>
-      <td>0.852268</td>
+      <th>23015</th>
+      <td>0.420188</td>
+      <td>0.579812</td>
     </tr>
   </tbody>
 </table>
@@ -1840,7 +1884,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/effe4b6dd9f5f3bf525e1dafd6582827c94a229fdbff143a5b2569db2197f3e8.png" src="_images/effe4b6dd9f5f3bf525e1dafd6582827c94a229fdbff143a5b2569db2197f3e8.png" />
+<img alt="_images/96938a00246a234aa415125d940122c7fdfd1903c46983970c69b36f49a4a4c3.png" src="_images/96938a00246a234aa415125d940122c7fdfd1903c46983970c69b36f49a4a4c3.png" />
 </div>
 </div>
 <p>The missing values have been linked to models that were not fitted. You can check all of those visually by plotting the focal prediction.</p>
@@ -1866,7 +1910,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.8268398268398268
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7949790794979079
 </code></pre></div>
 </div>
 </div>
@@ -2004,6 +2048,120 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 </div>
+<h3 id="fusing-with-the-global-model">Fusing with the global model<a class="headerlink" href="#fusing-with-the-global-model" title="Link to this heading">¶</a></h3>
+<p>Predictions from local models can be fused with the predictions from the global model as a weighted average, by assigning non-zero weight to global model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">proba_fused</span> <span class="o">=</span> <span class="n">gwrf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geom_test</span><span class="p">,</span> <span class="n">global_model_weight</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">proba_fused</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>False</th>
+      <th>True</th>
+    </tr>
+    <tr>
+      <th>FIPS</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>37033</th>
+      <td>0.204062</td>
+      <td>0.795938</td>
+    </tr>
+    <tr>
+      <th>47167</th>
+      <td>0.011384</td>
+      <td>0.988616</td>
+    </tr>
+    <tr>
+      <th>05145</th>
+      <td>0.634969</td>
+      <td>0.365031</td>
+    </tr>
+    <tr>
+      <th>42101</th>
+      <td>0.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>24045</th>
+      <td>0.290616</td>
+      <td>0.709384</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>48031</th>
+      <td>0.588148</td>
+      <td>0.411852</td>
+    </tr>
+    <tr>
+      <th>48003</th>
+      <td>0.721271</td>
+      <td>0.278729</td>
+    </tr>
+    <tr>
+      <th>42051</th>
+      <td>0.056213</td>
+      <td>0.943787</td>
+    </tr>
+    <tr>
+      <th>13285</th>
+      <td>0.002195</td>
+      <td>0.997805</td>
+    </tr>
+    <tr>
+      <th>23015</th>
+      <td>0.499150</td>
+      <td>0.500850</td>
+    </tr>
+  </tbody>
+</table>
+<p>309 rows × 2 columns</p>
+</div></div></div>
+</div>
+<p>When prediction from local models yields NaN, it is ignored and the global prediction is used instead.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">pred_fused</span> <span class="o">=</span> <span class="n">gwrf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geom_test</span><span class="p">,</span> <span class="n">global_model_weight</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+
+<span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">pred_fused</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.8187702265372169
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>You can see that the accuracy is slightly better but keep in mind that this is only a toy example and specific strategy for fusing local and global predictions needs to be tested on your use case.</p>
 <h2 id="prediction-with-regressors">Prediction with regressors<a class="headerlink" href="#prediction-with-regressors" title="Link to this heading">¶</a></h2>
 <p>Regression models also implement <code class="docutils literal notranslate"><span class="pre">predict</span></code> method following the same logic as classifiers. Let’s see that in action with a <code class="docutils literal notranslate"><span class="pre">GWLinearRegression</span></code>.</p>
 <div class="cell docutils container">
@@ -2958,6 +3116,47 @@ RMSE: 3.327
 </div>
 </div>
 </div>
+<p>Similarly, you can fuse predictions from local and global models.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">pred_reg_fused</span> <span class="o">=</span> <span class="n">gwrf_reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_reg</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geom_test_reg</span><span class="p">,</span> <span class="n">global_model_weight</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">pred_reg_fused</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>FIPS
+51101    11.232861
+13231    14.827121
+47019    13.076454
+16053     9.264119
+21233    11.984785
+           ...    
+17099    11.410702
+38081     7.235080
+13317    17.418047
+40005    13.868180
+39149    10.347441
+Length: 309, dtype: float64
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;R2 score: </span><span class="si">{</span><span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_test_reg</span><span class="p">,</span><span class="w"> </span><span class="n">pred_reg_fused</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RMSE: </span><span class="si">{</span><span class="n">metrics</span><span class="o">.</span><span class="n">root_mean_squared_error</span><span class="p">(</span><span class="n">y_test_reg</span><span class="p">,</span><span class="w"> </span><span class="n">pred_reg_fused</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>R2 score: 0.647
+RMSE: 3.338
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>As you can see, contrary to the classification task, the fusion of global prediction to the local one did not improve the model performance in this case. However, this is very much case dependent.</p>
 
 
 
