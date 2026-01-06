@@ -513,6 +513,34 @@ def test_predict_proba_adaptive(sample_data, bandwidth):
     assert np.allclose(proba.dropna().sum(axis=1), 1.0)
 
 
+def test_predict_proba_global_weight(sample_data):
+    """Test predict_proba with global_model_weight for classifier."""
+    X, y, geometry = sample_data
+    clf = BaseClassifier(
+        LogisticRegression,
+        geometry=geometry,
+        bandwidth=150000,
+        fixed=True,
+        keep_models=True,
+        fit_global_model=True,
+        random_state=42,
+        strict=False,
+        max_iter=500,
+    )
+    clf.fit(X, y)
+    proba_local = clf.predict_proba(
+        X.iloc[6:9], geometry.iloc[6:9], bandwidth="nearest", global_model_weight=0
+    )
+    proba_global = clf.global_model.predict_proba(X.iloc[6:9])
+    proba_fused = clf.predict_proba(
+        X.iloc[6:9], geometry.iloc[6:9], bandwidth="nearest", global_model_weight=1
+    )
+    # Fused should be average of local and global
+    np.testing.assert_allclose(
+        proba_fused.values, (proba_local.values + proba_global) / 2, rtol=1e-6
+    )
+
+
 @pytest.mark.parametrize("bandwidth", ["nearest", 100000, None])
 def test_predict_basic(sample_data, bandwidth):
     """Test basic functionality of predict method."""
@@ -1246,6 +1274,31 @@ def test_regressor_predict_adaptive(sample_regression_data, bandwidth):
 
     # Check all predicted values are numeric
     assert pd.api.types.is_numeric_dtype(pred)
+
+
+def test_regressor_predict_global_weight(sample_regression_data):
+    """Test predict with global_model_weight for regressor."""
+    X, y, geometry = sample_regression_data
+    reg = BaseRegressor(
+        LinearRegression,
+        geometry=geometry,
+        bandwidth=150000,
+        fixed=True,
+        keep_models=True,
+        fit_global_model=True,
+    )
+    reg.fit(X, y)
+    pred_local = reg.predict(
+        X.iloc[:5], geometry.iloc[:5], bandwidth="nearest", global_model_weight=0
+    )
+    pred_global = reg.global_model.predict(X.iloc[:5])
+    pred_fused = reg.predict(
+        X.iloc[:5], geometry.iloc[:5], bandwidth="nearest", global_model_weight=1
+    )
+    # Fused should be average of local and global
+    np.testing.assert_allclose(
+        pred_fused.values, (pred_local.values + pred_global) / 2, rtol=1e-6
+    )
 
 
 @pytest.mark.parametrize("bandwidth", ["nearest", 100000, None])
