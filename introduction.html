@@ -21,7 +21,7 @@
     
     
       
-        <title>Introduction to prototyping geographically weighted models - gwlearn 0.0.2.dev9 documentation</title>
+        <title>Introduction to prototyping geographically weighted models - gwlearn 0.0.2.dev10 documentation</title>
       
     
     
@@ -88,7 +88,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -99,7 +99,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.2.dev9 documentation
+            gwlearn 0.0.2.dev10 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -237,10 +237,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.2.dev9 documentation
+    gwlearn 0.0.2.dev10 documentation
   </label>
   
     <div class="md-nav__source">
@@ -857,7 +857,6 @@
     <span class="n">bandwidth</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">centroid</span><span class="p">,</span>
     <span class="n">include_focal</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 <span class="n">gwr</span>
@@ -1415,20 +1414,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>BaseRegressor(bandwidth=25,
-              geometry=0     POINT (832852.279 2126600.576)
-1     POINT (688485.627 2507622.044)
-2     POINT (665510.138 2155203.452)
-3     POINT (912995.751 1908303.142)
-4     POINT (911433.897 1970311.894)
-                   ...              
-80    POINT (322059.477 2192535.348)
-81    POINT (456183.284 2175488.824)
-82    POINT (514516.691 2099653.307)
-83    POINT (900562.832 2363005.197)
-84    POINT (691913.683 2316341.407)
-Length: 85, dtype: geometry,
-              include_focal=True,
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>BaseRegressor(bandwidth=25, include_focal=True,
               model=&lt;class &#x27;sklearn.linear_model._base.LinearRegression&#x27;&gt;)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator  sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label  sk-toggleable__label-arrow"><div><div>BaseRegressor</div></div><div><span class="sk-estimator-doc-link ">i<span>Not fitted</span></span></div></label><div class="sk-toggleable__content " data-param-prefix="">
         <div class="estimator-table">
             <details>
@@ -1483,16 +1469,6 @@ Length: 85, dtype: geometry,
             ></i></td>
             <td class="param">include_focal</td>
             <td class="value">True</td>
-        </tr>
-    
-
-        <tr class="user-set">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('geometry',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">geometry</td>
-            <td class="value">0     POINT (...type: geometry</td>
         </tr>
     
 
@@ -1562,6 +1538,16 @@ Length: 85, dtype: geometry,
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">batch_size</td>
+            <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('random_state',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">random_state</td>
             <td class="value">None</td>
         </tr>
     
@@ -1696,13 +1682,14 @@ function forceTheme(elementId) {
 
 forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
-<p>The model specification above contains the model class, the bandwidth size and type (adaptive bandwidth with 25 nearest neighbors) and a deifinition of the kernel to be used for sample weights. On top of that, importantly, is also defined <code class="docutils literal notranslate"><span class="pre">geometry</span></code> representing location of observations. Alternatively, you could skip all but model and pass directly a <code class="docutils literal notranslate"><span class="pre">libpysal.graph.Graph</span></code> object capturing spatial neighborhoods and weights directly. Given we are dealing with a linear model, we can also include the focal observation in the training, while still using it for evaluation later.</p>
-<p>Fitting the model works as you know it from scikit-learn itself.</p>
+<p>The model specification above contains the model class, the bandwidth size and type (adaptive bandwidth with 25 nearest neighbors) and a deifinition of the kernel to be used for sample weights. Given we are dealing with a linear model, we can also include the focal observation in the training, while still using it for evaluation later.</p>
+<p>Fitting the model works as you know it from scikit-learn itself. However, we need to specify <code class="docutils literal notranslate"><span class="pre">geometry</span></code> representing location of observations. Alternatively, you could d pass directly a <code class="docutils literal notranslate"><span class="pre">libpysal.graph.Graph</span></code> object capturing spatial neighborhoods and weights directly to <code class="docutils literal notranslate"><span class="pre">__init__</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gwr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">X</span><span class="o">=</span><span class="n">gdf</span><span class="p">[[</span><span class="s1">&#39;Crm_prp&#39;</span><span class="p">,</span> <span class="s1">&#39;Litercy&#39;</span><span class="p">,</span> <span class="s1">&#39;Donatns&#39;</span><span class="p">,</span> <span class="s1">&#39;Lottery&#39;</span><span class="p">]],</span>
     <span class="n">y</span><span class="o">=</span><span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;Suicids&quot;</span><span class="p">],</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">centroid</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 </div>
@@ -2258,20 +2245,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>BaseRegressor(bandwidth=25,
-              geometry=0     POINT (832852.279 2126600.576)
-1     POINT (688485.627 2507622.044)
-2     POINT (665510.138 2155203.452)
-3     POINT (912995.751 1908303.142)
-4     POINT (911433.897 1970311.894)
-                   ...              
-80    POINT (322059.477 2192535.348)
-81    POINT (456183.284 2175488.824)
-82    POINT (514516.691 2099653.307)
-83    POINT (900562.832 2363005.197)
-84    POINT (691913.683 2316341.407)
-Length: 85, dtype: geometry,
-              include_focal=True,
+</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>BaseRegressor(bandwidth=25, include_focal=True,
               model=&lt;class &#x27;sklearn.linear_model._base.LinearRegression&#x27;&gt;)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>BaseRegressor</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
@@ -2326,16 +2300,6 @@ Length: 85, dtype: geometry,
             ></i></td>
             <td class="param">include_focal</td>
             <td class="value">True</td>
-        </tr>
-    
-
-        <tr class="user-set">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('geometry',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">geometry</td>
-            <td class="value">0     POINT (...type: geometry</td>
         </tr>
     
 
@@ -2405,6 +2369,16 @@ Length: 85, dtype: geometry,
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">batch_size</td>
+            <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('random_state',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">random_state</td>
             <td class="value">None</td>
         </tr>
     

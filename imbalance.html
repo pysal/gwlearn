@@ -21,7 +21,7 @@
     
     
       
-        <title>Class imbalance - gwlearn 0.0.2.dev9 documentation</title>
+        <title>Class imbalance - gwlearn 0.0.2.dev10 documentation</title>
       
     
     
@@ -88,7 +88,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -99,7 +99,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.2.dev9 documentation
+            gwlearn 0.0.2.dev10 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -237,10 +237,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.2.dev9 documentation
+    gwlearn 0.0.2.dev10 documentation
   </label>
   
     <div class="md-nav__source">
@@ -837,13 +837,13 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">GWRandomForestClassifier</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
     <span class="n">bandwidth</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">X</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
 <span class="p">)</span>
 </code></pre></div>
 </div>
@@ -1399,19 +1399,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWRandomForestClassifier(bandwidth=25,
-                         geometry=0     POINT (827911.875 2122906.5)
-1       POINT (691725.716 2496059)
-2     POINT (663520.408 2152677.5)
-3       POINT (908864.897 1915755)
-4     POINT (916568.259 1968489.5)
-                  ...             
-80      POINT (322806.903 2192566)
-81      POINT (456440.882 2181291)
-82     POINT (510125.65 2102842.5)
-83      POINT (901963.264 2362015)
-84       POINT (697522.96 2318253)
-Length: 85, dtype: geometry)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWRandomForestClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWRandomForestClassifier(bandwidth=25)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWRandomForestClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -1455,16 +1443,6 @@ Length: 85, dtype: geometry)</pre><b>In a Jupyter environment, please rerun this
             ></i></td>
             <td class="param">include_focal</td>
             <td class="value">False</td>
-        </tr>
-    
-
-        <tr class="user-set">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('geometry',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">geometry</td>
-            <td class="value">0     POINT (...type: geometry</td>
         </tr>
     
 
@@ -1729,7 +1707,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/098eb2e8a9ac1ed244d911dfe7a48b228bf03352f89c8b4538dc48cb896cd67a.png" src="_images/098eb2e8a9ac1ed244d911dfe7a48b228bf03352f89c8b4538dc48cb896cd67a.png" />
+<img alt="_images/5338d1b6fd6d6aee7bad6bee1009258d023d9ca7ec66cebc635a2d5c5394d273.png" src="_images/5338d1b6fd6d6aee7bad6bee1009258d023d9ca7ec66cebc635a2d5c5394d273.png" />
 </div>
 </div>
 <p>The local performance for such a model then looks like this.</p>
@@ -1742,7 +1720,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/023cf56a471b7d65b2bb8a56fdfa2b4b7b38b07ca01e7ddc784b3be9930054fd.png" src="_images/023cf56a471b7d65b2bb8a56fdfa2b4b7b38b07ca01e7ddc784b3be9930054fd.png" />
+<img alt="_images/b2af6b29bb6cf51415c402b59641be83b6d12e1dd58382a3dd39c5593d57021d.png" src="_images/b2af6b29bb6cf51415c402b59641be83b6d12e1dd58382a3dd39c5593d57021d.png" />
 </div>
 </div>
 <h2 id="adapting-the-allowed-proportion">Adapting the allowed proportion<a class="headerlink" href="#adapting-the-allowed-proportion" title="Link to this heading">¶</a></h2>
@@ -1750,7 +1728,6 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">stricter_model</span> <span class="o">=</span> <span class="n">GWRandomForestClassifier</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
     <span class="n">bandwidth</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">min_proportion</span><span class="o">=</span><span class="mf">0.3</span>
@@ -1758,6 +1735,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 <span class="n">stricter_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">X</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
 <span class="p">)</span>
 </code></pre></div>
 </div>
@@ -2313,20 +2291,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWRandomForestClassifier(bandwidth=25,
-                         geometry=0     POINT (827911.875 2122906.5)
-1       POINT (691725.716 2496059)
-2     POINT (663520.408 2152677.5)
-3       POINT (908864.897 1915755)
-4     POINT (916568.259 1968489.5)
-                  ...             
-80      POINT (322806.903 2192566)
-81      POINT (456440.882 2181291)
-82     POINT (510125.65 2102842.5)
-83      POINT (901963.264 2362015)
-84       POINT (697522.96 2318253)
-Length: 85, dtype: geometry,
-                         min_proportion=0.3)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWRandomForestClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWRandomForestClassifier(bandwidth=25, min_proportion=0.3)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWRandomForestClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -2370,16 +2335,6 @@ Length: 85, dtype: geometry,
             ></i></td>
             <td class="param">include_focal</td>
             <td class="value">False</td>
-        </tr>
-    
-
-        <tr class="user-set">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('geometry',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">geometry</td>
-            <td class="value">0     POINT (...type: geometry</td>
         </tr>
     
 
@@ -2644,7 +2599,7 @@ forceTheme('sk-container-id-2');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/15b658ae618103d97e467b402e1cd8749e7db34352c66841f7a45ef1ff981582.png" src="_images/15b658ae618103d97e467b402e1cd8749e7db34352c66841f7a45ef1ff981582.png" />
+<img alt="_images/859150404213651d893dbeda6b9f5b7a3b8118732fefb7f10b1162abba1c0741.png" src="_images/859150404213651d893dbeda6b9f5b7a3b8118732fefb7f10b1162abba1c0741.png" />
 </div>
 </div>
 <h2 id="undersampling">Undersampling<a class="headerlink" href="#undersampling" title="Link to this heading">¶</a></h2>
@@ -2652,7 +2607,6 @@ forceTheme('sk-container-id-2');</script></body></div></div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">equal_model</span> <span class="o">=</span> <span class="n">GWRandomForestClassifier</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
     <span class="n">bandwidth</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">min_proportion</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
@@ -2661,6 +2615,7 @@ forceTheme('sk-container-id-2');</script></body></div></div>
 <span class="n">equal_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">X</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
 <span class="p">)</span>
 </code></pre></div>
 </div>
@@ -3216,20 +3171,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-3" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWRandomForestClassifier(bandwidth=25,
-                         geometry=0     POINT (827911.875 2122906.5)
-1       POINT (691725.716 2496059)
-2     POINT (663520.408 2152677.5)
-3       POINT (908864.897 1915755)
-4     POINT (916568.259 1968489.5)
-                  ...             
-80      POINT (322806.903 2192566)
-81      POINT (456440.882 2181291)
-82     POINT (510125.65 2102842.5)
-83      POINT (901963.264 2362015)
-84       POINT (697522.96 2318253)
-Length: 85, dtype: geometry,
-                         min_proportion=0.3, undersample=True)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox" checked><label for="sk-estimator-id-3" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWRandomForestClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-3" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWRandomForestClassifier(bandwidth=25, min_proportion=0.3, undersample=True)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox" checked><label for="sk-estimator-id-3" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWRandomForestClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -3273,16 +3215,6 @@ Length: 85, dtype: geometry,
             ></i></td>
             <td class="param">include_focal</td>
             <td class="value">False</td>
-        </tr>
-    
-
-        <tr class="user-set">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('geometry',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">geometry</td>
-            <td class="value">0     POINT (...type: geometry</td>
         </tr>
     
 
@@ -3558,7 +3490,7 @@ forceTheme('sk-container-id-3');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/651e49fa68989a73d9c22dac1b6b8cf14c4bdd8d53a52284a843498bc2ae91cf.png" src="_images/651e49fa68989a73d9c22dac1b6b8cf14c4bdd8d53a52284a843498bc2ae91cf.png" />
+<img alt="_images/0c94a769bfb0be2de5fe7efe0c82172589315576e3eeb4aafaf6d16bfd928156.png" src="_images/0c94a769bfb0be2de5fe7efe0c82172589315576e3eeb4aafaf6d16bfd928156.png" />
 </div>
 </div>
 <p>Keep in mind that for models like this one, where we use only 25 observations in each local model, undersampling can have a severe efect on the model robustness in a negative way, as it may reduce the number of observations that are actually used by quite a lot. Use with caution and ideally in situations where you rely on a larger number of neighbors.</p>

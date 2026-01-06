@@ -21,7 +21,7 @@
     
     
       
-        <title>Ensemble models - gwlearn 0.0.2.dev9 documentation</title>
+        <title>Ensemble models - gwlearn 0.0.2.dev10 documentation</title>
       
     
     
@@ -88,7 +88,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -99,7 +99,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.2.dev9 documentation
+            gwlearn 0.0.2.dev10 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -237,10 +237,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.2.dev9 documentation
+    gwlearn 0.0.2.dev10 documentation
   </label>
   
     <div class="md-nav__source">
@@ -1019,13 +1019,13 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gwrf</span> <span class="o">=</span> <span class="n">GWRandomForestClassifier</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
     <span class="n">bandwidth</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">gwrf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">X</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 </div>
@@ -1581,19 +1581,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWRandomForestClassifier(bandwidth=250,
-                         geometry=0          POINT (82374.171 2869835.025)
-1       POINT (-1666267.814 3025996.603)
-2        POINT (-1618645.796 3012447.96)
-3       POINT (-1751938.544 3053013.371)
-4       POINT (-1576454.985 3002625.267)
-                      ...               
-3080    POINT (-1658725.535 1280845.161)
-3081        POINT (-1089589 1376092.326)
-3082     POINT (1700687.417 1750877.094)
-3083     POINT (1588266.678 1896903.045)
-3084    POINT (-1153940.634 2574551.428)
-Name: point, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWRandomForestClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWRandomForestClassifier(bandwidth=250)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWRandomForestClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -1637,16 +1625,6 @@ Name: point, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment, pl
             ></i></td>
             <td class="param">include_focal</td>
             <td class="value">False</td>
-        </tr>
-    
-
-        <tr class="user-set">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('geometry',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">geometry</td>
-            <td class="value">0          PO...type: geometry</td>
         </tr>
     
 
@@ -1902,7 +1880,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7635574837310195
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.76529284164859
 </code></pre></div>
 </div>
 </div>
@@ -1916,7 +1894,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7639566160520608
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7638368763557484
 </code></pre></div>
 </div>
 </div>
@@ -1931,7 +1909,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([  nan, 0.812, 0.824, ..., 0.732, 0.704, 0.848], shape=(3085,))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([  nan, 0.828, 0.82 , ..., 0.724, 0.68 , 0.844], shape=(3085,))
 </code></pre></div>
 </div>
 </div>
@@ -1943,7 +1921,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9d2e83b05b0447c85d833d22a67c1ed02a06e58270031de1bd493cced35f3794.png" src="_images/9d2e83b05b0447c85d833d22a67c1ed02a06e58270031de1bd493cced35f3794.png" />
+<img alt="_images/18cef6b1821348a0cf4bf75e893b5c61cd593f17913c3ef15940bd94ee440ab2.png" src="_images/18cef6b1821348a0cf4bf75e893b5c61cd593f17913c3ef15940bd94ee440ab2.png" />
 </div>
 </div>
 <h3 id="feature-importance">Feature importance<a class="headerlink" href="#feature-importance" title="Link to this heading">¶</a></h3>
@@ -1993,39 +1971,39 @@ forceTheme('sk-container-id-1');</script></body></div></div>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.179267</td>
-      <td>0.139123</td>
-      <td>0.124227</td>
-      <td>0.160139</td>
-      <td>0.197307</td>
-      <td>0.199936</td>
+      <td>0.135565</td>
+      <td>0.147965</td>
+      <td>0.119111</td>
+      <td>0.182307</td>
+      <td>0.195193</td>
+      <td>0.219859</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.178505</td>
-      <td>0.136469</td>
-      <td>0.130985</td>
-      <td>0.170816</td>
-      <td>0.168485</td>
-      <td>0.214740</td>
+      <td>0.141539</td>
+      <td>0.150178</td>
+      <td>0.128407</td>
+      <td>0.167393</td>
+      <td>0.185273</td>
+      <td>0.227209</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.144078</td>
-      <td>0.133436</td>
-      <td>0.129812</td>
-      <td>0.165222</td>
-      <td>0.165138</td>
-      <td>0.262315</td>
+      <td>0.138071</td>
+      <td>0.161096</td>
+      <td>0.125838</td>
+      <td>0.159212</td>
+      <td>0.157695</td>
+      <td>0.258088</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.149554</td>
-      <td>0.142001</td>
-      <td>0.118353</td>
-      <td>0.160402</td>
-      <td>0.182540</td>
-      <td>0.247150</td>
+      <td>0.159563</td>
+      <td>0.122696</td>
+      <td>0.126856</td>
+      <td>0.179619</td>
+      <td>0.195117</td>
+      <td>0.216149</td>
     </tr>
     <tr>
       <th>...</th>
@@ -2038,48 +2016,48 @@ forceTheme('sk-container-id-1');</script></body></div></div>
     </tr>
     <tr>
       <th>3080</th>
-      <td>0.145577</td>
-      <td>0.092096</td>
-      <td>0.202522</td>
-      <td>0.097916</td>
-      <td>0.290165</td>
-      <td>0.171724</td>
+      <td>0.129323</td>
+      <td>0.125090</td>
+      <td>0.212757</td>
+      <td>0.092519</td>
+      <td>0.269611</td>
+      <td>0.170700</td>
     </tr>
     <tr>
       <th>3081</th>
-      <td>0.145981</td>
-      <td>0.096929</td>
-      <td>0.158639</td>
-      <td>0.198414</td>
-      <td>0.234700</td>
-      <td>0.165337</td>
+      <td>0.156660</td>
+      <td>0.109271</td>
+      <td>0.155279</td>
+      <td>0.212027</td>
+      <td>0.201858</td>
+      <td>0.164906</td>
     </tr>
     <tr>
       <th>3082</th>
-      <td>0.143242</td>
-      <td>0.215822</td>
-      <td>0.186652</td>
-      <td>0.222352</td>
-      <td>0.094151</td>
-      <td>0.137781</td>
+      <td>0.136781</td>
+      <td>0.197130</td>
+      <td>0.186613</td>
+      <td>0.251097</td>
+      <td>0.096400</td>
+      <td>0.131979</td>
     </tr>
     <tr>
       <th>3083</th>
-      <td>0.161037</td>
-      <td>0.167594</td>
-      <td>0.188477</td>
-      <td>0.266096</td>
-      <td>0.092027</td>
-      <td>0.124768</td>
+      <td>0.159189</td>
+      <td>0.171820</td>
+      <td>0.186437</td>
+      <td>0.256189</td>
+      <td>0.104995</td>
+      <td>0.121370</td>
     </tr>
     <tr>
       <th>3084</th>
-      <td>0.096781</td>
-      <td>0.129547</td>
-      <td>0.160739</td>
-      <td>0.189850</td>
-      <td>0.213452</td>
-      <td>0.209630</td>
+      <td>0.108531</td>
+      <td>0.120988</td>
+      <td>0.145768</td>
+      <td>0.197338</td>
+      <td>0.194436</td>
+      <td>0.232939</td>
     </tr>
   </tbody>
 </table>
@@ -2093,7 +2071,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/90654f6052fdb07b9ee5983a145f66e5d2f246916c9e6a3ecc1bd07a9365ae9f.png" src="_images/90654f6052fdb07b9ee5983a145f66e5d2f246916c9e6a3ecc1bd07a9365ae9f.png" />
+<img alt="_images/e517157a315bc3f7948a43285279dd58e35874cc4a9717d3019e0bfa8b66280f.png" src="_images/e517157a315bc3f7948a43285279dd58e35874cc4a9717d3019e0bfa8b66280f.png" />
 </div>
 </div>
 <p>You can compare all of this to values extracted from a global model, fitted alongside.</p>
@@ -2104,8 +2082,8 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.13568658, 0.14795968, 0.18836118, 0.20578669, 0.14827197,
-       0.17393389])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.14087041, 0.15951495, 0.19336592, 0.18725994, 0.14234148,
+       0.1766473 ])
 </code></pre></div>
 </div>
 </div>
@@ -2117,12 +2095,12 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>HR60    0.142798
-HR70    0.156280
-HR80    0.189687
-HR90    0.191350
-HC60    0.146587
-HC70    0.173299
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>HR60    0.142690
+HR70    0.156445
+HR80    0.189558
+HR90    0.191283
+HC60    0.146768
+HC70    0.173256
 dtype: float64
 </code></pre></div>
 </div>
@@ -2133,13 +2111,13 @@ dtype: float64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gwgb</span> <span class="o">=</span> <span class="n">GWGradientBoostingClassifier</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
     <span class="n">bandwidth</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">gwgb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">X</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 </div>
@@ -2695,19 +2673,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWGradientBoostingClassifier(bandwidth=250,
-                             geometry=0          POINT (82374.171 2869835.025)
-1       POINT (-1666267.814 3025996.603)
-2        POINT (-1618645.796 3012447.96)
-3       POINT (-1751938.544 3053013.371)
-4       POINT (-1576454.985 3002625.267)
-                      ...               
-3080    POINT (-1658725.535 1280845.161)
-3081        POINT (-1089589 1376092.326)
-3082     POINT (1700687.417 1750877.094)
-3083     POINT (1588266.678 1896903.045)
-3084    POINT (-1153940.634 2574551.428)
-Name: point, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWGradientBoostingClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWGradientBoostingClassifier(bandwidth=250)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWGradientBoostingClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -2751,16 +2717,6 @@ Name: point, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment, pl
             ></i></td>
             <td class="param">include_focal</td>
             <td class="value">False</td>
-        </tr>
-    
-
-        <tr class="user-set">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('geometry',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">geometry</td>
-            <td class="value">0          PO...type: geometry</td>
         </tr>
     
 
@@ -2831,6 +2787,46 @@ Name: point, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment, pl
             ></i></td>
             <td class="param">batch_size</td>
             <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('min_proportion',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">min_proportion</td>
+            <td class="value">0.2</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('undersample',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">undersample</td>
+            <td class="value">False</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('random_state',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">random_state</td>
+            <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('verbose',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">verbose</td>
+            <td class="value">False</td>
         </tr>
     
                   </tbody>
@@ -3015,39 +3011,39 @@ forceTheme('sk-container-id-2');</script></body></div></div>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.173350</td>
-      <td>0.122193</td>
-      <td>0.066879</td>
-      <td>0.161867</td>
-      <td>0.134879</td>
-      <td>0.340832</td>
+      <td>0.172592</td>
+      <td>0.125003</td>
+      <td>0.066935</td>
+      <td>0.162030</td>
+      <td>0.136496</td>
+      <td>0.336944</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.189628</td>
-      <td>0.122011</td>
-      <td>0.063924</td>
-      <td>0.163806</td>
-      <td>0.118613</td>
-      <td>0.342017</td>
+      <td>0.180437</td>
+      <td>0.124695</td>
+      <td>0.063153</td>
+      <td>0.161781</td>
+      <td>0.124612</td>
+      <td>0.345322</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.146307</td>
-      <td>0.139012</td>
-      <td>0.077630</td>
-      <td>0.170284</td>
-      <td>0.071027</td>
-      <td>0.395741</td>
+      <td>0.146080</td>
+      <td>0.138217</td>
+      <td>0.077622</td>
+      <td>0.169295</td>
+      <td>0.069454</td>
+      <td>0.399331</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.166607</td>
-      <td>0.133140</td>
-      <td>0.072732</td>
-      <td>0.159727</td>
-      <td>0.111422</td>
-      <td>0.356372</td>
+      <td>0.167734</td>
+      <td>0.131724</td>
+      <td>0.072272</td>
+      <td>0.157618</td>
+      <td>0.111277</td>
+      <td>0.359375</td>
     </tr>
     <tr>
       <th>...</th>
@@ -3060,48 +3056,48 @@ forceTheme('sk-container-id-2');</script></body></div></div>
     </tr>
     <tr>
       <th>3080</th>
-      <td>0.099314</td>
-      <td>0.056185</td>
-      <td>0.143100</td>
-      <td>0.045828</td>
-      <td>0.592708</td>
-      <td>0.062865</td>
+      <td>0.097533</td>
+      <td>0.054018</td>
+      <td>0.142989</td>
+      <td>0.048853</td>
+      <td>0.594435</td>
+      <td>0.062173</td>
     </tr>
     <tr>
       <th>3081</th>
-      <td>0.088293</td>
-      <td>0.067453</td>
-      <td>0.139627</td>
-      <td>0.227565</td>
-      <td>0.442186</td>
-      <td>0.034876</td>
+      <td>0.088540</td>
+      <td>0.065023</td>
+      <td>0.140748</td>
+      <td>0.225375</td>
+      <td>0.444135</td>
+      <td>0.036179</td>
     </tr>
     <tr>
       <th>3082</th>
-      <td>0.101723</td>
-      <td>0.190659</td>
-      <td>0.173942</td>
-      <td>0.335706</td>
-      <td>0.063783</td>
-      <td>0.134187</td>
+      <td>0.106934</td>
+      <td>0.192699</td>
+      <td>0.175411</td>
+      <td>0.332629</td>
+      <td>0.061461</td>
+      <td>0.130866</td>
     </tr>
     <tr>
       <th>3083</th>
-      <td>0.136217</td>
-      <td>0.164555</td>
-      <td>0.158056</td>
-      <td>0.363580</td>
-      <td>0.047310</td>
-      <td>0.130281</td>
+      <td>0.125044</td>
+      <td>0.164107</td>
+      <td>0.158275</td>
+      <td>0.364333</td>
+      <td>0.062326</td>
+      <td>0.125916</td>
     </tr>
     <tr>
       <th>3084</th>
-      <td>0.028864</td>
-      <td>0.100108</td>
-      <td>0.098761</td>
-      <td>0.224582</td>
-      <td>0.430143</td>
-      <td>0.117543</td>
+      <td>0.030160</td>
+      <td>0.095751</td>
+      <td>0.099376</td>
+      <td>0.225780</td>
+      <td>0.430543</td>
+      <td>0.118391</td>
     </tr>
   </tbody>
 </table>
@@ -3113,7 +3109,6 @@ forceTheme('sk-container-id-2');</script></body></div></div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gwgb_leave</span> <span class="o">=</span> <span class="n">GWGradientBoostingClassifier</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
     <span class="n">bandwidth</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">leave_out</span><span class="o">=</span><span class="mf">.2</span>
@@ -3121,6 +3116,7 @@ forceTheme('sk-container-id-2');</script></body></div></div>
 <span class="n">gwgb_leave</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">X</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 </div>
@@ -3676,19 +3672,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-3" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWGradientBoostingClassifier(bandwidth=250,
-                             geometry=0          POINT (82374.171 2869835.025)
-1       POINT (-1666267.814 3025996.603)
-2        POINT (-1618645.796 3012447.96)
-3       POINT (-1751938.544 3053013.371)
-4       POINT (-1576454.985 3002625.267)
-                      ...               
-3080    POINT (-1658725.535 1280845.161)
-3081        POINT (-1089589 1376092.326)
-3082     POINT (1700687.417 1750877.094)
-3083     POINT (1588266.678 1896903.045)
-3084    POINT (-1153940.634 2574551.428)
-Name: point, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox" checked><label for="sk-estimator-id-3" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWGradientBoostingClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-3" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWGradientBoostingClassifier(bandwidth=250)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox" checked><label for="sk-estimator-id-3" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWGradientBoostingClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -3732,16 +3716,6 @@ Name: point, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment, pl
             ></i></td>
             <td class="param">include_focal</td>
             <td class="value">False</td>
-        </tr>
-    
-
-        <tr class="user-set">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('geometry',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">geometry</td>
-            <td class="value">0          PO...type: geometry</td>
         </tr>
     
 
@@ -3812,6 +3786,46 @@ Name: point, Length: 3085, dtype: geometry)</pre><b>In a Jupyter environment, pl
             ></i></td>
             <td class="param">batch_size</td>
             <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('min_proportion',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">min_proportion</td>
+            <td class="value">0.2</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('undersample',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">undersample</td>
+            <td class="value">False</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('random_state',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">random_state</td>
+            <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('verbose',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">verbose</td>
+            <td class="value">False</td>
         </tr>
     
                   </tbody>
@@ -3942,7 +3956,7 @@ forceTheme('sk-container-id-3');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7502559652928417
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7508459869848156
 </code></pre></div>
 </div>
 </div>
@@ -3959,17 +3973,20 @@ forceTheme('sk-container-id-3');</script></body></div></div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gwrf_reg</span> <span class="o">=</span> <span class="n">GWRandomForestRegressor</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
     <span class="n">bandwidth</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">gwrf_reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y_reg</span><span class="p">)</span>
+<span class="n">gwrf_reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span>
+    <span class="n">y_reg</span><span class="p">,</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
+<span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><style>#sk-container-id-2 {
+<div class="output text_html"><style>#sk-container-id-4 {
   /* Definition of color scheme common for light and dark mode */
   --sklearn-color-text: #000;
   --sklearn-color-text-muted: #666;
@@ -3986,7 +4003,7 @@ forceTheme('sk-container-id-3');</script></body></div></div>
   --sklearn-color-fitted-level-3: cornflowerblue;
 }
 
-#sk-container-id-2.light {
+#sk-container-id-4.light {
   /* Specific color for light theme */
   --sklearn-color-text-on-default-background: black;
   --sklearn-color-background: white;
@@ -3994,22 +4011,22 @@ forceTheme('sk-container-id-3');</script></body></div></div>
   --sklearn-color-icon: #696969;
 }
 
-#sk-container-id-2.dark {
+#sk-container-id-4.dark {
   --sklearn-color-text-on-default-background: white;
   --sklearn-color-background: #111;
   --sklearn-color-border-box: white;
   --sklearn-color-icon: #878787;
 }
 
-#sk-container-id-2 {
+#sk-container-id-4 {
   color: var(--sklearn-color-text);
 }
 
-#sk-container-id-2 pre {
+#sk-container-id-4 pre {
   padding: 0;
 }
 
-#sk-container-id-2 input.sk-hidden--visually {
+#sk-container-id-4 input.sk-hidden--visually {
   border: 0;
   clip: rect(1px 1px 1px 1px);
   clip: rect(1px, 1px, 1px, 1px);
@@ -4021,7 +4038,7 @@ forceTheme('sk-container-id-3');</script></body></div></div>
   width: 1px;
 }
 
-#sk-container-id-2 div.sk-dashed-wrapped {
+#sk-container-id-4 div.sk-dashed-wrapped {
   border: 1px dashed var(--sklearn-color-line);
   margin: 0 0.4em 0.5em 0.4em;
   box-sizing: border-box;
@@ -4029,7 +4046,7 @@ forceTheme('sk-container-id-3');</script></body></div></div>
   background-color: var(--sklearn-color-background);
 }
 
-#sk-container-id-2 div.sk-container {
+#sk-container-id-4 div.sk-container {
   /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
      but bootstrap.min.css set `[hidden] { display: none !important; }`
      so we also need the `!important` here to be able to override the
@@ -4039,7 +4056,7 @@ forceTheme('sk-container-id-3');</script></body></div></div>
   position: relative;
 }
 
-#sk-container-id-2 div.sk-text-repr-fallback {
+#sk-container-id-4 div.sk-text-repr-fallback {
   display: none;
 }
 
@@ -4055,14 +4072,14 @@ div.sk-item {
 
 /* Parallel-specific style estimator block */
 
-#sk-container-id-2 div.sk-parallel-item::after {
+#sk-container-id-4 div.sk-parallel-item::after {
   content: "";
   width: 100%;
   border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
   flex-grow: 1;
 }
 
-#sk-container-id-2 div.sk-parallel {
+#sk-container-id-4 div.sk-parallel {
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -4070,28 +4087,28 @@ div.sk-item {
   position: relative;
 }
 
-#sk-container-id-2 div.sk-parallel-item {
+#sk-container-id-4 div.sk-parallel-item {
   display: flex;
   flex-direction: column;
 }
 
-#sk-container-id-2 div.sk-parallel-item:first-child::after {
+#sk-container-id-4 div.sk-parallel-item:first-child::after {
   align-self: flex-end;
   width: 50%;
 }
 
-#sk-container-id-2 div.sk-parallel-item:last-child::after {
+#sk-container-id-4 div.sk-parallel-item:last-child::after {
   align-self: flex-start;
   width: 50%;
 }
 
-#sk-container-id-2 div.sk-parallel-item:only-child::after {
+#sk-container-id-4 div.sk-parallel-item:only-child::after {
   width: 0;
 }
 
 /* Serial-specific style estimator block */
 
-#sk-container-id-2 div.sk-serial {
+#sk-container-id-4 div.sk-serial {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -4109,14 +4126,14 @@ clickable and can be expanded/collapsed.
 
 /* Pipeline and ColumnTransformer style (default) */
 
-#sk-container-id-2 div.sk-toggleable {
+#sk-container-id-4 div.sk-toggleable {
   /* Default theme specific background. It is overwritten whether we have a
   specific estimator or a Pipeline/ColumnTransformer */
   background-color: var(--sklearn-color-background);
 }
 
 /* Toggleable label */
-#sk-container-id-2 label.sk-toggleable__label {
+#sk-container-id-4 label.sk-toggleable__label {
   cursor: pointer;
   display: flex;
   width: 100%;
@@ -4129,13 +4146,13 @@ clickable and can be expanded/collapsed.
   gap: 0.5em;
 }
 
-#sk-container-id-2 label.sk-toggleable__label .caption {
+#sk-container-id-4 label.sk-toggleable__label .caption {
   font-size: 0.6rem;
   font-weight: lighter;
   color: var(--sklearn-color-text-muted);
 }
 
-#sk-container-id-2 label.sk-toggleable__label-arrow:before {
+#sk-container-id-4 label.sk-toggleable__label-arrow:before {
   /* Arrow on the left of the label */
   content: "▸";
   float: left;
@@ -4143,25 +4160,25 @@ clickable and can be expanded/collapsed.
   color: var(--sklearn-color-icon);
 }
 
-#sk-container-id-2 label.sk-toggleable__label-arrow:hover:before {
+#sk-container-id-4 label.sk-toggleable__label-arrow:hover:before {
   color: var(--sklearn-color-text);
 }
 
 /* Toggleable content - dropdown */
 
-#sk-container-id-2 div.sk-toggleable__content {
+#sk-container-id-4 div.sk-toggleable__content {
   display: none;
   text-align: left;
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-2 div.sk-toggleable__content.fitted {
+#sk-container-id-4 div.sk-toggleable__content.fitted {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-2 div.sk-toggleable__content pre {
+#sk-container-id-4 div.sk-toggleable__content pre {
   margin: 0.2em;
   border-radius: 0.25em;
   color: var(--sklearn-color-text);
@@ -4169,78 +4186,78 @@ clickable and can be expanded/collapsed.
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-2 div.sk-toggleable__content.fitted pre {
+#sk-container-id-4 div.sk-toggleable__content.fitted pre {
   /* unfitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
-#sk-container-id-2 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+#sk-container-id-4 input.sk-toggleable__control:checked~div.sk-toggleable__content {
   /* Expand drop-down */
   display: block;
   width: 100%;
   overflow: visible;
 }
 
-#sk-container-id-2 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+#sk-container-id-4 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
   content: "▾";
 }
 
 /* Pipeline/ColumnTransformer-specific style */
 
-#sk-container-id-2 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-4 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-2 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-4 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
 /* Estimator-specific style */
 
 /* Colorize estimator box */
-#sk-container-id-2 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-4 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-2 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+#sk-container-id-4 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
-#sk-container-id-2 div.sk-label label.sk-toggleable__label,
-#sk-container-id-2 div.sk-label label {
+#sk-container-id-4 div.sk-label label.sk-toggleable__label,
+#sk-container-id-4 div.sk-label label {
   /* The background is the default theme color */
   color: var(--sklearn-color-text-on-default-background);
 }
 
 /* On hover, darken the color of the background */
-#sk-container-id-2 div.sk-label:hover label.sk-toggleable__label {
+#sk-container-id-4 div.sk-label:hover label.sk-toggleable__label {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
 /* Label box, darken color on hover, fitted */
-#sk-container-id-2 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+#sk-container-id-4 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
   color: var(--sklearn-color-text);
   background-color: var(--sklearn-color-fitted-level-2);
 }
 
 /* Estimator label */
 
-#sk-container-id-2 div.sk-label label {
+#sk-container-id-4 div.sk-label label {
   font-family: monospace;
   font-weight: bold;
   line-height: 1.2em;
 }
 
-#sk-container-id-2 div.sk-label-container {
+#sk-container-id-4 div.sk-label-container {
   text-align: center;
 }
 
 /* Estimator-specific */
-#sk-container-id-2 div.sk-estimator {
+#sk-container-id-4 div.sk-estimator {
   font-family: monospace;
   border: 1px dotted var(--sklearn-color-border-box);
   border-radius: 0.25em;
@@ -4250,18 +4267,18 @@ clickable and can be expanded/collapsed.
   background-color: var(--sklearn-color-unfitted-level-0);
 }
 
-#sk-container-id-2 div.sk-estimator.fitted {
+#sk-container-id-4 div.sk-estimator.fitted {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-0);
 }
 
 /* on hover */
-#sk-container-id-2 div.sk-estimator:hover {
+#sk-container-id-4 div.sk-estimator:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-2);
 }
 
-#sk-container-id-2 div.sk-estimator.fitted:hover {
+#sk-container-id-4 div.sk-estimator.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-2);
 }
@@ -4352,7 +4369,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 
 /* "?"-specific style due to the `<a>` HTML tag */
 
-#sk-container-id-2 a.estimator_doc_link {
+#sk-container-id-4 a.estimator_doc_link {
   float: right;
   font-size: 1rem;
   line-height: 1em;
@@ -4367,7 +4384,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   border: var(--sklearn-color-unfitted-level-1) 1pt solid;
 }
 
-#sk-container-id-2 a.estimator_doc_link.fitted {
+#sk-container-id-4 a.estimator_doc_link.fitted {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-0);
   border: var(--sklearn-color-fitted-level-1) 1pt solid;
@@ -4375,14 +4392,14 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 }
 
 /* On hover */
-#sk-container-id-2 a.estimator_doc_link:hover {
+#sk-container-id-4 a.estimator_doc_link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
   color: var(--sklearn-color-background);
   text-decoration: none;
 }
 
-#sk-container-id-2 a.estimator_doc_link.fitted:hover {
+#sk-container-id-4 a.estimator_doc_link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
 }
@@ -4519,20 +4536,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWRandomForestRegressor(bandwidth=250,
-                        geometry=0          POINT (82374.171 2869835.025)
-1       POINT (-1666267.814 3025996.603)
-2        POINT (-1618645.796 3012447.96)
-3       POINT (-1751938.544 3053013.371)
-4       POINT (-1576454.985 3002625.267)
-                      ...               
-3080    POINT (-1658725.535 1280845.161)
-3081        POINT (-1089589 1376092.326)
-3082     POINT (1700687.417 1750877.094)
-3083     POINT (1588266.678 1896903.045)
-3084    POINT (-1153940.634 2574551.428)
-Length: 3085, dtype: geometry,
-                        random_state=0)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWRandomForestRegressor</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-4" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWRandomForestRegressor(bandwidth=250, random_state=0)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox" checked><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWRandomForestRegressor</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -4576,16 +4580,6 @@ Length: 3085, dtype: geometry,
             ></i></td>
             <td class="param">include_focal</td>
             <td class="value">True</td>
-        </tr>
-    
-
-        <tr class="user-set">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('geometry',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">geometry</td>
-            <td class="value">0          PO...type: geometry</td>
         </tr>
     
 
@@ -4797,7 +4791,7 @@ function forceTheme(elementId) {
     }
 }
 
-forceTheme('sk-container-id-2');</script></body></div></div>
+forceTheme('sk-container-id-4');</script></body></div></div>
 </div>
 <p>The regressor provides local R² values showing how well the model fits in each neighborhood:</p>
 <div class="cell docutils container">
@@ -4807,11 +4801,11 @@ forceTheme('sk-container-id-2');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0    0.870446
-1    0.900710
-2    0.898690
-3    0.903965
-4    0.896732
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0    0.844229
+1    0.900035
+2    0.897754
+3    0.903746
+4    0.895589
 dtype: float64
 </code></pre></div>
 </div>
@@ -4824,7 +4818,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0647d13c65f649f7a1463c17a7540a5013c0f3fe10e858c7d5ceda0fec45ef28.png" src="_images/0647d13c65f649f7a1463c17a7540a5013c0f3fe10e858c7d5ceda0fec45ef28.png" />
+<img alt="_images/286864126f55e28791291b36bd7d9b588cca255f1a650baeee2c42cf690f16e3.png" src="_images/286864126f55e28791291b36bd7d9b588cca255f1a650baeee2c42cf690f16e3.png" />
 </div>
 </div>
 <h3 id="out-of-bag-performance">Out-of-bag performance<a class="headerlink" href="#out-of-bag-performance" title="Link to this heading">¶</a></h3>
@@ -4838,7 +4832,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.6186674126881624
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.6184801621415067
 </code></pre></div>
 </div>
 </div>
@@ -4881,48 +4875,48 @@ dtype: float64
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.044745</td>
-      <td>0.059927</td>
-      <td>0.515555</td>
-      <td>0.300816</td>
-      <td>0.042056</td>
-      <td>0.036901</td>
+      <td>0.047523</td>
+      <td>0.069601</td>
+      <td>0.518324</td>
+      <td>0.279616</td>
+      <td>0.039573</td>
+      <td>0.045363</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.053556</td>
-      <td>0.068905</td>
-      <td>0.180133</td>
-      <td>0.317230</td>
-      <td>0.202321</td>
-      <td>0.177855</td>
+      <td>0.057812</td>
+      <td>0.068729</td>
+      <td>0.184327</td>
+      <td>0.317780</td>
+      <td>0.201082</td>
+      <td>0.170270</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.060375</td>
-      <td>0.064325</td>
-      <td>0.185509</td>
-      <td>0.304085</td>
-      <td>0.172433</td>
-      <td>0.213274</td>
+      <td>0.053641</td>
+      <td>0.074100</td>
+      <td>0.187562</td>
+      <td>0.330629</td>
+      <td>0.187967</td>
+      <td>0.166102</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.056823</td>
-      <td>0.058970</td>
-      <td>0.176121</td>
-      <td>0.304218</td>
-      <td>0.192173</td>
-      <td>0.211697</td>
+      <td>0.055435</td>
+      <td>0.065671</td>
+      <td>0.182337</td>
+      <td>0.316004</td>
+      <td>0.193458</td>
+      <td>0.187095</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.059246</td>
-      <td>0.067614</td>
-      <td>0.185060</td>
-      <td>0.325771</td>
-      <td>0.170275</td>
-      <td>0.192034</td>
+      <td>0.057427</td>
+      <td>0.067187</td>
+      <td>0.190193</td>
+      <td>0.346292</td>
+      <td>0.163694</td>
+      <td>0.175207</td>
     </tr>
   </tbody>
 </table>
@@ -4935,7 +4929,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ef5c199bd0ab5f7af419f8885b0b1e6b8e17d908a635db5a8df2616895e90eec.png" src="_images/ef5c199bd0ab5f7af419f8885b0b1e6b8e17d908a635db5a8df2616895e90eec.png" />
+<img alt="_images/33050171b541dee2f3fdec3c2412ef53be2f7120632ece921575332533649e77.png" src="_images/33050171b541dee2f3fdec3c2412ef53be2f7120632ece921575332533649e77.png" />
 </div>
 </div>
 

@@ -21,7 +21,7 @@
     
     
       
-        <title>Prediction - gwlearn 0.0.2.dev9 documentation</title>
+        <title>Prediction - gwlearn 0.0.2.dev10 documentation</title>
       
     
     
@@ -88,7 +88,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -99,7 +99,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.2.dev9 documentation
+            gwlearn 0.0.2.dev10 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -237,10 +237,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.2.dev9 documentation
+    gwlearn 0.0.2.dev10 documentation
   </label>
   
     <div class="md-nav__source">
@@ -903,7 +903,6 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gwrf</span> <span class="o">=</span> <span class="n">GWLogisticRegression</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">geom_train</span><span class="p">,</span>
     <span class="n">bandwidth</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">keep_models</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -911,6 +910,7 @@
 <span class="n">gwrf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">X_train</span><span class="p">,</span>
     <span class="n">y_train</span><span class="p">,</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">geom_train</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 </div>
@@ -1466,21 +1466,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLogisticRegression(bandwidth=250,
-                     geometry=FIPS
-35003    POINT (-1131648.837 1291918.881)
-48351        POINT (215543.818 852338.42)
-38075     POINT (-421698.566 2870062.156)
-18071       POINT (853578.73 1808451.447)
-13075       POINT (1191866.64 980475.052)
-                       ...               
-54019     POINT (1292912.552 1768809.795)
-29161      POINT (367238.724 1659729.842)
-06105    POINT (-2246906.966 2274084.564)
-25013     POINT (1903945.621 2362113.699)
-34017     POINT (1819341.888 2180779.785)
-Name: point, Length: 2776, dtype: geometry,
-                     keep_models=True)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLogisticRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLogisticRegression(bandwidth=250, keep_models=True)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLogisticRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -1524,17 +1510,6 @@ Name: point, Length: 2776, dtype: geometry,
             ></i></td>
             <td class="param">include_focal</td>
             <td class="value">True</td>
-        </tr>
-    
-
-        <tr class="user-set">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('geometry',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">geometry</td>
-            <td class="value">FIPS
-35003   ...type: geometry</td>
         </tr>
     
 
@@ -1817,29 +1792,29 @@ forceTheme('sk-container-id-1');</script></body></div></div>
   </thead>
   <tbody>
     <tr>
-      <th>37033</th>
-      <td>0.204040</td>
-      <td>0.795960</td>
+      <th>40029</th>
+      <td>0.856428</td>
+      <td>0.143572</td>
     </tr>
     <tr>
-      <th>47167</th>
-      <td>0.002960</td>
-      <td>0.997040</td>
+      <th>01095</th>
+      <td>0.200643</td>
+      <td>0.799357</td>
     </tr>
     <tr>
-      <th>05145</th>
-      <td>0.638361</td>
-      <td>0.361639</td>
+      <th>13005</th>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>42101</th>
-      <td>0.000000</td>
-      <td>1.000000</td>
+      <th>55135</th>
+      <td>0.941676</td>
+      <td>0.058324</td>
     </tr>
     <tr>
-      <th>24045</th>
-      <td>0.327287</td>
-      <td>0.672713</td>
+      <th>26101</th>
+      <td>0.797047</td>
+      <td>0.202953</td>
     </tr>
     <tr>
       <th>...</th>
@@ -1847,29 +1822,29 @@ forceTheme('sk-container-id-1');</script></body></div></div>
       <td>...</td>
     </tr>
     <tr>
-      <th>48031</th>
-      <td>0.629890</td>
-      <td>0.370110</td>
+      <th>18061</th>
+      <td>0.874506</td>
+      <td>0.125494</td>
     </tr>
     <tr>
-      <th>48003</th>
-      <td>0.745356</td>
-      <td>0.254644</td>
+      <th>51127</th>
+      <td>0.174828</td>
+      <td>0.825172</td>
     </tr>
     <tr>
-      <th>42051</th>
-      <td>0.042062</td>
-      <td>0.957938</td>
+      <th>06073</th>
+      <td>0.000000</td>
+      <td>1.000000</td>
     </tr>
     <tr>
-      <th>13285</th>
-      <td>0.002619</td>
-      <td>0.997381</td>
+      <th>37163</th>
+      <td>0.016462</td>
+      <td>0.983538</td>
     </tr>
     <tr>
-      <th>23015</th>
-      <td>0.420188</td>
-      <td>0.579812</td>
+      <th>21105</th>
+      <td>0.381693</td>
+      <td>0.618307</td>
     </tr>
   </tbody>
 </table>
@@ -1884,7 +1859,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/96938a00246a234aa415125d940122c7fdfd1903c46983970c69b36f49a4a4c3.png" src="_images/96938a00246a234aa415125d940122c7fdfd1903c46983970c69b36f49a4a4c3.png" />
+<img alt="_images/38ffb1fe2c21e84986515652d1125d691d938be26dd360e356d658fcea0fd5f4.png" src="_images/38ffb1fe2c21e84986515652d1125d691d938be26dd360e356d658fcea0fd5f4.png" />
 </div>
 </div>
 <p>The missing values have been linked to models that were not fitted. You can check all of those visually by plotting the focal prediction.</p>
@@ -1895,7 +1870,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a7c2a87391d52ca5c3a9f92c918444f9155dd5839b3dbce501e65c6922d4c119.png" src="_images/a7c2a87391d52ca5c3a9f92c918444f9155dd5839b3dbce501e65c6922d4c119.png" />
+<img alt="_images/af4f9960c3153ed56584487e598cb08d259e155607201fb721ad679b9e6352e2.png" src="_images/af4f9960c3153ed56584487e598cb08d259e155607201fb721ad679b9e6352e2.png" />
 </div>
 </div>
 <p>Filter it out and measure the performance on the left-out sample.</p>
@@ -1910,7 +1885,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7949790794979079
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7434782608695653
 </code></pre></div>
 </div>
 </div>
@@ -1962,29 +1937,29 @@ forceTheme('sk-container-id-1');</script></body></div></div>
   </thead>
   <tbody>
     <tr>
-      <th>36121</th>
-      <td>4.219741e-01</td>
-      <td>0.578026</td>
+      <th>40029</th>
+      <td>0.856335</td>
+      <td>0.143665</td>
     </tr>
     <tr>
-      <th>55127</th>
-      <td>9.340900e-01</td>
-      <td>0.065910</td>
+      <th>01095</th>
+      <td>0.166166</td>
+      <td>0.833834</td>
     </tr>
     <tr>
-      <th>42025</th>
-      <td>5.723710e-01</td>
-      <td>0.427629</td>
+      <th>13005</th>
+      <td>0.194031</td>
+      <td>0.805969</td>
     </tr>
     <tr>
-      <th>13023</th>
-      <td>8.661357e-01</td>
-      <td>0.133864</td>
+      <th>55135</th>
+      <td>0.915510</td>
+      <td>0.084490</td>
     </tr>
     <tr>
-      <th>48369</th>
-      <td>8.473366e-01</td>
-      <td>0.152663</td>
+      <th>26101</th>
+      <td>0.841802</td>
+      <td>0.158198</td>
     </tr>
     <tr>
       <th>...</th>
@@ -1992,29 +1967,29 @@ forceTheme('sk-container-id-1');</script></body></div></div>
       <td>...</td>
     </tr>
     <tr>
-      <th>23027</th>
-      <td>4.738930e-01</td>
-      <td>0.526107</td>
+      <th>18061</th>
+      <td>0.833033</td>
+      <td>0.166967</td>
     </tr>
     <tr>
-      <th>48303</th>
-      <td>1.080369e-07</td>
+      <th>51127</th>
+      <td>0.199651</td>
+      <td>0.800349</td>
+    </tr>
+    <tr>
+      <th>06073</th>
+      <td>0.000000</td>
       <td>1.000000</td>
     </tr>
     <tr>
-      <th>12023</th>
-      <td>1.303278e-03</td>
-      <td>0.998697</td>
+      <th>37163</th>
+      <td>0.021212</td>
+      <td>0.978788</td>
     </tr>
     <tr>
-      <th>24047</th>
-      <td>1.166930e-01</td>
-      <td>0.883307</td>
-    </tr>
-    <tr>
-      <th>21159</th>
-      <td>1.561735e-01</td>
-      <td>0.843826</td>
+      <th>21105</th>
+      <td>0.435497</td>
+      <td>0.564503</td>
     </tr>
   </tbody>
 </table>
@@ -2029,7 +2004,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4b03dda38db554176025836986dcb11edb2155086d3bd954c7d1afb48d1e6ba4.png" src="_images/4b03dda38db554176025836986dcb11edb2155086d3bd954c7d1afb48d1e6ba4.png" />
+<img alt="_images/b4e1ef4507fcea190dcf55c3b64c3dbdcf92f0cc6b9d8577f5b047c052d4294e.png" src="_images/b4e1ef4507fcea190dcf55c3b64c3dbdcf92f0cc6b9d8577f5b047c052d4294e.png" />
 </div>
 </div>
 <p>This is one of the benefits of the ensemble prediction. Another is theoretical spatial robustness. Nevertheless, the actual metrics are typically very similar between the models.</p>
@@ -2043,7 +2018,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.8474025974025974
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7908496732026143
 </code></pre></div>
 </div>
 </div>
@@ -2087,29 +2062,29 @@ forceTheme('sk-container-id-1');</script></body></div></div>
   </thead>
   <tbody>
     <tr>
-      <th>37033</th>
-      <td>0.204062</td>
-      <td>0.795938</td>
+      <th>40029</th>
+      <td>8.312543e-01</td>
+      <td>0.168746</td>
     </tr>
     <tr>
-      <th>47167</th>
-      <td>0.011384</td>
-      <td>0.988616</td>
+      <th>01095</th>
+      <td>1.715358e-01</td>
+      <td>0.828464</td>
     </tr>
     <tr>
-      <th>05145</th>
-      <td>0.634969</td>
-      <td>0.365031</td>
+      <th>13005</th>
+      <td>3.604888e-01</td>
+      <td>0.639511</td>
     </tr>
     <tr>
-      <th>42101</th>
-      <td>0.000000</td>
-      <td>1.000000</td>
+      <th>55135</th>
+      <td>9.231339e-01</td>
+      <td>0.076866</td>
     </tr>
     <tr>
-      <th>24045</th>
-      <td>0.290616</td>
-      <td>0.709384</td>
+      <th>26101</th>
+      <td>8.015589e-01</td>
+      <td>0.198441</td>
     </tr>
     <tr>
       <th>...</th>
@@ -2117,29 +2092,29 @@ forceTheme('sk-container-id-1');</script></body></div></div>
       <td>...</td>
     </tr>
     <tr>
-      <th>48031</th>
-      <td>0.588148</td>
-      <td>0.411852</td>
+      <th>18061</th>
+      <td>8.699378e-01</td>
+      <td>0.130062</td>
     </tr>
     <tr>
-      <th>48003</th>
-      <td>0.721271</td>
-      <td>0.278729</td>
+      <th>51127</th>
+      <td>2.135534e-01</td>
+      <td>0.786447</td>
     </tr>
     <tr>
-      <th>42051</th>
-      <td>0.056213</td>
-      <td>0.943787</td>
+      <th>06073</th>
+      <td>1.085322e-10</td>
+      <td>1.000000</td>
     </tr>
     <tr>
-      <th>13285</th>
-      <td>0.002195</td>
-      <td>0.997805</td>
+      <th>37163</th>
+      <td>1.423262e-02</td>
+      <td>0.985767</td>
     </tr>
     <tr>
-      <th>23015</th>
-      <td>0.499150</td>
-      <td>0.500850</td>
+      <th>21105</th>
+      <td>3.967436e-01</td>
+      <td>0.603256</td>
     </tr>
   </tbody>
 </table>
@@ -2156,7 +2131,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.8187702265372169
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7896440129449838
 </code></pre></div>
 </div>
 </div>
@@ -2187,7 +2162,6 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gwrf_reg</span> <span class="o">=</span> <span class="n">GWLinearRegression</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">geom_train_reg</span><span class="p">,</span>
     <span class="n">bandwidth</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">keep_models</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -2195,6 +2169,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 <span class="n">gwrf_reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">X_train_reg</span><span class="p">,</span>
     <span class="n">y_train_reg</span><span class="p">,</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">geom_train_reg</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 </div>
@@ -2750,21 +2725,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLinearRegression(bandwidth=250,
-                   geometry=FIPS
-48005        POINT (129880.19 911766.583)
-06021    POINT (-2212037.741 2151301.959)
-06093    POINT (-2165220.928 2370376.655)
-19157      POINT (286075.006 2085516.869)
-53033    POINT (-1931884.497 2981305.084)
-                       ...               
-20033     POINT (-287577.792 1576667.845)
-29175      POINT (297604.304 1833993.506)
-39141       POINT (1101533.1 1883572.176)
-24009     POINT (1663727.596 1895694.295)
-31073     POINT (-319662.283 1956527.582)
-Name: point, Length: 2776, dtype: geometry,
-                   keep_models=True)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLinearRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLinearRegression(bandwidth=250, keep_models=True)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLinearRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -2808,17 +2769,6 @@ Name: point, Length: 2776, dtype: geometry,
             ></i></td>
             <td class="param">include_focal</td>
             <td class="value">True</td>
-        </tr>
-    
-
-        <tr class="user-set">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('geometry',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">geometry</td>
-            <td class="value">FIPS
-48005   ...type: geometry</td>
         </tr>
     
 

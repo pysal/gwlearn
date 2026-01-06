@@ -21,7 +21,7 @@
     
     
       
-        <title>Using custom graphs - gwlearn 0.0.2.dev9 documentation</title>
+        <title>Using custom graphs - gwlearn 0.0.2.dev10 documentation</title>
       
     
     
@@ -83,7 +83,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -94,7 +94,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.2.dev9 documentation
+            gwlearn 0.0.2.dev10 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -232,10 +232,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.2.dev9 documentation
+    gwlearn 0.0.2.dev10 documentation
   </label>
   
     <div class="md-nav__source">
@@ -734,7 +734,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>/Users/martin/dev/pandarm/pandarm/loaders/osm.py:68: UserWarning: GeoDataFrame is stored in coordinate system PROJCS[&quot;Lambert_Conformal_Conic&quot;,GEOGCS[&quot;GCS_GRS 1980(IUGG, 1980)&quot;,DATUM[&quot;unknown&quot;,SPHEROID[&quot;GRS80&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]],PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;],PARAMETER[&quot;latitude_of_origin&quot;,38],PARAMETER[&quot;central_meridian&quot;,-82.5],PARAMETER[&quot;standard_parallel_1&quot;,40.0333333333333],PARAMETER[&quot;standard_parallel_2&quot;,38.7333333333333],PARAMETER[&quot;false_easting&quot;,1968500],PARAMETER[&quot;false_northing&quot;,0],UNIT[&quot;US survey foot&quot;,0.304800609601219,AUTHORITY[&quot;EPSG&quot;,&quot;9003&quot;]],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH]] so the pandana.Network will also be stored in this system
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/pandarm/loaders/osm.py:68: UserWarning: GeoDataFrame is stored in coordinate system PROJCS[&quot;Lambert_Conformal_Conic&quot;,GEOGCS[&quot;GCS_GRS 1980(IUGG, 1980)&quot;,DATUM[&quot;unknown&quot;,SPHEROID[&quot;GRS80&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]],PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;],PARAMETER[&quot;latitude_of_origin&quot;,38],PARAMETER[&quot;central_meridian&quot;,-82.5],PARAMETER[&quot;standard_parallel_1&quot;,40.0333333333333],PARAMETER[&quot;standard_parallel_2&quot;,38.7333333333333],PARAMETER[&quot;false_easting&quot;,1968500],PARAMETER[&quot;false_northing&quot;,0],UNIT[&quot;US survey foot&quot;,0.304800609601219,AUTHORITY[&quot;EPSG&quot;,&quot;9003&quot;]],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH]] so the pandana.Network will also be stored in this system
   warn(
 </code></pre></div>
 </div>
@@ -1501,16 +1501,6 @@ a.param-doc-link::before {
         </tr>
     
 
-        <tr class="default">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('geometry',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">geometry</td>
-            <td class="value">None</td>
-        </tr>
-    
-
         <tr class="user-set">
             <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('graph',
@@ -1543,6 +1533,16 @@ a.param-doc-link::before {
 
         <tr class="default">
             <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('strict',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">strict</td>
+            <td class="value">False</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('keep_models',
                           this.parentElement.nextElementSibling)"
             ></i></td>
@@ -1568,6 +1568,16 @@ a.param-doc-link::before {
             ></i></td>
             <td class="param">batch_size</td>
             <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('verbose',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">verbose</td>
+            <td class="value">False</td>
         </tr>
     
                   </tbody>

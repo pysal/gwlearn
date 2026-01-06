@@ -21,7 +21,7 @@
     
     
       
-        <title>Bandwidth search - gwlearn 0.0.2.dev9 documentation</title>
+        <title>Bandwidth search - gwlearn 0.0.2.dev10 documentation</title>
       
     
     
@@ -88,7 +88,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -99,7 +99,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.2.dev9 documentation
+            gwlearn 0.0.2.dev10 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -237,10 +237,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.2.dev9 documentation
+    gwlearn 0.0.2.dev10 documentation
   </label>
   
     <div class="md-nav__source">
@@ -814,8 +814,7 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">geodatasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_path</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">gwlearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">GWRandomForestClassifier</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">gwlearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">GWLinearRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gwlearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">GWLinearRegression</span><span class="p">,</span> <span class="n">GWLogisticRegression</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">gwlearn.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">BandwidthSearch</span>
 </code></pre></div>
 </div>
@@ -841,7 +840,6 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span> <span class="o">=</span> <span class="n">BandwidthSearch</span><span class="p">(</span>
     <span class="n">GWLinearRegression</span><span class="p">,</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">search_method</span><span class="o">=</span><span class="s2">&quot;interval&quot;</span><span class="p">,</span>
@@ -854,6 +852,7 @@
 <span class="n">search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">X</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 </div>
@@ -871,7 +870,7 @@ Bandwidth: 850.00, aicc: 16080.155
 Bandwidth: 950.00, aicc: 16126.986
 </code></pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x17f353bc0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x15e183c50&gt;
 </code></pre></div>
 </div>
 </div>
@@ -887,7 +886,7 @@ Bandwidth: 950.00, aicc: 16126.986
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;Axes: &gt;
 </code></pre></div>
 </div>
-<img alt="_images/64dbf3cace807d6c58c83c6e2c12a76db18e5131f54652f59067268a5f654160.png" src="_images/64dbf3cace807d6c58c83c6e2c12a76db18e5131f54652f59067268a5f654160.png" />
+<img alt="_images/d62011010720e09178624a0226f122e15a78037d599e4ee6f16bcbf13512000e.png" src="_images/d62011010720e09178624a0226f122e15a78037d599e4ee6f16bcbf13512000e.png" />
 </div>
 </div>
 <p>The optimal bandwidth is then the lowest one.</p>
@@ -909,7 +908,6 @@ Bandwidth: 950.00, aicc: 16126.986
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span> <span class="o">=</span> <span class="n">BandwidthSearch</span><span class="p">(</span>
     <span class="n">GWLinearRegression</span><span class="p">,</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">search_method</span><span class="o">=</span><span class="s2">&quot;golden_section&quot;</span><span class="p">,</span>
@@ -921,6 +919,7 @@ Bandwidth: 950.00, aicc: 16126.986
 <span class="n">search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">X</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 </div>
@@ -945,7 +944,7 @@ Bandwidth: 291893.95, score: 15579.458
 Bandwidth: 291100.94, score: 15579.438
 </code></pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x331d955b0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x168c03110&gt;
 </code></pre></div>
 </div>
 </div>
@@ -1106,8 +1105,7 @@ Bandwidth: 291100.94, score: 15579.438
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span> <span class="o">=</span> <span class="n">BandwidthSearch</span><span class="p">(</span>
-    <span class="n">GWRandomForestClassifier</span><span class="p">,</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
+    <span class="n">GWLogisticRegression</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">search_method</span><span class="o">=</span><span class="s2">&quot;interval&quot;</span><span class="p">,</span>
@@ -1121,24 +1119,25 @@ Bandwidth: 291100.94, score: 15579.438
 <span class="n">search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">X</span><span class="p">,</span>
     <span class="n">y</span> <span class="o">&gt;</span> <span class="n">y</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span>  <span class="c1"># simulate binary categorical variable</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 50.00, log_loss: 0.568
-Bandwidth: 150.00, log_loss: 0.550
-Bandwidth: 250.00, log_loss: 0.578
-Bandwidth: 350.00, log_loss: 0.617
-Bandwidth: 450.00, log_loss: 0.593
-Bandwidth: 550.00, log_loss: 0.553
-Bandwidth: 650.00, log_loss: 0.494
-Bandwidth: 750.00, log_loss: 0.524
-Bandwidth: 850.00, log_loss: 0.555
-Bandwidth: 950.00, log_loss: 0.571
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 50.00, log_loss: 0.274
+Bandwidth: 150.00, log_loss: 0.372
+Bandwidth: 250.00, log_loss: 0.397
+Bandwidth: 350.00, log_loss: 0.405
+Bandwidth: 450.00, log_loss: 0.400
+Bandwidth: 550.00, log_loss: 0.396
+Bandwidth: 650.00, log_loss: 0.391
+Bandwidth: 750.00, log_loss: 0.392
+Bandwidth: 850.00, log_loss: 0.387
+Bandwidth: 950.00, log_loss: 0.386
 </code></pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x30be6d370&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x175f26600&gt;
 </code></pre></div>
 </div>
 </div>
@@ -1179,82 +1178,82 @@ Bandwidth: 950.00, log_loss: 0.571
   <tbody>
     <tr>
       <th>50</th>
-      <td>NaN</td>
-      <td>14260.458748</td>
-      <td>47847.673185</td>
-      <td>0.568032</td>
-      <td>0.663533</td>
+      <td>2889.818542</td>
+      <td>2358.134113</td>
+      <td>5833.725640</td>
+      <td>0.273673</td>
+      <td>0.664830</td>
     </tr>
     <tr>
       <th>150</th>
-      <td>6152.053899</td>
-      <td>4482.927615</td>
-      <td>10277.629979</td>
-      <td>0.549784</td>
-      <td>0.727391</td>
+      <td>2206.259163</td>
+      <td>2148.244589</td>
+      <td>3527.004346</td>
+      <td>0.371802</td>
+      <td>0.726094</td>
     </tr>
     <tr>
       <th>250</th>
-      <td>3894.720134</td>
-      <td>3628.636942</td>
-      <td>6452.220177</td>
-      <td>0.577733</td>
-      <td>0.747164</td>
+      <td>2157.749410</td>
+      <td>2136.089862</td>
+      <td>3015.383346</td>
+      <td>0.397102</td>
+      <td>0.746840</td>
     </tr>
     <tr>
       <th>350</th>
-      <td>3624.008863</td>
-      <td>3543.537156</td>
-      <td>5240.691021</td>
-      <td>0.617262</td>
-      <td>0.784441</td>
+      <td>2200.114858</td>
+      <td>2188.636740</td>
+      <td>2856.824897</td>
+      <td>0.405179</td>
+      <td>0.783144</td>
     </tr>
     <tr>
       <th>450</th>
-      <td>3498.456652</td>
-      <td>3457.505985</td>
-      <td>4743.376262</td>
-      <td>0.593468</td>
-      <td>0.832415</td>
+      <td>2254.996420</td>
+      <td>2247.570704</td>
+      <td>2810.703657</td>
+      <td>0.400438</td>
+      <td>0.831767</td>
     </tr>
     <tr>
       <th>550</th>
-      <td>3303.210326</td>
-      <td>3278.050284</td>
-      <td>4322.854246</td>
-      <td>0.552747</td>
-      <td>0.864182</td>
+      <td>2278.686205</td>
+      <td>2273.488677</td>
+      <td>2758.682537</td>
+      <td>0.395771</td>
+      <td>0.863533</td>
     </tr>
     <tr>
       <th>650</th>
-      <td>3034.904706</td>
-      <td>3017.896184</td>
-      <td>3905.122425</td>
-      <td>0.493768</td>
-      <td>0.897245</td>
+      <td>2309.635433</td>
+      <td>2305.818659</td>
+      <td>2733.726039</td>
+      <td>0.390566</td>
+      <td>0.896921</td>
     </tr>
     <tr>
       <th>750</th>
-      <td>3258.804907</td>
-      <td>3246.121567</td>
-      <td>4034.695415</td>
-      <td>0.523635</td>
-      <td>0.930308</td>
+      <td>2386.715455</td>
+      <td>2383.696709</td>
+      <td>2775.134682</td>
+      <td>0.391591</td>
+      <td>0.932253</td>
     </tr>
     <tr>
       <th>850</th>
-      <td>3524.552076</td>
-      <td>3514.813454</td>
-      <td>4226.823882</td>
-      <td>0.555048</td>
-      <td>0.967585</td>
+      <td>2430.644557</td>
+      <td>2428.204092</td>
+      <td>2789.496584</td>
+      <td>0.386952</td>
+      <td>0.966613</td>
     </tr>
     <tr>
       <th>950</th>
-      <td>3705.116372</td>
-      <td>3697.267706</td>
-      <td>4352.457033</td>
-      <td>0.570866</td>
+      <td>2498.057834</td>
+      <td>2495.967664</td>
+      <td>2838.465899</td>
+      <td>0.386135</td>
       <td>1.000000</td>
     </tr>
   </tbody>
@@ -1272,7 +1271,7 @@ Bandwidth: 950.00, log_loss: 0.571
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;Axes: &gt;
 </code></pre></div>
 </div>
-<img alt="_images/956e732bf09586cc72e29d7429e5964c88842516ef394b90040099eb7754b7a1.png" src="_images/956e732bf09586cc72e29d7429e5964c88842516ef394b90040099eb7754b7a1.png" />
+<img alt="_images/84c6409c972b1cf7dcea667cf320070bfe93b53bbf996b1c830c04742e3146ff.png" src="_images/84c6409c972b1cf7dcea667cf320070bfe93b53bbf996b1c830c04742e3146ff.png" />
 </div>
 </div>
 <p>As a result, the optimal bandwidth is derived directly from it.</p>
@@ -1283,7 +1282,7 @@ Bandwidth: 950.00, log_loss: 0.571
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>np.int64(650)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>np.int64(50)
 </code></pre></div>
 </div>
 </div>

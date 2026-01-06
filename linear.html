@@ -21,7 +21,7 @@
     
     
       
-        <title>Linear models - gwlearn 0.0.2.dev9 documentation</title>
+        <title>Linear models - gwlearn 0.0.2.dev10 documentation</title>
       
     
     
@@ -88,7 +88,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -99,7 +99,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.2.dev9 documentation
+            gwlearn 0.0.2.dev10 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -237,10 +237,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.2.dev9 documentation
+    gwlearn 0.0.2.dev10 documentation
   </label>
   
     <div class="md-nav__source">
@@ -825,7 +825,6 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">adaptive</span> <span class="o">=</span> <span class="n">GWLinearRegression</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
     <span class="n">bandwidth</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;tricube&#39;</span>
@@ -833,6 +832,7 @@
 <span class="n">adaptive</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">gdf</span><span class="p">[[</span><span class="s1">&#39;Crm_prp&#39;</span><span class="p">,</span> <span class="s1">&#39;Litercy&#39;</span><span class="p">,</span> <span class="s1">&#39;Donatns&#39;</span><span class="p">,</span> <span class="s1">&#39;Lottery&#39;</span><span class="p">]],</span>
     <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;Suicids&quot;</span><span class="p">],</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
 <span class="p">)</span>
 </code></pre></div>
 </div>
@@ -1388,20 +1388,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLinearRegression(bandwidth=25,
-                   geometry=0     POINT (827911.875 2122906.5)
-1       POINT (691725.716 2496059)
-2     POINT (663520.408 2152677.5)
-3       POINT (908864.897 1915755)
-4     POINT (916568.259 1968489.5)
-                  ...             
-80      POINT (322806.903 2192566)
-81      POINT (456440.882 2181291)
-82     POINT (510125.65 2102842.5)
-83      POINT (901963.264 2362015)
-84       POINT (697522.96 2318253)
-Length: 85, dtype: geometry,
-                   kernel=&#x27;tricube&#x27;)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLinearRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLinearRegression(bandwidth=25, kernel=&#x27;tricube&#x27;)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLinearRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -1448,16 +1435,6 @@ Length: 85, dtype: geometry,
         </tr>
     
 
-        <tr class="user-set">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('geometry',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">geometry</td>
-            <td class="value">0     POINT (...type: geometry</td>
-        </tr>
-    
-
         <tr class="default">
             <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('graph',
@@ -1490,6 +1467,16 @@ Length: 85, dtype: geometry,
 
         <tr class="default">
             <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('strict',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">strict</td>
+            <td class="value">False</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('keep_models',
                           this.parentElement.nextElementSibling)"
             ></i></td>
@@ -1515,6 +1502,16 @@ Length: 85, dtype: geometry,
             ></i></td>
             <td class="param">batch_size</td>
             <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('verbose',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">verbose</td>
+            <td class="value">False</td>
         </tr>
     
                   </tbody>
@@ -1877,7 +1874,6 @@ Length: 85, dtype: float64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">binary</span> <span class="o">=</span> <span class="n">GWLogisticRegression</span><span class="p">(</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
     <span class="n">bandwidth</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span>
@@ -1885,15 +1881,12 @@ Length: 85, dtype: float64
 <span class="n">binary</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">gdf</span><span class="p">[[</span><span class="s1">&#39;Crm_prp&#39;</span><span class="p">,</span> <span class="s1">&#39;Litercy&#39;</span><span class="p">,</span> <span class="s1">&#39;Donatns&#39;</span><span class="p">,</span> <span class="s1">&#39;Lottery&#39;</span><span class="p">]],</span>
     <span class="n">y</span><span class="p">,</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
 <span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:1184: FutureWarning: &#39;n_jobs&#39; has no effect since 1.8 and will be removed in 1.10. You provided &#39;n_jobs=-1&#39;, please leave it unspecified.
-  warnings.warn(msg, category=FutureWarning)
-</code></pre></div>
-</div>
 <div class="output text_html"><style>#sk-container-id-2 {
   /* Definition of color scheme common for light and dark mode */
   --sklearn-color-text: #000;
@@ -2444,19 +2437,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLogisticRegression(bandwidth=25,
-                     geometry=0     POINT (827911.875 2122906.5)
-1       POINT (691725.716 2496059)
-2     POINT (663520.408 2152677.5)
-3       POINT (908864.897 1915755)
-4     POINT (916568.259 1968489.5)
-                  ...             
-80      POINT (322806.903 2192566)
-81      POINT (456440.882 2181291)
-82     POINT (510125.65 2102842.5)
-83      POINT (901963.264 2362015)
-84       POINT (697522.96 2318253)
-Length: 85, dtype: geometry)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLogisticRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLogisticRegression(bandwidth=25)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLogisticRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -2500,16 +2481,6 @@ Length: 85, dtype: geometry)</pre><b>In a Jupyter environment, please rerun this
             ></i></td>
             <td class="param">include_focal</td>
             <td class="value">True</td>
-        </tr>
-    
-
-        <tr class="user-set">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('geometry',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">geometry</td>
-            <td class="value">0     POINT (...type: geometry</td>
         </tr>
     
 
@@ -2585,6 +2556,16 @@ Length: 85, dtype: geometry)</pre><b>In a Jupyter environment, please rerun this
 
         <tr class="default">
             <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('min_proportion',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">min_proportion</td>
+            <td class="value">0.2</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('undersample',
                           this.parentElement.nextElementSibling)"
             ></i></td>
@@ -2600,6 +2581,26 @@ Length: 85, dtype: geometry)</pre><b>In a Jupyter environment, please rerun this
             ></i></td>
             <td class="param">leave_out</td>
             <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('random_state',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">random_state</td>
+            <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('verbose',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">verbose</td>
+            <td class="value">False</td>
         </tr>
     
                   </tbody>

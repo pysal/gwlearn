@@ -15,7 +15,9 @@
       ~GWLinearRegression.get_params
       ~GWLinearRegression.predict
       ~GWLinearRegression.score
+      ~GWLinearRegression.set_fit_request
       ~GWLinearRegression.set_params
+      ~GWLinearRegression.set_predict_proba_request
       ~GWLinearRegression.set_predict_request
       ~GWLinearRegression.set_score_request
 

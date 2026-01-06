@@ -17,7 +17,7 @@
     
     
       
-        <title>gwlearn.ensemble - gwlearn 0.0.2.dev9 documentation</title>
+        <title>gwlearn.ensemble - gwlearn 0.0.2.dev10 documentation</title>
       
     
     
@@ -79,7 +79,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -90,7 +90,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.2.dev9 documentation
+            gwlearn 0.0.2.dev10 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -228,10 +228,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.2.dev9 documentation
+    gwlearn 0.0.2.dev10 documentation
   </label>
   
     <div class="md-nav__source">
@@ -749,12 +749,6 @@
 <span class="sd">        analysis of the model performance (and generalises to models that do not support</span>
 <span class="sd">        OOB scoring). However, it leaves out the most representative sample. By default</span>
 <span class="sd">        False</span>
-<span class="sd">    geometry : gpd.GeoSeries, optional</span>
-<span class="sd">        Geographic location of the observations in the sample. Used to determine the</span>
-<span class="sd">        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,</span>
-<span class="sd">        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``</span>
-<span class="sd">        need to be specified. To allow prediction, it is required to specify</span>
-<span class="sd">        ``geometry``.</span>
 <span class="sd">    graph : Graph, optional</span>
 <span class="sd">        Custom libpysal.graph.Graph object encoding the spatial interaction between</span>
 <span class="sd">        observations in the sample. If given, it is used directly and ``bandwidth``,</span>
@@ -860,9 +854,8 @@
 <span class="sd">    &gt;&gt;&gt; gw = GWRandomForestClassifier(</span>
 <span class="sd">    ...     bandwidth=30,</span>
 <span class="sd">    ...     fixed=False,</span>
-<span class="sd">    ...     geometry=gdf.representative_point(),</span>
 <span class="sd">    ...     random_state=0,</span>
-<span class="sd">    ... ).fit(X, y)</span>
+<span class="sd">    ... ).fit(X, y, geometry=gdf.representative_point())</span>
 <span class="sd">    &gt;&gt;&gt; gw.pred_.head()</span>
 <span class="sd">    0    False</span>
 <span class="sd">    1    False</span>
@@ -889,7 +882,6 @@
         <span class="p">]</span>
         <span class="o">|</span> <span class="n">Callable</span> <span class="o">=</span> <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
         <span class="n">include_focal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">graph</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">fit_global_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -910,7 +902,6 @@
             <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span>
             <span class="n">kernel</span><span class="o">=</span><span class="n">kernel</span><span class="p">,</span>
             <span class="n">include_focal</span><span class="o">=</span><span class="n">include_focal</span><span class="p">,</span>
-            <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span>
             <span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span>
             <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
             <span class="n">fit_global_model</span><span class="o">=</span><span class="n">fit_global_model</span><span class="p">,</span>
@@ -937,7 +928,9 @@
 
 <div class="viewcode-block" id="GWRandomForestClassifier.fit">
 <a class="viewcode-back" href="../../generated/gwlearn.ensemble.GWRandomForestClassifier.html#gwlearn.ensemble.GWRandomForestClassifier.fit">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GWRandomForestClassifier&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GWRandomForestClassifier&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit geographically weighted random forests.</span>
 
 <span class="sd">        Parameters</span>
@@ -946,6 +939,14 @@
 <span class="sd">            Feature matrix.</span>
 <span class="sd">        y : pandas.Series</span>
 <span class="sd">            Binary target encoded as boolean or ``{0, 1}``.</span>
+<span class="sd">        geometry : geopandas.GeoSeries | None</span>
+<span class="sd">            Geographic location of the observations in the sample. Used to determine the</span>
+<span class="sd">            spatial interaction weight based on specification by ``bandwidth``,</span>
+<span class="sd">            ``fixed``, ``kernel``, and ``include_focal`` keywords.  If `None`,</span>
+<span class="sd">            a precomputed ``graph`` needs to be specified. To allow prediction,</span>
+<span class="sd">            it is required to specify ``geometry``. If both ``graph`` and ``geometry``</span>
+<span class="sd">            are specified, ``graph`` is used at the fit time, while ``geometry`` is</span>
+<span class="sd">            used for prediction.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -959,7 +960,7 @@
 <span class="sd">        fitted local models.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_empty_feature_imp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_y_local</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score_data</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pred_local</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score_data</span><span class="p">]</span>
@@ -1037,12 +1038,6 @@
 <span class="sd">        futher spatial analysis of the model performance (and generalises to models</span>
 <span class="sd">        that do not support OOB scoring). However, it leaves out the most representative</span>
 <span class="sd">        sample. By default False</span>
-<span class="sd">    geometry : gpd.GeoSeries, optional</span>
-<span class="sd">        Geographic location of the observations in the sample. Used to determine the</span>
-<span class="sd">        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,</span>
-<span class="sd">        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``</span>
-<span class="sd">        need to be specified. To allow prediction, it is required to specify</span>
-<span class="sd">        ``geometry``.</span>
 <span class="sd">    graph : Graph, optional</span>
 <span class="sd">        Custom libpysal.graph.Graph object encoding the spatial interaction between</span>
 <span class="sd">        observations in the sample. If given, it is used directly and ``bandwidth``,</span>
@@ -1130,9 +1125,8 @@
 <span class="sd">    &gt;&gt;&gt; gw = GWGradientBoostingClassifier(</span>
 <span class="sd">    ...     bandwidth=30,</span>
 <span class="sd">    ...     fixed=False,</span>
-<span class="sd">    ...     geometry=gdf.representative_point(),</span>
 <span class="sd">    ...     random_state=0,</span>
-<span class="sd">    ... ).fit(X, y)</span>
+<span class="sd">    ... ).fit(X, y, geometry=gdf.representative_point())</span>
 <span class="sd">    &gt;&gt;&gt; gw.pred_.head()</span>
 <span class="sd">    0    False</span>
 <span class="sd">    1    False</span>
@@ -1159,7 +1153,6 @@
         <span class="p">]</span>
         <span class="o">|</span> <span class="n">Callable</span> <span class="o">=</span> <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
         <span class="n">include_focal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">graph</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">fit_global_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -1179,7 +1172,6 @@
             <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span>
             <span class="n">kernel</span><span class="o">=</span><span class="n">kernel</span><span class="p">,</span>
             <span class="n">include_focal</span><span class="o">=</span><span class="n">include_focal</span><span class="p">,</span>
-            <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span>
             <span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span>
             <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
             <span class="n">fit_global_model</span><span class="o">=</span><span class="n">fit_global_model</span><span class="p">,</span>
@@ -1199,7 +1191,9 @@
 
 <div class="viewcode-block" id="GWGradientBoostingClassifier.fit">
 <a class="viewcode-back" href="../../generated/gwlearn.ensemble.GWGradientBoostingClassifier.html#gwlearn.ensemble.GWGradientBoostingClassifier.fit">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GWGradientBoostingClassifier&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GWGradientBoostingClassifier&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit geographically weighted gradient boosting classifiers.</span>
 
 <span class="sd">        Parameters</span>
@@ -1208,6 +1202,14 @@
 <span class="sd">            Feature matrix.</span>
 <span class="sd">        y : pandas.Series</span>
 <span class="sd">            Binary target encoded as boolean or ``{0, 1}``.</span>
+<span class="sd">        geometry : geopandas.GeoSeries | None</span>
+<span class="sd">            Geographic location of the observations in the sample. Used to determine the</span>
+<span class="sd">            spatial interaction weight based on specification by ``bandwidth``,</span>
+<span class="sd">            ``fixed``, ``kernel``, and ``include_focal`` keywords.  If `None`,</span>
+<span class="sd">            a precomputed ``graph`` needs to be specified. To allow prediction,</span>
+<span class="sd">            it is required to specify ``geometry``. If both ``graph`` and ``geometry``</span>
+<span class="sd">            are specified, ``graph`` is used at the fit time, while ``geometry`` is</span>
+<span class="sd">            used for prediction.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1219,7 +1221,7 @@
 <span class="sd">        Populates ``feature_importances_`` from the fitted local models.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_empty_feature_imp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">)</span>
 
         <span class="c1"># feature importances</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature_importances_</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
@@ -1274,12 +1276,6 @@
 <span class="sd">        analysis of the model performance (and generalises to models that do not support</span>
 <span class="sd">        OOB scoring). However, it leaves out the most representative sample. By default</span>
 <span class="sd">        True</span>
-<span class="sd">    geometry : gpd.GeoSeries, optional</span>
-<span class="sd">        Geographic location of the observations in the sample. Used to determine the</span>
-<span class="sd">        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,</span>
-<span class="sd">        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``</span>
-<span class="sd">        need to be specified. To allow prediction, it is required to specify</span>
-<span class="sd">        ``geometry``.</span>
 <span class="sd">    graph : Graph, optional</span>
 <span class="sd">        Custom libpysal.graph.Graph object encoding the spatial interaction between</span>
 <span class="sd">        observations in the sample. If given, it is used directly and ``bandwidth``,</span>
@@ -1363,9 +1359,8 @@
 <span class="sd">    &gt;&gt;&gt; gw = GWRandomForestRegressor(</span>
 <span class="sd">    ...     bandwidth=30,</span>
 <span class="sd">    ...     fixed=False,</span>
-<span class="sd">    ...     geometry=gdf.representative_point(),</span>
 <span class="sd">    ...     random_state=0,</span>
-<span class="sd">    ... ).fit(X, y)</span>
+<span class="sd">    ... ).fit(X, y, geometry=gdf.representative_point())</span>
 <span class="sd">    &gt;&gt;&gt; gw.local_r2_.head()</span>
 <span class="sd">    0    0.810035</span>
 <span class="sd">    1    0.801906</span>
@@ -1392,7 +1387,6 @@
         <span class="p">]</span>
         <span class="o">|</span> <span class="n">Callable</span> <span class="o">=</span> <span class="s2">&quot;bisquare&quot;</span><span class="p">,</span>
         <span class="n">include_focal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">graph</span><span class="p">:</span> <span class="n">graph</span><span class="o">.</span><span class="n">Graph</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_jobs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">fit_global_model</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -1410,7 +1404,6 @@
             <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span>
             <span class="n">kernel</span><span class="o">=</span><span class="n">kernel</span><span class="p">,</span>
             <span class="n">include_focal</span><span class="o">=</span><span class="n">include_focal</span><span class="p">,</span>
-            <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span>
             <span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">,</span>
             <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_jobs</span><span class="p">,</span>
             <span class="n">fit_global_model</span><span class="o">=</span><span class="n">fit_global_model</span><span class="p">,</span>
@@ -1434,7 +1427,9 @@
 
 <div class="viewcode-block" id="GWRandomForestRegressor.fit">
 <a class="viewcode-back" href="../../generated/gwlearn.ensemble.GWRandomForestRegressor.html#gwlearn.ensemble.GWRandomForestRegressor.fit">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GWRandomForestRegressor&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GWRandomForestRegressor&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit geographically weighted random forests.</span>
 
 <span class="sd">        Parameters</span>
@@ -1443,6 +1438,14 @@
 <span class="sd">            Feature matrix.</span>
 <span class="sd">        y : pandas.Series</span>
 <span class="sd">            Target values.</span>
+<span class="sd">        geometry : geopandas.GeoSeries | None</span>
+<span class="sd">            Geographic location of the observations in the sample. Used to determine the</span>
+<span class="sd">            spatial interaction weight based on specification by ``bandwidth``,</span>
+<span class="sd">            ``fixed``, ``kernel``, and ``include_focal`` keywords.  If `None`,</span>
+<span class="sd">            a precomputed ``graph`` needs to be specified. To allow prediction,</span>
+<span class="sd">            it is required to specify ``geometry``. If both ``graph`` and ``geometry``</span>
+<span class="sd">            are specified, ``graph`` is used at the fit time, while ``geometry`` is</span>
+<span class="sd">            used for prediction.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1455,7 +1458,7 @@
 <span class="sd">        ``oob_y_pooled_`` and ``oob_pred_pooled_`` by pooling OOB values across all</span>
 <span class="sd">        fitted local models.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">)</span>
 
         <span class="c1"># Handle OOB data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_y_local</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_score_data</span><span class="p">]</span>

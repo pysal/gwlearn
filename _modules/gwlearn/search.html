@@ -17,7 +17,7 @@
     
     
       
-        <title>gwlearn.search - gwlearn 0.0.2.dev9 documentation</title>
+        <title>gwlearn.search - gwlearn 0.0.2.dev10 documentation</title>
       
     
     
@@ -79,7 +79,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -90,7 +90,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.2.dev9 documentation
+            gwlearn 0.0.2.dev10 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -228,10 +228,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="../../index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="../../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.2.dev9 documentation
+    gwlearn 0.0.2.dev10 documentation
   </label>
   
     <div class="md-nav__source">
@@ -721,10 +721,6 @@
 <span class="sd">        :class:`gwlearn.linear_model.GWLogisticRegression`) that can be instantiated as</span>
 <span class="sd">        ``model(bandwidth=..., geometry=..., fixed=..., kernel=..., n_jobs=..., ...)``</span>
 <span class="sd">        and exposes information criteria attributes like ``aicc_``/``aic_``/``bic_``.</span>
-<span class="sd">    geometry : gpd.GeoSeries, optional</span>
-<span class="sd">        Geographic location of the observations in the sample. Used to determine the</span>
-<span class="sd">        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,</span>
-<span class="sd">        ``kernel``, and ``include_focal`` keywords.</span>
 <span class="sd">    fixed : bool, optional</span>
 <span class="sd">        True for distance based bandwidth and False for adaptive (nearest neighbor)</span>
 <span class="sd">        bandwidth, by default ``False``</span>
@@ -795,7 +791,6 @@
 
 <span class="sd">    &gt;&gt;&gt; search = BandwidthSearch(</span>
 <span class="sd">    ...     GWLogisticRegression,</span>
-<span class="sd">    ...     geometry=gdf.representative_point(),</span>
 <span class="sd">    ...     fixed=False,</span>
 <span class="sd">    ...     search_method=&quot;interval&quot;,</span>
 <span class="sd">    ...     criterion=&quot;aicc&quot;,</span>
@@ -803,7 +798,7 @@
 <span class="sd">    ...     max_bandwidth=80,</span>
 <span class="sd">    ...     interval=10,</span>
 <span class="sd">    ...     max_iter=200,</span>
-<span class="sd">    ... ).fit(X, y)</span>
+<span class="sd">    ... ).fit(X, y, geometry=gdf.representative_point())</span>
 <span class="sd">    &gt;&gt;&gt; search.optimal_bandwidth_</span>
 <span class="sd">    np.int64(40)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -812,7 +807,6 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">,</span>
         <span class="n">fixed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">kernel</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span>
             <span class="s2">&quot;triangular&quot;</span><span class="p">,</span>
@@ -842,7 +836,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">kernel</span> <span class="o">=</span> <span class="n">kernel</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fixed</span> <span class="o">=</span> <span class="n">fixed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">geometry</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span> <span class="o">=</span> <span class="n">n_jobs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">search_method</span> <span class="o">=</span> <span class="n">search_method</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="n">criterion</span>
@@ -857,7 +850,9 @@
 
 <div class="viewcode-block" id="BandwidthSearch.fit">
 <a class="viewcode-back" href="../../generated/gwlearn.search.BandwidthSearch.html#gwlearn.search.BandwidthSearch.fit">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BandwidthSearch&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BandwidthSearch&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fit the searcher by evaluating candidate bandwidths on the provided data.</span>
 
@@ -867,6 +862,10 @@
 <span class="sd">            Feature matrix used to evaluate candidate bandwidths (rows are samples).</span>
 <span class="sd">        y : pd.Series</span>
 <span class="sd">            Target values corresponding to X.</span>
+<span class="sd">        geometry : gpd.GeoSeries</span>
+<span class="sd">            Geographic location of the observations in the sample. Used to determine the</span>
+<span class="sd">            spatial interaction weight based on specification by ``bandwidth``,</span>
+<span class="sd">            ``fixed``, ``kernel``, and ``include_focal`` keywords.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -878,6 +877,7 @@
 <span class="sd">        The optimal bandwidth is selected as the index of the minimum score if</span>
 <span class="sd">        ``minimize=True``, otherwise as the index of the maximum score.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">geometry</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_method</span> <span class="o">==</span> <span class="s2">&quot;interval&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_interval</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
@@ -903,7 +903,6 @@
 
         <span class="n">gwm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span>
             <span class="n">bandwidth</span><span class="o">=</span><span class="n">bw</span><span class="p">,</span>
-            <span class="n">geometry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
             <span class="n">fixed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed</span><span class="p">,</span>
             <span class="n">kernel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">,</span>
             <span class="n">n_jobs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_jobs</span><span class="p">,</span>
@@ -911,7 +910,7 @@
             <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span>
             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_model_kwargs</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
 
         <span class="n">met</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;aicc&quot;</span><span class="p">,</span> <span class="s2">&quot;aic&quot;</span><span class="p">,</span> <span class="s2">&quot;bic&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

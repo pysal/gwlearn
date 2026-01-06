@@ -19,7 +19,7 @@
     
     
       
-        <title>gwlearn.search.BandwidthSearch - gwlearn 0.0.2.dev9 documentation</title>
+        <title>gwlearn.search.BandwidthSearch - gwlearn 0.0.2.dev10 documentation</title>
       
     
     
@@ -86,7 +86,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="../index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -97,7 +97,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.2.dev9 documentation
+            gwlearn 0.0.2.dev10 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -235,10 +235,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="gwlearn 0.0.2.dev9 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev9 documentation" data-md-component="logo">
+    <a href="../index.html" title="gwlearn 0.0.2.dev10 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev10 documentation" data-md-component="logo">
       <img src="../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.2.dev9 documentation
+    gwlearn 0.0.2.dev10 documentation
   </label>
   
     <div class="md-nav__source">
@@ -819,18 +819,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.search.BandwidthSearch.__init__.geometry" class="md-nav__link">
-    
-      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
-    
-    <span class="md-ellipsis">
-      <span title="gwlearn.search.BandwidthSearch.__init__.geometry (Python parameter) — Geographic location of the observations in the sample."><span>geometry</span></span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#gwlearn.search.BandwidthSearch.__init__.fixed" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
@@ -1130,6 +1118,18 @@
     
     <span class="md-ellipsis">
       <span title="gwlearn.search.BandwidthSearch.fit.y (Python parameter) — Target values corresponding to X."><span>y</span></span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gwlearn.search.BandwidthSearch.fit.geometry" class="md-nav__link">
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="gwlearn.search.BandwidthSearch.fit.geometry (Python parameter) — Geographic location of the observations in the sample."><span>geometry</span></span>
     </span>
   </a>
   
@@ -1338,18 +1338,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.search.BandwidthSearch.__init__.geometry" class="md-nav__link">
-    
-      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
-    
-    <span class="md-ellipsis">
-      <span title="gwlearn.search.BandwidthSearch.__init__.geometry (Python parameter) — Geographic location of the observations in the sample."><span>geometry</span></span>
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#gwlearn.search.BandwidthSearch.__init__.fixed" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
@@ -1654,6 +1642,18 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#gwlearn.search.BandwidthSearch.fit.geometry" class="md-nav__link">
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="gwlearn.search.BandwidthSearch.fit.geometry (Python parameter) — Geographic location of the observations in the sample."><span>geometry</span></span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1708,7 +1708,7 @@
 <h1 id="gwlearn-search-bandwidthsearch">gwlearn.search.BandwidthSearch<a class="headerlink" href="#gwlearn-search-bandwidthsearch" title="Link to this heading">¶</a></h1>
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight sig-wrap py" id="gwlearn.search.BandwidthSearch">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gwlearn.search.</span></span><span class="sig-name descname"><span class="pre">BandwidthSearch</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.model" title="gwlearn.search.BandwidthSearch.__init__.model (Python parameter) — A geographically weighted estimator class (e.g. gwlearn.linear_model.GWLogisticRegression) that can be instantiated as model(bandwidth=..., geometry=..., fixed=..., kernel=..., n_jobs=..., ...) and exposes information criteria attributes like aicc_/aic_/bic_."><span class="n"><span class="pre">model</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.geometry" title="gwlearn.search.BandwidthSearch.__init__.geometry (Python parameter) — Geographic location of the observations in the sample."><span class="n"><span class="pre">geometry</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.fixed" title="gwlearn.search.BandwidthSearch.__init__.fixed (Python parameter) — True for distance based bandwidth and False for adaptive (nearest neighbor) bandwidth, by default False"><span class="n"><span class="pre">fixed</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.kernel" title="gwlearn.search.BandwidthSearch.__init__.kernel (Python parameter) — Type of kernel function used to weight observations, by default &quot;bisquare&quot;"><span class="n"><span class="pre">kernel</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;bisquare&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.n_jobs" title="gwlearn.search.BandwidthSearch.__init__.n_jobs (Python parameter) — The number of jobs to run in parallel."><span class="n"><span class="pre">n_jobs</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="o">-</span><span class="mi">1</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.search_method" title="gwlearn.search.BandwidthSearch.__init__.search_method (Python parameter) — Method used to search for optimal bandwidth."><span class="n"><span class="pre">search_method</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;golden_section&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.criterion" title="gwlearn.search.BandwidthSearch.__init__.criterion (Python parameter) — Criterion used to select the optimal bandwidth."><span class="n"><span class="pre">criterion</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;aicc&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.metrics" title="gwlearn.search.BandwidthSearch.__init__.metrics (Python parameter) — Additional metrics to report for each bandwidth."><span class="n"><span class="pre">metrics</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.minimize" title="gwlearn.search.BandwidthSearch.__init__.minimize (Python parameter) — Minimize or maximize the criterion."><span class="n"><span class="pre">minimize</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">True</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.min_bandwidth" title="gwlearn.search.BandwidthSearch.__init__.min_bandwidth (Python parameter) — Minimum bandwidth to consider, by default None"><span class="n"><span class="pre">min_bandwidth</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.max_bandwidth" title="gwlearn.search.BandwidthSearch.__init__.max_bandwidth (Python parameter) — Maximum bandwidth to consider, by default None"><span class="n"><span class="pre">max_bandwidth</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.interval" title="gwlearn.search.BandwidthSearch.__init__.interval (Python parameter) — Interval for bandwidth search when using &quot;interval&quot; method, by default None"><span class="n"><span class="pre">interval</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.max_iterations" title="gwlearn.search.BandwidthSearch.__init__.max_iterations (Python parameter) — Maximum number of iterations for golden section search, by default 100"><span class="n"><span class="pre">max_iterations</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">100</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.tolerance" title="gwlearn.search.BandwidthSearch.__init__.tolerance (Python parameter) — Tolerance for convergence in golden section search, by default 1e-2"><span class="n"><span class="pre">tolerance</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.01</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.verbose" title="gwlearn.search.BandwidthSearch.__init__.verbose (Python parameter) — Verbosity level, by default False"><span class="n"><span class="pre">verbose</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.kwargs" title="gwlearn.search.BandwidthSearch.__init__.kwargs (Python parameter) — Additional keyword arguments passed to model initialization"><span class="n"><span class="pre">kwargs</span></span></a></em></span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/search.html#BandwidthSearch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.search.BandwidthSearch" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gwlearn.search.</span></span><span class="sig-name descname"><span class="pre">BandwidthSearch</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.model" title="gwlearn.search.BandwidthSearch.__init__.model (Python parameter) — A geographically weighted estimator class (e.g. gwlearn.linear_model.GWLogisticRegression) that can be instantiated as model(bandwidth=..., geometry=..., fixed=..., kernel=..., n_jobs=..., ...) and exposes information criteria attributes like aicc_/aic_/bic_."><span class="n"><span class="pre">model</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.fixed" title="gwlearn.search.BandwidthSearch.__init__.fixed (Python parameter) — True for distance based bandwidth and False for adaptive (nearest neighbor) bandwidth, by default False"><span class="n"><span class="pre">fixed</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.kernel" title="gwlearn.search.BandwidthSearch.__init__.kernel (Python parameter) — Type of kernel function used to weight observations, by default &quot;bisquare&quot;"><span class="n"><span class="pre">kernel</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;bisquare&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.n_jobs" title="gwlearn.search.BandwidthSearch.__init__.n_jobs (Python parameter) — The number of jobs to run in parallel."><span class="n"><span class="pre">n_jobs</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="o">-</span><span class="mi">1</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.search_method" title="gwlearn.search.BandwidthSearch.__init__.search_method (Python parameter) — Method used to search for optimal bandwidth."><span class="n"><span class="pre">search_method</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;golden_section&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.criterion" title="gwlearn.search.BandwidthSearch.__init__.criterion (Python parameter) — Criterion used to select the optimal bandwidth."><span class="n"><span class="pre">criterion</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;aicc&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.metrics" title="gwlearn.search.BandwidthSearch.__init__.metrics (Python parameter) — Additional metrics to report for each bandwidth."><span class="n"><span class="pre">metrics</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.minimize" title="gwlearn.search.BandwidthSearch.__init__.minimize (Python parameter) — Minimize or maximize the criterion."><span class="n"><span class="pre">minimize</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">True</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.min_bandwidth" title="gwlearn.search.BandwidthSearch.__init__.min_bandwidth (Python parameter) — Minimum bandwidth to consider, by default None"><span class="n"><span class="pre">min_bandwidth</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.max_bandwidth" title="gwlearn.search.BandwidthSearch.__init__.max_bandwidth (Python parameter) — Maximum bandwidth to consider, by default None"><span class="n"><span class="pre">max_bandwidth</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.interval" title="gwlearn.search.BandwidthSearch.__init__.interval (Python parameter) — Interval for bandwidth search when using &quot;interval&quot; method, by default None"><span class="n"><span class="pre">interval</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.max_iterations" title="gwlearn.search.BandwidthSearch.__init__.max_iterations (Python parameter) — Maximum number of iterations for golden section search, by default 100"><span class="n"><span class="pre">max_iterations</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">100</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.tolerance" title="gwlearn.search.BandwidthSearch.__init__.tolerance (Python parameter) — Tolerance for convergence in golden section search, by default 1e-2"><span class="n"><span class="pre">tolerance</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mf">0.01</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.verbose" title="gwlearn.search.BandwidthSearch.__init__.verbose (Python parameter) — Verbosity level, by default False"><span class="n"><span class="pre">verbose</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.__init__.kwargs" title="gwlearn.search.BandwidthSearch.__init__.kwargs (Python parameter) — Additional keyword arguments passed to model initialization"><span class="n"><span class="pre">kwargs</span></span></a></em></span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/search.html#BandwidthSearch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.search.BandwidthSearch" title="Link to this definition">¶</a></dt>
 <dd><p>Optimal bandwidth search for geographically weighted estimators.</p>
 <p>Reports information criteria and (optionally) other scores from multiple models with
 varying bandwidth. When using golden section search, it minimizes (or maximizes)
@@ -1724,10 +1724,6 @@ bandwidths and shall not be used to determine the optimal one.</p>
 <a class="reference internal" href="gwlearn.linear_model.GWLogisticRegression.html#gwlearn.linear_model.GWLogisticRegression" title="gwlearn.linear_model.GWLogisticRegression (Python class) — Geographically weighted logistic regression"><code class="xref py py-class docutils literal notranslate"><span class="pre">gwlearn.linear_model.GWLogisticRegression</span></code></a>) that can be instantiated as
 <code class="docutils literal notranslate"><span class="pre">model(bandwidth=...,</span> <span class="pre">geometry=...,</span> <span class="pre">fixed=...,</span> <span class="pre">kernel=...,</span> <span class="pre">n_jobs=...,</span> <span class="pre">...)</span></code>
 and exposes information criteria attributes like <code class="docutils literal notranslate"><span class="pre">aicc_</span></code>/<code class="docutils literal notranslate"><span class="pre">aic_</span></code>/<code class="docutils literal notranslate"><span class="pre">bic_</span></code>.</p>
-</dd>
-<dt id="gwlearn.search.BandwidthSearch.__init__.geometry"><span class="sig-name descname">geometry</span><span class="p"> : </span><span class="desctype"><span class="desctype">gpd.GeoSeries, optional</span></span><a class="headerlink" href="#gwlearn.search.BandwidthSearch.__init__.geometry" title="Permalink to this definition">¶</a></dt><dd><p>Geographic location of the observations in the sample. Used to determine the
-spatial interaction weight based on specification by <code class="docutils literal notranslate"><span class="pre">bandwidth</span></code>, <code class="docutils literal notranslate"><span class="pre">fixed</span></code>,
-<code class="docutils literal notranslate"><span class="pre">kernel</span></code>, and <code class="docutils literal notranslate"><span class="pre">include_focal</span></code> keywords.</p>
 </dd>
 <dt id="gwlearn.search.BandwidthSearch.__init__.fixed"><span class="sig-name descname">fixed</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a>, optional</span></span><a class="headerlink" href="#gwlearn.search.BandwidthSearch.__init__.fixed" title="Permalink to this definition">¶</a></dt><dd><p>True for distance based bandwidth and False for adaptive (nearest neighbor)
 bandwidth, by default <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
@@ -1825,7 +1821,6 @@ better.</p>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">search</span> <span class="o">=</span> <span class="n">BandwidthSearch</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">GWLogisticRegression</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
 <span class="gp">... </span>    <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">search_method</span><span class="o">=</span><span class="s2">&quot;interval&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;aicc&quot;</span><span class="p">,</span>
@@ -1833,7 +1828,7 @@ better.</p>
 <span class="gp">... </span>    <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">interval</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">max_iter</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
-<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">search</span><span class="o">.</span><span class="n">optimal_bandwidth_</span>
 <span class="go">np.int64(40)</span>
 </code></pre></div>
@@ -1841,10 +1836,10 @@ better.</p>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils data align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(model, *, geometry[, fixed, ...])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(model, *[, fixed, kernel, n_jobs, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gwlearn.search.BandwidthSearch.fit" title="gwlearn.search.BandwidthSearch.fit (Python method) — Fit the searcher by evaluating candidate bandwidths on the provided data."><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, y)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gwlearn.search.BandwidthSearch.fit" title="gwlearn.search.BandwidthSearch.fit (Python method) — Fit the searcher by evaluating candidate bandwidths on the provided data."><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, y, geometry)</p></td>
 <td><p>Fit the searcher by evaluating candidate bandwidths on the provided data.</p></td>
 </tr>
 </tbody>
@@ -1856,7 +1851,7 @@ better.</p>
 </table>
 <dl class="py method objdesc">
 <dt class="sig sig-object highlight py" id="gwlearn.search.BandwidthSearch.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.fit.X" title="gwlearn.search.BandwidthSearch.fit.X (Python parameter) — Feature matrix used to evaluate candidate bandwidths (rows are samples)."><span class="n"><span class="pre">X</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.fit.y" title="gwlearn.search.BandwidthSearch.fit.y (Python parameter) — Target values corresponding to X."><span class="n"><span class="pre">y</span></span></a></em></span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/search.html#BandwidthSearch.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.search.BandwidthSearch.fit" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.fit.X" title="gwlearn.search.BandwidthSearch.fit.X (Python parameter) — Feature matrix used to evaluate candidate bandwidths (rows are samples)."><span class="n"><span class="pre">X</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.fit.y" title="gwlearn.search.BandwidthSearch.fit.y (Python parameter) — Target values corresponding to X."><span class="n"><span class="pre">y</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.search.BandwidthSearch.fit.geometry" title="gwlearn.search.BandwidthSearch.fit.geometry (Python parameter) — Geographic location of the observations in the sample."><span class="n"><span class="pre">geometry</span></span></a></em></span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/search.html#BandwidthSearch.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.search.BandwidthSearch.fit" title="Link to this definition">¶</a></dt>
 <dd><p>Fit the searcher by evaluating candidate bandwidths on the provided data.</p>
 <dl class="field-list simple">
 <dt class="field-odd" id="gwlearn.search.BandwidthSearch.fit-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#gwlearn.search.BandwidthSearch.fit-parameters" title="Permalink to this headline">¶</a></dt>
@@ -1864,6 +1859,10 @@ better.</p>
 <dt id="gwlearn.search.BandwidthSearch.fit.X"><span class="sig-name descname">X</span><span class="p"> : </span><span class="desctype"><span class="desctype">pd.DataFrame</span></span><a class="headerlink" href="#gwlearn.search.BandwidthSearch.fit.X" title="Permalink to this definition">¶</a></dt><dd><p>Feature matrix used to evaluate candidate bandwidths (rows are samples).</p>
 </dd>
 <dt id="gwlearn.search.BandwidthSearch.fit.y"><span class="sig-name descname">y</span><span class="p"> : </span><span class="desctype"><span class="desctype">pd.Series</span></span><a class="headerlink" href="#gwlearn.search.BandwidthSearch.fit.y" title="Permalink to this definition">¶</a></dt><dd><p>Target values corresponding to X.</p>
+</dd>
+<dt id="gwlearn.search.BandwidthSearch.fit.geometry"><span class="sig-name descname">geometry</span><span class="p"> : </span><span class="desctype"><span class="desctype">gpd.GeoSeries</span></span><a class="headerlink" href="#gwlearn.search.BandwidthSearch.fit.geometry" title="Permalink to this definition">¶</a></dt><dd><p>Geographic location of the observations in the sample. Used to determine the
+spatial interaction weight based on specification by <code class="docutils literal notranslate"><span class="pre">bandwidth</span></code>,
+<code class="docutils literal notranslate"><span class="pre">fixed</span></code>, <code class="docutils literal notranslate"><span class="pre">kernel</span></code>, and <code class="docutils literal notranslate"><span class="pre">include_focal</span></code> keywords.</p>
 </dd>
 </dl>
 </dd>

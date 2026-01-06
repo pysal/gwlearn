@@ -15,7 +15,9 @@
       ~GWRandomForestRegressor.get_params
       ~GWRandomForestRegressor.predict
       ~GWRandomForestRegressor.score
+      ~GWRandomForestRegressor.set_fit_request
       ~GWRandomForestRegressor.set_params
+      ~GWRandomForestRegressor.set_predict_proba_request
       ~GWRandomForestRegressor.set_predict_request
       ~GWRandomForestRegressor.set_score_request
 
