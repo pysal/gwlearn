@@ -8,7 +8,6 @@ from typing import Literal
 import geopandas as gpd
 import numpy as np
 import pandas as pd
-import sklearn
 from joblib import Parallel, delayed, dump, load
 from libpysal import graph
 from scipy.spatial import KDTree
@@ -16,8 +15,6 @@ from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 from sklearn.model_selection import train_test_split
 
 __all__ = ["BaseClassifier", "BaseRegressor"]
-
-sklearn.set_config(enable_metadata_routing=True)
 
 
 def _triangular(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
