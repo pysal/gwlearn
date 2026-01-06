@@ -33,7 +33,6 @@ def test_gwrf_fit_basic(sample_data):  # noqa: F811
     X, y, geometry = sample_data
 
     model = GWRandomForestClassifier(
-        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -42,7 +41,7 @@ def test_gwrf_fit_basic(sample_data):  # noqa: F811
         n_jobs=1,
     )
 
-    fitted_model = model.fit(X, y)
+    fitted_model = model.fit(X, y, geometry)
 
     # Test that fitting works and returns self
     assert fitted_model is model
@@ -100,7 +99,6 @@ def test_gwgb_fit_basic(sample_data):  # noqa: F811
     X, y, geometry = sample_data
 
     model = GWGradientBoostingClassifier(
-        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -109,7 +107,7 @@ def test_gwgb_fit_basic(sample_data):  # noqa: F811
         n_jobs=1,
     )
 
-    fitted_model = model.fit(X, y)
+    fitted_model = model.fit(X, y, geometry)
 
     # Test that fitting works and returns self
     assert fitted_model is model
@@ -150,7 +148,6 @@ def test_gwrf_regressor_fit_basic(sample_regression_data):  # noqa: F811
     X, y, geometry = sample_regression_data
 
     model = GWRandomForestRegressor(
-        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -159,7 +156,7 @@ def test_gwrf_regressor_fit_basic(sample_regression_data):  # noqa: F811
         n_jobs=1,
     )
 
-    fitted_model = model.fit(X, y)
+    fitted_model = model.fit(X, y, geometry)
 
     # Test that fitting works and returns self
     assert fitted_model is model
