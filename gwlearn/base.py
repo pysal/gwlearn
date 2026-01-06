@@ -1008,7 +1008,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         with the ensemble being significantly slower due to the required number of
         inference calls.
 
-        Furhter the prediction can be a result of a fusion of local and global models
+        Further the prediction can be a result of a fusion of local and global models
         when ``global_model_weight`` is set to a non-zero value, following
         :cite:t:`georganos2021Geographical`.
 
@@ -1161,7 +1161,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         with the ensemble being significantly slower due to the required number of
         inference calls.
 
-        Furhter the prediction can be a result of a fusion of local and global models
+        Further the prediction can be a result of a fusion of local and global models
         when ``global_model_weight`` is set to a non-zero value, following
         :cite:t:`georganos2021Geographical`.
 
@@ -1529,7 +1529,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         with the ensemble being significantly slower due to the required number of
         inference calls.
 
-        Furhter the prediction can be a result of a fusion of local and global models
+        Further the prediction can be a result of a fusion of local and global models
         when ``global_model_weight`` is set to a non-zero value, following
         :cite:t:`georganos2021Geographical`.
 
