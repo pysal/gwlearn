@@ -1608,6 +1608,7 @@ def test_classifier_score(sample_data):
     clf.fit(
         X,
         y,
+        geometry,
     )
     acc = clf.score(X, y, geometry)
     assert 0.0 <= acc <= 1.0
@@ -1626,10 +1627,7 @@ def test_regressor_score(sample_regression_data):
         random_state=42,
         strict=False,
     )
-    reg.fit(
-        X,
-        y,
-    )
+    reg.fit(X, y, geometry)
     r2 = reg.score(X, y, geometry)
     assert -1.0 <= r2 <= 1.0
     assert isinstance(r2, float)
