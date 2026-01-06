@@ -21,7 +21,7 @@
     
     
       
-        <title>gwlearn.base.BaseRegressor - gwlearn 0.0.2.dev7 documentation</title>
+        <title>gwlearn.base.BaseRegressor - gwlearn 0.0.2.dev8 documentation</title>
       
     
     
@@ -88,7 +88,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../index.html" title="gwlearn 0.0.2.dev7 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev7 documentation" data-md-component="logo">
+    <a href="../index.html" title="gwlearn 0.0.2.dev8 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.2.dev8 documentation" data-md-component="logo">
       <img src="../_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -99,7 +99,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.2.dev7 documentation
+            gwlearn 0.0.2.dev8 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -237,10 +237,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="gwlearn 0.0.2.dev7 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev7 documentation" data-md-component="logo">
+    <a href="../index.html" title="gwlearn 0.0.2.dev8 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.2.dev8 documentation" data-md-component="logo">
       <img src="../_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.2.dev7 documentation
+    gwlearn 0.0.2.dev8 documentation
   </label>
   
     <div class="md-nav__source">
@@ -1499,6 +1499,18 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#gwlearn.base.BaseRegressor.predict.bandwidth" class="md-nav__link">
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="gwlearn.base.BaseRegressor.predict.bandwidth (Python parameter) — Prediction method."><span>bandwidth</span></span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2590,6 +2602,18 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#gwlearn.base.BaseRegressor.predict.bandwidth" class="md-nav__link">
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="gwlearn.base.BaseRegressor.predict.bandwidth (Python parameter) — Prediction method."><span>bandwidth</span></span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2970,7 +2994,7 @@ complexity (smaller bandwidths).</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#gwlearn.base.BaseRegressor.get_params" title="gwlearn.base.BaseRegressor.get_params (Python method) — Get parameters for this estimator."><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
 <td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gwlearn.base.BaseRegressor.predict" title="gwlearn.base.BaseRegressor.predict (Python method) — Predict target values for new observations."><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X, geometry)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gwlearn.base.BaseRegressor.predict" title="gwlearn.base.BaseRegressor.predict (Python method) — Predict target values for new observations."><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X, geometry[, bandwidth])</p></td>
 <td><p>Predict target values for new observations.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(X, y[, sample_weight])</p></td>
@@ -2979,7 +3003,7 @@ complexity (smaller bandwidths).</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gwlearn.base.BaseRegressor.set_params" title="gwlearn.base.BaseRegressor.set_params (Python method) — Set the parameters of this estimator."><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_predict_request</span></code>(*[, geometry])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_predict_request</span></code>(*[, bandwidth, geometry])</p></td>
 <td><p>Configure whether metadata should be requested to be passed to the <code class="docutils literal notranslate"><span class="pre">predict</span></code> method.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_score_request</span></code>(*[, sample_weight])</p></td>
@@ -3059,14 +3083,34 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method objdesc">
 <dt class="sig sig-object highlight py" id="gwlearn.base.BaseRegressor.predict">
-<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.base.BaseRegressor.predict.X" title="gwlearn.base.BaseRegressor.predict.X (Python parameter) — Feature matrix for new observations."><span class="n"><span class="pre">X</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.base.BaseRegressor.predict.geometry" title="gwlearn.base.BaseRegressor.predict.geometry (Python parameter) — Point geometries for new observations."><span class="n"><span class="pre">geometry</span></span></a></em></span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/base.html#BaseRegressor.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.base.BaseRegressor.predict" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.base.BaseRegressor.predict.X" title="gwlearn.base.BaseRegressor.predict.X (Python parameter) — Feature matrix for new observations."><span class="n"><span class="pre">X</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.base.BaseRegressor.predict.geometry" title="gwlearn.base.BaseRegressor.predict.geometry (Python parameter) — Point geometries for new observations."><span class="n"><span class="pre">geometry</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.base.BaseRegressor.predict.bandwidth" title="gwlearn.base.BaseRegressor.predict.bandwidth (Python parameter) — Prediction method."><span class="n"><span class="pre">bandwidth</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;nearest&#39;</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/base.html#BaseRegressor.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.base.BaseRegressor.predict" title="Link to this definition">¶</a></dt>
 <dd><p>Predict target values for new observations.</p>
+<p>Prediction can be retrieved either from the nearest local model or based on
+the ensemble of local models. In the latter case, the prediction process works
+as follows:</p>
+<ol class="arabic simple">
+<li><p>For a new location on which you want a prediction, identify local models
+within the bandwidth used to train the model.</p></li>
+<li><p>Apply the kernel function used to train the model to derive weights of
+each of the local models.</p></li>
+<li><p>Make prediction using each of the local models in the bandwidth.</p></li>
+<li><p>Make weighted average of predictions based on the kernel weights.</p></li>
+</ol>
+<p>The results from the nearest and ensemble predictions are typically similar,
+with the ensemble being significantly slower due to the required number of
+inference calls.</p>
 <dl class="field-list simple">
 <dt class="field-odd" id="gwlearn.base.BaseRegressor.predict-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#gwlearn.base.BaseRegressor.predict-parameters" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><dl class="simple api-field highlight">
 <dt id="gwlearn.base.BaseRegressor.predict.X"><span class="sig-name descname">X</span><span class="p"> : </span><span class="desctype"><span class="desctype">pandas.DataFrame</span></span><a class="headerlink" href="#gwlearn.base.BaseRegressor.predict.X" title="Permalink to this definition">¶</a></dt><dd><p>Feature matrix for new observations.</p>
 </dd>
 <dt id="gwlearn.base.BaseRegressor.predict.geometry"><span class="sig-name descname">geometry</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://geopandas.org/en/latest/docs/reference/api/geopandas.GeoSeries.html#geopandas.GeoSeries" title="(in GeoPandas v1.1.2.dev58.dev+gfd4ce6534)">geopandas.GeoSeries</a></span></span><a class="headerlink" href="#gwlearn.base.BaseRegressor.predict.geometry" title="Permalink to this definition">¶</a></dt><dd><p>Point geometries for new observations.</p>
+</dd>
+<dt id="gwlearn.base.BaseRegressor.predict.bandwidth"><span class="sig-name descname">bandwidth</span><span class="p"> : </span><span class="desctype"><span class="desctype">&quot;nearest&quot;, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a> or None</span></span><a class="headerlink" href="#gwlearn.base.BaseRegressor.predict.bandwidth" title="Permalink to this definition">¶</a></dt><dd><p>Prediction method. Nearest uses the nearest location available at the fit
+time and does prediction using its single model. When set to a numeric
+value, uses an ensemble of local models available within the bandwidth, with
+predictions from individual models being weighted based on the distance and
+a set kernel. When <code class="docutils literal notranslate"><span class="pre">None</span></code>, uses the bandwidth set at the fit time.</p>
 </dd>
 </dl>
 </dd>
