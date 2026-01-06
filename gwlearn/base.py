@@ -359,6 +359,30 @@ class _BaseModel(BaseEstimator):
             self.bic_ = np.nan
             self.aicc_ = np.nan
 
+    def _prepare_prediction_nearest(self, geometry: gpd.GeoSeries) -> np.ndarray:
+        """
+        Prepare nearest-neighbor mapping from target geometries to local model ids.
+
+        Parameters
+        ----------
+        geometry : geopandas.GeoSeries
+            Point geometries for new observations.
+
+        Returns
+        -------
+        np.ndarray: 1-D array of local model identifiers corresponding to the nearest
+            training geometry for each input geometry. The order aligns with the input
+            GeoSeries.
+        """
+
+        self._validate_geometry(geometry)
+
+        if not (isinstance(self.geometry, gpd.GeoSeries)):
+            raise ValueError("Geometry need to be specified to enable prediction.")
+        indices_array = self.geometry.sindex.nearest(geometry, return_all=False)[1]
+        local_ids = self._local_models.index[indices_array.flatten()].to_numpy()
+        return local_ids
+
     def _prepare_prediction_neighborhoods(
         self, geometry: gpd.GeoSeries
     ) -> tuple[list, list]:
@@ -387,11 +411,12 @@ class _BaseModel(BaseEstimator):
             )
 
         if self.fixed:
-            input_ids, local_ids = self.geometry.sindex.query(
+            input_ids, indices_array = self.geometry.sindex.query(
                 geometry, predicate="dwithin", distance=self.bandwidth
             )
+            local_ids = self._local_models.index[indices_array.flatten()].to_numpy()
             distance = _kernel_functions[self.kernel](
-                self.geometry.iloc[local_ids].distance(
+                self.geometry.iloc[indices_array].distance(
                     geometry.iloc[input_ids], align=False
                 ),
                 self.bandwidth,
@@ -421,7 +446,7 @@ class _BaseModel(BaseEstimator):
 
         return local_model_ids, distances
 
-    def _predict_local(
+    def _predict_local_ensemble(
         self,
         x_: pd.DataFrame,
         models_: np.ndarray,
@@ -954,8 +979,29 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         return log_likelihood
 
-    def predict_proba(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.DataFrame:
+    def predict_proba(
+        self,
+        X: pd.DataFrame,
+        geometry: gpd.GeoSeries,
+        method: Literal["nearest", "ensemble"] = "nearest",
+    ) -> pd.DataFrame:
         """Predict class probabilities for new observations.
+
+        Prediction can be retrieved either from the nearest local model or based on
+        the ensemble of local models. In the latter case, the prediction process works
+        as follows:
+
+            1. For a new location on which you want a prediction, identify local models
+               within the bandwidth used to train the model.
+            2. Apply the kernel function used to train the model to derive weights of
+               each of the local models.
+            3. Make prediction using each of the local models in the bandwidth.
+            4. Make weighted average of predictions based on the kernel weights.
+            5. Normalize the result to ensure sum of probabilities is 1.
+
+        The results from the nearest and ensemble predictions are typically similar,
+        with the ensemble being significantly slower due to the required number of
+        inference calls.
 
         Parameters
         ----------
@@ -963,6 +1009,12 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             Feature matrix for new observations.
         geometry : geopandas.GeoSeries
             Point geometries for new observations.
+        method : str {"nearest", "ensemble"}
+            Prediction method. Nearest uses the nearest location available at the fit
+            time and does prediction using its single model. Ensemble uses an ensemble
+            of local models available within the bandwidth set at the fit time, with
+            predictions from individual models being weighted based on the distance and
+            a set kernel.
 
         Returns
         -------
@@ -975,18 +1027,30 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Requires the estimator to have been fit with ``keep_models=True`` (or a
         ``Path``) so local models can be used at prediction time.
         """
-        local_model_ids, distances = self._prepare_prediction_neighborhoods(geometry)
         data = [X.iloc[[i]] for i in range(len(X))]
 
         probabilities = []
-        for x_, models_, distances_ in zip(
-            data, local_model_ids, distances, strict=True
-        ):
-            probabilities.append(self._predict_local(x_, models_, distances_))
+        if method == "ensemble":
+            local_model_ids, distances = self._prepare_prediction_neighborhoods(
+                geometry
+            )
+
+            for x_, models_, distances_ in zip(
+                data, local_model_ids, distances, strict=True
+            ):
+                probabilities.append(
+                    self._predict_local_ensemble(x_, models_, distances_)
+                )
+
+        elif method == "nearest":
+            local_model_ids = self._prepare_prediction_nearest(geometry)
+
+            for x_, model_id in zip(data, local_model_ids, strict=True):
+                probabilities.append(self._predict_local_nearest(x_, model_id))
 
         return pd.DataFrame(probabilities, columns=self._global_classes, index=X.index)
 
-    def _predict_local(
+    def _predict_local_ensemble(
         self,
         x_: pd.DataFrame,
         models_: np.ndarray,
@@ -1025,10 +1089,48 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         weighted = weighted / weighted.sum()
         return pd.Series(weighted, index=pred.columns)
 
-    def predict(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.Series:
+    def _predict_local_nearest(self, x_: pd.DataFrame, model_id: Hashable) -> pd.Series:
+        local_model = self._local_models[model_id]
+        if isinstance(local_model, str):
+            with open(local_model, "rb") as f:
+                local_model = load(f)
+
+        if local_model is not None:
+            return pd.Series(
+                local_model.predict_proba(x_).flatten(),
+                index=local_model.classes_,
+            )
+        else:
+            return pd.Series(
+                np.nan,
+                index=self._global_classes,
+            )
+
+    def predict(
+        self,
+        X: pd.DataFrame,
+        geometry: gpd.GeoSeries,
+        method: Literal["nearest", "ensemble"] = "nearest",
+    ) -> pd.Series:
         """Predict classes for new observations.
 
         This is equivalent to ``predict_proba(...).idxmax(axis=1)``.
+
+        Prediction can be retrieved either from the nearest local model or based on
+        the ensemble of local models. In the latter case, the prediction process works
+        as follows:
+
+            1. For a new location on which you want a prediction, identify local models
+               within the bandwidth used to train the model.
+            2. Apply the kernel function used to train the model to derive weights of
+               each of the local models.
+            3. Make prediction using each of the local models in the bandwidth.
+            4. Make weighted average of predictions based on the kernel weights.
+            5. Normalize the result to ensure sum of probabilities is 1.
+
+        The results from the nearest and ensemble predictions are typically similar,
+        with the ensemble being significantly slower due to the required number of
+        inference calls.
 
         Parameters
         ----------
@@ -1036,6 +1138,12 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             Feature matrix for new observations.
         geometry : geopandas.GeoSeries
             Point geometries for new observations.
+        method : str {"nearest", "ensemble"}
+            Prediction method. Nearest uses the nearest location available at the fit
+            time and does prediction using its single model. Ensemble uses an ensemble
+            of local models available within the bandwidth set at the fit time, with
+            predictions from individual models being weighted based on the distance and
+            a set kernel.
 
         Returns
         -------
@@ -1047,7 +1155,14 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Requires the estimator to have been fit with ``keep_models=True`` (or a
         ``Path``) so local models can be used at prediction time.
         """
-        proba = self.predict_proba(X, geometry)
+        proba = self.predict_proba(X, geometry, method=method)
+
+        mask = proba.iloc[:, 0].notna()
+        if not mask.all():
+            r = pd.Series(pd.NA, index=proba.index, dtype="boolean")
+            r[mask] = proba[mask].idxmax(axis=1)
+            return r
+
         return proba.idxmax(axis=1)
 
     def local_metric(self, func: Callable, *args, **kwargs) -> np.ndarray:
@@ -1350,8 +1465,29 @@ class BaseRegressor(_BaseModel, RegressorMixin):
 
         return self
 
-    def predict(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.Series:
+    def predict(
+        self,
+        X: pd.DataFrame,
+        geometry: gpd.GeoSeries,
+        method: Literal["nearest", "ensemble"] = "nearest",
+    ) -> pd.Series:
         """Predict target values for new observations.
+
+        Prediction can be retrieved either from the nearest local model or based on
+        the ensemble of local models. In the latter case, the prediction process works
+        as follows:
+
+            1. For a new location on which you want a prediction, identify local models
+               within the bandwidth used to train the model.
+            2. Apply the kernel function used to train the model to derive weights of
+               each of the local models.
+            3. Make prediction using each of the local models in the bandwidth.
+            4. Make weighted average of predictions based on the kernel weights.
+            5. Normalize the result to ensure sum of probabilities is 1.
+
+        The results from the nearest and ensemble predictions are typically similar,
+        with the ensemble being significantly slower due to the required number of
+        inference calls.
 
         Parameters
         ----------
@@ -1359,6 +1495,12 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             Feature matrix for new observations.
         geometry : geopandas.GeoSeries
             Point geometries for new observations.
+        method : str {"nearest", "ensemble"}
+            Prediction method. Nearest uses the nearest location available at the fit
+            time and does prediction using its single model. Ensemble uses an ensemble
+            of local models available within the bandwidth set at the fit time, with
+            predictions from individual models being weighted based on the distance and
+            a set kernel.
 
         Returns
         -------
@@ -1370,18 +1512,29 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         Requires the estimator to have been fit with ``keep_models=True`` (or a
         ``Path``) so local models can be used at prediction time.
         """
-        local_model_ids, distances = self._prepare_prediction_neighborhoods(geometry)
         data = [X.iloc[[i]] for i in range(len(X))]
 
         predictions = []
-        for x_, models_, distances_ in zip(
-            data, local_model_ids, distances, strict=True
-        ):
-            predictions.append(self._predict_local(x_, models_, distances_))
+        if method == "ensemble":
+            local_model_ids, distances = self._prepare_prediction_neighborhoods(
+                geometry
+            )
+
+            for x_, models_, distances_ in zip(
+                data, local_model_ids, distances, strict=True
+            ):
+                predictions.append(
+                    self._predict_local_ensemble(x_, models_, distances_)
+                )
+        elif method == "nearest":
+            local_model_ids = self._prepare_prediction_nearest(geometry)
+
+            for x_, model_id in zip(data, local_model_ids, strict=True):
+                predictions.append(self._predict_local_nearest(x_, model_id))
 
         return pd.Series(predictions, index=X.index)
 
-    def _predict_local(
+    def _predict_local_ensemble(
         self,
         x_: pd.DataFrame,
         models_: np.ndarray,
@@ -1406,6 +1559,16 @@ class BaseRegressor(_BaseModel, RegressorMixin):
 
         weighted = np.average(pred[~mask], weights=distances_[~mask])
         return weighted
+
+    def _predict_local_nearest(self, x_: pd.DataFrame, model_id: Hashable) -> float:
+        local_model = self._local_models[model_id]
+        if isinstance(local_model, str):
+            with open(local_model, "rb") as f:
+                local_model = load(f)
+
+        if local_model is not None:
+            return local_model.predict(x_).flatten()[0]
+        return np.nan
 
     def _fit_local(
         self,
