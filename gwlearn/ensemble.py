@@ -905,13 +905,14 @@ class GWGradientBoostingRegressor(BaseRegressor):
     ...     bandwidth=30,
     ...     fixed=False,
     ...     random_state=0,
+    ...     include_focal=False,
     ... ).fit(X, y, geometry=gdf.representative_point())
     >>> gw.local_r2_.head()
-    0    0.810035
-    1    0.801906
-    2    0.833586
-    3    0.824119
-    4    0.813884
+    0    0.023796
+    1   -0.872235
+    2    0.004713
+    3   -0.144000
+    4   -0.063225
     dtype: float64
     """
 
