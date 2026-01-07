@@ -11,17 +11,17 @@
       
       
       
-        <link rel="prev" href="introduction.html">
+        <link rel="prev" href="network_graph.html">
       
       
-        <link rel="next" href="ensemble.html">
+        <link rel="next" href="mgwr_comparison.html">
       
       
       <link rel="icon" href="_static/pysal_favicon.ico">
     
     
       
-        <title>Linear models - gwlearn 0.0.2.dev12 documentation</title>
+        <title>Scikit-learn compatibility - gwlearn 0.0.2.dev12 documentation</title>
       
     
     
@@ -71,11 +71,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#linear-regression" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -105,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Linear models
+              Scikit-learn compatibility
             
           </span>
         </div>
@@ -351,31 +346,11 @@
                 
   
   
-    
-  
-    
   
   
   
-    <li class="md-nav__item md-nav__item--active">
-      
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    <span>Linear models</span>
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="#" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="linear.html" class="md-nav__link">
         
   
   
@@ -386,45 +361,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#linear-regression" class="md-nav__link">
-    
-    <span class="md-ellipsis">
-      <span>Linear regression</span>
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#logistic-regression" class="md-nav__link">
-    
-    <span class="md-ellipsis">
-      <span>Logistic regression</span>
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -554,11 +490,18 @@
                 
   
   
+    
+  
+    
   
   
   
-    <li class="md-nav__item">
-      <a href="sklearn_compatibility.html" class="md-nav__link">
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
         
   
   
@@ -569,6 +512,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -793,34 +737,6 @@
   
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#linear-regression" class="md-nav__link">
-    
-    <span class="md-ellipsis">
-      <span>Linear regression</span>
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#logistic-regression" class="md-nav__link">
-    
-    <span class="md-ellipsis">
-      <span>Logistic regression</span>
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -835,49 +751,35 @@
                   
 
 
-<h1 id="linear-models">Linear models<a class="headerlink" href="#linear-models" title="Link to this heading">¶</a></h1>
-<p>An overview of linear and logistic regression models.</p>
+<h1 id="scikit-learn-compatibility">Scikit-learn compatibility<a class="headerlink" href="#scikit-learn-compatibility" title="Link to this heading">¶</a></h1>
+<p>All estimators implemented in <code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> are designed to provide scikit-learn compatible API. However, that is occasionally tricky due to the need of geometry as an additional argument in <code class="docutils literal notranslate"><span class="pre">fit</span></code>, <code class="docutils literal notranslate"><span class="pre">predict</span></code> or <code class="docutils literal notranslate"><span class="pre">score</span></code>. Luckily, there is a way thanks to scikit-learn’s (experimental) support of <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html">metadata routing</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">geodatasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">metrics</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">set_config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">GridSearchCV</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">gwlearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">GWLinearRegression</span><span class="p">,</span> <span class="n">GWLogisticRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gwlearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">GWLinearRegression</span>
 </code></pre></div>
 </div>
 </div>
 </div>
-<h2 id="linear-regression">Linear regression<a class="headerlink" href="#linear-regression" title="Link to this heading">¶</a></h2>
-<p>Linear regression is a classical example of geographically weighted regression models. In this example, you can predict the number of suicides based on other population data in the <a class="reference external" href="https://geodacenter.github.io/data-and-lab//Guerry/">Guerry</a> dataset.</p>
+<p>The <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html">metadata routing</a> is not enabled by default, hence if you’d like to use it, you need to enable the configuration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;geoda.guerry&quot;</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">set_config</span><span class="p">(</span><span class="n">enable_metadata_routing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
 </div>
-<p>It is a relatively small dataset covering Frech data from 1800s.</p>
+<p>You can then initialise the estimator class and use <code class="docutils literal notranslate"><span class="pre">.set_*</span></code> methods to indicate that the <code class="docutils literal notranslate"><span class="pre">geometry</span></code> argument shall be routed alongside <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/4cd6f40416928952dbfc42f4ad77b31636935690a42b86a030a0bd125a4f4d9a.png" src="_images/4cd6f40416928952dbfc42f4ad77b31636935690a42b86a030a0bd125a4f4d9a.png" />
-</div>
-</div>
-<p>Specify the model and fit the data.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">adaptive</span> <span class="o">=</span> <span class="n">GWLinearRegression</span><span class="p">(</span><span class="n">bandwidth</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;tricube&quot;</span><span class="p">)</span>
-<span class="n">adaptive</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-    <span class="n">gdf</span><span class="p">[[</span><span class="s2">&quot;Crm_prp&quot;</span><span class="p">,</span> <span class="s2">&quot;Litercy&quot;</span><span class="p">,</span> <span class="s2">&quot;Donatns&quot;</span><span class="p">,</span> <span class="s2">&quot;Lottery&quot;</span><span class="p">]],</span>
-    <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;Suicids&quot;</span><span class="p">],</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gwlr</span> <span class="o">=</span> <span class="n">GWLinearRegression</span><span class="p">(</span><span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">keep_models</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+<span class="n">gwlr</span><span class="o">.</span><span class="n">set_fit_request</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">gwlr</span><span class="o">.</span><span class="n">set_predict_request</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">gwlr</span><span class="o">.</span><span class="n">set_score_request</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
@@ -1432,7 +1334,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLinearRegression(bandwidth=25, kernel=&#x27;tricube&#x27;)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLinearRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLinearRegression(bandwidth=25, keep_models=True)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator  sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label  sk-toggleable__label-arrow"><div><div>GWLinearRegression</div></div><div><span class="sk-estimator-doc-link ">i<span>Not fitted</span></span></div></label><div class="sk-toggleable__content " data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -1459,13 +1361,13 @@ a.param-doc-link::before {
         </tr>
     
 
-        <tr class="user-set">
+        <tr class="default">
             <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('kernel',
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">kernel</td>
-            <td class="value">&#x27;tricube&#x27;</td>
+            <td class="value">&#x27;bisquare&#x27;</td>
         </tr>
     
 
@@ -1519,13 +1421,13 @@ a.param-doc-link::before {
         </tr>
     
 
-        <tr class="default">
+        <tr class="user-set">
             <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('keep_models',
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">keep_models</td>
-            <td class="value">False</td>
+            <td class="value">True</td>
         </tr>
     
 
@@ -1679,249 +1581,16 @@ function forceTheme(elementId) {
 
 forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
-<p>You can get a number of outputs from the fitted model. For example, focal predictions (a value is predicted on an observations using the local model fitted around it).</p>
+<p>A model prepared like this can be consumed by sklearn’s <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> or <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">adaptive</span><span class="o">.</span><span class="n">pred_</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0     65929.297258
-1     14289.540382
-2     60668.901578
-3     25191.170857
-4     12777.621045
-          ...     
-80    41304.669559
-81    19766.026593
-82    29125.591134
-83    25717.441407
-84    19381.885833
-Length: 85, dtype: float64
-</code></pre></div>
-</div>
-</div>
-</div>
-<p>This allows you to measure model performance metrics like $R^2$. This value would be comparable to the R2 reported by <code class="docutils literal notranslate"><span class="pre">mgwr</span></code>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;Suicids&quot;</span><span class="p">],</span> <span class="n">adaptive</span><span class="o">.</span><span class="n">pred_</span><span class="p">)</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.703052094221075
-</code></pre></div>
-</div>
-</div>
-</div>
-<p>Local version of $R^2$ is accessible directly.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">adaptive</span><span class="o">.</span><span class="n">local_r2_</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0     0.655274
-1     0.564506
-2     0.616975
-3     0.690529
-4     0.704666
-        ...   
-80    0.444105
-81    0.554521
-82    0.646275
-83    0.174557
-84    0.215379
-Length: 85, dtype: float64
-</code></pre></div>
-</div>
-</div>
-</div>
-<p>Any of the values linked to individual observations can then be mapped.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">adaptive</span><span class="o">.</span><span class="n">local_r2_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/aedd4462e4f5d2eddbfc9839a28052e2c3b4789432985ceb462617a3f9b5b667.png" src="_images/aedd4462e4f5d2eddbfc9839a28052e2c3b4789432985ceb462617a3f9b5b667.png" />
-</div>
-</div>
-<p>Similarly, you can access residuals.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">adaptive</span><span class="o">.</span><span class="n">resid_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/89970d5ca799ab996b9e3b3e73ed04922538b49968549a69f5daf0e23e7796b0.png" src="_images/89970d5ca799ab996b9e3b3e73ed04922538b49968549a69f5daf0e23e7796b0.png" />
-</div>
-</div>
-<p>Each local model then have its own local coefficients.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">adaptive</span><span class="o">.</span><span class="n">local_coef_</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;geoda.guerry&quot;</span><span class="p">))</span>
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Crm_prp</th>
-      <th>Litercy</th>
-      <th>Donatns</th>
-      <th>Lottery</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>3.147001</td>
-      <td>-500.570435</td>
-      <td>0.218349</td>
-      <td>274.308624</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2.177315</td>
-      <td>103.815973</td>
-      <td>1.276062</td>
-      <td>-94.396645</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>1.155884</td>
-      <td>-2112.020365</td>
-      <td>-7.912018</td>
-      <td>1015.701421</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>7.945416</td>
-      <td>-189.098606</td>
-      <td>-3.969571</td>
-      <td>132.812885</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>7.575983</td>
-      <td>-111.394715</td>
-      <td>-4.221681</td>
-      <td>107.181855</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>80</th>
-      <td>0.422307</td>
-      <td>-769.135891</td>
-      <td>0.472364</td>
-      <td>315.564934</td>
-    </tr>
-    <tr>
-      <th>81</th>
-      <td>2.228270</td>
-      <td>-343.158854</td>
-      <td>0.233416</td>
-      <td>242.722924</td>
-    </tr>
-    <tr>
-      <th>82</th>
-      <td>2.319692</td>
-      <td>-390.456757</td>
-      <td>-1.543721</td>
-      <td>356.856559</td>
-    </tr>
-    <tr>
-      <th>83</th>
-      <td>1.918249</td>
-      <td>147.505689</td>
-      <td>1.016886</td>
-      <td>-58.835632</td>
-    </tr>
-    <tr>
-      <th>84</th>
-      <td>0.027807</td>
-      <td>-92.139088</td>
-      <td>1.604362</td>
-      <td>331.684347</td>
-    </tr>
-  </tbody>
-</table>
-<p>85 rows × 4 columns</p>
-</div></div></div>
-</div>
-<p>Again, this can be explored visually.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">f</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">column</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">adaptive</span><span class="o">.</span><span class="n">local_coef_</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">axs</span><span class="o">.</span><span class="n">flat</span><span class="p">):</span>
-    <span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">adaptive</span><span class="o">.</span><span class="n">local_coef_</span><span class="p">[</span><span class="n">column</span><span class="p">],</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/648b2fa8c2c5da669be6c5f77d78dc2660ad8abace555537d4f01538c14c7889.png" src="_images/648b2fa8c2c5da669be6c5f77d78dc2660ad8abace555537d4f01538c14c7889.png" />
-</div>
-</div>
-<p>Alongside local coefficients, you can retireve a local intercept value.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">adaptive</span><span class="o">.</span><span class="n">local_intercept_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/af4e172ded8f62ad2aef95838509e4c7ad57dc52d465c59c731d7c619c0c10fa.png" src="_images/af4e172ded8f62ad2aef95838509e4c7ad57dc52d465c59c731d7c619c0c10fa.png" />
-</div>
-</div>
-<h2 id="logistic-regression">Logistic regression<a class="headerlink" href="#logistic-regression" title="Link to this heading">¶</a></h2>
-<p>Due to the nature of the principle in which gwlearn extends scikit-learn, you can also fit the local version of logistic regression for classification tasks. However, there’s a caveat. Given it is unlikely that all categories are present in all local models, fitting a non-binary would lead to inconsistent local models. Hence gwlearn currently supports only binary regression, akin to binomial model in <code class="docutils literal notranslate"><span class="pre">mgwr</span></code>.</p>
-<p>Let’s illustrate it by prediciting whether the number of suicides is over or under median.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">y</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;Suicids&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;Suicids&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
-</code></pre></div>
-</div>
-</div>
-</div>
-<p>The API then looks the same, following scikit-learn’s model.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">binary</span> <span class="o">=</span> <span class="n">GWLogisticRegression</span><span class="p">(</span><span class="n">bandwidth</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-<span class="n">binary</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-    <span class="n">gdf</span><span class="p">[[</span><span class="s2">&quot;Crm_prp&quot;</span><span class="p">,</span> <span class="s2">&quot;Litercy&quot;</span><span class="p">,</span> <span class="s2">&quot;Donatns&quot;</span><span class="p">,</span> <span class="s2">&quot;Lottery&quot;</span><span class="p">]],</span>
-    <span class="n">y</span><span class="p">,</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">(),</span>
+<span class="n">gs</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">gwlr</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;include_focal&#39;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]},</span> <span class="n">cv</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">gs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">gdf</span><span class="p">[[</span><span class="s1">&#39;Crm_prp&#39;</span><span class="p">,</span> <span class="s1">&#39;Litercy&#39;</span><span class="p">,</span> <span class="s1">&#39;Donatns&#39;</span><span class="p">,</span> <span class="s1">&#39;Lottery&#39;</span><span class="p">]],</span>
+    <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;Suicids&quot;</span><span class="p">],</span>
+    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span>
 <span class="p">)</span>
 </code></pre></div>
 </div>
@@ -2477,7 +2146,178 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLogisticRegression(bandwidth=25)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLogisticRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GridSearchCV(cv=2, estimator=GWLinearRegression(bandwidth=25, keep_models=True),
+             param_grid={&#x27;include_focal&#x27;: [True, False]})</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" ><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GridSearchCV</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.8/modules/generated/sklearn.model_selection.GridSearchCV.html">?<span>Documentation for GridSearchCV</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+        <div class="estimator-table">
+            <details>
+                <summary>Parameters</summary>
+                <table class="parameters-table">
+                  <tbody>
+                    
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('estimator',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">
+        <a class="param-doc-link"
+            rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.8/modules/generated/sklearn.model_selection.GridSearchCV.html#:~:text=estimator,-estimator%20object">
+            estimator
+            <span class="param-doc-description">estimator: estimator object<br><br>This is assumed to implement the scikit-learn estimator interface.<br>Either estimator needs to provide a ``score`` function,<br>or ``scoring`` must be passed.</span>
+        </a>
+    </td>
+            <td class="value">GWLinearRegre...p_models=True)</td>
+        </tr>
+    
+
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('param_grid',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">
+        <a class="param-doc-link"
+            rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.8/modules/generated/sklearn.model_selection.GridSearchCV.html#:~:text=param_grid,-dict%20or%20list%20of%20dictionaries">
+            param_grid
+            <span class="param-doc-description">param_grid: dict or list of dictionaries<br><br>Dictionary with parameters names (`str`) as keys and lists of<br>parameter settings to try as values, or a list of such<br>dictionaries, in which case the grids spanned by each dictionary<br>in the list are explored. This enables searching over any sequence<br>of parameter settings.</span>
+        </a>
+    </td>
+            <td class="value">{&#x27;include_focal&#x27;: [True, False]}</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('scoring',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">
+        <a class="param-doc-link"
+            rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.8/modules/generated/sklearn.model_selection.GridSearchCV.html#:~:text=scoring,-str%2C%20callable%2C%20list%2C%20tuple%20or%20dict%2C%20default%3DNone">
+            scoring
+            <span class="param-doc-description">scoring: str, callable, list, tuple or dict, default=None<br><br>Strategy to evaluate the performance of the cross-validated model on<br>the test set.<br><br>If `scoring` represents a single score, one can use:<br><br>- a single string (see :ref:`scoring_string_names`);<br>- a callable (see :ref:`scoring_callable`) that returns a single value;<br>- `None`, the `estimator`'s<br>  :ref:`default evaluation criterion <scoring_api_overview>` is used.<br><br>If `scoring` represents multiple scores, one can use:<br><br>- a list or tuple of unique strings;<br>- a callable returning a dictionary where the keys are the metric<br>  names and the values are the metric scores;<br>- a dictionary with metric names as keys and callables as values.<br><br>See :ref:`multimetric_grid_search` for an example.</span>
+        </a>
+    </td>
+            <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('n_jobs',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">
+        <a class="param-doc-link"
+            rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.8/modules/generated/sklearn.model_selection.GridSearchCV.html#:~:text=n_jobs,-int%2C%20default%3DNone">
+            n_jobs
+            <span class="param-doc-description">n_jobs: int, default=None<br><br>Number of jobs to run in parallel.<br>``None`` means 1 unless in a :obj:`joblib.parallel_backend` context.<br>``-1`` means using all processors. See :term:`Glossary <n_jobs>`<br>for more details.<br><br>.. versionchanged:: v0.20<br>   `n_jobs` default changed from 1 to None</span>
+        </a>
+    </td>
+            <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('refit',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">
+        <a class="param-doc-link"
+            rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.8/modules/generated/sklearn.model_selection.GridSearchCV.html#:~:text=refit,-bool%2C%20str%2C%20or%20callable%2C%20default%3DTrue">
+            refit
+            <span class="param-doc-description">refit: bool, str, or callable, default=True<br><br>Refit an estimator using the best found parameters on the whole<br>dataset.<br><br>For multiple metric evaluation, this needs to be a `str` denoting the<br>scorer that would be used to find the best parameters for refitting<br>the estimator at the end.<br><br>Where there are considerations other than maximum score in<br>choosing a best estimator, ``refit`` can be set to a function which<br>returns the selected ``best_index_`` given ``cv_results_``. In that<br>case, the ``best_estimator_`` and ``best_params_`` will be set<br>according to the returned ``best_index_`` while the ``best_score_``<br>attribute will not be available.<br><br>The refitted estimator is made available at the ``best_estimator_``<br>attribute and permits using ``predict`` directly on this<br>``GridSearchCV`` instance.<br><br>Also for multiple metric evaluation, the attributes ``best_index_``,<br>``best_score_`` and ``best_params_`` will only be available if<br>``refit`` is set and all of them will be determined w.r.t this specific<br>scorer.<br><br>See ``scoring`` parameter to know more about multiple metric<br>evaluation.<br><br>See :ref:`sphx_glr_auto_examples_model_selection_plot_grid_search_digits.py`<br>to see how to design a custom selection strategy using a callable<br>via `refit`.<br><br>See :ref:`this example<br><sphx_glr_auto_examples_model_selection_plot_grid_search_refit_callable.py>`<br>for an example of how to use ``refit=callable`` to balance model<br>complexity and cross-validated score.<br><br>.. versionchanged:: 0.20<br>    Support for callable added.</span>
+        </a>
+    </td>
+            <td class="value">True</td>
+        </tr>
+    
+
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('cv',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">
+        <a class="param-doc-link"
+            rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.8/modules/generated/sklearn.model_selection.GridSearchCV.html#:~:text=cv,-int%2C%20cross-validation%20generator%20or%20an%20iterable%2C%20default%3DNone">
+            cv
+            <span class="param-doc-description">cv: int, cross-validation generator or an iterable, default=None<br><br>Determines the cross-validation splitting strategy.<br>Possible inputs for cv are:<br><br>- None, to use the default 5-fold cross validation,<br>- integer, to specify the number of folds in a `(Stratified)KFold`,<br>- :term:`CV splitter`,<br>- An iterable yielding (train, test) splits as arrays of indices.<br><br>For integer/None inputs, if the estimator is a classifier and ``y`` is<br>either binary or multiclass, :class:`StratifiedKFold` is used. In all<br>other cases, :class:`KFold` is used. These splitters are instantiated<br>with `shuffle=False` so the splits will be the same across calls.<br><br>Refer :ref:`User Guide <cross_validation>` for the various<br>cross-validation strategies that can be used here.<br><br>.. versionchanged:: 0.22<br>    ``cv`` default value if None changed from 3-fold to 5-fold.</span>
+        </a>
+    </td>
+            <td class="value">2</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('verbose',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">
+        <a class="param-doc-link"
+            rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.8/modules/generated/sklearn.model_selection.GridSearchCV.html#:~:text=verbose,-int">
+            verbose
+            <span class="param-doc-description">verbose: int<br><br>Controls the verbosity: the higher, the more messages.<br><br>- >1 : the computation time for each fold and parameter candidate is<br>  displayed;<br>- >2 : the score is also displayed;<br>- >3 : the fold and candidate parameter indexes are also displayed<br>  together with the starting time of the computation.</span>
+        </a>
+    </td>
+            <td class="value">0</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('pre_dispatch',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">
+        <a class="param-doc-link"
+            rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.8/modules/generated/sklearn.model_selection.GridSearchCV.html#:~:text=pre_dispatch,-int%2C%20or%20str%2C%20default%3D%272%2An_jobs%27">
+            pre_dispatch
+            <span class="param-doc-description">pre_dispatch: int, or str, default='2*n_jobs'<br><br>Controls the number of jobs that get dispatched during parallel<br>execution. Reducing this number can be useful to avoid an<br>explosion of memory consumption when more jobs get dispatched<br>than CPUs can process. This parameter can be:<br><br>- None, in which case all the jobs are immediately created and spawned. Use<br>  this for lightweight and fast-running jobs, to avoid delays due to on-demand<br>  spawning of the jobs<br>- An int, giving the exact number of total jobs that are spawned<br>- A str, giving an expression as a function of n_jobs, as in '2*n_jobs'</span>
+        </a>
+    </td>
+            <td class="value">&#x27;2*n_jobs&#x27;</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('error_score',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">
+        <a class="param-doc-link"
+            rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.8/modules/generated/sklearn.model_selection.GridSearchCV.html#:~:text=error_score,-%27raise%27%20or%20numeric%2C%20default%3Dnp.nan">
+            error_score
+            <span class="param-doc-description">error_score: 'raise' or numeric, default=np.nan<br><br>Value to assign to the score if an error occurs in estimator fitting.<br>If set to 'raise', the error is raised. If a numeric value is given,<br>FitFailedWarning is raised. This parameter does not affect the refit<br>step, which will always raise the error.</span>
+        </a>
+    </td>
+            <td class="value">nan</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('return_train_score',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">
+        <a class="param-doc-link"
+            rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.8/modules/generated/sklearn.model_selection.GridSearchCV.html#:~:text=return_train_score,-bool%2C%20default%3DFalse">
+            return_train_score
+            <span class="param-doc-description">return_train_score: bool, default=False<br><br>If ``False``, the ``cv_results_`` attribute will not include training<br>scores.<br>Computing training scores is used to get insights on how different<br>parameter settings impact the overfitting/underfitting trade-off.<br>However computing the scores on the training set can be computationally<br>expensive and is not strictly required to select the parameters that<br>yield the best generalization performance.<br><br>.. versionadded:: 0.19<br><br>.. versionchanged:: 0.21<br>    Default value was changed from ``True`` to ``False``</span>
+        </a>
+    </td>
+            <td class="value">False</td>
+        </tr>
+    
+                  </tbody>
+                </table>
+            </details>
+        </div>
+    </div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox" ><label for="sk-estimator-id-3" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>best_estimator_: GWLinearRegression</div></div></label><div class="sk-toggleable__content fitted" data-param-prefix="best_estimator___"><pre>GWLinearRegression(bandwidth=25, keep_models=True)</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox" ><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLinearRegression</div></div></label><div class="sk-toggleable__content fitted" data-param-prefix="best_estimator___">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -2564,13 +2404,13 @@ a.param-doc-link::before {
         </tr>
     
 
-        <tr class="default">
+        <tr class="user-set">
             <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('keep_models',
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">keep_models</td>
-            <td class="value">False</td>
+            <td class="value">True</td>
         </tr>
     
 
@@ -2596,46 +2436,6 @@ a.param-doc-link::before {
 
         <tr class="default">
             <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('min_proportion',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">min_proportion</td>
-            <td class="value">0.2</td>
-        </tr>
-    
-
-        <tr class="default">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('undersample',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">undersample</td>
-            <td class="value">False</td>
-        </tr>
-    
-
-        <tr class="default">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('leave_out',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">leave_out</td>
-            <td class="value">None</td>
-        </tr>
-    
-
-        <tr class="default">
-            <td><i class="copy-paste-icon"
-                 onclick="copyToClipboard('random_state',
-                          this.parentElement.nextElementSibling)"
-            ></i></td>
-            <td class="param">random_state</td>
-            <td class="value">None</td>
-        </tr>
-    
-
-        <tr class="default">
-            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('verbose',
                           this.parentElement.nextElementSibling)"
             ></i></td>
@@ -2647,7 +2447,7 @@ a.param-doc-link::before {
                 </table>
             </details>
         </div>
-    </div></div></div></div></div><script>function copyToClipboard(text, element) {
+    </div></div></div></div></div></div></div></div></div></div><script>function copyToClipboard(text, element) {
     // Get the parameter prefix from the closest toggleable content
     const toggleableContent = element.closest('.sk-toggleable__content');
     const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
@@ -2764,334 +2564,26 @@ function forceTheme(elementId) {
 
 forceTheme('sk-container-id-2');</script></body></div></div>
 </div>
-<p>Given this is a classification task, we can retrieve probabilites from focal predictions.</p>
+<p>You can then retrieve the outcome.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">binary</span><span class="o">.</span><span class="n">proba_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gs</span><span class="o">.</span><span class="n">best_estimator_</span><span class="o">.</span><span class="n">include_focal</span>
 </code></pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>False</th>
-      <th>True</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0.005900</td>
-      <td>0.994100</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>0.242553</td>
-      <td>0.757447</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>0.972850</td>
-      <td>0.027150</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>0.716931</td>
-      <td>0.283069</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>80</th>
-      <td>0.435476</td>
-      <td>0.564524</td>
-    </tr>
-    <tr>
-      <th>81</th>
-      <td>0.809622</td>
-      <td>0.190378</td>
-    </tr>
-    <tr>
-      <th>82</th>
-      <td>0.439796</td>
-      <td>0.560204</td>
-    </tr>
-    <tr>
-      <th>83</th>
-      <td>0.542404</td>
-      <td>0.457596</td>
-    </tr>
-    <tr>
-      <th>84</th>
-      <td>0.988792</td>
-      <td>0.011208</td>
-    </tr>
-  </tbody>
-</table>
-<p>85 rows × 2 columns</p>
-</div></div></div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>True
+</code></pre></div>
 </div>
-<p>Or their binary counterparts (based on the maximum value).</p>
+</div>
+</div>
+<p>This way, <code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> estimators can be included in your workflows with ease.</p>
+<p>It is recommended to disable metadata routing once you’re done.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">binary</span><span class="o">.</span><span class="n">pred_</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">set_config</span><span class="p">(</span><span class="n">enable_metadata_routing</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0      True
-1      &lt;NA&gt;
-2      True
-3     False
-4     False
-      ...  
-80     True
-81    False
-82     True
-83    False
-84    False
-Length: 85, dtype: boolean
-</code></pre></div>
-</div>
-</div>
-</div>
-<p>The regions with missing values are not fitted due to extreme class imbalance in their local context (less than 20% of local <code class="docutils literal notranslate"><span class="pre">y</span></code> values are of a minority class). This is a specific behavior linked to classification models in gwlearn. Rather than simply failing, invariant or extremely imbalanced local <code class="docutils literal notranslate"><span class="pre">y</span></code> does not make the model to fail, it just records the location as skipped. That also means that the location is not used in prediction and for certain locations, there is no possible prediction.</p>
-<p>You can check the proportion of local models that exist using <code class="docutils literal notranslate"><span class="pre">prediction_rate_</span></code>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">binary</span><span class="o">.</span><span class="n">prediction_rate_</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>np.float64(0.8705882352941177)
-</code></pre></div>
-</div>
-</div>
-</div>
-<p>This shows that 87% of focal geometries have their respective models, the rest does not.</p>
-<p>For more on dealing with class imbalance, see the <a class="reference internal" href="imbalance.html"><span class="std std-doc">imbalance guide</span></a>.</p>
-<p>The focal metrics (based on a prediction on a focal geometry using a single local model fitted around that geometry) can be measured using the two outputs shown above.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">na_mask</span> <span class="o">=</span> <span class="n">binary</span><span class="o">.</span><span class="n">pred_</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
-
-<span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">na_mask</span><span class="p">],</span> <span class="n">binary</span><span class="o">.</span><span class="n">pred_</span><span class="p">[</span><span class="n">na_mask</span><span class="p">])</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.9594594594594594
-</code></pre></div>
-</div>
-</div>
-</div>
-<p>However, you can also extract all data from all local models and use those to measure the performance of the model, rather than using only focal geometries.</p>
-<p>The data pooled from all local models are accessible as <code class="docutils literal notranslate"><span class="pre">y_pooled_</span></code> and <code class="docutils literal notranslate"><span class="pre">pred_pooled_</span></code>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">binary</span><span class="o">.</span><span class="n">y_pooled_</span><span class="p">,</span> <span class="n">binary</span><span class="o">.</span><span class="n">pred_pooled_</span><span class="p">)</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7864864864864864
-</code></pre></div>
-</div>
-</div>
-</div>
-<p>Pooled metrics are typically showing worse results as the distance decay of local observation weights in individual models are playing against a good prediction of values far from the focal point.</p>
-<p>Alternatively, you can measure performance metrics per each local model. That is relying on the same pooled data but split to their respective parent local models.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">local_accuracy</span> <span class="o">=</span> <span class="n">binary</span><span class="o">.</span><span class="n">local_metric</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">)</span>
-<span class="n">local_accuracy</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.64,  nan, 0.84, 0.72, 0.6 , 0.84,  nan, 0.92, 0.84, 0.92,  nan,
-       0.8 , 0.96, 0.88, 0.76, 0.84, 0.8 , 0.84, 0.64, 0.6 , 0.8 , 0.88,
-       0.56, 0.76, 0.96, 0.88, 0.52, 0.92, 0.8 , 0.8 , 0.92, 0.92, 0.72,
-       0.72, 0.6 , 0.72, 0.64, 0.92, 0.64, 0.72, 0.88, 0.76, 0.84,  nan,
-       0.88, 0.96, 0.68, 0.8 ,  nan, 0.68, 0.8 , 0.84, 0.88, 0.56, 0.8 ,
-       0.8 ,  nan,  nan, 0.88, 1.  , 0.76, 0.92, 0.76, 0.88, 0.76, 0.56,
-       0.8 , 0.64, 0.72, 0.72,  nan, 0.96,  nan, 0.88, 0.8 , 0.96,  nan,
-        nan, 0.72, 0.76, 0.72, 0.68, 0.76, 0.72, 0.84])
-</code></pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-    <span class="n">local_accuracy</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">missing_kwds</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;lightgray&quot;</span><span class="p">)</span>
-<span class="p">)</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/e5ab5db8b59a9b95d7522808e06d7e90c446a6b32381a9212e02236470ba209c.png" src="_images/e5ab5db8b59a9b95d7522808e06d7e90c446a6b32381a9212e02236470ba209c.png" />
-</div>
-</div>
-<p>The local coefficients are available as in the regression counterpart.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">binary</span><span class="o">.</span><span class="n">local_coef_</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Crm_prp</th>
-      <th>Litercy</th>
-      <th>Donatns</th>
-      <th>Lottery</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0.000583</td>
-      <td>0.032988</td>
-      <td>0.000678</td>
-      <td>-0.050549</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>0.001483</td>
-      <td>0.152063</td>
-      <td>0.000674</td>
-      <td>0.199996</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>0.001018</td>
-      <td>-0.052208</td>
-      <td>0.000547</td>
-      <td>-0.010365</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>0.000945</td>
-      <td>0.008447</td>
-      <td>0.000280</td>
-      <td>-0.030962</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>80</th>
-      <td>0.000411</td>
-      <td>-0.260107</td>
-      <td>-0.000190</td>
-      <td>0.036529</td>
-    </tr>
-    <tr>
-      <th>81</th>
-      <td>0.000255</td>
-      <td>-0.121968</td>
-      <td>-0.000161</td>
-      <td>0.019247</td>
-    </tr>
-    <tr>
-      <th>82</th>
-      <td>0.000182</td>
-      <td>-0.196829</td>
-      <td>-0.000244</td>
-      <td>0.065412</td>
-    </tr>
-    <tr>
-      <th>83</th>
-      <td>0.000462</td>
-      <td>0.010739</td>
-      <td>0.000122</td>
-      <td>-0.008270</td>
-    </tr>
-    <tr>
-      <th>84</th>
-      <td>-0.000173</td>
-      <td>0.042576</td>
-      <td>0.000985</td>
-      <td>0.160625</td>
-    </tr>
-  </tbody>
-</table>
-<p>85 rows × 4 columns</p>
-</div></div></div>
-</div>
-<p>Again, this can be explored visually.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">f</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">column</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">binary</span><span class="o">.</span><span class="n">local_coef_</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">axs</span><span class="o">.</span><span class="n">flat</span><span class="p">):</span>
-    <span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">binary</span><span class="o">.</span><span class="n">local_coef_</span><span class="p">[</span><span class="n">column</span><span class="p">],</span>
-        <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
-        <span class="n">missing_kwds</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;lightgray&quot;</span><span class="p">),</span>
-    <span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/33def8515e51514e170af553fc660b3f1dee38c29fb173efc8afc17f0ff654a0.png" src="_images/33def8515e51514e170af553fc660b3f1dee38c29fb173efc8afc17f0ff654a0.png" />
 </div>
 </div>
 
@@ -3131,7 +2623,7 @@ Length: 85, dtype: boolean
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="introduction.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Introduction to prototyping geographically weighted models">
+          <a href="network_graph.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Using custom graphs">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -3141,20 +2633,20 @@ Length: 85, dtype: boolean
                 Previous
               </span>
               <div class="md-ellipsis">
-                Introduction to prototyping geographically weighted models
+                Using custom graphs
               </div>
             </div>
           </a>
         
         
           
-          <a href="ensemble.html" class="md-footer__link md-footer__link--next" aria-label="Next: Ensemble models">
+          <a href="mgwr_comparison.html" class="md-footer__link md-footer__link--next" aria-label="Next: Comparison with MGWR">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Ensemble models
+                Comparison with MGWR
               </div>
             </div>
             <div class="md-footer__button md-icon">
