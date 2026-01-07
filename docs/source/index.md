@@ -15,6 +15,8 @@ predict
 imbalance
 bandwidth_search
 network_graph
+sklearn_compatibility
+mgwr_comparison
 references
 ```
 
