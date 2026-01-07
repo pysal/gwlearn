@@ -27,10 +27,6 @@ class BandwidthSearch:
         :class:`gwlearn.linear_model.GWLogisticRegression`) that can be instantiated as
         ``model(bandwidth=..., geometry=..., fixed=..., kernel=..., n_jobs=..., ...)``
         and exposes information criteria attributes like ``aicc_``/``aic_``/``bic_``.
-    geometry : gpd.GeoSeries, optional
-        Geographic location of the observations in the sample. Used to determine the
-        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.
     fixed : bool, optional
         True for distance based bandwidth and False for adaptive (nearest neighbor)
         bandwidth, by default ``False``
@@ -101,7 +97,6 @@ class BandwidthSearch:
 
     >>> search = BandwidthSearch(
     ...     GWLogisticRegression,
-    ...     geometry=gdf.representative_point(),
     ...     fixed=False,
     ...     search_method="interval",
     ...     criterion="aicc",
@@ -109,7 +104,7 @@ class BandwidthSearch:
     ...     max_bandwidth=80,
     ...     interval=10,
     ...     max_iter=200,
-    ... ).fit(X, y)
+    ... ).fit(X, y, geometry=gdf.representative_point())
     >>> search.optimal_bandwidth_
     np.int64(40)
     """
@@ -118,7 +113,6 @@ class BandwidthSearch:
         self,
         model,
         *,
-        geometry: gpd.GeoSeries,
         fixed: bool = False,
         kernel: Literal[
             "triangular",
@@ -148,7 +142,6 @@ class BandwidthSearch:
         self.kernel = kernel
         self.fixed = fixed
         self._model_kwargs = kwargs
-        self.geometry = geometry
         self.n_jobs = n_jobs
         self.search_method = search_method
         self.criterion = criterion
@@ -161,7 +154,9 @@ class BandwidthSearch:
         self.metrics = metrics
         self.verbose = verbose
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> "BandwidthSearch":
+    def fit(
+        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries
+    ) -> "BandwidthSearch":
         """
         Fit the searcher by evaluating candidate bandwidths on the provided data.
 
@@ -171,6 +166,10 @@ class BandwidthSearch:
             Feature matrix used to evaluate candidate bandwidths (rows are samples).
         y : pd.Series
             Target values corresponding to X.
+        geometry : gpd.GeoSeries
+            Geographic location of the observations in the sample. Used to determine the
+            spatial interaction weight based on specification by ``bandwidth``,
+            ``fixed``, ``kernel``, and ``include_focal`` keywords.
 
         Returns
         -------
@@ -182,6 +181,7 @@ class BandwidthSearch:
         The optimal bandwidth is selected as the index of the minimum score if
         ``minimize=True``, otherwise as the index of the maximum score.
         """
+        self.geometry = geometry
 
         if self.search_method == "interval":
             self._interval(X=X, y=y)
@@ -206,7 +206,6 @@ class BandwidthSearch:
 
         gwm = self.model(
             bandwidth=bw,
-            geometry=self.geometry,
             fixed=self.fixed,
             kernel=self.kernel,
             n_jobs=self.n_jobs,
@@ -214,7 +213,7 @@ class BandwidthSearch:
             strict=False,
             verbose=self.verbose == 2,
             **self._model_kwargs,
-        ).fit(X=X, y=y)
+        ).fit(X=X, y=y, geometry=self.geometry)
 
         met = ["aicc", "aic", "bic"]
         if self.metrics is not None:

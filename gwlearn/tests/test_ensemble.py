@@ -1,6 +1,10 @@
 import pandas as pd
 
-from gwlearn.ensemble import GWGradientBoostingClassifier, GWRandomForestClassifier
+from gwlearn.ensemble import (
+    GWGradientBoostingClassifier,
+    GWRandomForestClassifier,
+    GWRandomForestRegressor,
+)
 
 
 def test_gwrf_init():
@@ -29,7 +33,6 @@ def test_gwrf_fit_basic(sample_data):  # noqa: F811
     X, y, geometry = sample_data
 
     model = GWRandomForestClassifier(
-        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -38,7 +41,7 @@ def test_gwrf_fit_basic(sample_data):  # noqa: F811
         n_jobs=1,
     )
 
-    fitted_model = model.fit(X, y)
+    fitted_model = model.fit(X, y, geometry)
 
     # Test that fitting works and returns self
     assert fitted_model is model
@@ -96,7 +99,6 @@ def test_gwgb_fit_basic(sample_data):  # noqa: F811
     X, y, geometry = sample_data
 
     model = GWGradientBoostingClassifier(
-        geometry=geometry,
         bandwidth=150000,
         fixed=True,
         random_state=42,
@@ -105,7 +107,7 @@ def test_gwgb_fit_basic(sample_data):  # noqa: F811
         n_jobs=1,
     )
 
-    fitted_model = model.fit(X, y)
+    fitted_model = model.fit(X, y, geometry)
 
     # Test that fitting works and returns self
     assert fitted_model is model
@@ -118,3 +120,68 @@ def test_gwgb_fit_basic(sample_data):  # noqa: F811
     assert model.feature_importances_.shape[0] == len(X)
     assert model.feature_importances_.shape[1] == X.shape[1]
     assert all(col in model.feature_importances_.columns for col in X.columns)
+
+
+def test_gwrf_regressor_init():
+    """Test GWRandomForestRegressor initialization."""
+    model = GWRandomForestRegressor(bandwidth=100)
+
+    # Check default parameters
+    assert model.bandwidth == 100
+    assert model.fixed is False
+    assert model.kernel == "bisquare"
+    assert model._model_type == "random_forest"
+
+    # Check custom parameters
+    model = GWRandomForestRegressor(
+        bandwidth=50, fixed=True, kernel="tricube", n_estimators=100, max_depth=5
+    )
+    assert model.bandwidth == 50
+    assert model.fixed is True
+    assert model.kernel == "tricube"
+    assert model._model_kwargs["n_estimators"] == 100
+    assert model._model_kwargs["max_depth"] == 5
+
+
+def test_gwrf_regressor_fit_basic(sample_regression_data):  # noqa: F811
+    """Test that GWRandomForestRegressor fit method works and runs as expected."""
+    X, y, geometry = sample_regression_data
+
+    model = GWRandomForestRegressor(
+        bandwidth=150000,
+        fixed=True,
+        random_state=42,
+        strict=False,  # To avoid warnings on invariance
+        n_estimators=50,  # Use fewer trees for faster testing
+        n_jobs=1,
+    )
+
+    fitted_model = model.fit(X, y, geometry)
+
+    # Test that fitting works and returns self
+    assert fitted_model is model
+
+    # Test specific attributes of GWRandomForestRegressor
+    assert hasattr(model, "feature_importances_")
+    assert hasattr(model, "oob_y_pooled_")
+    assert hasattr(model, "oob_pred_pooled_")
+
+    # Check structure of feature importances
+    assert isinstance(model.feature_importances_, pd.DataFrame)
+    assert model.feature_importances_.shape[0] == len(X)
+    assert model.feature_importances_.shape[1] == X.shape[1]
+    assert all(col in model.feature_importances_.columns for col in X.columns)
+
+    # Check regressor-specific attributes
+    assert hasattr(model, "pred_")
+    assert hasattr(model, "resid_")
+    assert hasattr(model, "RSS_")
+    assert hasattr(model, "TSS_")
+    assert hasattr(model, "y_bar_")
+    assert hasattr(model, "local_r2_")
+    assert hasattr(model, "hat_values_")
+    assert hasattr(model, "effective_df_")
+    assert hasattr(model, "log_likelihood_")
+    assert hasattr(model, "aic_")
+    assert hasattr(model, "aicc_")
+    assert hasattr(model, "bic_")

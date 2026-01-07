@@ -14,10 +14,6 @@ from scipy.spatial import KDTree
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 from sklearn.model_selection import train_test_split
 
-# TODO: summary
-# TODO: formal documentation
-# TODO: comments in code
-
 __all__ = ["BaseClassifier", "BaseRegressor"]
 
 
@@ -94,7 +90,6 @@ class _BaseModel(BaseEstimator):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
-        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -109,7 +104,6 @@ class _BaseModel(BaseEstimator):
         self.bandwidth = bandwidth
         self.kernel = kernel
         self.include_focal = include_focal
-        self.geometry = geometry
         self.graph = graph
         self.fixed = fixed
         self._model_kwargs = kwargs
@@ -359,6 +353,127 @@ class _BaseModel(BaseEstimator):
             self.bic_ = np.nan
             self.aicc_ = np.nan
 
+    def _prepare_prediction_nearest(self, geometry: gpd.GeoSeries) -> np.ndarray:
+        """
+        Prepare nearest-neighbor mapping from target geometries to local model ids.
+
+        Parameters
+        ----------
+        geometry : geopandas.GeoSeries
+            Point geometries for new observations.
+
+        Returns
+        -------
+        np.ndarray:
+            1-D array of local model identifiers corresponding to the nearest
+            training geometry for each input geometry. The order aligns with the input
+            GeoSeries.
+        """
+
+        self._validate_geometry(geometry)
+
+        if not (isinstance(self.geometry, gpd.GeoSeries)):
+            raise ValueError("Geometry needs to be specified to enable prediction.")
+        indices_array = self.geometry.sindex.nearest(geometry, return_all=False)[1]
+        local_ids = self._local_models.index[indices_array.flatten()].to_numpy()
+        return local_ids
+
+    def _prepare_prediction_neighborhoods(
+        self, geometry: gpd.GeoSeries, bandwidth: float | int | None = None
+    ) -> tuple[list, list]:
+        """
+        Prepare neighborhood information for prediction on new observations.
+
+        Parameters
+        ----------
+        geometry : geopandas.GeoSeries
+            Point geometries for new observations.
+        bandwidth : float
+            Custom bandwidth overriding self.bandwidth
+
+        Returns
+        -------
+        tuple
+            - local_model_ids: list of arrays with local model indices per observation
+            - distances: list of arrays with kernel weights per observation
+        """
+        self._validate_geometry(geometry)
+
+        if not (
+            (isinstance(self.bandwidth, float | int) or bandwidth)
+            and isinstance(self.geometry, gpd.GeoSeries)
+        ):
+            raise ValueError(
+                "Bandwidth and geometry need to be specified to enable prediction."
+            )
+
+        bw = bandwidth if bandwidth is not None else self.bandwidth
+
+        if bw is None or not isinstance(bw, int | float):
+            raise ValueError(f"Bandwidth {bw} is not valid.")
+
+        if self.fixed:
+            input_ids, indices_array = self.geometry.sindex.query(
+                geometry, predicate="dwithin", distance=self.bandwidth
+            )
+            local_ids = self._local_models.index[indices_array.flatten()].to_numpy()
+            distance = _kernel_functions[self.kernel](
+                self.geometry.iloc[indices_array].distance(
+                    geometry.iloc[input_ids], align=False
+                ),
+                bw,
+            )
+        else:
+            training_coords = self.geometry.get_coordinates()
+            tree = KDTree(training_coords)
+            query_coords = geometry.get_coordinates()
+
+            distances, indices_array = tree.query(query_coords, k=bw)
+
+            # Flatten arrays for consistent format
+            input_ids = np.repeat(np.arange(len(geometry)), bw)
+            local_ids = self._local_models.index[indices_array.flatten()].to_numpy()
+            distances = distances.flatten()
+
+            # For adaptive KNN, determine the bandwidth for each neighborhood
+            # by finding the max distance in each neighborhood
+            kernel_bandwidth = (
+                pd.Series(distances).groupby(input_ids).transform("max") + 1e-6
+            )  # can't have 0
+            distance = _kernel_functions[self.kernel](distances, kernel_bandwidth)
+
+        split_indices = np.where(np.diff(input_ids))[0] + 1
+        local_model_ids = np.split(local_ids, split_indices)
+        distances = np.split(np.asarray(distance), split_indices)
+
+        return local_model_ids, distances
+
+    def _predict_local_ensemble(
+        self,
+        x_: pd.DataFrame,
+        models_: np.ndarray,
+        distances_: np.ndarray,
+    ):
+        """
+        Make prediction for a single observation using local models.
+
+        Must be implemented by subclasses.
+
+        Parameters
+        ----------
+        x_ : pd.DataFrame
+            Single-row DataFrame with features for the observation.
+        models_ : np.ndarray
+            Array of local model indices to use for prediction.
+        distances_ : np.ndarray
+            Array of kernel weights for each local model.
+
+        Returns
+        -------
+        Prediction result (type depends on subclass implementation).
+        """
+        raise NotImplementedError("Subclasses must implement _predict_local")
+
     # Abstract methods that subclasses must implement
     def _fit_local(
         self,
@@ -370,16 +485,52 @@ class _BaseModel(BaseEstimator):
     ) -> list[Hashable]:
         raise NotImplementedError("Subclasses must implement _fit_local")
 
-    def fit(self, X: pd.DataFrame, y: pd.Series):
+    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None):
         raise NotImplementedError("Subclasses must implement fit")
 
     def _get_score_data(self, local_model, X, y):  # noqa: ARG002
         """Subclasses should implement custom function"""
         return np.nan
 
-    # def __sklearn_tags__(self):
-    #     tags = super().__sklearn_tags__(self)
-    #     return tags
+    def set_fit_request(self, **requests):
+        """Register fit-time requests for metadata routing.
+
+        Examples
+        --------
+        >>> estimator.set_fit_request(geometry=True) # doctest: +SKIP
+        """
+        self._fit_request = requests
+        return self
+
+    def set_predict_request(self, **requests):
+        """Register predict-time requests for metadata routing.
+
+        Examples
+        --------
+        >>> estimator.set_predict_request(geometry=True) # doctest: +SKIP
+        """
+        self._predict_request = requests
+        return self
+
+    def set_predict_proba_request(self, **requests):
+        """Register predict_proba-time requests for metadata routing.
+
+        Examples
+        --------
+        >>> estimator.set_predict_proba_request(geometry=True) # doctest: +SKIP
+        """
+        self._predict_proba_request = requests
+        return self
+
+    def set_score_request(self, **requests):
+        """Register score-time requests for metadata routing.
+
+        Examples
+        --------
+        >>> estimator.set_score_request(geometry=True) # doctest: +SKIP
+        """
+        self._score_request = requests
+        return self
 
 
 class BaseClassifier(ClassifierMixin, _BaseModel):
@@ -425,12 +576,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         analysis of the model performance (and generalises to models that do not support
         OOB scoring). However, it leaves out the most representative sample. By default
         False
-    geometry : gpd.GeoSeries, optional
-        Geographic location of the observations in the sample. Used to determine the
-        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
-        need to be specified. To allow prediction, it is required to specify
-        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -535,11 +680,10 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
     ...     LogisticRegression,
     ...     bandwidth=30,
     ...     fixed=False,
-    ...     geometry=gdf.representative_point(),
     ...     include_focal=True,
     ...     keep_models=True,
     ...     max_iter=200,
-    ... ).fit(X, y)
+    ... ).fit(X, y, geometry=gdf.representative_point())
     >>> gw.pred_.head()
     0     True
     1    False
@@ -567,7 +711,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         ]
         | Callable = "bisquare",
         include_focal: bool = False,
-        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -588,7 +731,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
-            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -606,7 +748,9 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self._empty_score_data = None
         self._empty_feature_imp = None
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> "BaseClassifier":
+    def fit(
+        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
+    ) -> "BaseClassifier":
         """Fit geographically weighted local classification models.
 
         This fits one local model per focal observation (subject to local invariance
@@ -618,6 +762,14 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             Feature matrix.
         y : pandas.Series
             Binary target encoded as boolean or ``{0, 1}``.
+        geometry : geopandas.GeoSeries | None
+            Geographic location of the observations in the sample. Used to determine the
+            spatial interaction weight based on specification by ``bandwidth``,
+            ``fixed``, ``kernel``, and ``include_focal`` keywords.  If `None`,
+            a precomputed ``graph`` needs to be specified. To allow prediction,
+            it is required to specify ``geometry``. If both ``graph`` and ``geometry``
+            are specified, ``graph`` is used at the fit time, while ``geometry`` is
+            used for prediction.
 
         Returns
         -------
@@ -627,9 +779,11 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Notes
         -----
         The neighborhood definition comes from either ``self.graph`` or from
-        ``self.geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
+        ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
         self._start = time()
+
+        self.geometry = geometry
 
         def _is_binary(series: pd.Series) -> bool:
             """Check if a pandas Series encodes a binary variable (bool or 0/1)."""
@@ -772,7 +926,10 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         if skip:
             return output
 
-        local_model = model(random_state=self.random_state, **model_kwargs)
+        if "random_state" in inspect.signature(self.model).parameters:
+            local_model = model(random_state=self.random_state, **model_kwargs)
+        else:
+            local_model = model(**model_kwargs)
 
         if self.undersample:
             if isinstance(self.undersample, float):
@@ -863,8 +1020,34 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         return log_likelihood
 
-    def predict_proba(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.DataFrame:
+    def predict_proba(
+        self,
+        X: pd.DataFrame,
+        geometry: gpd.GeoSeries,
+        bandwidth: Literal["nearest"] | int | float | None = "nearest",
+        global_model_weight: float = 0,
+    ) -> pd.DataFrame:
         """Predict class probabilities for new observations.
+
+        Prediction can be retrieved either from the nearest local model or based on
+        the ensemble of local models. In the latter case, the prediction process works
+        as follows:
+
+        1. For a new location on which you want a prediction, identify local models
+           within the bandwidth used to train the model.
+        2. Apply the kernel function used to train the model to derive weights of
+           each of the local models.
+        3. Make prediction using each of the local models in the bandwidth.
+        4. Make weighted average of predictions based on the kernel weights.
+        5. Normalize the result to ensure sum of probabilities is 1.
+
+        The results from the nearest and ensemble predictions are typically similar,
+        with the ensemble being significantly slower due to the required number of
+        inference calls.
+
+        Further the prediction can be a result of a fusion of local and global models
+        when ``global_model_weight`` is set to a non-zero value, following
+        :cite:t:`georganos2021Geographical`.
 
         Parameters
         ----------
@@ -872,6 +1055,17 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             Feature matrix for new observations.
         geometry : geopandas.GeoSeries
             Point geometries for new observations.
+        bandwidth : "nearest", float or None
+            Prediction method. Nearest uses the nearest location available at the fit
+            time and does prediction using its single model. When set to a numeric
+            value, uses an ensemble of local models available within the bandwidth, with
+            predictions from individual models being weighted based on the distance and
+            a set kernel. When ``None``, uses the bandwidth set at the fit time.
+        global_model_weight : float
+            Weight of the prediction from the global model. When non-zero, the
+            resulting prediction is a weighted average of the values from local model(s)
+            and from global model, where local prediction has a weight of 1 and global
+            model has a weight equal to ``global_model_weight``.
 
         Returns
         -------
@@ -884,59 +1078,44 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Requires the estimator to have been fit with ``keep_models=True`` (or a
         ``Path``) so local models can be used at prediction time.
         """
-        self._validate_geometry(geometry)
-
-        if not (
-            isinstance(self.bandwidth, float | int)
-            and isinstance(self.geometry, gpd.GeoSeries)
-        ):
-            raise ValueError(
-                "Bandwidth and geometry need to be specified to enable prediction."
-            )
-
-        if self.fixed:
-            input_ids, local_ids = self.geometry.sindex.query(
-                geometry, predicate="dwithin", distance=self.bandwidth
-            )
-            distance = _kernel_functions[self.kernel](
-                self.geometry.iloc[local_ids].distance(
-                    geometry.iloc[input_ids], align=False
-                ),
-                self.bandwidth,
-            )
-        else:
-            training_coords = self.geometry.get_coordinates()
-            tree = KDTree(training_coords)
-            query_coords = geometry.get_coordinates()
-
-            distances, indices_array = tree.query(query_coords, k=self.bandwidth)
-
-            # Flatten arrays for consistent format
-            input_ids = np.repeat(np.arange(len(geometry)), self.bandwidth)
-            local_ids = self._local_models.index[indices_array.flatten()].to_numpy()
-            distances = distances.flatten()
-
-            # For adaptive KNN, determine the bandwidth for each neighborhood
-            # by finding the max distance in each neighborhood
-            kernel_bandwidth = (
-                pd.Series(distances).groupby(input_ids).transform("max") + 1e-6
-            )  # can't have 0
-            distance = _kernel_functions[self.kernel](distances, kernel_bandwidth)
-
-        split_indices = np.where(np.diff(input_ids))[0] + 1
-        local_model_ids = np.split(local_ids, split_indices)
-        distances = np.split(np.asarray(distance), split_indices)
         data = [X.iloc[[i]] for i in range(len(X))]
 
         probabilities = []
-        for x_, models_, distances_ in zip(
-            data, local_model_ids, distances, strict=True
-        ):
-            probabilities.append(self._predict_proba(x_, models_, distances_))
+        if bandwidth == "nearest":
+            local_model_ids = self._prepare_prediction_nearest(geometry)
 
-        return pd.DataFrame(probabilities, columns=self._global_classes, index=X.index)
+            for x_, model_id in zip(data, local_model_ids, strict=True):
+                probabilities.append(self._predict_local_nearest(x_, model_id))
+        else:
+            local_model_ids, distances = self._prepare_prediction_neighborhoods(
+                geometry, bandwidth=bandwidth
+            )
 
-    def _predict_proba(
+            for x_, models_, distances_ in zip(
+                data, local_model_ids, distances, strict=True
+            ):
+                probabilities.append(
+                    self._predict_local_ensemble(x_, models_, distances_)
+                )
+
+        proba = pd.DataFrame(probabilities, columns=self._global_classes, index=X.index)
+
+        if global_model_weight:
+            global_proba = self.global_model.predict_proba(X)
+            local = proba.values
+            # where local is NaN, use global; otherwise use weighted average
+            mask = np.isnan(local)
+            denom = 1.0 + global_model_weight
+            combined = np.empty_like(local, dtype=float)
+            combined[~mask] = (
+                local[~mask] + global_model_weight * global_proba[~mask]
+            ) / denom
+            combined[mask] = global_proba[mask]
+            proba = pd.DataFrame(combined, columns=self._global_classes, index=X.index)
+
+        return proba
+
+    def _predict_local_ensemble(
         self,
         x_: pd.DataFrame,
         models_: np.ndarray,
@@ -975,10 +1154,53 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         weighted = weighted / weighted.sum()
         return pd.Series(weighted, index=pred.columns)
 
-    def predict(self, X: pd.DataFrame, geometry: gpd.GeoSeries) -> pd.Series:
+    def _predict_local_nearest(self, x_: pd.DataFrame, model_id: Hashable) -> pd.Series:
+        local_model = self._local_models[model_id]
+        if isinstance(local_model, str):
+            with open(local_model, "rb") as f:
+                local_model = load(f)
+
+        if local_model is not None:
+            return pd.Series(
+                local_model.predict_proba(x_).flatten(),
+                index=local_model.classes_,
+            )
+        else:
+            return pd.Series(
+                np.nan,
+                index=self._global_classes,
+            )
+
+    def predict(
+        self,
+        X: pd.DataFrame,
+        geometry: gpd.GeoSeries,
+        bandwidth: Literal["nearest"] | int | float | None = "nearest",
+        global_model_weight: float = 0,
+    ) -> pd.Series:
         """Predict classes for new observations.
 
         This is equivalent to ``predict_proba(...).idxmax(axis=1)``.
+
+        Prediction can be retrieved either from the nearest local model or based on
+        the ensemble of local models. In the latter case, the prediction process works
+        as follows:
+
+        1. For a new location on which you want a prediction, identify local models
+           within the bandwidth used to train the model.
+        2. Apply the kernel function used to train the model to derive weights of
+           each of the local models.
+        3. Make prediction using each of the local models in the bandwidth.
+        4. Make weighted average of predictions based on the kernel weights.
+        5. Normalize the result to ensure sum of probabilities is 1.
+
+        The results from the nearest and ensemble predictions are typically similar,
+        with the ensemble being significantly slower due to the required number of
+        inference calls.
+
+        Further the prediction can be a result of a fusion of local and global models
+        when ``global_model_weight`` is set to a non-zero value, following
+        :cite:t:`georganos2021Geographical`.
 
         Parameters
         ----------
@@ -986,6 +1208,17 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             Feature matrix for new observations.
         geometry : geopandas.GeoSeries
             Point geometries for new observations.
+        bandwidth : "nearest", float or None
+            Prediction method. Nearest uses the nearest location available at the fit
+            time and does prediction using its single model. When set to a numeric
+            value, uses an ensemble of local models available within the bandwidth, with
+            predictions from individual models being weighted based on the distance and
+            a set kernel. When ``None``, uses the bandwidth set at the fit time.
+        global_model_weight : float
+            Weight of the prediction from the global model. When non-zero, the
+            resulting prediction is a weighted average of the values from local model(s)
+            and from global model, where local prediction has a weight of 1 and global
+            model has a weight equal to ``global_model_weight``.
 
         Returns
         -------
@@ -997,8 +1230,54 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Requires the estimator to have been fit with ``keep_models=True`` (or a
         ``Path``) so local models can be used at prediction time.
         """
-        proba = self.predict_proba(X, geometry)
+        proba = self.predict_proba(
+            X, geometry, bandwidth=bandwidth, global_model_weight=global_model_weight
+        )
+
+        mask = proba.iloc[:, 0].notna()
+        if not mask.all():
+            r = pd.Series(pd.NA, index=proba.index, dtype="boolean")
+            r[mask] = proba[mask].idxmax(axis=1)
+            return r
+
         return proba.idxmax(axis=1)
+
+    def score(
+        self,
+        X: pd.DataFrame,
+        y: pd.Series,
+        geometry: gpd.GeoSeries,
+        bandwidth: Literal["nearest"] | int | float | None = "nearest",
+        global_model_weight: float = 0,
+    ) -> float:  # ty:ignore[invalid-method-override]
+        """Return the mean accuracy on the given test data and labels.
+
+        Parameters
+        ----------
+        X : pandas.DataFrame
+            Feature matrix for new observations.
+        y : pandas.Series
+            True labels for X.
+        geometry : geopandas.GeoSeries
+            Point geometries for new observations.
+        bandwidth : "nearest", float or None
+            Prediction method. See predict().
+        global_model_weight : float
+            Weight of the prediction from the global model.
+
+        Returns
+        -------
+        float
+            Mean accuracy of self.predict(X, geometry).
+        """
+        y_pred = self.predict(
+            X, geometry, bandwidth=bandwidth, global_model_weight=global_model_weight
+        )
+        # Handle missing predictions (pd.NA)
+        mask = ~pd.isna(y_pred)
+        if not mask.any():
+            return float("nan")
+        return (y_pred[mask] == y[mask]).mean()
 
     def local_metric(self, func: Callable, *args, **kwargs) -> np.ndarray:
         """Compute a metric per fitted local model.
@@ -1065,12 +1344,6 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default False
-    geometry : gpd.GeoSeries, optional
-        Geographic location of the observations in the sample. Used to determine the
-        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
-        need to be specified. To allow prediction, it is required to specify
-        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -1100,6 +1373,8 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     batch_size : int | None, optional
         Number of models to process in each batch. Specify batch_size if your models do
         not fit into memory. By default None
+    random_state : int | None, optional
+        Random seed for reproducibility, by default None
     verbose : bool, optional
         Whether to print progress information, by default False
     **kwargs
@@ -1149,8 +1424,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     ...     bandwidth=30,
     ...     fixed=False,
     ...     include_focal=True,
-    ...     geometry=gdf.representative_point(),
-    ... ).fit(X, y)
+    ... ).fit(X, y, geometry=gdf.representative_point())
     >>> gwr.local_r2_.head()
     0    0.614715
     1    0.488495
@@ -1160,7 +1434,56 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     dtype: float64
     """
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> "BaseRegressor":
+    def __init__(
+        self,
+        model,
+        *,
+        bandwidth: float | None = None,
+        fixed: bool = False,
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            # "gaussian",
+            "bisquare",
+            "tricube",
+            "cosine",
+            "boxcar",
+            # "exponential",
+        ]
+        | Callable = "bisquare",
+        include_focal: bool = False,
+        graph: graph.Graph | None = None,
+        n_jobs: int = -1,
+        fit_global_model: bool = True,
+        strict: bool | None = False,
+        keep_models: bool | str | Path = False,
+        temp_folder: str | None = None,
+        batch_size: int | None = None,
+        random_state: int | None = None,
+        verbose: bool = False,
+        **kwargs,
+    ):
+        super().__init__(
+            model=model,
+            bandwidth=bandwidth,
+            fixed=fixed,
+            kernel=kernel,
+            include_focal=include_focal,
+            graph=graph,
+            n_jobs=n_jobs,
+            fit_global_model=fit_global_model,
+            strict=strict,
+            keep_models=keep_models,
+            temp_folder=temp_folder,
+            batch_size=batch_size,
+            verbose=verbose,
+            **kwargs,
+        )
+        self.random_state = random_state
+
+    def fit(
+        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
+    ) -> "BaseRegressor":
         """Fit geographically weighted local regression models.
 
         Fits one local model per focal observation and stores focal (in-sample if
@@ -1172,6 +1495,14 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             Feature matrix.
         y : pandas.Series
             Target values.
+        geometry : geopandas.GeoSeries | None
+            Geographic location of the observations in the sample. Used to determine the
+            spatial interaction weight based on specification by ``bandwidth``,
+            ``fixed``, ``kernel``, and ``include_focal`` keywords.  If `None`,
+            a precomputed ``graph`` needs to be specified. To allow prediction,
+            it is required to specify ``geometry``. If both ``graph`` and ``geometry``
+            are specified, ``graph`` is used at the fit time, while ``geometry`` is
+            used for prediction.
 
         Returns
         -------
@@ -1181,9 +1512,12 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         Notes
         -----
         The neighborhood definition comes from either ``self.graph`` or from
-        ``self.geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
+        ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
-        self._validate_geometry(self.geometry)
+        if self.graph is None:
+            self._validate_geometry(geometry)
+
+        self.geometry = geometry
 
         weights = self.graph if self.graph is not None else self._build_weights()
         self._setup_model_storage()
@@ -1197,8 +1531,9 @@ class BaseRegressor(_BaseModel, RegressorMixin):
                 focal_pred,
                 y_bar,
                 tss,
-                hat_values,  # Add this
+                hat_values,
                 self._score_data,
+                self._feature_importances,
                 models,
             ) = zip(*training_output, strict=False)
             self._local_models = pd.Series(models, index=self._names)
@@ -1208,8 +1543,9 @@ class BaseRegressor(_BaseModel, RegressorMixin):
                 focal_pred,
                 y_bar,
                 tss,
-                hat_values,  # Add this
+                hat_values,
                 self._score_data,
+                self._feature_importances,
             ) = zip(*training_output, strict=False)
 
         self.pred_ = pd.Series(np.nan, index=y.index)
@@ -1247,6 +1583,129 @@ class BaseRegressor(_BaseModel, RegressorMixin):
 
         return self
 
+    def predict(
+        self,
+        X: pd.DataFrame,
+        geometry: gpd.GeoSeries,
+        bandwidth: Literal["nearest"] | int | float | None = "nearest",
+        global_model_weight: float = 0,
+    ) -> pd.Series:
+        """Predict target values for new observations.
+
+        Prediction can be retrieved either from the nearest local model or based on
+        the ensemble of local models. In the latter case, the prediction process works
+        as follows:
+
+        1. For a new location on which you want a prediction, identify local models
+           within the bandwidth used to train the model.
+        2. Apply the kernel function used to train the model to derive weights of
+           each of the local models.
+        3. Make prediction using each of the local models in the bandwidth.
+        4. Make weighted average of predictions based on the kernel weights.
+
+        The results from the nearest and ensemble predictions are typically similar,
+        with the ensemble being significantly slower due to the required number of
+        inference calls.
+
+        Further the prediction can be a result of a fusion of local and global models
+        when ``global_model_weight`` is set to a non-zero value, following
+        :cite:t:`georganos2021Geographical`.
+
+        Parameters
+        ----------
+        X : pandas.DataFrame
+            Feature matrix for new observations.
+        geometry : geopandas.GeoSeries
+            Point geometries for new observations.
+        bandwidth : "nearest", float or None
+            Prediction method. Nearest uses the nearest location available at the fit
+            time and does prediction using its single model. When set to a numeric
+            value, uses an ensemble of local models available within the bandwidth, with
+            predictions from individual models being weighted based on the distance and
+            a set kernel. When ``None``, uses the bandwidth set at the fit time.
+        global_model_weight : float
+            Weight of the prediction from the global model. When non-zero, the
+            resulting prediction is a weighted average of the values from local model(s)
+            and from global model, where local prediction has a weight of 1 and global
+            model has a weight equal to ``global_model_weight``.
+
+        Returns
+        -------
+        pandas.Series
+            Predicted values.
+
+        Notes
+        -----
+        Requires the estimator to have been fit with ``keep_models=True`` (or a
+        ``Path``) so local models can be used at prediction time.
+        """
+        data = [X.iloc[[i]] for i in range(len(X))]
+
+        predictions = []
+        if bandwidth == "nearest":
+            local_model_ids = self._prepare_prediction_nearest(geometry)
+
+            for x_, model_id in zip(data, local_model_ids, strict=True):
+                predictions.append(self._predict_local_nearest(x_, model_id))
+        else:
+            local_model_ids, distances = self._prepare_prediction_neighborhoods(
+                geometry, bandwidth=bandwidth
+            )
+
+            for x_, models_, distances_ in zip(
+                data, local_model_ids, distances, strict=True
+            ):
+                predictions.append(
+                    self._predict_local_ensemble(x_, models_, distances_)
+                )
+
+        pred = pd.Series(predictions, index=X.index)
+
+        if global_model_weight:
+            global_pred = self.global_model.predict(X)
+            combined_pred = np.column_stack([pred, global_pred])
+            pred = np.average(combined_pred, axis=1, weights=[1, global_model_weight])
+
+            return pd.Series(pred, index=X.index)
+
+        return pred
+
+    def _predict_local_ensemble(
+        self,
+        x_: pd.DataFrame,
+        models_: np.ndarray,
+        distances_: np.ndarray,
+    ) -> float:
+        pred = []
+        for i in models_:
+            local_model = self._local_models[i]
+            if isinstance(local_model, str):
+                with open(local_model, "rb") as f:
+                    local_model = load(f)
+
+            if local_model is not None:
+                pred.append(local_model.predict(x_).flatten()[0])
+            else:
+                pred.append(np.nan)
+
+        pred = np.array(pred)
+        mask = np.isnan(pred)
+        if mask.all():
+            return np.nan
+
+        weighted = np.average(pred[~mask], weights=distances_[~mask])
+        return weighted
+
+    def _predict_local_nearest(self, x_: pd.DataFrame, model_id: Hashable) -> float:
+        local_model = self._local_models[model_id]
+        if isinstance(local_model, str):
+            with open(local_model, "rb") as f:
+                local_model = load(f)
+
+        if local_model is not None:
+            return local_model.predict(x_).flatten()[0]
+        return np.nan
+
     def _fit_local(
         self,
         model,
@@ -1255,7 +1714,10 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         focal_x: np.ndarray,
         model_kwargs: dict,
     ) -> list[Hashable]:
-        local_model = model(**model_kwargs)
+        if "random_state" in inspect.signature(self.model).parameters:
+            local_model = model(random_state=self.random_state, **model_kwargs)
+        else:
+            local_model = model(**model_kwargs)
 
         X = data.drop(columns=["_y", "_weight"])
         y = data["_y"]
@@ -1281,6 +1743,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             tss,
             hat_value,  # Add hat value to output
             self._get_score_data(local_model, X, y),
+            getattr(local_model, "feature_importances_", None),
         ]
 
         if self.keep_models:
@@ -1329,3 +1792,44 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     def _tss(self, y, y_bar, w_i):
         """geographically weighted total sum of squares"""
         return np.sum(w_i * (y - y_bar) ** 2)
+
+    def score(
+        self,
+        X: pd.DataFrame,
+        y: pd.Series,
+        geometry: gpd.GeoSeries,
+        bandwidth: Literal["nearest"] | int | float | None = "nearest",
+        global_model_weight: float = 0,
+    ) -> float:  # ty:ignore[invalid-method-override]
+        """Return the coefficient of determination R^2 of the prediction.
+
+        Parameters
+        ----------
+        X : pandas.DataFrame
+            Feature matrix for new observations.
+        y : pandas.Series
+            True values for X.
+        geometry : geopandas.GeoSeries
+            Point geometries for new observations.
+        bandwidth : "nearest", float or None
+            Prediction method. See predict().
+        global_model_weight : float
+            Weight of the prediction from the global model.
+
+        Returns
+        -------
+        float
+            R^2 of self.predict(X, geometry).
+        """
+        y_pred = self.predict(
+            X, geometry, bandwidth=bandwidth, global_model_weight=global_model_weight
+        )
+        # Handle missing predictions (np.nan)
+        mask = ~pd.isna(y_pred)
+        if not mask.any():
+            return float("nan")
+        y_true = y[mask]
+        y_pred = y_pred[mask]
+        ss_res = ((y_true - y_pred) ** 2).sum()
+        ss_tot = ((y_true - y_true.mean()) ** 2).sum()
+        return 1 - ss_res / ss_tot if ss_tot != 0 else float("nan")

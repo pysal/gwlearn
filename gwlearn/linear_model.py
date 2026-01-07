@@ -47,12 +47,6 @@ class GWLogisticRegression(BaseClassifier):
         further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default True
-    geometry : gpd.GeoSeries, optional
-        Geographic location of the observations in the sample. Used to determine the
-        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
-        need to be specified. To allow prediction, it is required to specify
-        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -157,10 +151,9 @@ class GWLogisticRegression(BaseClassifier):
     >>> gw = GWLogisticRegression(
     ...     bandwidth=30,
     ...     fixed=False,
-    ...     geometry=gdf.representative_point(),
     ...     keep_models=True,
     ...     max_iter=200,
-    ... ).fit(X, y)
+    ... ).fit(X, y, geometry=gdf.representative_point())
     >>> gw.pred_.head()
     0     True
     1    False
@@ -187,7 +180,6 @@ class GWLogisticRegression(BaseClassifier):
         ]
         | Callable = "bisquare",
         include_focal: bool = True,
-        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -208,7 +200,6 @@ class GWLogisticRegression(BaseClassifier):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
-            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -226,7 +217,7 @@ class GWLogisticRegression(BaseClassifier):
 
         self._model_type = "logistic"
 
-    def fit(self, X: pd.DataFrame, y: pd.Series):
+    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None):
         if isinstance(X, pd.DataFrame):
             self.feature_names_in_ = X.columns.to_numpy()
         else:
@@ -239,7 +230,7 @@ class GWLogisticRegression(BaseClassifier):
             np.array([np.nan]),
         )  # intercept
 
-        super().fit(X=X, y=y)
+        super().fit(X=X, y=y, geometry=geometry)
 
         self.local_coef_ = pd.concat(
             [x[2] for x in self._score_data], axis=1, keys=self._names
@@ -318,12 +309,6 @@ class GWLinearRegression(BaseRegressor):
         further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default True
-    geometry : gpd.GeoSeries, optional
-        Geographic location of the observations in the sample. Used to determine the
-        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
-        need to be specified. To allow prediction, it is required to specify
-        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -405,8 +390,7 @@ class GWLinearRegression(BaseRegressor):
     >>> gwr = GWLinearRegression(
     ...     bandwidth=30,
     ...     fixed=False,
-    ...     geometry=gdf.representative_point(),
-    ... ).fit(X, y)
+    ... ).fit(X, y, geometry=gdf.representative_point())
     >>> gwr.local_r2_.head()
     0    0.614715
     1    0.488495
@@ -432,7 +416,6 @@ class GWLinearRegression(BaseRegressor):
         ]
         | Callable = "bisquare",
         include_focal: bool = True,
-        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -449,7 +432,6 @@ class GWLinearRegression(BaseRegressor):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
-            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -472,7 +454,7 @@ class GWLinearRegression(BaseRegressor):
             local_model.intercept_,  # intercept
         )
 
-    def fit(self, X: pd.DataFrame, y: pd.Series):
+    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None):
         if isinstance(X, pd.DataFrame):
             self.feature_names_in_ = X.columns.to_numpy()
         else:
@@ -482,7 +464,7 @@ class GWLinearRegression(BaseRegressor):
             np.array([np.nan]),
         )  # intercept
 
-        super().fit(X=X, y=y)
+        super().fit(X=X, y=y, geometry=geometry)
 
         self.local_coef_ = pd.concat(
             [x[0] for x in self._score_data], axis=1, keys=self._names
