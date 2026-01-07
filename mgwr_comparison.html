@@ -11,17 +11,17 @@
       
       
       
-        <link rel="prev" href="imbalance.html">
+        <link rel="prev" href="network_graph.html">
       
       
-        <link rel="next" href="network_graph.html">
+        <link rel="next" href="references.html">
       
       
       <link rel="icon" href="_static/pysal_favicon.ico">
     
     
       
-        <title>Bandwidth search - gwlearn 0.0.2.dev11 documentation</title>
+        <title>Comparison with MGWR - gwlearn 0.0.2.dev11 documentation</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#interval-search" class="md-skip">
+        <a href="#api-difference" class="md-skip">
           Skip to content
         </a>
       
@@ -105,7 +105,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Bandwidth search
+              Comparison with MGWR
             
           </span>
         </div>
@@ -447,31 +447,11 @@
                 
   
   
-    
-  
-    
   
   
   
-    <li class="md-nav__item md-nav__item--active">
-      
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    <span>Bandwidth search</span>
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="#" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="bandwidth_search.html" class="md-nav__link">
         
   
   
@@ -482,55 +462,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#interval-search" class="md-nav__link">
-    
-    <span class="md-ellipsis">
-      <span>Interval search</span>
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#golden-section" class="md-nav__link">
-    
-    <span class="md-ellipsis">
-      <span>Golden section</span>
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#other-metrics" class="md-nav__link">
-    
-    <span class="md-ellipsis">
-      <span>Other metrics</span>
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -564,11 +495,31 @@
                 
   
   
+    
+  
+    
   
   
   
-    <li class="md-nav__item">
-      <a href="mgwr_comparison.html" class="md-nav__link">
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    <span>Comparison with MGWR</span>
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
         
   
   
@@ -579,6 +530,75 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#api-difference" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>API difference</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Performance</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#results" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Results</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bandwidth-search" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Bandwidth search</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#so-which-one" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>So which one?</span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -786,30 +806,50 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#interval-search" class="md-nav__link">
+  <a href="#api-difference" class="md-nav__link">
     
     <span class="md-ellipsis">
-      <span>Interval search</span>
+      <span>API difference</span>
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#golden-section" class="md-nav__link">
+  <a href="#performance" class="md-nav__link">
     
     <span class="md-ellipsis">
-      <span>Golden section</span>
+      <span>Performance</span>
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#other-metrics" class="md-nav__link">
+  <a href="#results" class="md-nav__link">
     
     <span class="md-ellipsis">
-      <span>Other metrics</span>
+      <span>Results</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bandwidth-search" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Bandwidth search</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#so-which-one" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>So which one?</span>
     </span>
   </a>
   
@@ -831,486 +871,155 @@
                   
 
 
-<h1 id="bandwidth-search">Bandwidth search<a class="headerlink" href="#bandwidth-search" title="Link to this heading">¶</a></h1>
-<p>To find out the optimal bandwidth, <code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> provides a <code class="docutils literal notranslate"><span class="pre">BandwidthSearch</span></code> class, which trains models on a range of bandwidths and selects the most optimal one.</p>
+<h1 id="comparison-with-mgwr">Comparison with MGWR<a class="headerlink" href="#comparison-with-mgwr" title="Link to this heading">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> is a modern, flexible alternative to traditional geographically weighted regression libraries like <a class="reference external" href="https://github.com/pysal/mgwr"><code class="docutils literal notranslate"><span class="pre">mgwr</span></code></a>. While both enable spatial regression analysis, they have fundamentally different design philosophies. Where <code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> is designed to provide a flexible framework for a wide variety of models, <code class="docutils literal notranslate"><span class="pre">mgwr</span></code> is designed to provide performant implementaion of (multiscale) geographically weighted linear regression.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">geodatasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_path</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">gwlearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">GWLinearRegression</span><span class="p">,</span> <span class="n">GWLogisticRegression</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">geodatasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mgwr.gwr</span><span class="w"> </span><span class="kn">import</span> <span class="n">GWR</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mgwr.sel_bw</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sel_BW</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">metrics</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">gwlearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">GWLinearRegression</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">gwlearn.search</span><span class="w"> </span><span class="kn">import</span> <span class="n">BandwidthSearch</span>
 </code></pre></div>
 </div>
 </div>
 </div>
-<p>Get sample data</p>
+<p>Let’s compare the two on a simple example of a suicide rate prediction.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;geoda.ncovr&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="mi">5070</span><span class="p">)</span>
-
-<span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;point&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span>
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="s2">&quot;point&quot;</span><span class="p">)</span>
-
-<span class="n">y</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;FH90&quot;</span><span class="p">]</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">9</span><span class="p">:</span><span class="mi">15</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;geoda.guerry&quot;</span><span class="p">))</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[[</span><span class="s2">&quot;Crm_prp&quot;</span><span class="p">,</span> <span class="s2">&quot;Litercy&quot;</span><span class="p">,</span> <span class="s2">&quot;Donatns&quot;</span><span class="p">,</span> <span class="s2">&quot;Lottery&quot;</span><span class="p">]]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;Suicids&quot;</span><span class="p">]</span>
+<span class="n">geometry</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span>
 </code></pre></div>
 </div>
 </div>
 </div>
-<h2 id="interval-search">Interval search<a class="headerlink" href="#interval-search" title="Link to this heading">¶</a></h2>
-<p>Interval search tests the model at a set interval.</p>
+<h2 id="api-difference">API difference<a class="headerlink" href="#api-difference" title="Link to this heading">¶</a></h2>
+<p>The first difference you notice is the API design.</p>
+<p>API of <code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> matches the one of <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> and inherits from it, making estimators <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>-compatible.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span> <span class="o">=</span> <span class="n">BandwidthSearch</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="o">%%time</span>
+<span class="n">gw</span> <span class="o">=</span> <span class="n">GWLinearRegression</span><span class="p">(</span><span class="n">bandwidth</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">gw</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">geometry</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;gwlearn R²: </span><span class="si">{</span><span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">gw</span><span class="o">.</span><span class="n">pred_</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  AICc: </span><span class="si">{</span><span class="n">gw</span><span class="o">.</span><span class="n">aicc_</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>gwlearn R²: 0.7251  AICc: 2007.4
+CPU times: user 66.5 ms, sys: 6.09 ms, total: 72.6 ms
+Wall time: 94.1 ms
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>API of <code class="docutils literal notranslate"><span class="pre">mgwr</span></code> uses a custom logic that is similar in design but does not follow scikit-learn principles. At the same time, it requires specifically shaped Numpy arrays as input.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="o">%%time</span>
+<span class="n">mg</span> <span class="o">=</span> <span class="n">GWR</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="o">.</span><span class="n">get_coordinates</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">X</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">bw</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+    <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mgwr R²: </span><span class="si">{</span><span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">mg</span><span class="o">.</span><span class="n">predy</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  AICc: </span><span class="si">{</span><span class="n">mg</span><span class="o">.</span><span class="n">aicc</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>mgwr R²: 0.7251  AICc: 2011.2
+CPU times: user 19.7 ms, sys: 4.69 ms, total: 24.4 ms
+Wall time: 73.1 ms
+</code></pre></div>
+</div>
+</div>
+</div>
+<h2 id="performance">Performance<a class="headerlink" href="#performance" title="Link to this heading">¶</a></h2>
+<p>For linear regression, <code class="docutils literal notranslate"><span class="pre">mgwr</span></code> typically outperforms <code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> due to its optimised code. However, that comes at the cost of lower robustness, so you may encounter issues with singular matrix and similar for some local models, which <code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> typically resolves itself.</p>
+<h2 id="results">Results<a class="headerlink" href="#results" title="Link to this heading">¶</a></h2>
+<p>The resulting models should match 1:1 between <code class="docutils literal notranslate"><span class="pre">mgwr</span></code> and <code class="docutils literal notranslate"><span class="pre">gwlearn</span></code>, with some minor differences here and there.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;R²:   gwlearn=</span><span class="si">{</span><span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">gw</span><span class="o">.</span><span class="n">pred_</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">,  mgwr=</span><span class="si">{</span><span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">mg</span><span class="o">.</span><span class="n">predy</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AIC:  gwlearn=</span><span class="si">{</span><span class="n">gw</span><span class="o">.</span><span class="n">aic_</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, mgwr=</span><span class="si">{</span><span class="n">mg</span><span class="o">.</span><span class="n">aic</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BIC:  gwlearn=</span><span class="si">{</span><span class="n">gw</span><span class="o">.</span><span class="n">bic_</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, mgwr=</span><span class="si">{</span><span class="n">mg</span><span class="o">.</span><span class="n">bic</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AICc: gwlearn=</span><span class="si">{</span><span class="n">gw</span><span class="o">.</span><span class="n">aicc_</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, mgwr=</span><span class="si">{</span><span class="n">mg</span><span class="o">.</span><span class="n">aicc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>R²:   gwlearn=0.7251,  mgwr=0.7251
+AIC:  gwlearn=1960.75, mgwr=1960.75
+BIC:  gwlearn=2045.63, mgwr=2045.63
+AICc: gwlearn=2007.43, mgwr=2011.20
+</code></pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> and <code class="docutils literal notranslate"><span class="pre">mgwr</span></code> produce the same predictions and fitted values, but AICc can differ slightly. This is because each library uses a different method to count effective model parameters. The difference reflects how model complexity is measured, not a difference in model fit.</p>
+<h2 id="bandwidth-search">Bandwidth search<a class="headerlink" href="#bandwidth-search" title="Link to this heading">¶</a></h2>
+<p>The API for bandwidth search is also different. What also differs is implementation. While <code class="docutils literal notranslate"><span class="pre">mgwr</span></code> is fitting only a light-weight model per each tested bandwidth, <code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> is fitting complete model as if you were testing bandwidths manually within a loop.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="o">%%time</span>
+<span class="n">mgwr_selector</span> <span class="o">=</span> <span class="n">Sel_BW</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="o">.</span><span class="n">get_coordinates</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">X</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">mgwr_bw</span> <span class="o">=</span> <span class="n">mgwr_selector</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;AICc&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mgwr optimal bandwidth: </span><span class="si">{</span><span class="n">mgwr_bw</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>mgwr optimal bandwidth: 70.0
+CPU times: user 114 ms, sys: 68.5 ms, total: 183 ms
+Wall time: 3.21 s
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>To find out the optimal bandwidth, <code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> provides a <code class="docutils literal notranslate"><span class="pre">BandwidthSearch</span></code> class, which trains models on a range of bandwidths and selects the most optimal one. The selection strategies (intrval search and golden section search) are the same.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="o">%%time</span>
+<span class="n">gwlearn_search</span> <span class="o">=</span> <span class="n">BandwidthSearch</span><span class="p">(</span>
     <span class="n">GWLinearRegression</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">search_method</span><span class="o">=</span><span class="s2">&quot;interval&quot;</span><span class="p">,</span>
-    <span class="n">min_bandwidth</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-    <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-    <span class="n">interval</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
     <span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;aicc&quot;</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-    <span class="n">X</span><span class="p">,</span>
-    <span class="n">y</span><span class="p">,</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
-<span class="p">)</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 50.00, aicc: 15666.353
-Bandwidth: 150.00, aicc: 15498.936
-Bandwidth: 250.00, aicc: 15660.999
-Bandwidth: 350.00, aicc: 15775.129
-Bandwidth: 450.00, aicc: 15854.287
-Bandwidth: 550.00, aicc: 15918.673
-Bandwidth: 650.00, aicc: 15975.564
-Bandwidth: 750.00, aicc: 16031.276
-Bandwidth: 850.00, aicc: 16080.155
-Bandwidth: 950.00, aicc: 16126.986
-</code></pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x15e183c50&gt;
-</code></pre></div>
-</div>
-</div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">scores_</span></code> series then contains the AICc, selected as the criterion, which can be plotted to see the change of the model performance as the bandwidth grows.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span><span class="o">.</span><span class="n">scores_</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;Axes: &gt;
-</code></pre></div>
-</div>
-<img alt="_images/d62011010720e09178624a0226f122e15a78037d599e4ee6f16bcbf13512000e.png" src="_images/d62011010720e09178624a0226f122e15a78037d599e4ee6f16bcbf13512000e.png" />
-</div>
-</div>
-<p>The optimal bandwidth is then the lowest one.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span><span class="o">.</span><span class="n">optimal_bandwidth_</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>np.int64(150)
-</code></pre></div>
-</div>
-</div>
-</div>
-<h2 id="golden-section">Golden section<a class="headerlink" href="#golden-section" title="Link to this heading">¶</a></h2>
-<p>Alternatively, you can try to use the golden section algorithm that attempts to find the optimal bandwidth iteratively. However, note that there’s no guaratnee that it will find the globally optimal bandwidth as it may stick to the local minimum.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span> <span class="o">=</span> <span class="n">BandwidthSearch</span><span class="p">(</span>
-    <span class="n">GWLinearRegression</span><span class="p">,</span>
-    <span class="n">fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">search_method</span><span class="o">=</span><span class="s2">&quot;golden_section&quot;</span><span class="p">,</span>
-    <span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;aicc&quot;</span><span class="p">,</span>
-    <span class="n">min_bandwidth</span><span class="o">=</span><span class="mi">250_000</span><span class="p">,</span>
-    <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">2_000_000</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-    <span class="n">X</span><span class="p">,</span>
-    <span class="n">y</span><span class="p">,</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
-<span class="p">)</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 918447.5, score: 16135.833
-Bandwidth: 1331552.5, score: 16367.508
-Bandwidth: 663120.61, score: 15901.394
-Bandwidth: 505326.89, score: 15734.258
-Bandwidth: 407799.68, score: 15644.228
-Bandwidth: 347527.21, score: 15599.261
-Bandwidth: 310274.74, score: 15585.033
-Bandwidth: 287252.47, score: 15579.996
-Bandwidth: 273023.14, score: 15583.440
-Bandwidth: 296045.75, score: 15580.453
-Bandwidth: 281817.09, score: 15580.952
-Bandwidth: 290610.83, score: 15579.452
-Bandwidth: 292686.98, score: 15579.549
-Bandwidth: 289328.29, score: 15579.566
-Bandwidth: 291404.06, score: 15579.440
-Bandwidth: 291893.95, score: 15579.458
-Bandwidth: 291100.94, score: 15579.438
-</code></pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x168c03110&gt;
-</code></pre></div>
-</div>
-</div>
-</div>
-<p>You can see how the agorithm searches and iteratively gets closer to the optimum.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span><span class="o">.</span><span class="n">optimal_bandwidth_</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>np.float64(291100.9431339667)
-</code></pre></div>
-</div>
-</div>
-</div>
-<h2 id="other-metrics">Other metrics<a class="headerlink" href="#other-metrics" title="Link to this heading">¶</a></h2>
-<p>By default, <code class="docutils literal notranslate"><span class="pre">BandwidthSearch</span></code> computes AICc, AIC and BIC, available through <code class="docutils literal notranslate"><span class="pre">metrics_</span></code>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span><span class="o">.</span><span class="n">metrics_</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+<span class="n">gwlearn_search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">geometry</span><span class="p">)</span>
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>aicc</th>
-      <th>aic</th>
-      <th>bic</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>9.184475e+05</th>
-      <td>16135.832631</td>
-      <td>16132.605473</td>
-      <td>16556.503755</td>
-    </tr>
-    <tr>
-      <th>1.331552e+06</th>
-      <td>16367.507618</td>
-      <td>16366.574492</td>
-      <td>16597.123551</td>
-    </tr>
-    <tr>
-      <th>6.631206e+05</th>
-      <td>15901.393868</td>
-      <td>15891.545192</td>
-      <td>16623.552420</td>
-    </tr>
-    <tr>
-      <th>5.053269e+05</th>
-      <td>15734.258373</td>
-      <td>15708.559009</td>
-      <td>16874.775997</td>
-    </tr>
-    <tr>
-      <th>4.077997e+05</th>
-      <td>15644.228226</td>
-      <td>15588.888391</td>
-      <td>17273.283311</td>
-    </tr>
-    <tr>
-      <th>3.475272e+05</th>
-      <td>15599.260550</td>
-      <td>15500.960777</td>
-      <td>17709.892539</td>
-    </tr>
-    <tr>
-      <th>3.102747e+05</th>
-      <td>15585.032697</td>
-      <td>15436.700466</td>
-      <td>18110.784586</td>
-    </tr>
-    <tr>
-      <th>2.872525e+05</th>
-      <td>15579.995539</td>
-      <td>15383.747794</td>
-      <td>18423.649729</td>
-    </tr>
-    <tr>
-      <th>2.730231e+05</th>
-      <td>15583.440146</td>
-      <td>15347.827157</td>
-      <td>18650.241701</td>
-    </tr>
-    <tr>
-      <th>2.960457e+05</th>
-      <td>15580.452736</td>
-      <td>15404.583147</td>
-      <td>18296.148267</td>
-    </tr>
-    <tr>
-      <th>2.818171e+05</th>
-      <td>15580.952181</td>
-      <td>15370.724573</td>
-      <td>18507.176295</td>
-    </tr>
-    <tr>
-      <th>2.906108e+05</th>
-      <td>15579.451964</td>
-      <td>15391.351712</td>
-      <td>18373.091183</td>
-    </tr>
-    <tr>
-      <th>2.926870e+05</th>
-      <td>15579.548602</td>
-      <td>15396.249687</td>
-      <td>18343.014101</td>
-    </tr>
-    <tr>
-      <th>2.893283e+05</th>
-      <td>15579.566286</td>
-      <td>15388.413516</td>
-      <td>18392.115393</td>
-    </tr>
-    <tr>
-      <th>2.914041e+05</th>
-      <td>15579.439825</td>
-      <td>15393.191365</td>
-      <td>18361.504693</td>
-    </tr>
-    <tr>
-      <th>2.918940e+05</th>
-      <td>15579.458231</td>
-      <td>15394.342859</td>
-      <td>18354.402006</td>
-    </tr>
-    <tr>
-      <th>2.911009e+05</th>
-      <td>15579.438393</td>
-      <td>15392.484736</td>
-      <td>18365.920248</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>You can also ask for a log loss and even use it as a criterion for the selection. This is useful when comparing classification models with varying prediction rate (you can also retrieve that for each bandwidth).</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span> <span class="o">=</span> <span class="n">BandwidthSearch</span><span class="p">(</span>
-    <span class="n">GWLogisticRegression</span><span class="p">,</span>
-    <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">search_method</span><span class="o">=</span><span class="s2">&quot;interval&quot;</span><span class="p">,</span>
-    <span class="n">min_bandwidth</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-    <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-    <span class="n">interval</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;log_loss&quot;</span><span class="p">,</span> <span class="s2">&quot;prediction_rate&quot;</span><span class="p">],</span>
-    <span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;log_loss&quot;</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-    <span class="n">X</span><span class="p">,</span>
-    <span class="n">y</span> <span class="o">&gt;</span> <span class="n">y</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span>  <span class="c1"># simulate binary categorical variable</span>
-    <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;gwlearn optimal bandwidth: </span><span class="si">{</span><span class="n">gwlearn_search</span><span class="o">.</span><span class="n">optimal_bandwidth_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 50.00, log_loss: 0.274
-Bandwidth: 150.00, log_loss: 0.372
-Bandwidth: 250.00, log_loss: 0.397
-Bandwidth: 350.00, log_loss: 0.405
-Bandwidth: 450.00, log_loss: 0.400
-Bandwidth: 550.00, log_loss: 0.396
-Bandwidth: 650.00, log_loss: 0.391
-Bandwidth: 750.00, log_loss: 0.392
-Bandwidth: 850.00, log_loss: 0.387
-Bandwidth: 950.00, log_loss: 0.386
-</code></pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x175f26600&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>gwlearn optimal bandwidth: 70
+CPU times: user 323 ms, sys: 24.9 ms, total: 348 ms
+Wall time: 413 ms
 </code></pre></div>
 </div>
 </div>
 </div>
-<p>Log loss is then part of the metrics.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span><span class="o">.</span><span class="n">metrics_</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>aicc</th>
-      <th>aic</th>
-      <th>bic</th>
-      <th>log_loss</th>
-      <th>prediction_rate</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>50</th>
-      <td>2889.818542</td>
-      <td>2358.134113</td>
-      <td>5833.725640</td>
-      <td>0.273673</td>
-      <td>0.664830</td>
-    </tr>
-    <tr>
-      <th>150</th>
-      <td>2206.259163</td>
-      <td>2148.244589</td>
-      <td>3527.004346</td>
-      <td>0.371802</td>
-      <td>0.726094</td>
-    </tr>
-    <tr>
-      <th>250</th>
-      <td>2157.749410</td>
-      <td>2136.089862</td>
-      <td>3015.383346</td>
-      <td>0.397102</td>
-      <td>0.746840</td>
-    </tr>
-    <tr>
-      <th>350</th>
-      <td>2200.114858</td>
-      <td>2188.636740</td>
-      <td>2856.824897</td>
-      <td>0.405179</td>
-      <td>0.783144</td>
-    </tr>
-    <tr>
-      <th>450</th>
-      <td>2254.996420</td>
-      <td>2247.570704</td>
-      <td>2810.703657</td>
-      <td>0.400438</td>
-      <td>0.831767</td>
-    </tr>
-    <tr>
-      <th>550</th>
-      <td>2278.686205</td>
-      <td>2273.488677</td>
-      <td>2758.682537</td>
-      <td>0.395771</td>
-      <td>0.863533</td>
-    </tr>
-    <tr>
-      <th>650</th>
-      <td>2309.635433</td>
-      <td>2305.818659</td>
-      <td>2733.726039</td>
-      <td>0.390566</td>
-      <td>0.896921</td>
-    </tr>
-    <tr>
-      <th>750</th>
-      <td>2386.715455</td>
-      <td>2383.696709</td>
-      <td>2775.134682</td>
-      <td>0.391591</td>
-      <td>0.932253</td>
-    </tr>
-    <tr>
-      <th>850</th>
-      <td>2430.644557</td>
-      <td>2428.204092</td>
-      <td>2789.496584</td>
-      <td>0.386952</td>
-      <td>0.966613</td>
-    </tr>
-    <tr>
-      <th>950</th>
-      <td>2498.057834</td>
-      <td>2495.967664</td>
-      <td>2838.465899</td>
-      <td>0.386135</td>
-      <td>1.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>And is reported directly as score as it is set as the criterion.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span><span class="o">.</span><span class="n">scores_</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;Axes: &gt;
-</code></pre></div>
-</div>
-<img alt="_images/84c6409c972b1cf7dcea667cf320070bfe93b53bbf996b1c830c04742e3146ff.png" src="_images/84c6409c972b1cf7dcea667cf320070bfe93b53bbf996b1c830c04742e3146ff.png" />
-</div>
-</div>
-<p>As a result, the optimal bandwidth is derived directly from it.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span><span class="o">.</span><span class="n">optimal_bandwidth_</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>np.int64(50)
-</code></pre></div>
-</div>
-</div>
-</div>
+<h2 id="so-which-one">So which one?<a class="headerlink" href="#so-which-one" title="Link to this heading">¶</a></h2>
+<p>Generally, <code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> offers much more flexibility in terms of all model support, neighbourhood definition, or bandwidth selection metrics. On top of that, it offers complex prediction tooling, which <code class="docutils literal notranslate"><span class="pre">mgwr</span></code> currently lacks. If yoy are interested only in linear regression and performance is important, use <code class="docutils literal notranslate"><span class="pre">mgwr</span></code>. The same applies if you want deeper statistical assessment of the outcome, as siginficance of local beta coefficients, or multiscale models.</p>
+<p>If you need more fleibility, other models or compatibility with scikit-learn, <code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> is going to be a better choice.</p>
 
 
 
@@ -1348,7 +1057,7 @@ Bandwidth: 950.00, log_loss: 0.386
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="imbalance.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Class imbalance">
+          <a href="network_graph.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Using custom graphs">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1358,20 +1067,20 @@ Bandwidth: 950.00, log_loss: 0.386
                 Previous
               </span>
               <div class="md-ellipsis">
-                Class imbalance
+                Using custom graphs
               </div>
             </div>
           </a>
         
         
           
-          <a href="network_graph.html" class="md-footer__link md-footer__link--next" aria-label="Next: Using custom graphs">
+          <a href="references.html" class="md-footer__link md-footer__link--next" aria-label="Next: References">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Using custom graphs
+                References
               </div>
             </div>
             <div class="md-footer__button md-icon">

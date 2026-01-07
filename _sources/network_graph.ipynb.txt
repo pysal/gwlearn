@@ -24,7 +24,7 @@
     "import pandarm\n",
     "from libpysal.graph import Graph\n",
     "\n",
-    "from gwlearn.linear_model import GWLinearRegression\n"
+    "from gwlearn.linear_model import GWLinearRegression"
    ]
   },
   {
@@ -99,7 +99,10 @@
    "outputs": [],
    "source": [
     "G = Graph.build_travel_cost(\n",
-    "    df.set_geometry(df.representative_point()), network, threshold=1500, kernel=\"bisquare\"\n",
+    "    df.set_geometry(df.representative_point()),\n",
+    "    network,\n",
+    "    threshold=1500,\n",
+    "    kernel=\"bisquare\",\n",
     ")"
    ]
   },
@@ -1104,9 +1107,7 @@
     }
    ],
    "source": [
-    "gwlr = GWLinearRegression(\n",
-    "    graph=G\n",
-    ")\n",
+    "gwlr = GWLinearRegression(graph=G)\n",
     "gwlr.fit(\n",
     "    X=df[\n",
     "        [\n",
