@@ -492,46 +492,6 @@ class _BaseModel(BaseEstimator):
         """Subclasses should implement custom function"""
         return np.nan
 
-    def set_fit_request(self, **requests):
-        """Register fit-time requests for metadata routing.
-
-        Examples
-        --------
-        >>> estimator.set_fit_request(geometry=True) # doctest: +SKIP
-        """
-        self._fit_request = requests
-        return self
-
-    def set_predict_request(self, **requests):
-        """Register predict-time requests for metadata routing.
-
-        Examples
-        --------
-        >>> estimator.set_predict_request(geometry=True) # doctest: +SKIP
-        """
-        self._predict_request = requests
-        return self
-
-    def set_predict_proba_request(self, **requests):
-        """Register predict_proba-time requests for metadata routing.
-
-        Examples
-        --------
-        >>> estimator.set_predict_proba_request(geometry=True) # doctest: +SKIP
-        """
-        self._predict_proba_request = requests
-        return self
-
-    def set_score_request(self, **requests):
-        """Register score-time requests for metadata routing.
-
-        Examples
-        --------
-        >>> estimator.set_score_request(geometry=True) # doctest: +SKIP
-        """
-        self._score_request = requests
-        return self
-
 
 class BaseClassifier(ClassifierMixin, _BaseModel):
     """Generic geographically weighted classification meta-estimator.
