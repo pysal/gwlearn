@@ -13,6 +13,7 @@ from libpysal.graph import Graph
 from packaging.version import Version
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.model_selection import GridSearchCV
 
 from gwlearn.base import BaseClassifier, BaseRegressor, _kernel_functions
 
@@ -1631,3 +1632,28 @@ def test_regressor_score(sample_regression_data):
     r2 = reg.score(X, y, geometry)
     assert -1.0 <= r2 <= 1.0
     assert isinstance(r2, float)
+
+
+def test_metadata_routing(sample_regression_data):
+    """Test compatibility with sklearn pipes"""
+    sklearn.set_config(enable_metadata_routing=True)
+
+    X, y, geometry = sample_regression_data
+    reg = BaseRegressor(
+        LinearRegression,
+        bandwidth=10,
+        fixed=False,
+        keep_models=True,
+        random_state=42,
+        strict=False,
+    )
+
+    reg.set_fit_request(geometry=True)
+    reg.set_predict_request(geometry=True)
+    reg.set_score_request(geometry=True)
+
+    gs = GridSearchCV(reg, {"include_focal": [True, False]}, cv=2)
+    gs.fit(X, y, geometry=geometry)
+    assert gs.best_estimator_.include_focal
+
+    sklearn.set_config(enable_metadata_routing=False)
