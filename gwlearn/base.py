@@ -9,7 +9,7 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed, dump, load
-from libpysal import graph
+from libpysal import graph, kernels
 from scipy.spatial import KDTree
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 from sklearn.model_selection import train_test_split
@@ -18,43 +18,36 @@ __all__ = ["BaseClassifier", "BaseRegressor"]
 
 
 def _triangular(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
-    u = np.clip(distances / bandwidth, 0, 1)
-    return 1 - u
+    return kernels.kernel(distances, bandwidth, kernel="triangular", decay=True)
 
 
 def _parabolic(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
-    u = np.clip(distances / bandwidth, 0, 1)
-    return 1 - u**2
+    return kernels.kernel(distances, bandwidth, kernel="parabolic", decay=True)
 
 
 def _gaussian(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
-    u = distances / bandwidth
-    return np.exp(-((u / 2) ** 2))
+    return kernels.kernel(distances, bandwidth, kernel="gaussian", decay=True)
 
 
 def _bisquare(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
-    u = np.clip(distances / bandwidth, 0, 1)
-    return (1 - u**2) ** 2
+    return kernels.kernel(distances, bandwidth, kernel="bisquare", decay=True)
 
 
 def _cosine(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
-    u = np.clip(distances / bandwidth, 0, 1)
-    return np.cos(np.pi / 2 * u)
+    return kernels.kernel(distances, bandwidth, kernel="cosine", decay=True)
 
 
 def _exponential(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
-    u = distances / bandwidth
-    return np.exp(-u)
+    return kernels.kernel(distances, bandwidth, kernel="exponential", decay=True)
 
 
 def _boxcar(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
-    r = (distances < bandwidth).astype(int)
-    return r
+    return kernels.kernel(distances, bandwidth, kernel="boxcar", decay=True)
 
 
 def _tricube(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
     u = np.clip(distances / bandwidth, 0, 1)
-    return (1 - u**3) ** 3
+    return (1 - u**3) ** 3 # will be changed post tricube implementation in libpysal
 
 
 _kernel_functions = {
