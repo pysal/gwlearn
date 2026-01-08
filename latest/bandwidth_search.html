@@ -21,7 +21,7 @@
     
     
       
-        <title>Bandwidth search - gwlearn 0.0.3.dev1 documentation</title>
+        <title>Bandwidth search - gwlearn 0.0.3.dev2 documentation</title>
       
     
     
@@ -81,6 +81,10 @@
       
     </div>
     
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
     
       
 
@@ -88,7 +92,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="gwlearn 0.0.3.dev1 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.3.dev1 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.3.dev2 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.3.dev2 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -99,7 +103,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.3.dev1 documentation
+            gwlearn 0.0.3.dev2 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -237,10 +241,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="gwlearn 0.0.3.dev1 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.3.dev1 documentation" data-md-component="logo">
+    <a href="index.html" title="gwlearn 0.0.3.dev2 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.3.dev2 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.3.dev1 documentation
+    gwlearn 0.0.3.dev2 documentation
   </label>
   
     <div class="md-nav__source">
@@ -881,6 +885,14 @@
 </code></pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Downloading file &#39;ncovr.zip&#39; from &#39;https://geodacenter.github.io/data-and-lab//data/ncovr.zip&#39; to &#39;/home/runner/.cache/geodatasets&#39;.
+</code></pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Extracting &#39;ncovr/NAT.gpkg&#39; from &#39;/home/runner/.cache/geodatasets/ncovr.zip&#39; to &#39;/home/runner/.cache/geodatasets/ncovr.zip.unzip&#39;
+</code></pre></div>
+</div>
+</div>
 </div>
 <h2 id="interval-search">Interval search<a class="headerlink" href="#interval-search" title="Link to this heading">¶</a></h2>
 <p>Interval search tests the model at a set interval.</p>
@@ -907,18 +919,36 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 50.00, aicc: 15666.353
-Bandwidth: 150.00, aicc: 15498.936
-Bandwidth: 250.00, aicc: 15660.999
-Bandwidth: 350.00, aicc: 15775.129
-Bandwidth: 450.00, aicc: 15854.287
-Bandwidth: 550.00, aicc: 15918.673
-Bandwidth: 650.00, aicc: 15975.564
-Bandwidth: 750.00, aicc: 16031.276
-Bandwidth: 850.00, aicc: 16080.155
-Bandwidth: 950.00, aicc: 16126.986
 </code></pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x15e183c50&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 150.00, aicc: 15498.936
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 250.00, aicc: 15660.999
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 350.00, aicc: 15775.129
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 450.00, aicc: 15854.287
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 550.00, aicc: 15918.673
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 650.00, aicc: 15975.564
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 750.00, aicc: 16031.276
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 850.00, aicc: 16080.155
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 950.00, aicc: 16126.986
+</code></pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x7fe34c75e270&gt;
 </code></pre></div>
 </div>
 </div>
@@ -974,25 +1004,57 @@ Bandwidth: 950.00, aicc: 16126.986
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 918447.5, score: 16135.833
-Bandwidth: 1331552.5, score: 16367.508
-Bandwidth: 663120.61, score: 15901.394
-Bandwidth: 505326.89, score: 15734.258
-Bandwidth: 407799.68, score: 15644.228
-Bandwidth: 347527.21, score: 15599.261
-Bandwidth: 310274.74, score: 15585.033
-Bandwidth: 287252.47, score: 15579.996
-Bandwidth: 273023.14, score: 15583.440
-Bandwidth: 296045.75, score: 15580.453
-Bandwidth: 281817.09, score: 15580.952
-Bandwidth: 290610.83, score: 15579.452
-Bandwidth: 292686.98, score: 15579.549
-Bandwidth: 289328.29, score: 15579.566
-Bandwidth: 291404.06, score: 15579.440
-Bandwidth: 291893.95, score: 15579.458
-Bandwidth: 291100.94, score: 15579.438
 </code></pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x168c03110&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 1331552.5, score: 16367.508
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 663120.61, score: 15901.394
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 505326.89, score: 15734.258
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 407799.68, score: 15644.228
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 347527.21, score: 15599.261
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 310274.74, score: 15585.033
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 287252.47, score: 15579.996
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 273023.14, score: 15583.440
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 296045.75, score: 15580.453
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 281817.09, score: 15580.952
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 290610.83, score: 15579.452
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 292686.98, score: 15579.549
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 289328.29, score: 15579.566
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 291404.06, score: 15579.440
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 291893.95, score: 15579.458
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 291100.94, score: 15579.438
+</code></pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x7fe2e3c80e10&gt;
 </code></pre></div>
 </div>
 </div>
@@ -1077,7 +1139,7 @@ Bandwidth: 291100.94, score: 15579.438
       <th>3.475272e+05</th>
       <td>15599.260550</td>
       <td>15500.960777</td>
-      <td>17709.892539</td>
+      <td>17709.892538</td>
     </tr>
     <tr>
       <th>3.102747e+05</th>
@@ -1101,7 +1163,7 @@ Bandwidth: 291100.94, score: 15579.438
       <th>2.960457e+05</th>
       <td>15580.452736</td>
       <td>15404.583147</td>
-      <td>18296.148267</td>
+      <td>18296.148266</td>
     </tr>
     <tr>
       <th>2.818171e+05</th>
@@ -1174,18 +1236,36 @@ Bandwidth: 291100.94, score: 15579.438
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 50.00, log_loss: 0.274
-Bandwidth: 150.00, log_loss: 0.372
-Bandwidth: 250.00, log_loss: 0.397
-Bandwidth: 350.00, log_loss: 0.405
-Bandwidth: 450.00, log_loss: 0.400
-Bandwidth: 550.00, log_loss: 0.396
-Bandwidth: 650.00, log_loss: 0.391
-Bandwidth: 750.00, log_loss: 0.392
-Bandwidth: 850.00, log_loss: 0.387
-Bandwidth: 950.00, log_loss: 0.386
 </code></pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x175f26600&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 150.00, log_loss: 0.372
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 250.00, log_loss: 0.397
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 350.00, log_loss: 0.405
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 450.00, log_loss: 0.400
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 550.00, log_loss: 0.396
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 650.00, log_loss: 0.391
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 750.00, log_loss: 0.392
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 850.00, log_loss: 0.387
+</code></pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 950.00, log_loss: 0.386
+</code></pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x7fe2eae5f4d0&gt;
 </code></pre></div>
 </div>
 </div>
@@ -1226,9 +1306,9 @@ Bandwidth: 950.00, log_loss: 0.386
   <tbody>
     <tr>
       <th>50</th>
-      <td>2889.818542</td>
-      <td>2358.134113</td>
-      <td>5833.725640</td>
+      <td>2889.818540</td>
+      <td>2358.134111</td>
+      <td>5833.725638</td>
       <td>0.273673</td>
       <td>0.664830</td>
     </tr>
@@ -1291,7 +1371,7 @@ Bandwidth: 950.00, log_loss: 0.386
     <tr>
       <th>850</th>
       <td>2430.644557</td>
-      <td>2428.204092</td>
+      <td>2428.204091</td>
       <td>2789.496584</td>
       <td>0.386952</td>
       <td>0.966613</td>
@@ -1438,7 +1518,7 @@ Bandwidth: 950.00, log_loss: 0.386
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "navigation.footer", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "navigation.footer", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": [{"aliases": [], "title": "stable", "version": "stable"}, {"aliases": [], "title": "latest", "version": "latest"}], "versionPath": null}}</script>
     
       
         <script src="_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>
