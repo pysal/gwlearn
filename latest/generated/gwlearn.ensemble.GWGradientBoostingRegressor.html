@@ -11,17 +11,17 @@
       
       
       
-        <link rel="prev" href="gwlearn.linear_model.GWLinearRegression.html">
+        <link rel="prev" href="gwlearn.ensemble.GWRandomForestRegressor.html">
       
       
-        <link rel="next" href="gwlearn.ensemble.GWGradientBoostingRegressor.html">
+        <link rel="next" href="gwlearn.linear_model.GWLogisticRegression.html">
       
       
       <link rel="icon" href="../_static/pysal_favicon.ico">
     
     
       
-        <title>gwlearn.ensemble.GWRandomForestRegressor - gwlearn 0.0.3.dev8 documentation</title>
+        <title>gwlearn.ensemble.GWGradientBoostingRegressor - gwlearn 0.0.3.dev8 documentation</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#gwlearn.ensemble.GWRandomForestRegressor" class="md-skip">
+        <a href="#gwlearn.ensemble.GWGradientBoostingRegressor" class="md-skip">
           Skip to content
         </a>
       
@@ -109,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              gwlearn.ensemble.GWRandomForestRegressor
+              gwlearn.ensemble.GWGradientBoostingRegressor
             
           </span>
         </div>
@@ -762,6 +762,30 @@
                 
   
   
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="gwlearn.ensemble.GWRandomForestRegressor.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>gwlearn.<wbr>ensemble.<wbr>GWRandom<wbr>Forest<wbr>Regressor</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
     
@@ -778,7 +802,7 @@
   
   
   <span class="md-ellipsis">
-    <span>gwlearn.<wbr>ensemble.<wbr>GWRandom<wbr>Forest<wbr>Regressor</span>
+    <span>gwlearn.<wbr>ensemble.<wbr>GWGradient<wbr>Boosting<wbr>Regressor</span>
     
   </span>
   
@@ -791,7 +815,7 @@
   
   
   <span class="md-ellipsis">
-    <span>gwlearn.<wbr>ensemble.<wbr>GWRandom<wbr>Forest<wbr>Regressor</span>
+    <span>gwlearn.<wbr>ensemble.<wbr>GWGradient<wbr>Boosting<wbr>Regressor</span>
     
   </span>
   
@@ -813,20 +837,20 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor" class="md-nav__link">
     
       <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor (Python class) — Geographically weighted random forest regressor."><span>gwlearn.<wbr>ensemble.<wbr>GWRandom<wbr>Forest<wbr>Regressor</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor (Python class) — Geographically weighted gradient boosting regressor."><span>gwlearn.<wbr>ensemble.<wbr>GWGradient<wbr>Boosting<wbr>Regressor</span></span>
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="gwlearn.ensemble.GWRandomForestRegressor">
+    <nav class="md-nav" aria-label="gwlearn.ensemble.GWGradientBoostingRegressor">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor-parameters" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor-parameters" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Parameters</span>
@@ -837,168 +861,168 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.bandwidth" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.bandwidth" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.bandwidth (Python parameter) — Bandwidth for defining neighborhoods."><span>bandwidth</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.bandwidth (Python parameter) — Bandwidth for defining neighborhoods."><span>bandwidth</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.fixed" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fixed" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.fixed (Python parameter) — True for distance based bandwidth and False for adaptive (nearest neighbor) bandwidth, by default False"><span>fixed</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fixed (Python parameter) — True for distance based bandwidth and False for adaptive (nearest neighbor) bandwidth, by default False"><span>fixed</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.kernel" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kernel" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.kernel (Python parameter) — type of kernel function used to weight observations, by default &#34;bisquare&#34;"><span>kernel</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kernel (Python parameter) — type of kernel function used to weight observations, by default &#34;bisquare&#34;"><span>kernel</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.include_focal" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.include_focal" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.include_focal (Python parameter) — Include focal in the local model training."><span>include_<wbr>focal</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.include_focal (Python parameter) — Include focal in the local model training."><span>include_<wbr>focal</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.graph" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.graph" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.graph (Python parameter) — Custom libpysal.graph.Graph object encoding the spatial interaction between observations in the sample."><span>graph</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.graph (Python parameter) — Custom libpysal.graph.Graph object encoding the spatial interaction between observations in the sample."><span>graph</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.n_jobs" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.n_jobs" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.n_jobs (Python parameter) — The number of jobs to run in parallel."><span>n_<wbr>jobs</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.n_jobs (Python parameter) — The number of jobs to run in parallel."><span>n_<wbr>jobs</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.fit_global_model" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fit_global_model" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.fit_global_model (Python parameter) — Determines if the global baseline model shall be fitted alongside the geographically weighted, by default True"><span>fit_<wbr>global_<wbr>model</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fit_global_model (Python parameter) — Determines if the global baseline model shall be fitted alongside the geographically weighted, by default True"><span>fit_<wbr>global_<wbr>model</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.strict" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.strict" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.strict (Python parameter) — Do not fit any models if at least one neighborhood has invariant y, by default False."><span>strict</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.strict (Python parameter) — Do not fit any models if at least one neighborhood has invariant y, by default False."><span>strict</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.keep_models" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.keep_models" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.keep_models (Python parameter) — Keep all local models (required for prediction), by default False."><span>keep_<wbr>models</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.keep_models (Python parameter) — Keep all local models (required for prediction), by default False."><span>keep_<wbr>models</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.temp_folder" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.temp_folder" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.temp_folder (Python parameter) — Folder to be used by the pool for memmapping large arrays for sharing memory with worker processes, e.g., /tmp."><span>temp_<wbr>folder</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.temp_folder (Python parameter) — Folder to be used by the pool for memmapping large arrays for sharing memory with worker processes, e.g., /tmp."><span>temp_<wbr>folder</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.batch_size" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.batch_size" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.batch_size (Python parameter) — Number of models to process in each batch."><span>batch_<wbr>size</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.batch_size (Python parameter) — Number of models to process in each batch."><span>batch_<wbr>size</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.random_state" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.random_state" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.random_state (Python parameter) — Random seed for reproducibility, by default None"><span>random_<wbr>state</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.random_state (Python parameter) — Random seed for reproducibility, by default None"><span>random_<wbr>state</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.verbose" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.verbose" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.verbose (Python parameter) — Whether to print progress information, by default False"><span>verbose</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.verbose (Python parameter) — Whether to print progress information, by default False"><span>verbose</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.kwargs" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kwargs" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.kwargs (Python parameter) — Additional keyword arguments passed to model initialisation"><span>kwargs</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kwargs (Python parameter) — Additional keyword arguments passed to model initialisation"><span>kwargs</span></span>
     </span>
   </a>
   
@@ -1010,12 +1034,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.pred_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.pred_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.pred_ (Python attribute) — Focal predictions for each location."><span>pred_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.pred_ (Python attribute) — Focal predictions for each location."><span>pred_<wbr></span></span>
     </span>
   </a>
   
@@ -1023,7 +1047,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.pred_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.pred_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -1038,12 +1062,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.resid_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.resid_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.resid_ (Python attribute) — Residuals for each location (y - pred_)."><span>resid_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.resid_ (Python attribute) — Residuals for each location (y - pred_)."><span>resid_<wbr></span></span>
     </span>
   </a>
   
@@ -1051,7 +1075,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.resid_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.resid_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -1066,12 +1090,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.RSS_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.RSS_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.RSS_ (Python attribute) — Residual sum of squares for each location."><span>RSS_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.RSS_ (Python attribute) — Residual sum of squares for each location."><span>RSS_<wbr></span></span>
     </span>
   </a>
   
@@ -1079,7 +1103,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.RSS_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.RSS_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -1094,12 +1118,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.TSS_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.TSS_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.TSS_ (Python attribute) — Total sum of squares for each location."><span>TSS_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.TSS_ (Python attribute) — Total sum of squares for each location."><span>TSS_<wbr></span></span>
     </span>
   </a>
   
@@ -1107,7 +1131,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.TSS_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.TSS_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -1122,12 +1146,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.y_bar_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.y_bar_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.y_bar_ (Python attribute) — Weighted mean of y for each location."><span>y_<wbr>bar_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.y_bar_ (Python attribute) — Weighted mean of y for each location."><span>y_<wbr>bar_<wbr></span></span>
     </span>
   </a>
   
@@ -1135,7 +1159,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.y_bar_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.y_bar_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -1150,12 +1174,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.local_r2_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.local_r2_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.local_r2_ (Python attribute) — Local R2 for each location."><span>local_<wbr>r2_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.local_r2_ (Python attribute) — Local R2 for each location."><span>local_<wbr>r2_<wbr></span></span>
     </span>
   </a>
   
@@ -1163,7 +1187,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.local_r2_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.local_r2_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -1178,12 +1202,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.hat_values_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.hat_values_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.hat_values_ (Python attribute) — Hat values for each location (diagonal elements of hat matrix)"><span>hat_<wbr>values_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.hat_values_ (Python attribute) — Hat values for each location (diagonal elements of hat matrix)"><span>hat_<wbr>values_<wbr></span></span>
     </span>
   </a>
   
@@ -1191,7 +1215,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.hat_values_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.hat_values_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -1206,12 +1230,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.effective_df_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.effective_df_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.effective_df_ (Python attribute) — Effective degrees of freedom (sum of hat values)"><span>effective_<wbr>df_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.effective_df_ (Python attribute) — Effective degrees of freedom (sum of hat values)"><span>effective_<wbr>df_<wbr></span></span>
     </span>
   </a>
   
@@ -1219,7 +1243,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.effective_df_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.effective_df_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -1234,12 +1258,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.log_likelihood_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.log_likelihood_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.log_likelihood_ (Python attribute) — Global log likelihood of the model"><span>log_<wbr>likelihood_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.log_likelihood_ (Python attribute) — Global log likelihood of the model"><span>log_<wbr>likelihood_<wbr></span></span>
     </span>
   </a>
   
@@ -1247,7 +1271,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.log_likelihood_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.log_likelihood_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -1262,12 +1286,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.aic_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.aic_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.aic_ (Python attribute) — Akaike information criterion of the model"><span>aic_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.aic_ (Python attribute) — Akaike information criterion of the model"><span>aic_<wbr></span></span>
     </span>
   </a>
   
@@ -1275,7 +1299,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.aic_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.aic_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -1290,12 +1314,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.aicc_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.aicc_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.aicc_ (Python attribute) — Corrected Akaike information criterion to account for model complexity (smaller bandwidths)"><span>aicc_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.aicc_ (Python attribute) — Corrected Akaike information criterion to account for model complexity (smaller bandwidths)"><span>aicc_<wbr></span></span>
     </span>
   </a>
   
@@ -1303,7 +1327,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.aicc_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.aicc_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -1318,12 +1342,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.bic_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.bic_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.bic_ (Python attribute) — Bayesian information criterion"><span>bic_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.bic_ (Python attribute) — Bayesian information criterion"><span>bic_<wbr></span></span>
     </span>
   </a>
   
@@ -1331,7 +1355,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.bic_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.bic_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -1346,12 +1370,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.feature_importances_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.feature_importances_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.feature_importances_ (Python attribute) — Feature importance values for each local model"><span>feature_<wbr>importances_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.feature_importances_ (Python attribute) — Feature importance values for each local model"><span>feature_<wbr>importances_<wbr></span></span>
     </span>
   </a>
   
@@ -1359,7 +1383,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.feature_importances_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.feature_importances_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -1374,68 +1398,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.oob_y_pooled_" class="md-nav__link">
-    
-      <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
-    
-    <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.oob_y_pooled_ (Python attribute) — Pooled out-of-bag (OOB) true values across all fitted local models."><span>oob_<wbr>y_<wbr>pooled_<wbr></span></span>
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="oob_y_pooled_">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.oob_y_pooled_-type" class="md-nav__link">
-    
-    <span class="md-ellipsis">
-      <span>Type</span>
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.oob_pred_pooled_" class="md-nav__link">
-    
-      <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
-    
-    <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.oob_pred_pooled_ (Python attribute) — Pooled out-of-bag (OOB) predictions across all fitted local models."><span>oob_<wbr>pred_<wbr>pooled_<wbr></span></span>
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="oob_pred_pooled_">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.oob_pred_pooled_-type" class="md-nav__link">
-    
-    <span class="md-ellipsis">
-      <span>Type</span>
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.fit" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit" class="md-nav__link">
     
       <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.fit (Python method) — Fit geographically weighted random forests."><span>fit</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.fit (Python method) — Fit geographically weighted gradient boosting regressors."><span>fit</span></span>
     </span>
   </a>
   
@@ -1443,7 +1411,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.fit-parameters" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit-parameters" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Parameters</span>
@@ -1454,36 +1422,36 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.fit.X" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit.X" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.fit.X (Python parameter) — Feature matrix."><span>X</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.fit.X (Python parameter) — Feature matrix."><span>X</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.fit.y" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit.y" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.fit.y (Python parameter) — Target values."><span>y</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.fit.y (Python parameter) — Target values."><span>y</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.fit.geometry" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit.geometry" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.fit.geometry (Python parameter) — Geographic location of the observations in the sample."><span>geometry</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.fit.geometry (Python parameter) — Geographic location of the observations in the sample."><span>geometry</span></span>
     </span>
   </a>
   
@@ -1495,7 +1463,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.fit-returns" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit-returns" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Returns</span>
@@ -1505,7 +1473,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.fit-return-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit-return-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Return type</span>
@@ -1520,12 +1488,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing" class="md-nav__link">
     
       <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing (Python method) — Get metadata routing of this object."><span>get_<wbr>metadata_<wbr>routing</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing (Python method) — Get metadata routing of this object."><span>get_<wbr>metadata_<wbr>routing</span></span>
     </span>
   </a>
   
@@ -1533,7 +1501,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing-returns" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing-returns" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Returns</span>
@@ -1543,7 +1511,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing-return-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing-return-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Return type</span>
@@ -1558,12 +1526,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_params" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params" class="md-nav__link">
     
       <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.get_params (Python method) — Get parameters for this estimator."><span>get_<wbr>params</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.get_params (Python method) — Get parameters for this estimator."><span>get_<wbr>params</span></span>
     </span>
   </a>
   
@@ -1571,7 +1539,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_params-parameters" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params-parameters" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Parameters</span>
@@ -1582,12 +1550,12 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_params.deep" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params.deep" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.get_params.deep (Python parameter) — If True, will return the parameters for this estimator and contained subobjects that are estimators."><span>deep</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.get_params.deep (Python parameter) — If True, will return the parameters for this estimator and contained subobjects that are estimators."><span>deep</span></span>
     </span>
   </a>
   
@@ -1599,7 +1567,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_params-returns" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params-returns" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Returns</span>
@@ -1609,7 +1577,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_params-return-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params-return-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Return type</span>
@@ -1624,12 +1592,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict" class="md-nav__link">
     
       <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.predict (Python method) — Predict target values for new observations."><span>predict</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.predict (Python method) — Predict target values for new observations."><span>predict</span></span>
     </span>
   </a>
   
@@ -1637,7 +1605,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict-parameters" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict-parameters" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Parameters</span>
@@ -1648,48 +1616,48 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict.X" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.X" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.predict.X (Python parameter) — Feature matrix for new observations."><span>X</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.predict.X (Python parameter) — Feature matrix for new observations."><span>X</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict.geometry" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.geometry" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.predict.geometry (Python parameter) — Point geometries for new observations."><span>geometry</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.predict.geometry (Python parameter) — Point geometries for new observations."><span>geometry</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict.bandwidth" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.bandwidth" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.predict.bandwidth (Python parameter) — Prediction method."><span>bandwidth</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.predict.bandwidth (Python parameter) — Prediction method."><span>bandwidth</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict.global_model_weight" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.global_model_weight" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.predict.global_model_weight (Python parameter) — Weight of the prediction from the global model."><span>global_<wbr>model_<wbr>weight</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.predict.global_model_weight (Python parameter) — Weight of the prediction from the global model."><span>global_<wbr>model_<wbr>weight</span></span>
     </span>
   </a>
   
@@ -1701,7 +1669,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict-returns" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict-returns" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Returns</span>
@@ -1711,7 +1679,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict-return-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict-return-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Return type</span>
@@ -1726,12 +1694,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.set_params" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params" class="md-nav__link">
     
       <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.set_params (Python method) — Set the parameters of this estimator."><span>set_<wbr>params</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.set_params (Python method) — Set the parameters of this estimator."><span>set_<wbr>params</span></span>
     </span>
   </a>
   
@@ -1739,7 +1707,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.set_params-parameters" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params-parameters" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Parameters</span>
@@ -1750,12 +1718,12 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.set_params.params" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params.params" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.set_params.params (Python parameter) — Estimator parameters."><span>params</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.set_params.params (Python parameter) — Estimator parameters."><span>params</span></span>
     </span>
   </a>
   
@@ -1767,7 +1735,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.set_params-returns" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params-returns" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Returns</span>
@@ -1777,7 +1745,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.set_params-return-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params-return-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Return type</span>
@@ -1800,30 +1768,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="gwlearn.ensemble.GWGradientBoostingRegressor.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    <span>gwlearn.<wbr>ensemble.<wbr>GWGradient<wbr>Boosting<wbr>Regressor</span>
-    
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -2000,20 +1944,20 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor" class="md-nav__link">
     
       <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor (Python class) — Geographically weighted random forest regressor."><span>gwlearn.<wbr>ensemble.<wbr>GWRandom<wbr>Forest<wbr>Regressor</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor (Python class) — Geographically weighted gradient boosting regressor."><span>gwlearn.<wbr>ensemble.<wbr>GWGradient<wbr>Boosting<wbr>Regressor</span></span>
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="gwlearn.ensemble.GWRandomForestRegressor">
+    <nav class="md-nav" aria-label="gwlearn.ensemble.GWGradientBoostingRegressor">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor-parameters" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor-parameters" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Parameters</span>
@@ -2024,168 +1968,168 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.bandwidth" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.bandwidth" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.bandwidth (Python parameter) — Bandwidth for defining neighborhoods."><span>bandwidth</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.bandwidth (Python parameter) — Bandwidth for defining neighborhoods."><span>bandwidth</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.fixed" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fixed" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.fixed (Python parameter) — True for distance based bandwidth and False for adaptive (nearest neighbor) bandwidth, by default False"><span>fixed</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fixed (Python parameter) — True for distance based bandwidth and False for adaptive (nearest neighbor) bandwidth, by default False"><span>fixed</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.kernel" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kernel" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.kernel (Python parameter) — type of kernel function used to weight observations, by default &#34;bisquare&#34;"><span>kernel</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kernel (Python parameter) — type of kernel function used to weight observations, by default &#34;bisquare&#34;"><span>kernel</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.include_focal" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.include_focal" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.include_focal (Python parameter) — Include focal in the local model training."><span>include_<wbr>focal</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.include_focal (Python parameter) — Include focal in the local model training."><span>include_<wbr>focal</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.graph" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.graph" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.graph (Python parameter) — Custom libpysal.graph.Graph object encoding the spatial interaction between observations in the sample."><span>graph</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.graph (Python parameter) — Custom libpysal.graph.Graph object encoding the spatial interaction between observations in the sample."><span>graph</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.n_jobs" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.n_jobs" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.n_jobs (Python parameter) — The number of jobs to run in parallel."><span>n_<wbr>jobs</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.n_jobs (Python parameter) — The number of jobs to run in parallel."><span>n_<wbr>jobs</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.fit_global_model" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fit_global_model" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.fit_global_model (Python parameter) — Determines if the global baseline model shall be fitted alongside the geographically weighted, by default True"><span>fit_<wbr>global_<wbr>model</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fit_global_model (Python parameter) — Determines if the global baseline model shall be fitted alongside the geographically weighted, by default True"><span>fit_<wbr>global_<wbr>model</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.strict" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.strict" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.strict (Python parameter) — Do not fit any models if at least one neighborhood has invariant y, by default False."><span>strict</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.strict (Python parameter) — Do not fit any models if at least one neighborhood has invariant y, by default False."><span>strict</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.keep_models" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.keep_models" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.keep_models (Python parameter) — Keep all local models (required for prediction), by default False."><span>keep_<wbr>models</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.keep_models (Python parameter) — Keep all local models (required for prediction), by default False."><span>keep_<wbr>models</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.temp_folder" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.temp_folder" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.temp_folder (Python parameter) — Folder to be used by the pool for memmapping large arrays for sharing memory with worker processes, e.g., /tmp."><span>temp_<wbr>folder</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.temp_folder (Python parameter) — Folder to be used by the pool for memmapping large arrays for sharing memory with worker processes, e.g., /tmp."><span>temp_<wbr>folder</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.batch_size" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.batch_size" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.batch_size (Python parameter) — Number of models to process in each batch."><span>batch_<wbr>size</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.batch_size (Python parameter) — Number of models to process in each batch."><span>batch_<wbr>size</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.random_state" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.random_state" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.random_state (Python parameter) — Random seed for reproducibility, by default None"><span>random_<wbr>state</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.random_state (Python parameter) — Random seed for reproducibility, by default None"><span>random_<wbr>state</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.verbose" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.verbose" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.verbose (Python parameter) — Whether to print progress information, by default False"><span>verbose</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.verbose (Python parameter) — Whether to print progress information, by default False"><span>verbose</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.kwargs" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kwargs" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.__init__.kwargs (Python parameter) — Additional keyword arguments passed to model initialisation"><span>kwargs</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kwargs (Python parameter) — Additional keyword arguments passed to model initialisation"><span>kwargs</span></span>
     </span>
   </a>
   
@@ -2197,12 +2141,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.pred_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.pred_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.pred_ (Python attribute) — Focal predictions for each location."><span>pred_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.pred_ (Python attribute) — Focal predictions for each location."><span>pred_<wbr></span></span>
     </span>
   </a>
   
@@ -2210,7 +2154,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.pred_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.pred_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -2225,12 +2169,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.resid_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.resid_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.resid_ (Python attribute) — Residuals for each location (y - pred_)."><span>resid_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.resid_ (Python attribute) — Residuals for each location (y - pred_)."><span>resid_<wbr></span></span>
     </span>
   </a>
   
@@ -2238,7 +2182,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.resid_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.resid_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -2253,12 +2197,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.RSS_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.RSS_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.RSS_ (Python attribute) — Residual sum of squares for each location."><span>RSS_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.RSS_ (Python attribute) — Residual sum of squares for each location."><span>RSS_<wbr></span></span>
     </span>
   </a>
   
@@ -2266,7 +2210,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.RSS_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.RSS_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -2281,12 +2225,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.TSS_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.TSS_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.TSS_ (Python attribute) — Total sum of squares for each location."><span>TSS_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.TSS_ (Python attribute) — Total sum of squares for each location."><span>TSS_<wbr></span></span>
     </span>
   </a>
   
@@ -2294,7 +2238,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.TSS_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.TSS_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -2309,12 +2253,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.y_bar_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.y_bar_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.y_bar_ (Python attribute) — Weighted mean of y for each location."><span>y_<wbr>bar_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.y_bar_ (Python attribute) — Weighted mean of y for each location."><span>y_<wbr>bar_<wbr></span></span>
     </span>
   </a>
   
@@ -2322,7 +2266,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.y_bar_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.y_bar_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -2337,12 +2281,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.local_r2_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.local_r2_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.local_r2_ (Python attribute) — Local R2 for each location."><span>local_<wbr>r2_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.local_r2_ (Python attribute) — Local R2 for each location."><span>local_<wbr>r2_<wbr></span></span>
     </span>
   </a>
   
@@ -2350,7 +2294,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.local_r2_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.local_r2_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -2365,12 +2309,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.hat_values_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.hat_values_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.hat_values_ (Python attribute) — Hat values for each location (diagonal elements of hat matrix)"><span>hat_<wbr>values_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.hat_values_ (Python attribute) — Hat values for each location (diagonal elements of hat matrix)"><span>hat_<wbr>values_<wbr></span></span>
     </span>
   </a>
   
@@ -2378,7 +2322,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.hat_values_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.hat_values_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -2393,12 +2337,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.effective_df_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.effective_df_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.effective_df_ (Python attribute) — Effective degrees of freedom (sum of hat values)"><span>effective_<wbr>df_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.effective_df_ (Python attribute) — Effective degrees of freedom (sum of hat values)"><span>effective_<wbr>df_<wbr></span></span>
     </span>
   </a>
   
@@ -2406,7 +2350,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.effective_df_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.effective_df_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -2421,12 +2365,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.log_likelihood_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.log_likelihood_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.log_likelihood_ (Python attribute) — Global log likelihood of the model"><span>log_<wbr>likelihood_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.log_likelihood_ (Python attribute) — Global log likelihood of the model"><span>log_<wbr>likelihood_<wbr></span></span>
     </span>
   </a>
   
@@ -2434,7 +2378,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.log_likelihood_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.log_likelihood_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -2449,12 +2393,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.aic_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.aic_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.aic_ (Python attribute) — Akaike information criterion of the model"><span>aic_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.aic_ (Python attribute) — Akaike information criterion of the model"><span>aic_<wbr></span></span>
     </span>
   </a>
   
@@ -2462,7 +2406,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.aic_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.aic_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -2477,12 +2421,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.aicc_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.aicc_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.aicc_ (Python attribute) — Corrected Akaike information criterion to account for model complexity (smaller bandwidths)"><span>aicc_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.aicc_ (Python attribute) — Corrected Akaike information criterion to account for model complexity (smaller bandwidths)"><span>aicc_<wbr></span></span>
     </span>
   </a>
   
@@ -2490,7 +2434,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.aicc_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.aicc_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -2505,12 +2449,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.bic_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.bic_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.bic_ (Python attribute) — Bayesian information criterion"><span>bic_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.bic_ (Python attribute) — Bayesian information criterion"><span>bic_<wbr></span></span>
     </span>
   </a>
   
@@ -2518,7 +2462,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.bic_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.bic_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -2533,12 +2477,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.feature_importances_" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.feature_importances_" class="md-nav__link">
     
       <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.feature_importances_ (Python attribute) — Feature importance values for each local model"><span>feature_<wbr>importances_<wbr></span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.feature_importances_ (Python attribute) — Feature importance values for each local model"><span>feature_<wbr>importances_<wbr></span></span>
     </span>
   </a>
   
@@ -2546,7 +2490,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.feature_importances_-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.feature_importances_-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Type</span>
@@ -2561,68 +2505,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.oob_y_pooled_" class="md-nav__link">
-    
-      <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
-    
-    <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.oob_y_pooled_ (Python attribute) — Pooled out-of-bag (OOB) true values across all fitted local models."><span>oob_<wbr>y_<wbr>pooled_<wbr></span></span>
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="oob_y_pooled_">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.oob_y_pooled_-type" class="md-nav__link">
-    
-    <span class="md-ellipsis">
-      <span>Type</span>
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.oob_pred_pooled_" class="md-nav__link">
-    
-      <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
-    
-    <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.oob_pred_pooled_ (Python attribute) — Pooled out-of-bag (OOB) predictions across all fitted local models."><span>oob_<wbr>pred_<wbr>pooled_<wbr></span></span>
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="oob_pred_pooled_">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.oob_pred_pooled_-type" class="md-nav__link">
-    
-    <span class="md-ellipsis">
-      <span>Type</span>
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.fit" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit" class="md-nav__link">
     
       <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.fit (Python method) — Fit geographically weighted random forests."><span>fit</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.fit (Python method) — Fit geographically weighted gradient boosting regressors."><span>fit</span></span>
     </span>
   </a>
   
@@ -2630,7 +2518,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.fit-parameters" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit-parameters" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Parameters</span>
@@ -2641,36 +2529,36 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.fit.X" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit.X" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.fit.X (Python parameter) — Feature matrix."><span>X</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.fit.X (Python parameter) — Feature matrix."><span>X</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.fit.y" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit.y" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.fit.y (Python parameter) — Target values."><span>y</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.fit.y (Python parameter) — Target values."><span>y</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.fit.geometry" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit.geometry" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.fit.geometry (Python parameter) — Geographic location of the observations in the sample."><span>geometry</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.fit.geometry (Python parameter) — Geographic location of the observations in the sample."><span>geometry</span></span>
     </span>
   </a>
   
@@ -2682,7 +2570,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.fit-returns" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit-returns" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Returns</span>
@@ -2692,7 +2580,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.fit-return-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit-return-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Return type</span>
@@ -2707,12 +2595,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing" class="md-nav__link">
     
       <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing (Python method) — Get metadata routing of this object."><span>get_<wbr>metadata_<wbr>routing</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing (Python method) — Get metadata routing of this object."><span>get_<wbr>metadata_<wbr>routing</span></span>
     </span>
   </a>
   
@@ -2720,7 +2608,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing-returns" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing-returns" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Returns</span>
@@ -2730,7 +2618,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing-return-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing-return-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Return type</span>
@@ -2745,12 +2633,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_params" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params" class="md-nav__link">
     
       <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.get_params (Python method) — Get parameters for this estimator."><span>get_<wbr>params</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.get_params (Python method) — Get parameters for this estimator."><span>get_<wbr>params</span></span>
     </span>
   </a>
   
@@ -2758,7 +2646,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_params-parameters" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params-parameters" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Parameters</span>
@@ -2769,12 +2657,12 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_params.deep" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params.deep" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.get_params.deep (Python parameter) — If True, will return the parameters for this estimator and contained subobjects that are estimators."><span>deep</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.get_params.deep (Python parameter) — If True, will return the parameters for this estimator and contained subobjects that are estimators."><span>deep</span></span>
     </span>
   </a>
   
@@ -2786,7 +2674,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_params-returns" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params-returns" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Returns</span>
@@ -2796,7 +2684,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.get_params-return-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params-return-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Return type</span>
@@ -2811,12 +2699,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict" class="md-nav__link">
     
       <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.predict (Python method) — Predict target values for new observations."><span>predict</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.predict (Python method) — Predict target values for new observations."><span>predict</span></span>
     </span>
   </a>
   
@@ -2824,7 +2712,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict-parameters" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict-parameters" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Parameters</span>
@@ -2835,48 +2723,48 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict.X" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.X" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.predict.X (Python parameter) — Feature matrix for new observations."><span>X</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.predict.X (Python parameter) — Feature matrix for new observations."><span>X</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict.geometry" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.geometry" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.predict.geometry (Python parameter) — Point geometries for new observations."><span>geometry</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.predict.geometry (Python parameter) — Point geometries for new observations."><span>geometry</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict.bandwidth" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.bandwidth" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.predict.bandwidth (Python parameter) — Prediction method."><span>bandwidth</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.predict.bandwidth (Python parameter) — Prediction method."><span>bandwidth</span></span>
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict.global_model_weight" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.global_model_weight" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.predict.global_model_weight (Python parameter) — Weight of the prediction from the global model."><span>global_<wbr>model_<wbr>weight</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.predict.global_model_weight (Python parameter) — Weight of the prediction from the global model."><span>global_<wbr>model_<wbr>weight</span></span>
     </span>
   </a>
   
@@ -2888,7 +2776,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict-returns" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict-returns" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Returns</span>
@@ -2898,7 +2786,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.predict-return-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict-return-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Return type</span>
@@ -2913,12 +2801,12 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.set_params" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params" class="md-nav__link">
     
       <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.set_params (Python method) — Set the parameters of this estimator."><span>set_<wbr>params</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.set_params (Python method) — Set the parameters of this estimator."><span>set_<wbr>params</span></span>
     </span>
   </a>
   
@@ -2926,7 +2814,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.set_params-parameters" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params-parameters" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Parameters</span>
@@ -2937,12 +2825,12 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.set_params.params" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params.params" class="md-nav__link">
     
       <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
     
     <span class="md-ellipsis">
-      <span title="gwlearn.ensemble.GWRandomForestRegressor.set_params.params (Python parameter) — Estimator parameters."><span>params</span></span>
+      <span title="gwlearn.ensemble.GWGradientBoostingRegressor.set_params.params (Python parameter) — Estimator parameters."><span>params</span></span>
     </span>
   </a>
   
@@ -2954,7 +2842,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.set_params-returns" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params-returns" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Returns</span>
@@ -2964,7 +2852,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#gwlearn.ensemble.GWRandomForestRegressor.set_params-return-type" class="md-nav__link">
+  <a href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params-return-type" class="md-nav__link">
     
     <span class="md-ellipsis">
       <span>Return type</span>
@@ -2999,26 +2887,26 @@
                   
 
 
-<h1 id="gwlearn-ensemble-gwrandomforestregressor">gwlearn.ensemble.GWRandomForestRegressor<a class="headerlink" href="#gwlearn-ensemble-gwrandomforestregressor" title="Link to this heading">¶</a></h1>
+<h1 id="gwlearn-ensemble-gwgradientboostingregressor">gwlearn.ensemble.GWGradientBoostingRegressor<a class="headerlink" href="#gwlearn-ensemble-gwgradientboostingregressor" title="Link to this heading">¶</a></h1>
 <dl class="py class objdesc">
-<dt class="sig sig-object highlight sig-wrap py" id="gwlearn.ensemble.GWRandomForestRegressor">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gwlearn.ensemble.</span></span><span class="sig-name descname"><span class="pre">GWRandomForestRegressor</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.bandwidth" title="gwlearn.ensemble.GWRandomForestRegressor.__init__.bandwidth (Python parameter) — Bandwidth for defining neighborhoods."><span class="n"><span class="pre">bandwidth</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.fixed" title="gwlearn.ensemble.GWRandomForestRegressor.__init__.fixed (Python parameter) — True for distance based bandwidth and False for adaptive (nearest neighbor) bandwidth, by default False"><span class="n"><span class="pre">fixed</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.kernel" title="gwlearn.ensemble.GWRandomForestRegressor.__init__.kernel (Python parameter) — type of kernel function used to weight observations, by default &quot;bisquare&quot;"><span class="n"><span class="pre">kernel</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;bisquare&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.include_focal" title="gwlearn.ensemble.GWRandomForestRegressor.__init__.include_focal (Python parameter) — Include focal in the local model training."><span class="n"><span class="pre">include_focal</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.graph" title="gwlearn.ensemble.GWRandomForestRegressor.__init__.graph (Python parameter) — Custom libpysal.graph.Graph object encoding the spatial interaction between observations in the sample."><span class="n"><span class="pre">graph</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.n_jobs" title="gwlearn.ensemble.GWRandomForestRegressor.__init__.n_jobs (Python parameter) — The number of jobs to run in parallel."><span class="n"><span class="pre">n_jobs</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="o">-</span><span class="mi">1</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.fit_global_model" title="gwlearn.ensemble.GWRandomForestRegressor.__init__.fit_global_model (Python parameter) — Determines if the global baseline model shall be fitted alongside the geographically weighted, by default True"><span class="n"><span class="pre">fit_global_model</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">True</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.strict" title="gwlearn.ensemble.GWRandomForestRegressor.__init__.strict (Python parameter) — Do not fit any models if at least one neighborhood has invariant y, by default False."><span class="n"><span class="pre">strict</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.keep_models" title="gwlearn.ensemble.GWRandomForestRegressor.__init__.keep_models (Python parameter) — Keep all local models (required for prediction), by default False."><span class="n"><span class="pre">keep_models</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.temp_folder" title="gwlearn.ensemble.GWRandomForestRegressor.__init__.temp_folder (Python parameter) — Folder to be used by the pool for memmapping large arrays for sharing memory with worker processes, e.g., /tmp."><span class="n"><span class="pre">temp_folder</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.batch_size" title="gwlearn.ensemble.GWRandomForestRegressor.__init__.batch_size (Python parameter) — Number of models to process in each batch."><span class="n"><span class="pre">batch_size</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.random_state" title="gwlearn.ensemble.GWRandomForestRegressor.__init__.random_state (Python parameter) — Random seed for reproducibility, by default None"><span class="n"><span class="pre">random_state</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.verbose" title="gwlearn.ensemble.GWRandomForestRegressor.__init__.verbose (Python parameter) — Whether to print progress information, by default False"><span class="n"><span class="pre">verbose</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.kwargs" title="gwlearn.ensemble.GWRandomForestRegressor.__init__.kwargs (Python parameter) — Additional keyword arguments passed to model initialisation"><span class="n"><span class="pre">kwargs</span></span></a></em></span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/ensemble.html#GWRandomForestRegressor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor" title="Link to this definition">¶</a></dt>
-<dd><p>Geographically weighted random forest regressor.</p>
-<p>Fits one <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html#sklearn.ensemble.RandomForestRegressor" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.ensemble.RandomForestRegressor</span></code></a> per focal observation
+<dt class="sig sig-object highlight sig-wrap py" id="gwlearn.ensemble.GWGradientBoostingRegressor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gwlearn.ensemble.</span></span><span class="sig-name descname"><span class="pre">GWGradientBoostingRegressor</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.bandwidth" title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.bandwidth (Python parameter) — Bandwidth for defining neighborhoods."><span class="n"><span class="pre">bandwidth</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fixed" title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fixed (Python parameter) — True for distance based bandwidth and False for adaptive (nearest neighbor) bandwidth, by default False"><span class="n"><span class="pre">fixed</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kernel" title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kernel (Python parameter) — type of kernel function used to weight observations, by default &quot;bisquare&quot;"><span class="n"><span class="pre">kernel</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;bisquare&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.include_focal" title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.include_focal (Python parameter) — Include focal in the local model training."><span class="n"><span class="pre">include_focal</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.graph" title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.graph (Python parameter) — Custom libpysal.graph.Graph object encoding the spatial interaction between observations in the sample."><span class="n"><span class="pre">graph</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.n_jobs" title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.n_jobs (Python parameter) — The number of jobs to run in parallel."><span class="n"><span class="pre">n_jobs</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="o">-</span><span class="mi">1</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fit_global_model" title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fit_global_model (Python parameter) — Determines if the global baseline model shall be fitted alongside the geographically weighted, by default True"><span class="n"><span class="pre">fit_global_model</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">True</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.strict" title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.strict (Python parameter) — Do not fit any models if at least one neighborhood has invariant y, by default False."><span class="n"><span class="pre">strict</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.keep_models" title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.keep_models (Python parameter) — Keep all local models (required for prediction), by default False."><span class="n"><span class="pre">keep_models</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.temp_folder" title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.temp_folder (Python parameter) — Folder to be used by the pool for memmapping large arrays for sharing memory with worker processes, e.g., /tmp."><span class="n"><span class="pre">temp_folder</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.batch_size" title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.batch_size (Python parameter) — Number of models to process in each batch."><span class="n"><span class="pre">batch_size</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.random_state" title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.random_state (Python parameter) — Random seed for reproducibility, by default None"><span class="n"><span class="pre">random_state</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.verbose" title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.verbose (Python parameter) — Whether to print progress information, by default False"><span class="n"><span class="pre">verbose</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">False</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kwargs" title="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kwargs (Python parameter) — Additional keyword arguments passed to model initialisation"><span class="n"><span class="pre">kwargs</span></span></a></em></span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/ensemble.html#GWGradientBoostingRegressor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor" title="Link to this definition">¶</a></dt>
+<dd><p>Geographically weighted gradient boosting regressor.</p>
+<p>Fits one <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html#sklearn.ensemble.GradientBoostingRegressor" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.ensemble.GradientBoostingRegressor</span></code></a> per focal observation
 using spatially varying sample weights.</p>
 <p>The spatial interaction is defined either by (a) <code class="docutils literal notranslate"><span class="pre">geometry</span></code> + bandwidth/kernel
 settings or (b) a precomputed <a class="reference external" href="https://pysal.org/libpysal/generated/libpysal.graph.Graph.html#libpysal.graph.Graph" title="(in libpysal v4.14.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">libpysal.graph.Graph</span></code></a> passed via <code class="docutils literal notranslate"><span class="pre">graph</span></code>.</p>
 <p class="rubric">Notes</p>
 <ul class="simple">
-<li><p>To enable prediction on new data via <a class="reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.predict" title="gwlearn.ensemble.GWRandomForestRegressor.predict (Python method) — Predict target values for new observations."><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code></a>, you must set
+<li><p>To enable prediction on new data via <a class="reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict" title="gwlearn.ensemble.GWGradientBoostingRegressor.predict (Python method) — Predict target values for new observations."><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict()</span></code></a>, you must set
 <code class="docutils literal notranslate"><span class="pre">keep_models=True</span></code> (store in memory) or <code class="docutils literal notranslate"><span class="pre">keep_models=Path(...)</span></code> (serialize
 to disk).</p></li>
 <li><p>Only point geometries are supported.</p></li>
 </ul>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor-parameters" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor-parameters" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><dl class="simple api-field highlight">
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.__init__.bandwidth"><span class="sig-name descname">bandwidth</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a> | None</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.bandwidth" title="Permalink to this definition">¶</a></dt><dd><p><p>Bandwidth for defining neighborhoods.</p>
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.bandwidth"><span class="sig-name descname">bandwidth</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a> | None</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.bandwidth" title="Permalink to this definition">¶</a></dt><dd><p><p>Bandwidth for defining neighborhoods.</p>
 <ul class="simple">
 <li><p>If <code class="docutils literal notranslate"><span class="pre">fixed=True</span></code>, this is a distance threshold.</p></li>
 <li><p>If <code class="docutils literal notranslate"><span class="pre">fixed=False</span></code>, this is the number of nearest neighbors used to form the
@@ -3027,218 +2915,196 @@ local neighborhood.</p></li>
 <p>If <code class="docutils literal notranslate"><span class="pre">graph</span></code> is provided, <code class="docutils literal notranslate"><span class="pre">bandwidth</span></code> is ignored.</p>
 </p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.__init__.fixed"><span class="sig-name descname">fixed</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a>, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.fixed" title="Permalink to this definition">¶</a></dt><dd><p>True for distance based bandwidth and False for adaptive (nearest neighbor)
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fixed"><span class="sig-name descname">fixed</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a>, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fixed" title="Permalink to this definition">¶</a></dt><dd><p>True for distance based bandwidth and False for adaptive (nearest neighbor)
 bandwidth, by default False</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.__init__.kernel"><span class="sig-name descname">kernel</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a> | Callable, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.kernel" title="Permalink to this definition">¶</a></dt><dd><p>type of kernel function used to weight observations, by default “bisquare”</p>
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kernel"><span class="sig-name descname">kernel</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a> | Callable, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kernel" title="Permalink to this definition">¶</a></dt><dd><p>type of kernel function used to weight observations, by default “bisquare”</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.__init__.include_focal"><span class="sig-name descname">include_focal</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a>, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.include_focal" title="Permalink to this definition">¶</a></dt><dd><p>Include focal in the local model training. Excluding it allows assessment of
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.include_focal"><span class="sig-name descname">include_focal</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a>, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.include_focal" title="Permalink to this definition">¶</a></dt><dd><p>Include focal in the local model training. Excluding it allows assessment of
 geographically weighted metrics on unseen data without a need for train/test
 split, hence providing value for all samples. This is needed for further spatial
 analysis of the model performance (and generalises to models that do not support
 OOB scoring). However, it leaves out the most representative sample. By default
 False</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.__init__.graph"><span class="sig-name descname">graph</span><span class="p"> : </span><span class="desctype"><span class="desctype">Graph, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.graph" title="Permalink to this definition">¶</a></dt><dd><p>Custom libpysal.graph.Graph object encoding the spatial interaction between
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.graph"><span class="sig-name descname">graph</span><span class="p"> : </span><span class="desctype"><span class="desctype">Graph, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.graph" title="Permalink to this definition">¶</a></dt><dd><p>Custom libpysal.graph.Graph object encoding the spatial interaction between
 observations in the sample. If given, it is used directly and <code class="docutils literal notranslate"><span class="pre">bandwidth</span></code>,
 <code class="docutils literal notranslate"><span class="pre">fixed</span></code>, <code class="docutils literal notranslate"><span class="pre">kernel</span></code>, and <code class="docutils literal notranslate"><span class="pre">include_focal</span></code> keywords are ignored. Either
 <code class="docutils literal notranslate"><span class="pre">geometry</span></code> or <code class="docutils literal notranslate"><span class="pre">graph</span></code> need to be specified. To allow prediction, it is
 required to specify <code class="docutils literal notranslate"><span class="pre">geometry</span></code>. Potentially, both can be specified where
 <code class="docutils literal notranslate"><span class="pre">graph</span></code> encodes spatial interaction between observations in <code class="docutils literal notranslate"><span class="pre">geometry</span></code>.</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.__init__.n_jobs"><span class="sig-name descname">n_jobs</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.n_jobs" title="Permalink to this definition">¶</a></dt><dd><p>The number of jobs to run in parallel. <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors by
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.n_jobs"><span class="sig-name descname">n_jobs</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.n_jobs" title="Permalink to this definition">¶</a></dt><dd><p>The number of jobs to run in parallel. <code class="docutils literal notranslate"><span class="pre">-1</span></code> means using all processors by
 default <code class="docutils literal notranslate"><span class="pre">-1</span></code></p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.__init__.fit_global_model"><span class="sig-name descname">fit_global_model</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a>, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.fit_global_model" title="Permalink to this definition">¶</a></dt><dd><p>Determines if the global baseline model shall be fitted alongside the
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fit_global_model"><span class="sig-name descname">fit_global_model</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a>, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.fit_global_model" title="Permalink to this definition">¶</a></dt><dd><p>Determines if the global baseline model shall be fitted alongside the
 geographically weighted, by default True</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.__init__.strict"><span class="sig-name descname">strict</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a> | None, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.strict" title="Permalink to this definition">¶</a></dt><dd><p>Do not fit any models if at least one neighborhood has invariant <code class="docutils literal notranslate"><span class="pre">y</span></code>, by
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.strict"><span class="sig-name descname">strict</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a> | None, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.strict" title="Permalink to this definition">¶</a></dt><dd><p>Do not fit any models if at least one neighborhood has invariant <code class="docutils literal notranslate"><span class="pre">y</span></code>, by
 default False. None is treated as False but provides a warning if there are
 invariant models.</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.__init__.keep_models"><span class="sig-name descname">keep_models</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a> | Path, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.keep_models" title="Permalink to this definition">¶</a></dt><dd><p>Keep all local models (required for prediction), by default False. Note that for
-some models, like random forests, the objects can be large. If string or Path is
-provided, the local models are not held in memory but serialized to the disk
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.keep_models"><span class="sig-name descname">keep_models</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a> | Path, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.keep_models" title="Permalink to this definition">¶</a></dt><dd><p>Keep all local models (required for prediction), by default False. Note that for
+some models, like gradient boosting, the objects can be large. If string or Path
+is provided, the local models are not held in memory but serialized to the disk
 from which they are loaded in prediction.</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.__init__.temp_folder"><span class="sig-name descname">temp_folder</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a> | None, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.temp_folder" title="Permalink to this definition">¶</a></dt><dd><p>Folder to be used by the pool for memmapping large arrays for sharing memory
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.temp_folder"><span class="sig-name descname">temp_folder</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a> | None, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.temp_folder" title="Permalink to this definition">¶</a></dt><dd><p>Folder to be used by the pool for memmapping large arrays for sharing memory
 with worker processes, e.g., <code class="docutils literal notranslate"><span class="pre">/tmp</span></code>. Passed to <code class="docutils literal notranslate"><span class="pre">joblib.Parallel</span></code>, by default
 None</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.__init__.batch_size"><span class="sig-name descname">batch_size</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a> | None, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.batch_size" title="Permalink to this definition">¶</a></dt><dd><p>Number of models to process in each batch. Specify batch_size if your models do
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.batch_size"><span class="sig-name descname">batch_size</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a> | None, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.batch_size" title="Permalink to this definition">¶</a></dt><dd><p>Number of models to process in each batch. Specify batch_size if your models do
 not fit into memory. By default None</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.__init__.random_state"><span class="sig-name descname">random_state</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a> | None, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.random_state" title="Permalink to this definition">¶</a></dt><dd><p>Random seed for reproducibility, by default None</p>
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.random_state"><span class="sig-name descname">random_state</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a> | None, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.random_state" title="Permalink to this definition">¶</a></dt><dd><p>Random seed for reproducibility, by default None</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.__init__.verbose"><span class="sig-name descname">verbose</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a>, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.verbose" title="Permalink to this definition">¶</a></dt><dd><p>Whether to print progress information, by default False</p>
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.verbose"><span class="sig-name descname">verbose</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a>, optional</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.verbose" title="Permalink to this definition">¶</a></dt><dd><p>Whether to print progress information, by default False</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.__init__.kwargs"><span class="o">**</span><span class="n sig-name">kwargs</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.__init__.kwargs" title="Permalink to this definition">¶</a></dt><dd><p>Additional keyword arguments passed to <code class="docutils literal notranslate"><span class="pre">model</span></code> initialisation</p>
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kwargs"><span class="o">**</span><span class="n sig-name">kwargs</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.__init__.kwargs" title="Permalink to this definition">¶</a></dt><dd><p>Additional keyword arguments passed to <code class="docutils literal notranslate"><span class="pre">model</span></code> initialisation</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.pred_">
-<span class="sig-name descname"><span class="pre">pred_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.pred_" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.pred_">
+<span class="sig-name descname"><span class="pre">pred_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.pred_" title="Link to this definition">¶</a></dt>
 <dd><p>Focal predictions for each location.</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.pred_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.pred_-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.pred_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.pred_-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p>pd.Series</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.resid_">
-<span class="sig-name descname"><span class="pre">resid_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.resid_" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.resid_">
+<span class="sig-name descname"><span class="pre">resid_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.resid_" title="Link to this definition">¶</a></dt>
 <dd><p>Residuals for each location (<code class="docutils literal notranslate"><span class="pre">y</span></code> - <code class="docutils literal notranslate"><span class="pre">pred_</span></code>).</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.resid_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.resid_-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.resid_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.resid_-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p>pd.Series</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.RSS_">
-<span class="sig-name descname"><span class="pre">RSS_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.RSS_" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.RSS_">
+<span class="sig-name descname"><span class="pre">RSS_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.RSS_" title="Link to this definition">¶</a></dt>
 <dd><p>Residual sum of squares for each location.</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.RSS_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.RSS_-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.RSS_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.RSS_-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p>pd.Series</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.TSS_">
-<span class="sig-name descname"><span class="pre">TSS_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.TSS_" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.TSS_">
+<span class="sig-name descname"><span class="pre">TSS_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.TSS_" title="Link to this definition">¶</a></dt>
 <dd><p>Total sum of squares for each location.</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.TSS_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.TSS_-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.TSS_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.TSS_-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p>pd.Series</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.y_bar_">
-<span class="sig-name descname"><span class="pre">y_bar_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.y_bar_" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.y_bar_">
+<span class="sig-name descname"><span class="pre">y_bar_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.y_bar_" title="Link to this definition">¶</a></dt>
 <dd><p>Weighted mean of y for each location.</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.y_bar_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.y_bar_-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.y_bar_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.y_bar_-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p>pd.Series</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.local_r2_">
-<span class="sig-name descname"><span class="pre">local_r2_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.local_r2_" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.local_r2_">
+<span class="sig-name descname"><span class="pre">local_r2_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.local_r2_" title="Link to this definition">¶</a></dt>
 <dd><p>Local R2 for each location.</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.local_r2_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.local_r2_-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.local_r2_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.local_r2_-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p>pd.Series</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.hat_values_">
-<span class="sig-name descname"><span class="pre">hat_values_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.hat_values_" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.hat_values_">
+<span class="sig-name descname"><span class="pre">hat_values_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.hat_values_" title="Link to this definition">¶</a></dt>
 <dd><p>Hat values for each location (diagonal elements of hat matrix)</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.hat_values_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.hat_values_-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.hat_values_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.hat_values_-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p>pd.Series</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.effective_df_">
-<span class="sig-name descname"><span class="pre">effective_df_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.effective_df_" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.effective_df_">
+<span class="sig-name descname"><span class="pre">effective_df_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.effective_df_" title="Link to this definition">¶</a></dt>
 <dd><p>Effective degrees of freedom (sum of hat values)</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.effective_df_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.effective_df_-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.effective_df_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.effective_df_-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.log_likelihood_">
-<span class="sig-name descname"><span class="pre">log_likelihood_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.log_likelihood_" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.log_likelihood_">
+<span class="sig-name descname"><span class="pre">log_likelihood_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.log_likelihood_" title="Link to this definition">¶</a></dt>
 <dd><p>Global log likelihood of the model</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.log_likelihood_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.log_likelihood_-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.log_likelihood_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.log_likelihood_-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.aic_">
-<span class="sig-name descname"><span class="pre">aic_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.aic_" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.aic_">
+<span class="sig-name descname"><span class="pre">aic_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.aic_" title="Link to this definition">¶</a></dt>
 <dd><p>Akaike information criterion of the model</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.aic_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.aic_-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.aic_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.aic_-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.aicc_">
-<span class="sig-name descname"><span class="pre">aicc_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.aicc_" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.aicc_">
+<span class="sig-name descname"><span class="pre">aicc_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.aicc_" title="Link to this definition">¶</a></dt>
 <dd><p>Corrected Akaike information criterion to account for model
 complexity (smaller bandwidths)</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.aicc_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.aicc_-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.aicc_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.aicc_-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.bic_">
-<span class="sig-name descname"><span class="pre">bic_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.bic_" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.bic_">
+<span class="sig-name descname"><span class="pre">bic_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.bic_" title="Link to this definition">¶</a></dt>
 <dd><p>Bayesian information criterion</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.bic_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.bic_-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.bic_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.bic_-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.feature_importances_">
-<span class="sig-name descname"><span class="pre">feature_importances_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.feature_importances_" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.feature_importances_">
+<span class="sig-name descname"><span class="pre">feature_importances_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.feature_importances_" title="Link to this definition">¶</a></dt>
 <dd><p>Feature importance values for each local model</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.feature_importances_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.feature_importances_-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.feature_importances_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.feature_importances_-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p>pd.DataFrame</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.oob_y_pooled_">
-<span class="sig-name descname"><span class="pre">oob_y_pooled_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.oob_y_pooled_" title="Link to this definition">¶</a></dt>
-<dd><p>Pooled out-of-bag (OOB) true values across all fitted local models.</p>
-<dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.oob_y_pooled_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.oob_y_pooled_-type" title="Permalink to this headline">¶</a></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.oob_pred_pooled_">
-<span class="sig-name descname"><span class="pre">oob_pred_pooled_</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.oob_pred_pooled_" title="Link to this definition">¶</a></dt>
-<dd><p>Pooled out-of-bag (OOB) predictions across all fitted local models.</p>
-<dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.oob_pred_pooled_-type">Type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.oob_pred_pooled_-type" title="Permalink to this headline">¶</a></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3246,7 +3112,7 @@ complexity (smaller bandwidths)</p>
 <p class="example rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">geodatasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_path</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">gwlearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">GWRandomForestRegressor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">gwlearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">GWGradientBoostingRegressor</span>
 </code></pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s1">&#39;geoda.guerry&#39;</span><span class="p">))</span>
@@ -3254,17 +3120,17 @@ complexity (smaller bandwidths)</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;Suicids&quot;</span><span class="p">]</span>
 </code></pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">gw</span> <span class="o">=</span> <span class="n">GWRandomForestRegressor</span><span class="p">(</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">gw</span> <span class="o">=</span> <span class="n">GWGradientBoostingRegressor</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">bandwidth</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gw</span><span class="o">.</span><span class="n">pred_</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="go">0    85064.34</span>
-<span class="go">1    19490.90</span>
-<span class="go">2    29501.62</span>
-<span class="go">3    33270.86</span>
-<span class="go">4    54608.57</span>
+<span class="go">0    73092.061693</span>
+<span class="go">1    14362.093351</span>
+<span class="go">2    24158.876462</span>
+<span class="go">3    21085.659844</span>
+<span class="go">4    43375.134041</span>
 <span class="go">dtype: float64</span>
 </code></pre></div>
 </div>
@@ -3274,16 +3140,16 @@ complexity (smaller bandwidths)</p>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(*[, bandwidth, fixed, kernel, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.fit" title="gwlearn.ensemble.GWRandomForestRegressor.fit (Python method) — Fit geographically weighted random forests."><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, y[, geometry])</p></td>
-<td><p>Fit geographically weighted random forests.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit" title="gwlearn.ensemble.GWGradientBoostingRegressor.fit (Python method) — Fit geographically weighted gradient boosting regressors."><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, y[, geometry])</p></td>
+<td><p>Fit geographically weighted gradient boosting regressors.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing" title="gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing (Python method) — Get metadata routing of this object."><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_metadata_routing</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing" title="gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing (Python method) — Get metadata routing of this object."><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_metadata_routing</span></code></a>()</p></td>
 <td><p>Get metadata routing of this object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.get_params" title="gwlearn.ensemble.GWRandomForestRegressor.get_params (Python method) — Get parameters for this estimator."><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params" title="gwlearn.ensemble.GWGradientBoostingRegressor.get_params (Python method) — Get parameters for this estimator."><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
 <td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.predict" title="gwlearn.ensemble.GWRandomForestRegressor.predict (Python method) — Predict target values for new observations."><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X, geometry[, bandwidth, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict" title="gwlearn.ensemble.GWGradientBoostingRegressor.predict (Python method) — Predict target values for new observations."><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X, geometry[, bandwidth, ...])</p></td>
 <td><p>Predict target values for new observations.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code>(X, y, geometry[, bandwidth, ...])</p></td>
@@ -3292,7 +3158,7 @@ complexity (smaller bandwidths)</p>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_fit_request</span></code>(*[, geometry])</p></td>
 <td><p>Configure whether metadata should be requested to be passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.set_params" title="gwlearn.ensemble.GWRandomForestRegressor.set_params (Python method) — Set the parameters of this estimator."><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params" title="gwlearn.ensemble.GWGradientBoostingRegressor.set_params (Python method) — Set the parameters of this estimator."><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_predict_request</span></code>(*[, bandwidth, ...])</p></td>
@@ -3309,17 +3175,17 @@ complexity (smaller bandwidths)</p>
 </tbody>
 </table>
 <dl class="py method objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.fit.X" title="gwlearn.ensemble.GWRandomForestRegressor.fit.X (Python parameter) — Feature matrix."><span class="n"><span class="pre">X</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.fit.y" title="gwlearn.ensemble.GWRandomForestRegressor.fit.y (Python parameter) — Target values."><span class="n"><span class="pre">y</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.fit.geometry" title="gwlearn.ensemble.GWRandomForestRegressor.fit.geometry (Python parameter) — Geographic location of the observations in the sample."><span class="n"><span class="pre">geometry</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/ensemble.html#GWRandomForestRegressor.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.fit" title="Link to this definition">¶</a></dt>
-<dd><p>Fit geographically weighted random forests.</p>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit.X" title="gwlearn.ensemble.GWGradientBoostingRegressor.fit.X (Python parameter) — Feature matrix."><span class="n"><span class="pre">X</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit.y" title="gwlearn.ensemble.GWGradientBoostingRegressor.fit.y (Python parameter) — Target values."><span class="n"><span class="pre">y</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit.geometry" title="gwlearn.ensemble.GWGradientBoostingRegressor.fit.geometry (Python parameter) — Geographic location of the observations in the sample."><span class="n"><span class="pre">geometry</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gwlearn/ensemble.html#GWGradientBoostingRegressor.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Fit geographically weighted gradient boosting regressors.</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.fit-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.fit-parameters" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.fit-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit-parameters" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><dl class="simple api-field highlight">
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.fit.X"><span class="sig-name descname">X</span><span class="p"> : </span><span class="desctype"><span class="desctype">pandas.DataFrame</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.fit.X" title="Permalink to this definition">¶</a></dt><dd><p>Feature matrix.</p>
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.fit.X"><span class="sig-name descname">X</span><span class="p"> : </span><span class="desctype"><span class="desctype">pandas.DataFrame</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit.X" title="Permalink to this definition">¶</a></dt><dd><p>Feature matrix.</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.fit.y"><span class="sig-name descname">y</span><span class="p"> : </span><span class="desctype"><span class="desctype">pandas.Series</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.fit.y" title="Permalink to this definition">¶</a></dt><dd><p>Target values.</p>
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.fit.y"><span class="sig-name descname">y</span><span class="p"> : </span><span class="desctype"><span class="desctype">pandas.Series</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit.y" title="Permalink to this definition">¶</a></dt><dd><p>Target values.</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.fit.geometry"><span class="sig-name descname">geometry</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://geopandas.org/en/latest/docs/reference/api/geopandas.GeoSeries.html#geopandas.GeoSeries" title="(in GeoPandas v1.1.2.dev58.dev+gfd4ce6534)">geopandas.GeoSeries</a> | None</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.fit.geometry" title="Permalink to this definition">¶</a></dt><dd><p>Geographic location of the observations in the sample. Used to determine the
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.fit.geometry"><span class="sig-name descname">geometry</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://geopandas.org/en/latest/docs/reference/api/geopandas.GeoSeries.html#geopandas.GeoSeries" title="(in GeoPandas v1.1.2.dev58.dev+gfd4ce6534)">geopandas.GeoSeries</a> | None</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit.geometry" title="Permalink to this definition">¶</a></dt><dd><p>Geographic location of the observations in the sample. Used to determine the
 spatial interaction weight based on specification by <code class="docutils literal notranslate"><span class="pre">bandwidth</span></code>,
 <code class="docutils literal notranslate"><span class="pre">fixed</span></code>, <code class="docutils literal notranslate"><span class="pre">kernel</span></code>, and <code class="docutils literal notranslate"><span class="pre">include_focal</span></code> keywords.  If <cite>None</cite>,
 a precomputed <code class="docutils literal notranslate"><span class="pre">graph</span></code> needs to be specified. To allow prediction,
@@ -3329,60 +3195,58 @@ used for prediction.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even" id="gwlearn.ensemble.GWRandomForestRegressor.fit-returns">Returns<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.fit-returns" title="Permalink to this headline">¶</a></dt>
+<dt class="field-even" id="gwlearn.ensemble.GWGradientBoostingRegressor.fit-returns">Returns<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit-returns" title="Permalink to this headline">¶</a></dt>
 <dd class="field-even"><p>Fitted estimator.</p>
 </dd>
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.fit-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.fit-return-type" title="Permalink to this headline">¶</a></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor" title="gwlearn.ensemble.GWRandomForestRegressor (Python class) — Geographically weighted random forest regressor.">GWRandomForestRegressor</a></p>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.fit-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.fit-return-type" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor" title="gwlearn.ensemble.GWGradientBoostingRegressor (Python class) — Geographically weighted gradient boosting regressor.">GWGradientBoostingRegressor</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>In addition to the base regressor outputs, this method also populates
-<code class="docutils literal notranslate"><span class="pre">oob_y_pooled_</span></code> and <code class="docutils literal notranslate"><span class="pre">oob_pred_pooled_</span></code> by pooling OOB values across all
-fitted local models.</p>
+<p>Populates <code class="docutils literal notranslate"><span class="pre">feature_importances_</span></code> from the fitted local models.</p>
 </dd></dl>
 
 <dl class="py method objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing">
-<span class="sig-name descname"><span class="pre">get_metadata_routing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing">
+<span class="sig-name descname"><span class="pre">get_metadata_routing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing" title="Link to this definition">¶</a></dt>
 <dd><p>Get metadata routing of this object.</p>
 <p>Please check <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.8)"><span class="xref std std-ref">User Guide</span></a> on how the routing
 mechanism works.</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing-returns">Returns<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing-returns" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing-returns">Returns<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing-returns" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p><strong>routing</strong> – A <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.utils.metadata_routing.MetadataRequest.html#sklearn.utils.metadata_routing.MetadataRequest" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetadataRequest</span></code></a> encapsulating
 routing information.</p>
 </dd>
-<dt class="field-even" id="gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.get_metadata_routing-return-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-even" id="gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_metadata_routing-return-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-even"><p>MetadataRequest</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.get_params">
-<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.get_params.deep" title="gwlearn.ensemble.GWRandomForestRegressor.get_params.deep (Python parameter) — If True, will return the parameters for this estimator and contained subobjects that are estimators."><span class="n"><span class="pre">deep</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">True</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.get_params" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params.deep" title="gwlearn.ensemble.GWGradientBoostingRegressor.get_params.deep (Python parameter) — If True, will return the parameters for this estimator and contained subobjects that are estimators."><span class="n"><span class="pre">deep</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">True</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params" title="Link to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.get_params-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.get_params-parameters" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.get_params-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params-parameters" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><dl class="simple api-field highlight">
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.get_params.deep"><span class="sig-name descname">deep</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a>, default=True</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.get_params.deep" title="Permalink to this definition">¶</a></dt><dd><p>If True, will return the parameters for this estimator and
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.get_params.deep"><span class="sig-name descname">deep</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a>, default=True</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params.deep" title="Permalink to this definition">¶</a></dt><dd><p>If True, will return the parameters for this estimator and
 contained subobjects that are estimators.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even" id="gwlearn.ensemble.GWRandomForestRegressor.get_params-returns">Returns<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.get_params-returns" title="Permalink to this headline">¶</a></dt>
+<dt class="field-even" id="gwlearn.ensemble.GWGradientBoostingRegressor.get_params-returns">Returns<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params-returns" title="Permalink to this headline">¶</a></dt>
 <dd class="field-even"><p><strong>params</strong> – Parameter names mapped to their values.</p>
 </dd>
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.get_params-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.get_params-return-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.get_params-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.get_params-return-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.predict">
-<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.predict.X" title="gwlearn.ensemble.GWRandomForestRegressor.predict.X (Python parameter) — Feature matrix for new observations."><span class="n"><span class="pre">X</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.predict.geometry" title="gwlearn.ensemble.GWRandomForestRegressor.predict.geometry (Python parameter) — Point geometries for new observations."><span class="n"><span class="pre">geometry</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.predict.bandwidth" title="gwlearn.ensemble.GWRandomForestRegressor.predict.bandwidth (Python parameter) — Prediction method."><span class="n"><span class="pre">bandwidth</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;nearest&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.predict.global_model_weight" title="gwlearn.ensemble.GWRandomForestRegressor.predict.global_model_weight (Python parameter) — Weight of the prediction from the global model."><span class="n"><span class="pre">global_model_weight</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">0</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.predict" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.X" title="gwlearn.ensemble.GWGradientBoostingRegressor.predict.X (Python parameter) — Feature matrix for new observations."><span class="n"><span class="pre">X</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.geometry" title="gwlearn.ensemble.GWGradientBoostingRegressor.predict.geometry (Python parameter) — Point geometries for new observations."><span class="n"><span class="pre">geometry</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.bandwidth" title="gwlearn.ensemble.GWGradientBoostingRegressor.predict.bandwidth (Python parameter) — Prediction method."><span class="n"><span class="pre">bandwidth</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;nearest&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.global_model_weight" title="gwlearn.ensemble.GWGradientBoostingRegressor.predict.global_model_weight (Python parameter) — Weight of the prediction from the global model."><span class="n"><span class="pre">global_model_weight</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="mi">0</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict" title="Link to this definition">¶</a></dt>
 <dd><p>Predict target values for new observations.</p>
 <p>Prediction can be retrieved either from the nearest local model or based on
 the ensemble of local models. In the latter case, the prediction process works
@@ -3402,29 +3266,29 @@ inference calls.</p>
 when <code class="docutils literal notranslate"><span class="pre">global_model_weight</span></code> is set to a non-zero value, following
 <span id="id1">Georganos <em>et al.</em> [<a class="reference internal" href="../references.html#id2" title="Stefanos Georganos, Tais Grippa, Assane Niang Gadiaga, Catherine Linard, Moritz Lennert, Sabine Vanhuysse, Nicholus Mboga, Eléonore Wolff, and Stamatis Kalogirou. Geographical random forests: a spatial extension of the random forest algorithm to address spatial heterogeneity in remote sensing and population modelling. Geocarto International, 36(2):121–136, January 2021. doi:10.1080/10106049.2019.1595177.">2021</a>]</span>.</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.predict-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.predict-parameters" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.predict-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict-parameters" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><dl class="simple api-field highlight">
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.predict.X"><span class="sig-name descname">X</span><span class="p"> : </span><span class="desctype"><span class="desctype">pandas.DataFrame</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.predict.X" title="Permalink to this definition">¶</a></dt><dd><p>Feature matrix for new observations.</p>
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.predict.X"><span class="sig-name descname">X</span><span class="p"> : </span><span class="desctype"><span class="desctype">pandas.DataFrame</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.X" title="Permalink to this definition">¶</a></dt><dd><p>Feature matrix for new observations.</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.predict.geometry"><span class="sig-name descname">geometry</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://geopandas.org/en/latest/docs/reference/api/geopandas.GeoSeries.html#geopandas.GeoSeries" title="(in GeoPandas v1.1.2.dev58.dev+gfd4ce6534)">geopandas.GeoSeries</a></span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.predict.geometry" title="Permalink to this definition">¶</a></dt><dd><p>Point geometries for new observations.</p>
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.predict.geometry"><span class="sig-name descname">geometry</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://geopandas.org/en/latest/docs/reference/api/geopandas.GeoSeries.html#geopandas.GeoSeries" title="(in GeoPandas v1.1.2.dev58.dev+gfd4ce6534)">geopandas.GeoSeries</a></span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.geometry" title="Permalink to this definition">¶</a></dt><dd><p>Point geometries for new observations.</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.predict.bandwidth"><span class="sig-name descname">bandwidth</span><span class="p"> : </span><span class="desctype"><span class="desctype">&quot;nearest&quot;, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a> or None</span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.predict.bandwidth" title="Permalink to this definition">¶</a></dt><dd><p>Prediction method. Nearest uses the nearest location available at the fit
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.predict.bandwidth"><span class="sig-name descname">bandwidth</span><span class="p"> : </span><span class="desctype"><span class="desctype">&quot;nearest&quot;, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a> or None</span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.bandwidth" title="Permalink to this definition">¶</a></dt><dd><p>Prediction method. Nearest uses the nearest location available at the fit
 time and does prediction using its single model. When set to a numeric
 value, uses an ensemble of local models available within the bandwidth, with
 predictions from individual models being weighted based on the distance and
 a set kernel. When <code class="docutils literal notranslate"><span class="pre">None</span></code>, uses the bandwidth set at the fit time.</p>
 </dd>
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.predict.global_model_weight"><span class="sig-name descname">global_model_weight</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.predict.global_model_weight" title="Permalink to this definition">¶</a></dt><dd><p>Weight of the prediction from the global model. When non-zero, the
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.predict.global_model_weight"><span class="sig-name descname">global_model_weight</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict.global_model_weight" title="Permalink to this definition">¶</a></dt><dd><p>Weight of the prediction from the global model. When non-zero, the
 resulting prediction is a weighted average of the values from local model(s)
 and from global model, where local prediction has a weight of 1 and global
 model has a weight equal to <code class="docutils literal notranslate"><span class="pre">global_model_weight</span></code>.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even" id="gwlearn.ensemble.GWRandomForestRegressor.predict-returns">Returns<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.predict-returns" title="Permalink to this headline">¶</a></dt>
+<dt class="field-even" id="gwlearn.ensemble.GWGradientBoostingRegressor.predict-returns">Returns<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict-returns" title="Permalink to this headline">¶</a></dt>
 <dd class="field-even"><p>Predicted values.</p>
 </dd>
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.predict-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.predict-return-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.predict-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.predict-return-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p>pandas.Series</p>
 </dd>
 </dl>
@@ -3434,24 +3298,24 @@ model has a weight equal to <code class="docutils literal notranslate"><span cla
 </dd></dl>
 
 <dl class="py method objdesc">
-<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWRandomForestRegressor.set_params">
-<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><a class="n reference internal" href="#gwlearn.ensemble.GWRandomForestRegressor.set_params.params" title="gwlearn.ensemble.GWRandomForestRegressor.set_params.params (Python parameter) — Estimator parameters."><span class="n"><span class="pre">params</span></span></a></em></span><span class="sig-paren">)</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.set_params" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object highlight py" id="gwlearn.ensemble.GWGradientBoostingRegressor.set_params">
+<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><a class="n reference internal" href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params.params" title="gwlearn.ensemble.GWGradientBoostingRegressor.set_params.params (Python parameter) — Estimator parameters."><span class="n"><span class="pre">params</span></span></a></em></span><span class="sig-paren">)</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params" title="Link to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>). The latter have
 parameters of the form <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s
 possible to update each component of a nested object.</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.set_params-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.set_params-parameters" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.set_params-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params-parameters" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><dl class="simple api-field highlight">
-<dt id="gwlearn.ensemble.GWRandomForestRegressor.set_params.params"><span class="sig-name descname">**params</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></span></span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.set_params.params" title="Permalink to this definition">¶</a></dt><dd><p>Estimator parameters.</p>
+<dt id="gwlearn.ensemble.GWGradientBoostingRegressor.set_params.params"><span class="sig-name descname">**params</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></span></span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params.params" title="Permalink to this definition">¶</a></dt><dd><p>Estimator parameters.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even" id="gwlearn.ensemble.GWRandomForestRegressor.set_params-returns">Returns<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.set_params-returns" title="Permalink to this headline">¶</a></dt>
+<dt class="field-even" id="gwlearn.ensemble.GWGradientBoostingRegressor.set_params-returns">Returns<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params-returns" title="Permalink to this headline">¶</a></dt>
 <dd class="field-even"><p><strong>self</strong> – Estimator instance.</p>
 </dd>
-<dt class="field-odd" id="gwlearn.ensemble.GWRandomForestRegressor.set_params-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWRandomForestRegressor.set_params-return-type" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="gwlearn.ensemble.GWGradientBoostingRegressor.set_params-return-type">Return type<span class="colon">:</span><a class="headerlink" href="#gwlearn.ensemble.GWGradientBoostingRegressor.set_params-return-type" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><p>estimator instance</p>
 </dd>
 </dl>
@@ -3495,7 +3359,7 @@ possible to update each component of a nested object.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="gwlearn.linear_model.GWLinearRegression.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: gwlearn.linear_model.GWLinearRegression">
+          <a href="gwlearn.ensemble.GWRandomForestRegressor.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: gwlearn.ensemble.GWRandomForestRegressor">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -3505,20 +3369,20 @@ possible to update each component of a nested object.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                gwlearn.linear_model.GWLinearRegression
+                gwlearn.ensemble.GWRandomForestRegressor
               </div>
             </div>
           </a>
         
         
           
-          <a href="gwlearn.ensemble.GWGradientBoostingRegressor.html" class="md-footer__link md-footer__link--next" aria-label="Next: gwlearn.ensemble.GWGradientBoostingRegressor">
+          <a href="gwlearn.linear_model.GWLogisticRegression.html" class="md-footer__link md-footer__link--next" aria-label="Next: gwlearn.linear_model.GWLogisticRegression">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                gwlearn.ensemble.GWGradientBoostingRegressor
+                gwlearn.linear_model.GWLogisticRegression
               </div>
             </div>
             <div class="md-footer__button md-icon">

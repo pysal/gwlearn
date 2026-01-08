@@ -33,6 +33,8 @@ Ensembles:
    :toctree: generated/
 
    GWRandomForestRegressor
+   GWGradientBoostingRegressor
+
 
 Classification modelling
 ------------------------
