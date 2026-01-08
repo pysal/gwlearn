@@ -22,6 +22,7 @@ version = gwlearn.__version__.split("+", 1)[0]  # remove commit hash
 release = version
 
 language = "en"
+html_title = project
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -31,7 +32,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
-    "sphinx.ext.viewcode",
+    "sphinx.ext.linkcode",
     "sphinx.ext.mathjax",
     "sphinx.ext.napoleon",
     "sphinxcontrib.bibtex",
@@ -73,7 +74,6 @@ autodoc_default_options = {
     "members": True,
     "undoc-members": True,
     "inherited-members": True,
-    "exclude-members": "set_predict_request, set_score_request, set_predict_proba_request, set_fit_request, score",
 }
 suppress_warnings = ["ref.ref"]
 
@@ -150,3 +150,27 @@ nb_execution_timeout = -1
 nb_kernel_rgx_aliases = {".*": "python3"}
 nb_merge_streams = True
 autodoc_typehints = "none"
+
+
+def linkcode_resolve(domain, info):
+    def find_source():
+        # try to find the file and line number, based on code from numpy
+        obj = sys.modules[info["module"]]
+        for part in info["fullname"].split("."):
+            obj = getattr(obj, part)
+        import inspect
+        import os
+
+        fn = inspect.getsourcefile(obj)
+        fn = os.path.relpath(fn, start=os.path.dirname(gwlearn.__file__))
+        source, lineno = inspect.getsourcelines(obj)
+        return fn, lineno, lineno + len(source) - 1
+
+    if domain != "py" or not info["module"]:
+        return None
+    try:
+        filename = "gwlearn/%s#L%d-L%d" % find_source()  # noqa: UP031
+    except Exception:
+        filename = info["module"].replace(".", "/") + ".py"
+    tag = "main" if "dev" in release else ("v" + release)
+    return f"https://github.com/pysal/gwlearn/blob/{tag}/{filename}"
