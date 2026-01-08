@@ -716,6 +716,7 @@ def test_undersample_boolean(sample_data):
         random_state=42,
         strict=False,
         max_iter=500,
+        n_jobs=1,
     )
 
     # Fit should complete successfully
@@ -738,6 +739,7 @@ def test_undersample_ratio(sample_data):
         random_state=42,
         strict=False,
         max_iter=500,
+        n_jobs=1,
     )
 
     # Fit should complete successfully
