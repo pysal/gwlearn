@@ -71,6 +71,7 @@ jobs:
           keep_files: false
 
       - name: Update the versions switcher
+        if: ${{ github.ref_type == 'tag' }}
         run: |
           git checkout gh-pages
           git config --global user.name 'github-actions[bot]'
