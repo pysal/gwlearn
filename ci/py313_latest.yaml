@@ -19,6 +19,7 @@ dependencies:
   - pytest-xdist
   - pytest-doctestplus
   # docs
+  - pandarm
   - ipykernel
   - myst-nb
   - sphinx
