@@ -570,7 +570,7 @@ class GWRandomForestRegressor(BaseRegressor):
         split, hence providing value for all samples. This is needed for further spatial
         analysis of the model performance (and generalises to models that do not support
         OOB scoring). However, it leaves out the most representative sample. By default
-        True
+        False
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -656,12 +656,12 @@ class GWRandomForestRegressor(BaseRegressor):
     ...     fixed=False,
     ...     random_state=0,
     ... ).fit(X, y, geometry=gdf.representative_point())
-    >>> gw.local_r2_.head()
-    0    0.064043
-    1   -0.128756
-    2    0.094316
-    3   -0.113391
-    4   -0.047673
+    >>> gw.pred_.head()
+    0    85064.34
+    1    19490.90
+    2    29501.62
+    3    33270.86
+    4    54608.57
     dtype: float64
     """
 
@@ -824,7 +824,7 @@ class GWGradientBoostingRegressor(BaseRegressor):
         split, hence providing value for all samples. This is needed for further spatial
         analysis of the model performance (and generalises to models that do not support
         OOB scoring). However, it leaves out the most representative sample. By default
-        True
+        False
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -906,12 +906,12 @@ class GWGradientBoostingRegressor(BaseRegressor):
     ...     fixed=False,
     ...     random_state=0,
     ... ).fit(X, y, geometry=gdf.representative_point())
-    >>> gw.local_r2_.head()
-    0    0.023796
-    1   -0.872235
-    2    0.004713
-    3   -0.144000
-    4   -0.063225
+    >>> gw.pred_.head()
+    0    73092.061693
+    1    14362.093351
+    2    24158.876462
+    3    21085.659844
+    4    43375.134041
     dtype: float64
     """
 
