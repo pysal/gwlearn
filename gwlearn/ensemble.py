@@ -657,11 +657,11 @@ class GWRandomForestRegressor(BaseRegressor):
     ...     random_state=0,
     ... ).fit(X, y, geometry=gdf.representative_point())
     >>> gw.local_r2_.head()
-    0    0.810035
-    1    0.801906
-    2    0.833586
-    3    0.824119
-    4    0.813884
+    0    0.064043
+    1   -0.128756
+    2    0.094316
+    3   -0.113391
+    4   -0.047673
     dtype: float64
     """
 
@@ -681,7 +681,7 @@ class GWRandomForestRegressor(BaseRegressor):
             # "exponential",
         ]
         | Callable = "bisquare",
-        include_focal: bool = True,
+        include_focal: bool = False,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -905,7 +905,6 @@ class GWGradientBoostingRegressor(BaseRegressor):
     ...     bandwidth=30,
     ...     fixed=False,
     ...     random_state=0,
-    ...     include_focal=False,
     ... ).fit(X, y, geometry=gdf.representative_point())
     >>> gw.local_r2_.head()
     0    0.023796
@@ -932,7 +931,7 @@ class GWGradientBoostingRegressor(BaseRegressor):
             # "exponential",
         ]
         | Callable = "bisquare",
-        include_focal: bool = True,
+        include_focal: bool = False,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
