@@ -50,4 +50,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs/build/html/
           keep_files: false
-          destination_dir: ${{ github.ref_type == 'tag' && 'stable' || 'latest' }}
+          destination_dir: ${{ github.ref_type == 'tag' && 'stable' || 'dev' }}
