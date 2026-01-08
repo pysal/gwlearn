@@ -62,7 +62,7 @@ jobs:
           destination_dir: ${{ github.ref_name }}
 
       - name: Publish to Github Pages on release (stable)
-        if: ${{ github.event_name == 'tag' }}
+        if: ${{ github.ref_type == 'tag' }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -74,6 +74,8 @@ jobs:
         if: ${{ github.ref_type == 'tag' }}
         run: |
           git checkout gh-pages
+          git fetch
+          git pull
           git config --global user.name 'github-actions[bot]'
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
           python update_version_json.py --version ${{ github.ref_name }}
