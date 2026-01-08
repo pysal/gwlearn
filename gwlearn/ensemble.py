@@ -9,6 +9,7 @@ import pandas as pd
 from libpysal import graph
 from sklearn.ensemble import (
     GradientBoostingClassifier,
+    GradientBoostingRegressor,
     RandomForestClassifier,
     RandomForestRegressor,
 )
@@ -569,7 +570,7 @@ class GWRandomForestRegressor(BaseRegressor):
         split, hence providing value for all samples. This is needed for further spatial
         analysis of the model performance (and generalises to models that do not support
         OOB scoring). However, it leaves out the most representative sample. By default
-        True
+        False
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -655,12 +656,12 @@ class GWRandomForestRegressor(BaseRegressor):
     ...     fixed=False,
     ...     random_state=0,
     ... ).fit(X, y, geometry=gdf.representative_point())
-    >>> gw.local_r2_.head()
-    0    0.810035
-    1    0.801906
-    2    0.833586
-    3    0.824119
-    4    0.813884
+    >>> gw.pred_.head()
+    0    85064.34
+    1    19490.90
+    2    29501.62
+    3    33270.86
+    4    54608.57
     dtype: float64
     """
 
@@ -680,7 +681,7 @@ class GWRandomForestRegressor(BaseRegressor):
             # "exponential",
         ]
         | Callable = "bisquare",
-        include_focal: bool = True,
+        include_focal: bool = False,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -784,3 +785,222 @@ class GWRandomForestRegressor(BaseRegressor):
 
     def _get_score_data(self, local_model, X, y):  # noqa: ARG002
         return local_model.oob_score_
+
+
+class GWGradientBoostingRegressor(BaseRegressor):
+    """Geographically weighted gradient boosting regressor.
+
+    Fits one :class:`sklearn.ensemble.GradientBoostingRegressor` per focal observation
+    using spatially varying sample weights.
+
+    The spatial interaction is defined either by (a) ``geometry`` + bandwidth/kernel
+    settings or (b) a precomputed :class:`libpysal.graph.Graph` passed via ``graph``.
+
+    Notes
+    -----
+    - To enable prediction on new data via :meth:`predict`, you must set
+      ``keep_models=True`` (store in memory) or ``keep_models=Path(...)`` (serialize
+      to disk).
+    - Only point geometries are supported.
+
+    Parameters
+    ----------
+    bandwidth : float | int | None
+        Bandwidth for defining neighborhoods.
+
+        - If ``fixed=True``, this is a distance threshold.
+        - If ``fixed=False``, this is the number of nearest neighbors used to form the
+          local neighborhood.
+
+        If ``graph`` is provided, ``bandwidth`` is ignored.
+    fixed : bool, optional
+        True for distance based bandwidth and False for adaptive (nearest neighbor)
+        bandwidth, by default False
+    kernel : str | Callable, optional
+        type of kernel function used to weight observations, by default "bisquare"
+    include_focal : bool, optional
+        Include focal in the local model training. Excluding it allows assessment of
+        geographically weighted metrics on unseen data without a need for train/test
+        split, hence providing value for all samples. This is needed for further spatial
+        analysis of the model performance (and generalises to models that do not support
+        OOB scoring). However, it leaves out the most representative sample. By default
+        False
+    graph : Graph, optional
+        Custom libpysal.graph.Graph object encoding the spatial interaction between
+        observations in the sample. If given, it is used directly and ``bandwidth``,
+        ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either
+        ``geometry`` or ``graph`` need to be specified. To allow prediction, it is
+        required to specify ``geometry``. Potentially, both can be specified where
+        ``graph`` encodes spatial interaction between observations in ``geometry``.
+    n_jobs : int, optional
+        The number of jobs to run in parallel. ``-1`` means using all processors by
+        default ``-1``
+    fit_global_model : bool, optional
+        Determines if the global baseline model shall be fitted alongside the
+        geographically weighted, by default True
+    strict : bool | None, optional
+        Do not fit any models if at least one neighborhood has invariant ``y``, by
+        default False. None is treated as False but provides a warning if there are
+        invariant models.
+    keep_models : bool | str | Path, optional
+        Keep all local models (required for prediction), by default False. Note that for
+        some models, like gradient boosting, the objects can be large. If string or Path
+        is provided, the local models are not held in memory but serialized to the disk
+        from which they are loaded in prediction.
+    temp_folder : str | None, optional
+        Folder to be used by the pool for memmapping large arrays for sharing memory
+        with worker processes, e.g., ``/tmp``. Passed to ``joblib.Parallel``, by default
+        None
+    batch_size : int | None, optional
+        Number of models to process in each batch. Specify batch_size if your models do
+        not fit into memory. By default None
+    random_state : int | None, optional
+        Random seed for reproducibility, by default None
+    verbose : bool, optional
+        Whether to print progress information, by default False
+    **kwargs
+        Additional keyword arguments passed to ``model`` initialisation
+
+    Attributes
+    ----------
+    pred_ : pd.Series
+        Focal predictions for each location.
+    resid_ : pd.Series
+        Residuals for each location (``y`` - ``pred_``).
+    RSS_ : pd.Series
+        Residual sum of squares for each location.
+    TSS_ : pd.Series
+        Total sum of squares for each location.
+    y_bar_ : pd.Series
+        Weighted mean of y for each location.
+    local_r2_ : pd.Series
+        Local R2 for each location.
+    hat_values_ : pd.Series
+        Hat values for each location (diagonal elements of hat matrix)
+    effective_df_ : float
+        Effective degrees of freedom (sum of hat values)
+    log_likelihood_ : float
+        Global log likelihood of the model
+    aic_ : float
+        Akaike information criterion of the model
+    aicc_ : float
+        Corrected Akaike information criterion to account for model
+        complexity (smaller bandwidths)
+    bic_ : float
+        Bayesian information criterion
+    feature_importances_ : pd.DataFrame
+        Feature importance values for each local model
+
+    Examples
+    --------
+    >>> import geopandas as gpd
+    >>> from geodatasets import get_path
+    >>> from gwlearn.ensemble import GWGradientBoostingRegressor
+
+    >>> gdf = gpd.read_file(get_path('geoda.guerry'))
+    >>> X = gdf[['Crm_prp', 'Litercy', 'Donatns', 'Lottery']]
+    >>> y = gdf["Suicids"]
+
+    >>> gw = GWGradientBoostingRegressor(
+    ...     bandwidth=30,
+    ...     fixed=False,
+    ...     random_state=0,
+    ... ).fit(X, y, geometry=gdf.representative_point())
+    >>> gw.pred_.head()
+    0    73092.061693
+    1    14362.093351
+    2    24158.876462
+    3    21085.659844
+    4    43375.134041
+    dtype: float64
+    """
+
+    def __init__(
+        self,
+        *,
+        bandwidth: float | None = None,
+        fixed: bool = False,
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            # "gaussian",
+            "bisquare",
+            "tricube",
+            "cosine",
+            "boxcar",
+            # "exponential",
+        ]
+        | Callable = "bisquare",
+        include_focal: bool = False,
+        graph: graph.Graph | None = None,
+        n_jobs: int = -1,
+        fit_global_model: bool = True,
+        strict: bool | None = False,
+        keep_models: bool | str | Path = False,
+        temp_folder: str | None = None,
+        batch_size: int | None = None,
+        random_state: int | None = None,
+        verbose: bool = False,
+        **kwargs,
+    ):
+        super().__init__(
+            model=GradientBoostingRegressor,
+            bandwidth=bandwidth,
+            fixed=fixed,
+            kernel=kernel,
+            include_focal=include_focal,
+            graph=graph,
+            n_jobs=n_jobs,
+            fit_global_model=fit_global_model,
+            strict=strict,
+            keep_models=keep_models,
+            temp_folder=temp_folder,
+            batch_size=batch_size,
+            random_state=random_state,
+            verbose=verbose,
+            **kwargs,
+        )
+
+        self._model_type = "gradient_boosting"
+        self._empty_score_data = np.nan
+
+    def fit(
+        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
+    ) -> "GWGradientBoostingRegressor":
+        """Fit geographically weighted gradient boosting regressors.
+
+        Parameters
+        ----------
+        X : pandas.DataFrame
+            Feature matrix.
+        y : pandas.Series
+            Target values.
+        geometry : geopandas.GeoSeries | None
+            Geographic location of the observations in the sample. Used to determine the
+            spatial interaction weight based on specification by ``bandwidth``,
+            ``fixed``, ``kernel``, and ``include_focal`` keywords.  If `None`,
+            a precomputed ``graph`` needs to be specified. To allow prediction,
+            it is required to specify ``geometry``. If both ``graph`` and ``geometry``
+            are specified, ``graph`` is used at the fit time, while ``geometry`` is
+            used for prediction.
+
+        Returns
+        -------
+        GWGradientBoostingRegressor
+            Fitted estimator.
+
+        Notes
+        -----
+        Populates ``feature_importances_`` from the fitted local models.
+        """
+        super().fit(X=X, y=y, geometry=geometry)
+
+        # feature importances
+        self.feature_importances_ = pd.DataFrame(
+            self._feature_importances, index=self._names, columns=X.columns
+        )
+
+        if self.verbose:
+            print(f"{(time() - self._start):.2f}s: Finished")
+
+        return self
