@@ -143,12 +143,9 @@ html_theme_options = {
         },
     ],
     "version_dropdown": True,
-    "version_info": [
-        {"version": "stable", "title": "stable", "aliases": []},
-        {"version": "latest", "title": "latest", "aliases": []},
-    ],
+    "version_json": "https://github.com/pysal/gwlearn/raw/refs/heads/gh-pages/versions.json",
 }
-nb_execution_mode = "cache"
+nb_execution_mode = "off"
 nb_execution_timeout = -1
 nb_kernel_rgx_aliases = {".*": "python3"}
 nb_merge_streams = True
