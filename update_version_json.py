@@ -24,13 +24,17 @@ def main():
     with open("versions.json") as f:
         version_file = json.load(f)
 
+    # Clean up the stable alias from previous release
+    for entry in version_file:
+        entry["aliases"] = []
+
     version_entry = {
         "version": version,
         "title": version,
-        "aliases": [],
+        "aliases": ["stable"],
     }
-    # add after dev and stable
-    version_file.insert(2, version_entry)
+    # add after dev
+    version_file.insert(1, version_entry)
 
     # Write the updated file
     with open("versions.json", "w") as f:
