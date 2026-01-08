@@ -19,7 +19,7 @@
     
     
       
-        <title>gwlearn 0.0.3.dev2 documentation</title>
+        <title>gwlearn 0.0.3.dev3 documentation</title>
       
     
     
@@ -90,7 +90,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="#" title="gwlearn 0.0.3.dev2 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.3.dev2 documentation" data-md-component="logo">
+    <a href="#" title="gwlearn 0.0.3.dev3 documentation" class="md-header__button md-logo" aria-label="gwlearn 0.0.3.dev3 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -101,7 +101,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            gwlearn 0.0.3.dev2 documentation
+            gwlearn 0.0.3.dev3 documentation
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -239,10 +239,10 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="#" title="gwlearn 0.0.3.dev2 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.3.dev2 documentation" data-md-component="logo">
+    <a href="#" title="gwlearn 0.0.3.dev3 documentation" class="md-nav__button md-logo" aria-label="gwlearn 0.0.3.dev3 documentation" data-md-component="logo">
       <img src="_static/pysal_logo.svg" alt="logo">
     </a>
-    gwlearn 0.0.3.dev2 documentation
+    gwlearn 0.0.3.dev3 documentation
   </label>
   
     <div class="md-nav__source">
@@ -776,6 +776,22 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installing-development-version" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Installing development version</span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -827,9 +843,9 @@
 <h1 id="gwlearn">gwlearn<a class="headerlink" href="#gwlearn" title="Link to this heading">¶</a></h1>
 <p><a class="reference external" href="https://github.com/pysal/gwlearn/actions/workflows/testing.yml"><img alt="Continuous Integration" src="https://github.com/pysal/gwlearn/actions/workflows/testing.yml/badge.svg" /></a>
 <a class="reference external" href="https://codecov.io/gh/pysal/gwlearn"><img alt="codecov" src="https://codecov.io/gh/pysal/gwlearn/branch/main/graph/badge.svg" /></a>
-<a class="reference external" href="https://badge.fury.io/py/gwlearn"><img alt="PyPI version" src="https://badge.fury.io/py/gwlearn.svg" /></a></p>
-<!-- [![Conda Version](https://img.shields.io/conda/vn/conda-forge/gwlearn.svg)](https://anaconda.org/conda-forge/gwlearn) -->
-<p><a class="reference external" href="https://doi.org/10.5281/zenodo.18173180"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.18173180.svg" /></a>
+<a class="reference external" href="https://badge.fury.io/py/gwlearn"><img alt="PyPI version" src="https://badge.fury.io/py/gwlearn.svg" /></a>
+<a class="reference external" href="https://anaconda.org/conda-forge/gwlearn"><img alt="Conda Version" src="https://img.shields.io/conda/vn/conda-forge/gwlearn.svg" /></a>
+<a class="reference external" href="https://doi.org/10.5281/zenodo.18173180"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.18173180.svg" /></a>
 <a class="reference external" href="https://discord.gg/BxFTEPFFZn"><img alt="Discord" src="https://img.shields.io/badge/Discord-join%20chat-7289da?style=flat&amp;logo=discord&amp;logoColor=cccccc&amp;link=https://discord.gg/BxFTEPFFZn" /></a>
 <a class="reference external" href="https://scientific-python.org/specs/spec-0000/"><img alt="SPEC 0 — Minimum Supported Dependencies" src="https://img.shields.io/badge/SPEC-0-green?labelColor=%23004811&amp;color=%235CA038" /></a></p>
 <p>Geographically weighted modeling based on <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>.</p>
@@ -853,7 +869,7 @@ geographically weighted linear regression in a following manner.</p>
 <span class="n">adaptive</span> <span class="o">=</span> <span class="n">GWLinearRegression</span><span class="p">(</span>
     <span class="n">bandwidth</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;tricube&#39;</span>
+    <span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;bisquare&#39;</span>
 <span class="p">)</span>
 <span class="n">adaptive</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">gdf</span><span class="p">[[</span><span class="s1">&#39;Crm_prp&#39;</span><span class="p">,</span> <span class="s1">&#39;Litercy&#39;</span><span class="p">,</span> <span class="s1">&#39;Donatns&#39;</span><span class="p">,</span> <span class="s1">&#39;Lottery&#39;</span><span class="p">]],</span>
@@ -864,7 +880,15 @@ geographically weighted linear regression in a following manner.</p>
 </div>
 <p>For details, see the <a class="reference external" href="https://pysal.org/gwlearn">documentation</a>.</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
-<p>The package is currently not released, so you will need to install it from source.</p>
+<p>You can install neatnet from PyPI or from conda-forge using the tool of your choice:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>gwlearn
+</code></pre></div>
+</div>
+<p>Or from conda-forge:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><code>conda<span class="w"> </span>install<span class="w"> </span>gwlearn<span class="w"> </span>-c<span class="w"> </span>conda-forge
+</code></pre></div>
+</div>
+<h3 id="installing-development-version">Installing development version<a class="headerlink" href="#installing-development-version" title="Link to this heading">¶</a></h3>
 <p>You can either clone the repository:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/pysal/gwlearn.git
 <span class="nb">cd</span><span class="w"> </span>gwlearn
