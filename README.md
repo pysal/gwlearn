@@ -3,7 +3,7 @@
 [![Continuous Integration](https://github.com/pysal/gwlearn/actions/workflows/testing.yml/badge.svg)](https://github.com/pysal/gwlearn/actions/workflows/testing.yml)
 [![codecov](https://codecov.io/gh/pysal/gwlearn/branch/main/graph/badge.svg)](https://codecov.io/gh/pysal/gwlearn)
 [![PyPI version](https://badge.fury.io/py/gwlearn.svg)](https://badge.fury.io/py/gwlearn)
-<!-- [![Conda Version](https://img.shields.io/conda/vn/conda-forge/gwlearn.svg)](https://anaconda.org/conda-forge/gwlearn) -->
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/gwlearn.svg)](https://anaconda.org/conda-forge/gwlearn)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18173180.svg)](https://doi.org/10.5281/zenodo.18173180)
 [![Discord](https://img.shields.io/badge/Discord-join%20chat-7289da?style=flat&logo=discord&logoColor=cccccc&link=https://discord.gg/BxFTEPFFZn)](https://discord.gg/BxFTEPFFZn)
 [![SPEC 0 — Minimum Supported Dependencies](https://img.shields.io/badge/SPEC-0-green?labelColor=%23004811&color=%235CA038)](https://scientific-python.org/specs/spec-0000/)
@@ -36,7 +36,7 @@ gdf = gpd.read_file(get_path('geoda.guerry'))
 adaptive = GWLinearRegression(
     bandwidth=25,
     fixed=False,
-    kernel='tricube'
+    kernel='bisquare'
 )
 adaptive.fit(
     gdf[['Crm_prp', 'Litercy', 'Donatns', 'Lottery']],
@@ -49,7 +49,19 @@ For details, see the [documentation](https://pysal.org/gwlearn).
 
 ## Installation
 
-The package is currently not released, so you will need to install it from source.
+You can install neatnet from PyPI or from conda-forge using the tool of your choice:
+
+```sh
+pip install gwlearn
+```
+
+Or from conda-forge:
+
+```sh
+conda install gwlearn -c conda-forge
+```
+
+### Installing development version
 
 You can either clone the repository:
 
