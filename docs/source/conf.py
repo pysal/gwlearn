@@ -142,6 +142,12 @@ html_theme_options = {
             },
         },
     ],
+    "version_dropdown": True,
+    "version_info": [
+        {"version": "stable", "title": "stable", "aliases": []},
+        {"version": "latest", "title": "latest", "aliases": []},
+    ],
 }
-nb_execution_mode = "off"
+nb_execution_mode = "cache"
+nb_execution_timeout = -1
 autodoc_typehints = "none"
