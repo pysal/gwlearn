@@ -1,0 +1,23 @@
+﻿gwlearn.base.BaseRegressor
+==========================
+
+.. currentmodule:: gwlearn.base
+
+.. autoclass:: BaseRegressor
+
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BaseRegressor.__init__
+      ~BaseRegressor.fit
+      ~BaseRegressor.get_metadata_routing
+      ~BaseRegressor.get_params
+      ~BaseRegressor.score
+      ~BaseRegressor.set_params
+      ~BaseRegressor.set_score_request
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
