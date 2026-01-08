@@ -150,5 +150,6 @@ html_theme_options = {
 }
 nb_execution_mode = "cache"
 nb_execution_timeout = -1
-nb_kernel_rgx_aliases = {".": "python3"}
+nb_kernel_rgx_aliases = {".*": "python3"}
+nb_merge_streams = True
 autodoc_typehints = "none"
