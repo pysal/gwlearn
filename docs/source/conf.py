@@ -143,7 +143,7 @@ html_theme_options = {
         },
     ],
     "version_dropdown": True,
-    "version_json": "https://github.com/pysal/gwlearn/raw/refs/heads/gh-pages/versions.json",
+    "version_json": "https://pysal.org/gwlearn/versions.json",
 }
 nb_execution_mode = "off"
 nb_execution_timeout = -1
