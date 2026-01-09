@@ -13,7 +13,7 @@ import json
 
 def main():
     # Define CLI arguments
-    parser = argparse.ArgumentParser(description="Update switcher.json")
+    parser = argparse.ArgumentParser(description="Update version.json")
     parser.add_argument(
         "--version", "-v", required=True, type=str, help="The new version to add"
     )
