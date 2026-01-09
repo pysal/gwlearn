@@ -13,7 +13,7 @@ import json
 
 def main():
     # Define CLI arguments
-    parser = argparse.ArgumentParser(description="Update switcher.json")
+    parser = argparse.ArgumentParser(description="Update version.json")
     parser.add_argument(
         "--version", "-v", required=True, type=str, help="The new version to add"
     )
@@ -23,6 +23,7 @@ def main():
     # Open the JSON
     with open("versions.json") as f:
         version_file = json.load(f)
+
 
     # Clean up the stable alias from previous release
     for entry in version_file:
