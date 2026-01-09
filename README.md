@@ -12,11 +12,6 @@ Geographically weighted modeling based on `scikit-learn`.
 
 The aim of the package is to provide implementations of spatially-explicit modelling.
 
-## Status
-
-Current development status is early beta. API of the package can change without a
-warning. Use with caution.
-
 ## Features
 
 `gwlearn` provides a framework for prototyping geographically weighted extensions of
@@ -47,9 +42,15 @@ adaptive.fit(
 
 For details, see the [documentation](https://pysal.org/gwlearn).
 
+## Status
+
+Current development status is beta. The core API of the package should not change
+without a warning and a proper deprecation cycle. However, minor breaking changes may
+still occur.
+
 ## Installation
 
-You can install neatnet from PyPI or from conda-forge using the tool of your choice:
+You can install gwlearn from PyPI or from conda-forge using the tool of your choice:
 
 ```sh
 pip install gwlearn
@@ -59,34 +60,6 @@ Or from conda-forge:
 
 ```sh
 conda install gwlearn -c conda-forge
-```
-
-### Installing development version
-
-You can either clone the repository:
-
-```sh
-git clone https://github.com/pysal/gwlearn.git
-cd gwlearn
-pip install .
-```
-
-Or install directly from Github:
-
-```sh
-pip install git+https://github.com/pysal/gwlearn.git
-```
-
-The package depends on:
-
-```yaml
-geopandas>=1.0.0
-joblib>=1.4.0
-libpysal>=4.12
-numpy>=1.26.0
-scipy>=1.12.0
-scikit-learn>=1.4.0
-pandas>=2.1.0
 ```
 
 ## Bug reports
