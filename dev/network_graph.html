@@ -777,6 +777,12 @@
 </code></pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Downloading file &#39;walnuthills_updated.zip&#39; from &#39;https://geodacenter.github.io/data-and-lab//data/walnuthills_updated.zip&#39; to &#39;/home/runner/.cache/geodatasets&#39;.
+Extracting &#39;walnuthills_updated&#39; from &#39;/home/runner/.cache/geodatasets/walnuthills_updated.zip&#39; to &#39;/home/runner/.cache/geodatasets/walnuthills_updated.zip.unzip&#39;
+</code></pre></div>
+</div>
+</div>
 </div>
 <p>Generate a <code class="docutils literal notranslate"><span class="pre">pandarm.Network</span></code> based on the extent of the dataset. This will automatically pull the data for street network from OpenStretMap and prepare a network that can be later queried. All points will be linked to this network and accessibility will be measured alongside its edges.</p>
 <div class="cell docutils container">
@@ -786,14 +792,14 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Generating contraction hierarchies with 8 threads.
-Setting CH node vector of size 6004
-Setting CH edge vector of size 17060
-Range graph removed 17492 edges of 34120
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Generating contraction hierarchies with 4 threads.
+Setting CH node vector of size 6032
+Setting CH edge vector of size 17146
+Range graph removed 17580 edges of 34292
 . 10% . 20% . 30% . 40% . 50% . 60% . 70% . 80% . 90% . 100%
 </code></pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>/Users/martin/dev/pysal/gwlearn/.pixi/envs/default/lib/python3.12/site-packages/pandarm/loaders/osm.py:68: UserWarning: GeoDataFrame is stored in coordinate system PROJCS[&quot;Lambert_Conformal_Conic&quot;,GEOGCS[&quot;GCS_GRS 1980(IUGG, 1980)&quot;,DATUM[&quot;unknown&quot;,SPHEROID[&quot;GRS80&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]],PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;],PARAMETER[&quot;latitude_of_origin&quot;,38],PARAMETER[&quot;central_meridian&quot;,-82.5],PARAMETER[&quot;standard_parallel_1&quot;,40.0333333333333],PARAMETER[&quot;standard_parallel_2&quot;,38.7333333333333],PARAMETER[&quot;false_easting&quot;,1968500],PARAMETER[&quot;false_northing&quot;,0],UNIT[&quot;US survey foot&quot;,0.304800609601219,AUTHORITY[&quot;EPSG&quot;,&quot;9003&quot;]],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH]] so the pandana.Network will also be stored in this system
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>/home/runner/micromamba/envs/py313-latest/lib/python3.13/site-packages/pandarm/loaders/osm.py:68: UserWarning: GeoDataFrame is stored in coordinate system PROJCS[&quot;Lambert_Conformal_Conic&quot;,GEOGCS[&quot;GCS_GRS 1980(IUGG, 1980)&quot;,DATUM[&quot;unknown&quot;,SPHEROID[&quot;GRS80&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]],PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;],PARAMETER[&quot;latitude_of_origin&quot;,38],PARAMETER[&quot;central_meridian&quot;,-82.5],PARAMETER[&quot;standard_parallel_1&quot;,40.0333333333333],PARAMETER[&quot;standard_parallel_2&quot;,38.7333333333333],PARAMETER[&quot;false_easting&quot;,1968500],PARAMETER[&quot;false_northing&quot;,0],UNIT[&quot;US survey foot&quot;,0.304800609601219,AUTHORITY[&quot;EPSG&quot;,&quot;9003&quot;]],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH]] so the pandana.Network will also be stored in this system
   warn(
 </code></pre></div>
 </div>
@@ -829,7 +835,7 @@ Range graph removed 17492 edges of 34120
                 </tr>
                 <tr>
                     <td>Number of edges:</td>
-                    <td>       60055</td>
+                    <td>       60073</td>
                 </tr>
                 <tr>
                     <td>Number of connected components:</td>
@@ -841,7 +847,7 @@ Range graph removed 17492 edges of 34120
                 </tr>
                 <tr>
                     <td>Number of non-zero edges:</td>
-                    <td>       60055</td>
+                    <td>       60073</td>
                 </tr>
                 <tr>
                     <td>Percentage of non-zero edges:</td>
@@ -869,7 +875,7 @@ Range graph removed 17492 edges of 34120
                 </tr>
                 <tr>
                     <td>Min:</td>
-                    <td>       13</td>
+                    <td>       14</td>
                     <td>75%:</td>
                     <td>      182</td>
                 </tr>
@@ -906,21 +912,21 @@ Range graph removed 17492 edges of 34120
                 <caption>Sum of weights and Traces</caption>
                 <tr>
                     <td>S0:</td>
-                    <td>       20238</td>
+                    <td>       20247</td>
                     <td>GG:</td>
-                    <td>       11847</td>
+                    <td>       11852</td>
                 </tr>
                 <tr>
                     <td>S1:</td>
-                    <td>       23694</td>
+                    <td>       23703</td>
                     <td>G'G:</td>
-                    <td>       11847</td>
+                    <td>       11852</td>
                 </tr>
                 <tr>
                     <td>S3:</td>
-                    <td>     4546775</td>
+                    <td>     4548428</td>
                     <td>G'G + GG:</td>
-                    <td>       23694</td>
+                    <td>       23703</td>
                 </tr>
             </table>
             <div>
@@ -1506,7 +1512,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLinearRegression(graph=&lt;Graph of 457 nodes and 60055 nonzero edges indexed by
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLinearRegression(graph=&lt;Graph of 457 nodes and 60073 nonzero edges (1 component, 0 isolates) indexed by
  [0, 1, 2, 3, 4, ...]&gt;)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLinearRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
@@ -1762,17 +1768,17 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0      384.603824
-1       17.493468
-2       17.012252
-3       17.465274
-4       46.531855
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0      384.603817
+1       17.493526
+2       17.012188
+3       17.465285
+4       46.412049
           ...    
-452      5.448992
-453      0.418611
-454      0.304021
-455      1.147532
-456      2.536903
+452      5.442217
+453      0.421027
+454      0.304030
+455      1.145678
+456      2.545481
 Length: 457, dtype: float64
 </code></pre></div>
 </div>
@@ -1787,16 +1793,16 @@ Length: 457, dtype: float64
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0      0.951705
-1      0.986416
-2      0.988294
-3      0.974153
-4      0.983152
+1      0.986406
+2      0.988285
+3      0.974132
+4      0.983170
          ...   
-452    0.792927
-453    0.674607
-454    0.715204
-455    0.873481
-456    0.856795
+452    0.792568
+453    0.673976
+454    0.714759
+455    0.873360
+456    0.856583
 Length: 457, dtype: float64
 </code></pre></div>
 </div>
@@ -1810,7 +1816,7 @@ Length: 457, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/819f038f35220f8e831b1906fc5c489b2ee45c2b01a1f06cc8409cacc94dcbdf.png" src="_images/819f038f35220f8e831b1906fc5c489b2ee45c2b01a1f06cc8409cacc94dcbdf.png" />
+<img alt="_images/9c3a55e1783c30cd9b247eb0bdfbe16356f329e6d01c29ebe6b47e9925ed8439.png" src="_images/9c3a55e1783c30cd9b247eb0bdfbe16356f329e6d01c29ebe6b47e9925ed8439.png" />
 </div>
 </div>
 

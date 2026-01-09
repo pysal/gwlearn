@@ -1128,7 +1128,7 @@
 <p>Get sample data</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;geoda.ncovr&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="mi">5070</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;geoda.south&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="mi">5070</span><span class="p">)</span>
 
 <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;point&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span>
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="s2">&quot;point&quot;</span><span class="p">)</span>
@@ -1144,7 +1144,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gwrf</span> <span class="o">=</span> <span class="n">GWRandomForestClassifier</span><span class="p">(</span>
-    <span class="n">bandwidth</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+    <span class="n">bandwidth</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">gwrf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
@@ -1706,7 +1706,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWRandomForestClassifier(bandwidth=250)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWRandomForestClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWRandomForestClassifier(bandwidth=150)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWRandomForestClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -1719,7 +1719,7 @@ a.param-doc-link::before {
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">bandwidth</td>
-            <td class="value">250</td>
+            <td class="value">150</td>
         </tr>
     
 
@@ -2005,7 +2005,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7639913232104122
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7595258255715496
 </code></pre></div>
 </div>
 </div>
@@ -2019,7 +2019,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7638524945770065
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7445949760090319
 </code></pre></div>
 </div>
 </div>
@@ -2034,7 +2034,8 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([  nan, 0.816, 0.816, ..., 0.708, 0.684, 0.836], shape=(3085,))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.7       , 0.70666667, 0.71333333, ..., 0.63333333, 0.74      ,
+       0.66      ], shape=(1412,))
 </code></pre></div>
 </div>
 </div>
@@ -2048,7 +2049,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b9286b5281719d27a3edb5e0925cf9d417d870eaa948028f56bed2e96cf364be.png" src="_images/b9286b5281719d27a3edb5e0925cf9d417d870eaa948028f56bed2e96cf364be.png" />
+<img alt="_images/91d5c42bfd0f94ba9772189cafa1238179e6c1f08562b6f6957d086441b26289.png" src="_images/91d5c42bfd0f94ba9772189cafa1238179e6c1f08562b6f6957d086441b26289.png" />
 </div>
 </div>
 <h3 id="feature-importance">Feature importance<a class="headerlink" href="#feature-importance" title="Link to this heading">¶</a></h3>
@@ -2089,48 +2090,48 @@ forceTheme('sk-container-id-1');</script></body></div></div>
   <tbody>
     <tr>
       <th>0</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>0.170306</td>
+      <td>0.167357</td>
+      <td>0.200542</td>
+      <td>0.207782</td>
+      <td>0.120405</td>
+      <td>0.133608</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.150151</td>
-      <td>0.160794</td>
-      <td>0.132866</td>
-      <td>0.165131</td>
-      <td>0.164295</td>
-      <td>0.226763</td>
+      <td>0.175555</td>
+      <td>0.163342</td>
+      <td>0.216333</td>
+      <td>0.212781</td>
+      <td>0.111399</td>
+      <td>0.120590</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.144632</td>
-      <td>0.141671</td>
-      <td>0.128946</td>
-      <td>0.165126</td>
-      <td>0.177190</td>
-      <td>0.242436</td>
+      <td>0.179341</td>
+      <td>0.147488</td>
+      <td>0.177369</td>
+      <td>0.270668</td>
+      <td>0.117852</td>
+      <td>0.107281</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.154789</td>
-      <td>0.137241</td>
-      <td>0.130520</td>
-      <td>0.159064</td>
-      <td>0.172634</td>
-      <td>0.245752</td>
+      <td>0.183982</td>
+      <td>0.151791</td>
+      <td>0.189141</td>
+      <td>0.236925</td>
+      <td>0.112183</td>
+      <td>0.125977</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.145087</td>
-      <td>0.142398</td>
-      <td>0.120835</td>
-      <td>0.162957</td>
-      <td>0.199797</td>
-      <td>0.228926</td>
+      <td>0.116152</td>
+      <td>0.163953</td>
+      <td>0.216057</td>
+      <td>0.245938</td>
+      <td>0.113407</td>
+      <td>0.144492</td>
     </tr>
     <tr>
       <th>...</th>
@@ -2142,53 +2143,53 @@ forceTheme('sk-container-id-1');</script></body></div></div>
       <td>...</td>
     </tr>
     <tr>
-      <th>3080</th>
-      <td>0.126472</td>
-      <td>0.124394</td>
-      <td>0.197364</td>
-      <td>0.092287</td>
-      <td>0.264406</td>
-      <td>0.195078</td>
+      <th>1407</th>
+      <td>0.135314</td>
+      <td>0.161801</td>
+      <td>0.267581</td>
+      <td>0.244140</td>
+      <td>0.096136</td>
+      <td>0.095029</td>
     </tr>
     <tr>
-      <th>3081</th>
-      <td>0.151825</td>
-      <td>0.113052</td>
-      <td>0.161821</td>
-      <td>0.193571</td>
-      <td>0.203862</td>
-      <td>0.175869</td>
+      <th>1408</th>
+      <td>0.176267</td>
+      <td>0.163610</td>
+      <td>0.217129</td>
+      <td>0.227134</td>
+      <td>0.124475</td>
+      <td>0.091386</td>
     </tr>
     <tr>
-      <th>3082</th>
-      <td>0.128541</td>
-      <td>0.208136</td>
-      <td>0.184043</td>
-      <td>0.228090</td>
-      <td>0.105827</td>
-      <td>0.145362</td>
+      <th>1409</th>
+      <td>0.155035</td>
+      <td>0.179219</td>
+      <td>0.192754</td>
+      <td>0.219857</td>
+      <td>0.154557</td>
+      <td>0.098578</td>
     </tr>
     <tr>
-      <th>3083</th>
-      <td>0.160961</td>
-      <td>0.176037</td>
-      <td>0.193288</td>
-      <td>0.244673</td>
-      <td>0.100205</td>
-      <td>0.124836</td>
+      <th>1410</th>
+      <td>0.142357</td>
+      <td>0.189011</td>
+      <td>0.235158</td>
+      <td>0.186519</td>
+      <td>0.102333</td>
+      <td>0.144622</td>
     </tr>
     <tr>
-      <th>3084</th>
-      <td>0.097652</td>
-      <td>0.121995</td>
-      <td>0.162265</td>
-      <td>0.201207</td>
-      <td>0.225575</td>
-      <td>0.191307</td>
+      <th>1411</th>
+      <td>0.144950</td>
+      <td>0.184707</td>
+      <td>0.227707</td>
+      <td>0.197910</td>
+      <td>0.106709</td>
+      <td>0.138017</td>
     </tr>
   </tbody>
 </table>
-<p>3085 rows × 6 columns</p>
+<p>1412 rows × 6 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -2200,7 +2201,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d5456458e994120429bc0aaca176dd579aa8da549362922386ad03d918b89718.png" src="_images/d5456458e994120429bc0aaca176dd579aa8da549362922386ad03d918b89718.png" />
+<img alt="_images/5bb57ff5785eba4f16f58bec29221a686b62313403d027978e399df6a4f766cb.png" src="_images/5bb57ff5785eba4f16f58bec29221a686b62313403d027978e399df6a4f766cb.png" />
 </div>
 </div>
 <p>You can compare all of this to values extracted from a global model, fitted alongside.</p>
@@ -2211,8 +2212,8 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.1392548 , 0.15626119, 0.19452328, 0.19626816, 0.13700728,
-       0.17668528])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.13715975, 0.14901803, 0.22235525, 0.26276476, 0.11420656,
+       0.11449564])
 </code></pre></div>
 </div>
 </div>
@@ -2224,12 +2225,12 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>HR60    0.142958
-HR70    0.156650
-HR80    0.189503
-HR90    0.191127
-HC60    0.146361
-HC70    0.173401
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>HR60    0.154322
+HR70    0.159275
+HR80    0.202530
+HR90    0.221846
+HC60    0.139776
+HC70    0.122250
 dtype: float64
 </code></pre></div>
 </div>
@@ -2240,7 +2241,7 @@ dtype: float64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gwgb</span> <span class="o">=</span> <span class="n">GWGradientBoostingClassifier</span><span class="p">(</span>
-    <span class="n">bandwidth</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+    <span class="n">bandwidth</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">gwgb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
@@ -2802,7 +2803,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWGradientBoostingClassifier(bandwidth=250)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWGradientBoostingClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWGradientBoostingClassifier(bandwidth=150)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWGradientBoostingClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -2815,7 +2816,7 @@ a.param-doc-link::before {
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">bandwidth</td>
-            <td class="value">250</td>
+            <td class="value">150</td>
         </tr>
     
 
@@ -3089,7 +3090,7 @@ forceTheme('sk-container-id-2');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7470715835140997
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7519051651143099
 </code></pre></div>
 </div>
 </div>
@@ -3131,48 +3132,48 @@ forceTheme('sk-container-id-2');</script></body></div></div>
   <tbody>
     <tr>
       <th>0</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>0.153686</td>
+      <td>0.259014</td>
+      <td>0.186264</td>
+      <td>0.218075</td>
+      <td>0.084070</td>
+      <td>0.098891</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.172823</td>
-      <td>0.120446</td>
-      <td>0.066998</td>
-      <td>0.162672</td>
-      <td>0.135744</td>
-      <td>0.341317</td>
+      <td>0.175822</td>
+      <td>0.177658</td>
+      <td>0.202036</td>
+      <td>0.234281</td>
+      <td>0.089104</td>
+      <td>0.121099</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.188107</td>
-      <td>0.125403</td>
-      <td>0.063520</td>
-      <td>0.162030</td>
-      <td>0.118870</td>
-      <td>0.342070</td>
+      <td>0.244639</td>
+      <td>0.122177</td>
+      <td>0.178795</td>
+      <td>0.288122</td>
+      <td>0.072633</td>
+      <td>0.093635</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.148787</td>
-      <td>0.139060</td>
-      <td>0.078844</td>
-      <td>0.167688</td>
-      <td>0.069933</td>
-      <td>0.395689</td>
+      <td>0.170505</td>
+      <td>0.204489</td>
+      <td>0.170981</td>
+      <td>0.269969</td>
+      <td>0.093640</td>
+      <td>0.090415</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.165595</td>
-      <td>0.133767</td>
-      <td>0.072633</td>
-      <td>0.159442</td>
-      <td>0.111412</td>
-      <td>0.357150</td>
+      <td>0.071757</td>
+      <td>0.184211</td>
+      <td>0.255569</td>
+      <td>0.241033</td>
+      <td>0.107756</td>
+      <td>0.139674</td>
     </tr>
     <tr>
       <th>...</th>
@@ -3184,60 +3185,64 @@ forceTheme('sk-container-id-2');</script></body></div></div>
       <td>...</td>
     </tr>
     <tr>
-      <th>3080</th>
-      <td>0.099627</td>
-      <td>0.060506</td>
-      <td>0.144633</td>
-      <td>0.042421</td>
-      <td>0.592747</td>
-      <td>0.060067</td>
+      <th>1407</th>
+      <td>0.119728</td>
+      <td>0.174083</td>
+      <td>0.384630</td>
+      <td>0.254074</td>
+      <td>0.030371</td>
+      <td>0.037114</td>
     </tr>
     <tr>
-      <th>3081</th>
-      <td>0.089278</td>
-      <td>0.073847</td>
-      <td>0.133200</td>
-      <td>0.226680</td>
-      <td>0.440593</td>
-      <td>0.036403</td>
+      <th>1408</th>
+      <td>0.229809</td>
+      <td>0.145757</td>
+      <td>0.279700</td>
+      <td>0.209218</td>
+      <td>0.090060</td>
+      <td>0.045456</td>
     </tr>
     <tr>
-      <th>3082</th>
-      <td>0.108367</td>
-      <td>0.195670</td>
-      <td>0.174386</td>
-      <td>0.331315</td>
-      <td>0.058631</td>
-      <td>0.131631</td>
+      <th>1409</th>
+      <td>0.130763</td>
+      <td>0.298116</td>
+      <td>0.248566</td>
+      <td>0.196209</td>
+      <td>0.075606</td>
+      <td>0.050741</td>
     </tr>
     <tr>
-      <th>3083</th>
-      <td>0.130274</td>
-      <td>0.164462</td>
-      <td>0.161594</td>
-      <td>0.363690</td>
-      <td>0.051433</td>
-      <td>0.128547</td>
+      <th>1410</th>
+      <td>0.115438</td>
+      <td>0.229691</td>
+      <td>0.265338</td>
+      <td>0.229490</td>
+      <td>0.037618</td>
+      <td>0.122424</td>
     </tr>
     <tr>
-      <th>3084</th>
-      <td>0.027357</td>
-      <td>0.097427</td>
-      <td>0.100420</td>
-      <td>0.225220</td>
-      <td>0.429812</td>
-      <td>0.119764</td>
+      <th>1411</th>
+      <td>0.073256</td>
+      <td>0.188746</td>
+      <td>0.327112</td>
+      <td>0.244431</td>
+      <td>0.110782</td>
+      <td>0.055672</td>
     </tr>
   </tbody>
 </table>
-<p>3085 rows × 6 columns</p>
+<p>1412 rows × 6 columns</p>
 </div></div></div>
 </div>
 <h3 id="leave-out-samples">Leave out samples<a class="headerlink" href="#leave-out-samples" title="Link to this heading">¶</a></h3>
 <p>However, the pooled data are not available. In this case, you can use the <code class="docutils literal notranslate"><span class="pre">leave_out</span></code> keyword to leave out a fraction (when float) or a set number (when int) of random observations from each local model. For these, the local model does prediction and returns as <code class="docutils literal notranslate"><span class="pre">left_out_proba_</span></code> and <code class="docutils literal notranslate"><span class="pre">left_out_y_</span></code> arrays.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gwgb_leave</span> <span class="o">=</span> <span class="n">GWGradientBoostingClassifier</span><span class="p">(</span><span class="n">bandwidth</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">leave_out</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gwgb_leave</span> <span class="o">=</span> <span class="n">GWGradientBoostingClassifier</span><span class="p">(</span>
+    <span class="n">bandwidth</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+    <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">leave_out</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">gwgb_leave</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">X</span><span class="p">,</span>
     <span class="n">y</span><span class="p">,</span>
@@ -3797,7 +3802,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-3" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWGradientBoostingClassifier(bandwidth=250)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox" checked><label for="sk-estimator-id-3" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWGradientBoostingClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-3" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWGradientBoostingClassifier(bandwidth=150)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox" checked><label for="sk-estimator-id-3" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWGradientBoostingClassifier</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -3810,7 +3815,7 @@ a.param-doc-link::before {
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">bandwidth</td>
-            <td class="value">250</td>
+            <td class="value">150</td>
         </tr>
     
 
@@ -4083,7 +4088,7 @@ forceTheme('sk-container-id-3');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7502559652928417
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.725769122212814
 </code></pre></div>
 </div>
 </div>
@@ -4100,7 +4105,7 @@ forceTheme('sk-container-id-3');</script></body></div></div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gwrf_reg</span> <span class="o">=</span> <span class="n">GWRandomForestRegressor</span><span class="p">(</span>
-    <span class="n">bandwidth</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+    <span class="n">bandwidth</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span>
@@ -4663,7 +4668,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-4" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWRandomForestRegressor(bandwidth=250, random_state=0)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox" checked><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWRandomForestRegressor</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-4" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWRandomForestRegressor(bandwidth=150, random_state=0)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox" checked><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWRandomForestRegressor</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -4676,7 +4681,7 @@ a.param-doc-link::before {
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">bandwidth</td>
-            <td class="value">250</td>
+            <td class="value">150</td>
         </tr>
     
 
@@ -4706,7 +4711,7 @@ a.param-doc-link::before {
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">include_focal</td>
-            <td class="value">True</td>
+            <td class="value">False</td>
         </tr>
     
 
@@ -4928,11 +4933,11 @@ forceTheme('sk-container-id-4');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0    0.846714
-1    0.900906
-2    0.898621
-3    0.904621
-4    0.896464
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0    0.104145
+1    0.035537
+2   -0.039846
+3   -0.048805
+4    0.637768
 dtype: float64
 </code></pre></div>
 </div>
@@ -4945,7 +4950,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/cd880fef17169fc98807a7de5862084441267f0f10174af03069223a726ea315.png" src="_images/cd880fef17169fc98807a7de5862084441267f0f10174af03069223a726ea315.png" />
+<img alt="_images/edba345c12fcb7c77fdac0fb9df4dffae658b1ce4b7c9f42c58df8937da4ed03.png" src="_images/edba345c12fcb7c77fdac0fb9df4dffae658b1ce4b7c9f42c58df8937da4ed03.png" />
 </div>
 </div>
 <h3 id="out-of-bag-performance">Out-of-bag performance<a class="headerlink" href="#out-of-bag-performance" title="Link to this heading">¶</a></h3>
@@ -4959,7 +4964,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.6183996340177278
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.5014741368618677
 </code></pre></div>
 </div>
 </div>
@@ -5002,48 +5007,48 @@ dtype: float64
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.048332</td>
-      <td>0.072971</td>
-      <td>0.516588</td>
-      <td>0.280108</td>
-      <td>0.041304</td>
-      <td>0.040697</td>
+      <td>0.112869</td>
+      <td>0.177485</td>
+      <td>0.180982</td>
+      <td>0.265641</td>
+      <td>0.073176</td>
+      <td>0.189846</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.059384</td>
-      <td>0.069524</td>
-      <td>0.184504</td>
-      <td>0.317851</td>
-      <td>0.199598</td>
-      <td>0.169138</td>
+      <td>0.114309</td>
+      <td>0.146802</td>
+      <td>0.172446</td>
+      <td>0.288038</td>
+      <td>0.075410</td>
+      <td>0.202995</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.053354</td>
-      <td>0.074443</td>
-      <td>0.186899</td>
-      <td>0.331585</td>
-      <td>0.189142</td>
-      <td>0.164576</td>
+      <td>0.152714</td>
+      <td>0.153546</td>
+      <td>0.180235</td>
+      <td>0.331140</td>
+      <td>0.057873</td>
+      <td>0.124492</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.056983</td>
-      <td>0.067420</td>
-      <td>0.181489</td>
-      <td>0.314323</td>
-      <td>0.191781</td>
-      <td>0.188003</td>
+      <td>0.140662</td>
+      <td>0.157790</td>
+      <td>0.169440</td>
+      <td>0.305476</td>
+      <td>0.051538</td>
+      <td>0.175094</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.059611</td>
-      <td>0.065504</td>
-      <td>0.191421</td>
-      <td>0.347408</td>
-      <td>0.161703</td>
-      <td>0.174353</td>
+      <td>0.048769</td>
+      <td>0.071535</td>
+      <td>0.307233</td>
+      <td>0.300384</td>
+      <td>0.095678</td>
+      <td>0.176401</td>
     </tr>
   </tbody>
 </table>
@@ -5058,7 +5063,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/682b044b5862b6c6a67fd282369223b8860e42b4608ab1bc51dddbc8f25131f2.png" src="_images/682b044b5862b6c6a67fd282369223b8860e42b4608ab1bc51dddbc8f25131f2.png" />
+<img alt="_images/f7cbacb2529df68847c3bccbd93a4fafdae5c95d84aee29c60976eefc865f91b.png" src="_images/f7cbacb2529df68847c3bccbd93a4fafdae5c95d84aee29c60976eefc865f91b.png" />
 </div>
 </div>
 <h2 id="gradient-boosting-regression">Gradient Boosting (Regression)<a class="headerlink" href="#gradient-boosting-regression" title="Link to this heading">¶</a></h2>
@@ -5067,7 +5072,7 @@ dtype: float64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gwgb_reg</span> <span class="o">=</span> <span class="n">GWGradientBoostingRegressor</span><span class="p">(</span>
-    <span class="n">bandwidth</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+    <span class="n">bandwidth</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
     <span class="n">fixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="p">)</span>
@@ -5630,7 +5635,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-5" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWGradientBoostingRegressor(bandwidth=250, random_state=0)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-5" type="checkbox" checked><label for="sk-estimator-id-5" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWGradientBoostingRegressor</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+</style><body><div id="sk-container-id-5" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWGradientBoostingRegressor(bandwidth=150, random_state=0)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-5" type="checkbox" checked><label for="sk-estimator-id-5" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWGradientBoostingRegressor</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
                 <summary>Parameters</summary>
@@ -5643,7 +5648,7 @@ a.param-doc-link::before {
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">bandwidth</td>
-            <td class="value">250</td>
+            <td class="value">150</td>
         </tr>
     
 
@@ -5673,7 +5678,7 @@ a.param-doc-link::before {
                           this.parentElement.nextElementSibling)"
             ></i></td>
             <td class="param">include_focal</td>
-            <td class="value">True</td>
+            <td class="value">False</td>
         </tr>
     
 
@@ -5895,11 +5900,11 @@ forceTheme('sk-container-id-5');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0    0.914738
-1    0.937228
-2    0.936550
-3    0.938294
-4    0.935893
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0   -0.063802
+1   -0.160997
+2   -0.276301
+3   -0.262151
+4    0.596555
 dtype: float64
 </code></pre></div>
 </div>
@@ -5912,7 +5917,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2571671551c00256b5f5471e34843133185b7bae7913cb8391d3342a934ea5e3.png" src="_images/2571671551c00256b5f5471e34843133185b7bae7913cb8391d3342a934ea5e3.png" />
+<img alt="_images/be0e419d5919d281711b356ca133750edb4a587ad89bceb3a0f0447f45368d96.png" src="_images/be0e419d5919d281711b356ca133750edb4a587ad89bceb3a0f0447f45368d96.png" />
 </div>
 </div>
 <h3 id="id2">Feature importance<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
@@ -5953,48 +5958,48 @@ dtype: float64
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.048415</td>
-      <td>0.055843</td>
-      <td>0.579082</td>
-      <td>0.257816</td>
-      <td>0.039167</td>
-      <td>0.019676</td>
+      <td>0.085339</td>
+      <td>0.135627</td>
+      <td>0.223552</td>
+      <td>0.292395</td>
+      <td>0.066986</td>
+      <td>0.196100</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.070203</td>
-      <td>0.061435</td>
-      <td>0.166482</td>
-      <td>0.302918</td>
-      <td>0.130767</td>
-      <td>0.268195</td>
+      <td>0.099639</td>
+      <td>0.131126</td>
+      <td>0.157998</td>
+      <td>0.319981</td>
+      <td>0.049697</td>
+      <td>0.241560</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.077699</td>
-      <td>0.059862</td>
-      <td>0.167441</td>
-      <td>0.320943</td>
-      <td>0.115500</td>
-      <td>0.258555</td>
+      <td>0.085873</td>
+      <td>0.142108</td>
+      <td>0.213703</td>
+      <td>0.413821</td>
+      <td>0.033547</td>
+      <td>0.110948</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.063041</td>
-      <td>0.059294</td>
-      <td>0.157642</td>
-      <td>0.279422</td>
-      <td>0.141162</td>
-      <td>0.299437</td>
+      <td>0.100750</td>
+      <td>0.146411</td>
+      <td>0.176120</td>
+      <td>0.374961</td>
+      <td>0.024218</td>
+      <td>0.177541</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.075642</td>
-      <td>0.050036</td>
-      <td>0.164720</td>
-      <td>0.318595</td>
-      <td>0.126630</td>
-      <td>0.264378</td>
+      <td>0.028554</td>
+      <td>0.049572</td>
+      <td>0.344836</td>
+      <td>0.462574</td>
+      <td>0.030520</td>
+      <td>0.083944</td>
     </tr>
   </tbody>
 </table>
@@ -6007,7 +6012,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d26336987505f2035b6c4a726216a9dc42434efa728ad1e74c561aafc16f341d.png" src="_images/d26336987505f2035b6c4a726216a9dc42434efa728ad1e74c561aafc16f341d.png" />
+<img alt="_images/fdea71830bf07ce14786347c80fec5ce5967e4bfc28ead60eea080033be917f7.png" src="_images/fdea71830bf07ce14786347c80fec5ce5967e4bfc28ead60eea080033be917f7.png" />
 </div>
 </div>
 <h3 id="comparison-with-global-model">Comparison with global model<a class="headerlink" href="#comparison-with-global-model" title="Link to this heading">¶</a></h3>
@@ -6019,8 +6024,8 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.03734356, 0.05891646, 0.17146349, 0.41775527, 0.17959497,
-       0.13492626])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.06521224, 0.10302628, 0.20418935, 0.45867325, 0.10866418,
+       0.0602347 ])
 </code></pre></div>
 </div>
 </div>
@@ -6032,12 +6037,12 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>HR60    0.092119
-HR70    0.098846
-HR80    0.218831
-HR90    0.244222
-HC60    0.147873
-HC70    0.198108
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>HR60    0.127108
+HR70    0.121543
+HR80    0.222230
+HR90    0.302311
+HC60    0.123322
+HC70    0.103485
 dtype: float64
 </code></pre></div>
 </div>
