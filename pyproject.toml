@@ -6,14 +6,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gwlearn"
+description = "Geographically weighted modeling based on scikit-learn."
 dynamic = ["version"]
 authors = [
    { name = "Martin Fleischmann", email = "martin@martinfleischmann.net" },
 ]
-license = { text = "BSD 3-Clause" }
+license = "BSD-3-Clause"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: GIS",
@@ -29,6 +29,13 @@ dependencies = [
     "scikit-learn>=1.4.0",
     "pandas>=2.1.0",
 ]
+
+[project.urls]
+Homepage = "https://pysal.org/gwlearn/"
+Documentation = "https://pysal.org/gwlearn/"
+Repository = "https://github.com/pysal/gwlearn.git"
+Issues = "https://github.com/pysal/gwlearn/issues"
+Changelog = "https://github.com/pysal/gwlearn/releases"
 
 [tool.setuptools.packages.find]
 include = ["gwlearn", "gwlearn.*"]
@@ -102,9 +109,7 @@ pyarrow = ">=20.0.0,<21"
 fsspec = ">=2025.5.1,<2026"
 s3fs = ">=2025.5.1,<2026"
 osmnx = ">=2.0.7,<3"
-pandana = ">=0.7,<0.8"
 furo = ">=2024.8.6,<2025"
-pydata-sphinx-theme = ">=0.15.4,<0.16"
 pandarm = ">=0.0.3"
 sphinx-immaterial = ">=0.13.8,<0.14"
 pytest-doctestplus = ">=1.6.0,<2"
