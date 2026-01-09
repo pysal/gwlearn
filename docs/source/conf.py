@@ -99,7 +99,7 @@ html_theme_options = {
         # "navigation.instant",
         # "header.autohide",
         "navigation.top",
-        "navigation.footer",
+        # "navigation.footer",
         # "navigation.tracking",
         # "search.highlight",
         "search.share",
