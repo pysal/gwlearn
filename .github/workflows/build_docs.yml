@@ -14,7 +14,7 @@ on:
         required: false
 jobs:
   docs:
-    name: build & push docs
+    name: Build & push docs
     runs-on: ${{ matrix.os }}
     timeout-minutes: 90
     strategy:
@@ -27,21 +27,21 @@ jobs:
         shell: bash -l {0}
 
     steps:
-      - name: checkout repo
-        uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - name: setup micromamba
+      - name: Setup micromamba
         uses: mamba-org/setup-micromamba@v2
         with:
           environment-file: ${{ matrix.environment-file }}
           micromamba-version: "latest"
 
-      - name: install package
+      - name: Install package
         run: pip install . --no-deps
 
-      - name: make docs
+      - name: Make docs
         run: cd docs; make html
 
       - name: Publish to Github Pages on main (dev)
