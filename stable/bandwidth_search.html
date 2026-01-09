@@ -288,6 +288,29 @@
       
   
   
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Installation</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -304,10 +327,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
@@ -320,8 +343,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_2">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             <span>User Guide</span>
           </label>
@@ -340,7 +363,7 @@
   
   
   <span class="md-ellipsis">
-    <span>Introduction to prototyping geographically weighted models</span>
+    <span>Generic geographically weighted models</span>
     
   </span>
   
@@ -662,10 +685,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
@@ -678,8 +701,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             <span>API</span>
           </label>
@@ -735,10 +758,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   
@@ -751,12 +774,36 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             <span>For contributors</span>
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contributing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Contributing to gwlearn</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -772,6 +819,30 @@
   
   <span class="md-ellipsis">
     <span>Git<wbr>Hub</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/uscuni/gwlearn/releases" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Changelog</span>
     
   </span>
   
@@ -875,13 +946,19 @@
 <p>Get sample data</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;geoda.ncovr&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="mi">5070</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;geoda.south&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="mi">5070</span><span class="p">)</span>
 
 <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;point&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span>
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="s2">&quot;point&quot;</span><span class="p">)</span>
 
 <span class="n">y</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;FH90&quot;</span><span class="p">]</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">9</span><span class="p">:</span><span class="mi">15</span><span class="p">]</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Downloading file &#39;south.zip&#39; from &#39;https://geodacenter.github.io/data-and-lab//data/south.zip&#39; to &#39;/home/runner/.cache/geodatasets&#39;.
+Extracting &#39;south/south.gpkg&#39; from &#39;/home/runner/.cache/geodatasets/south.zip&#39; to &#39;/home/runner/.cache/geodatasets/south.zip.unzip&#39;
 </code></pre></div>
 </div>
 </div>
@@ -910,19 +987,19 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 50.00, aicc: 15666.353
-Bandwidth: 150.00, aicc: 15498.936
-Bandwidth: 250.00, aicc: 15660.999
-Bandwidth: 350.00, aicc: 15775.129
-Bandwidth: 450.00, aicc: 15854.287
-Bandwidth: 550.00, aicc: 15918.673
-Bandwidth: 650.00, aicc: 15975.564
-Bandwidth: 750.00, aicc: 16031.276
-Bandwidth: 850.00, aicc: 16080.155
-Bandwidth: 950.00, aicc: 16126.986
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 50.00, aicc: 7685.453
+Bandwidth: 150.00, aicc: 7598.040
+Bandwidth: 250.00, aicc: 7672.563
+Bandwidth: 350.00, aicc: 7722.884
+Bandwidth: 450.00, aicc: 7764.566
+Bandwidth: 550.00, aicc: 7811.208
+Bandwidth: 650.00, aicc: 7862.718
+Bandwidth: 750.00, aicc: 7904.325
+Bandwidth: 850.00, aicc: 7941.803
+Bandwidth: 950.00, aicc: 7981.327
 </code></pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x15e183c50&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x7fcb20ed23c0&gt;
 </code></pre></div>
 </div>
 </div>
@@ -938,7 +1015,7 @@ Bandwidth: 950.00, aicc: 16126.986
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;Axes: &gt;
 </code></pre></div>
 </div>
-<img alt="_images/d62011010720e09178624a0226f122e15a78037d599e4ee6f16bcbf13512000e.png" src="_images/d62011010720e09178624a0226f122e15a78037d599e4ee6f16bcbf13512000e.png" />
+<img alt="_images/180f7fead2a8f63e92148f3dc50443ab3ba4ca8e148c5df01d9ae3b67d3f7252.png" src="_images/180f7fead2a8f63e92148f3dc50443ab3ba4ca8e148c5df01d9ae3b67d3f7252.png" />
 </div>
 </div>
 <p>The optimal bandwidth is then the lowest one.</p>
@@ -964,8 +1041,8 @@ Bandwidth: 950.00, aicc: 16126.986
     <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">search_method</span><span class="o">=</span><span class="s2">&quot;golden_section&quot;</span><span class="p">,</span>
     <span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;aicc&quot;</span><span class="p">,</span>
-    <span class="n">min_bandwidth</span><span class="o">=</span><span class="mi">250_000</span><span class="p">,</span>
-    <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">2_000_000</span><span class="p">,</span>
+    <span class="n">min_bandwidth</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span>
+    <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">,</span>
     <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
@@ -977,26 +1054,23 @@ Bandwidth: 950.00, aicc: 16126.986
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 918447.5, score: 16135.833
-Bandwidth: 1331552.5, score: 16367.508
-Bandwidth: 663120.61, score: 15901.394
-Bandwidth: 505326.89, score: 15734.258
-Bandwidth: 407799.68, score: 15644.228
-Bandwidth: 347527.21, score: 15599.261
-Bandwidth: 310274.74, score: 15585.033
-Bandwidth: 287252.47, score: 15579.996
-Bandwidth: 273023.14, score: 15583.440
-Bandwidth: 296045.75, score: 15580.453
-Bandwidth: 281817.09, score: 15580.952
-Bandwidth: 290610.83, score: 15579.452
-Bandwidth: 292686.98, score: 15579.549
-Bandwidth: 289328.29, score: 15579.566
-Bandwidth: 291404.06, score: 15579.440
-Bandwidth: 291893.95, score: 15579.458
-Bandwidth: 291100.94, score: 15579.438
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 388150.3, score: 7669.800
+Bandwidth: 621849.7, score: 7770.467
+Bandwidth: 243708.23, score: 7595.916
+Bandwidth: 154442.07, score: 7909.632
+Bandwidth: 298880.77, score: 7625.628
+Bandwidth: 209613.32, score: 7615.954
+Bandwidth: 264783.28, score: 7604.069
+Bandwidth: 230686.59, score: 7596.427
+Bandwidth: 251759.37, score: 7598.529
+Bandwidth: 238735.76, score: 7595.231
+Bandwidth: 235660.47, score: 7595.389
+Bandwidth: 240634.23, score: 7595.329
+Bandwidth: 237560.29, score: 7595.268
+Bandwidth: 239460.08, score: 7595.241
 </code></pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x168c03110&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x7fcac06f5d10&gt;
 </code></pre></div>
 </div>
 </div>
@@ -1009,7 +1083,7 @@ Bandwidth: 291100.94, score: 15579.438
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>np.float64(291100.9431339667)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>np.float64(238735.7582789531)
 </code></pre></div>
 </div>
 </div>
@@ -1048,106 +1122,88 @@ Bandwidth: 291100.94, score: 15579.438
   </thead>
   <tbody>
     <tr>
-      <th>9.184475e+05</th>
-      <td>16135.832631</td>
-      <td>16132.605473</td>
-      <td>16556.503755</td>
+      <th>388150.300000</th>
+      <td>7669.800284</td>
+      <td>7650.730706</td>
+      <td>8238.208833</td>
     </tr>
     <tr>
-      <th>1.331552e+06</th>
-      <td>16367.507618</td>
-      <td>16366.574492</td>
-      <td>16597.123551</td>
+      <th>621849.700000</th>
+      <td>7770.467076</td>
+      <td>7766.321405</td>
+      <td>8047.693794</td>
     </tr>
     <tr>
-      <th>6.631206e+05</th>
-      <td>15901.393868</td>
-      <td>15891.545192</td>
-      <td>16623.552420</td>
+      <th>243708.229909</th>
+      <td>7595.915658</td>
+      <td>7497.313206</td>
+      <td>8762.156146</td>
     </tr>
     <tr>
-      <th>5.053269e+05</th>
-      <td>15734.258373</td>
-      <td>15708.559009</td>
-      <td>16874.775997</td>
+      <th>154442.070091</th>
+      <td>7909.631563</td>
+      <td>7355.237895</td>
+      <td>9995.188728</td>
     </tr>
     <tr>
-      <th>4.077997e+05</th>
-      <td>15644.228226</td>
-      <td>15588.888391</td>
-      <td>17273.283311</td>
+      <th>298880.767422</th>
+      <td>7625.628201</td>
+      <td>7578.766844</td>
+      <td>8477.096909</td>
     </tr>
     <tr>
-      <th>3.475272e+05</th>
-      <td>15599.260550</td>
-      <td>15500.960777</td>
-      <td>17709.892539</td>
+      <th>209613.319310</th>
+      <td>7615.953544</td>
+      <td>7443.545102</td>
+      <td>9065.985674</td>
     </tr>
     <tr>
-      <th>3.102747e+05</th>
-      <td>15585.032697</td>
-      <td>15436.700466</td>
-      <td>18110.784586</td>
+      <th>264783.280267</th>
+      <td>7604.069091</td>
+      <td>7531.986411</td>
+      <td>8628.488146</td>
     </tr>
     <tr>
-      <th>2.872525e+05</th>
-      <td>15579.995539</td>
-      <td>15383.747794</td>
-      <td>18423.649729</td>
+      <th>230686.589297</th>
+      <td>7596.426806</td>
+      <td>7475.433826</td>
+      <td>8862.323769</td>
     </tr>
     <tr>
-      <th>2.730231e+05</th>
-      <td>15583.440146</td>
-      <td>15347.827157</td>
-      <td>18650.241701</td>
+      <th>251759.367217</th>
+      <td>7598.528817</td>
+      <td>7511.192286</td>
+      <td>8708.266105</td>
     </tr>
     <tr>
-      <th>2.960457e+05</th>
-      <td>15580.452736</td>
-      <td>15404.583147</td>
-      <td>18296.148267</td>
+      <th>238735.758279</th>
+      <td>7595.231162</td>
+      <td>7488.668425</td>
+      <td>8798.649792</td>
     </tr>
     <tr>
-      <th>2.818171e+05</th>
-      <td>15580.952181</td>
-      <td>15370.724573</td>
-      <td>18507.176295</td>
+      <th>235660.465361</th>
+      <td>7595.389267</td>
+      <td>7483.564238</td>
+      <td>8822.281852</td>
     </tr>
     <tr>
-      <th>2.906108e+05</th>
-      <td>15579.451964</td>
-      <td>15391.351712</td>
-      <td>18373.091183</td>
+      <th>240634.225285</th>
+      <td>7595.328622</td>
+      <td>7491.905192</td>
+      <td>8784.335011</td>
     </tr>
     <tr>
-      <th>2.926870e+05</th>
-      <td>15579.548602</td>
-      <td>15396.249687</td>
-      <td>18343.014101</td>
+      <th>237560.292439</th>
+      <td>7595.268103</td>
+      <td>7486.713835</td>
+      <td>8807.668987</td>
     </tr>
     <tr>
-      <th>2.893283e+05</th>
-      <td>15579.566286</td>
-      <td>15388.413516</td>
-      <td>18392.115393</td>
-    </tr>
-    <tr>
-      <th>2.914041e+05</th>
-      <td>15579.439825</td>
-      <td>15393.191365</td>
-      <td>18361.504693</td>
-    </tr>
-    <tr>
-      <th>2.918940e+05</th>
-      <td>15579.458231</td>
-      <td>15394.342859</td>
-      <td>18354.402006</td>
-    </tr>
-    <tr>
-      <th>2.911009e+05</th>
-      <td>15579.438393</td>
-      <td>15392.484736</td>
-      <td>18365.920248</td>
+      <th>239460.075156</th>
+      <td>7595.240977</td>
+      <td>7489.889063</td>
+      <td>8793.138119</td>
     </tr>
   </tbody>
 </table>
@@ -1163,7 +1219,7 @@ Bandwidth: 291100.94, score: 15579.438
     <span class="n">search_method</span><span class="o">=</span><span class="s2">&quot;interval&quot;</span><span class="p">,</span>
     <span class="n">min_bandwidth</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
     <span class="n">max_bandwidth</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-    <span class="n">interval</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">interval</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
     <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;log_loss&quot;</span><span class="p">,</span> <span class="s2">&quot;prediction_rate&quot;</span><span class="p">],</span>
     <span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;log_loss&quot;</span><span class="p">,</span>
     <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -1177,19 +1233,14 @@ Bandwidth: 291100.94, score: 15579.438
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 50.00, log_loss: 0.274
-Bandwidth: 150.00, log_loss: 0.372
-Bandwidth: 250.00, log_loss: 0.397
-Bandwidth: 350.00, log_loss: 0.405
-Bandwidth: 450.00, log_loss: 0.400
-Bandwidth: 550.00, log_loss: 0.396
-Bandwidth: 650.00, log_loss: 0.391
-Bandwidth: 750.00, log_loss: 0.392
-Bandwidth: 850.00, log_loss: 0.387
-Bandwidth: 950.00, log_loss: 0.386
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 50.00, log_loss: 0.276
+Bandwidth: 250.00, log_loss: 0.376
+Bandwidth: 450.00, log_loss: 0.413
+Bandwidth: 650.00, log_loss: 0.437
+Bandwidth: 850.00, log_loss: 0.454
 </code></pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x175f26600&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x7fcac8224f50&gt;
 </code></pre></div>
 </div>
 </div>
@@ -1230,82 +1281,42 @@ Bandwidth: 950.00, log_loss: 0.386
   <tbody>
     <tr>
       <th>50</th>
-      <td>2889.818542</td>
-      <td>2358.134113</td>
-      <td>5833.725640</td>
-      <td>0.273673</td>
-      <td>0.664830</td>
-    </tr>
-    <tr>
-      <th>150</th>
-      <td>2206.259163</td>
-      <td>2148.244589</td>
-      <td>3527.004346</td>
-      <td>0.371802</td>
-      <td>0.726094</td>
+      <td>1376.806547</td>
+      <td>1119.216534</td>
+      <td>2551.160957</td>
+      <td>0.275782</td>
+      <td>0.682011</td>
     </tr>
     <tr>
       <th>250</th>
-      <td>2157.749410</td>
-      <td>2136.089862</td>
-      <td>3015.383346</td>
-      <td>0.397102</td>
-      <td>0.746840</td>
-    </tr>
-    <tr>
-      <th>350</th>
-      <td>2200.114858</td>
-      <td>2188.636740</td>
-      <td>2856.824897</td>
-      <td>0.405179</td>
-      <td>0.783144</td>
+      <td>1262.969346</td>
+      <td>1249.800971</td>
+      <td>1741.819969</td>
+      <td>0.376227</td>
+      <td>1.000000</td>
     </tr>
     <tr>
       <th>450</th>
-      <td>2254.996420</td>
-      <td>2247.570704</td>
-      <td>2810.703657</td>
-      <td>0.400438</td>
-      <td>0.831767</td>
-    </tr>
-    <tr>
-      <th>550</th>
-      <td>2278.686205</td>
-      <td>2273.488677</td>
-      <td>2758.682537</td>
-      <td>0.395771</td>
-      <td>0.863533</td>
+      <td>1275.319005</td>
+      <td>1271.315792</td>
+      <td>1547.948404</td>
+      <td>0.412885</td>
+      <td>1.000000</td>
     </tr>
     <tr>
       <th>650</th>
-      <td>2309.635433</td>
-      <td>2305.818659</td>
-      <td>2733.726039</td>
-      <td>0.390566</td>
-      <td>0.896921</td>
-    </tr>
-    <tr>
-      <th>750</th>
-      <td>2386.715455</td>
-      <td>2383.696709</td>
-      <td>2775.134682</td>
-      <td>0.391591</td>
-      <td>0.932253</td>
+      <td>1308.172651</td>
+      <td>1306.304157</td>
+      <td>1497.258268</td>
+      <td>0.436826</td>
+      <td>1.000000</td>
     </tr>
     <tr>
       <th>850</th>
-      <td>2430.644557</td>
-      <td>2428.204092</td>
-      <td>2789.496584</td>
-      <td>0.386952</td>
-      <td>0.966613</td>
-    </tr>
-    <tr>
-      <th>950</th>
-      <td>2498.057834</td>
-      <td>2495.967664</td>
-      <td>2838.465899</td>
-      <td>0.386135</td>
+      <td>1337.777857</td>
+      <td>1336.720382</td>
+      <td>1481.487638</td>
+      <td>0.453824</td>
       <td>1.000000</td>
     </tr>
   </tbody>
@@ -1323,7 +1334,7 @@ Bandwidth: 950.00, log_loss: 0.386
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;Axes: &gt;
 </code></pre></div>
 </div>
-<img alt="_images/84c6409c972b1cf7dcea667cf320070bfe93b53bbf996b1c830c04742e3146ff.png" src="_images/84c6409c972b1cf7dcea667cf320070bfe93b53bbf996b1c830c04742e3146ff.png" />
+<img alt="_images/c3bd6e214fb84c59646e51cb3a7e4f4a9f0a7d55cd2dd7e236eeffad3f49746a.png" src="_images/c3bd6e214fb84c59646e51cb3a7e4f4a9f0a7d55cd2dd7e236eeffad3f49746a.png" />
 </div>
 </div>
 <p>As a result, the optimal bandwidth is derived directly from it.</p>
@@ -1371,46 +1382,6 @@ Bandwidth: 950.00, log_loss: 0.386
       
         <footer class="md-footer">
   
-    
-      
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
-        
-          
-          <a href="imbalance.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Class imbalance">
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-            </div>
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              <div class="md-ellipsis">
-                Class imbalance
-              </div>
-            </div>
-          </a>
-        
-        
-          
-          <a href="network_graph.html" class="md-footer__link md-footer__link--next" aria-label="Next: Using custom graphs">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Using custom graphs
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
-    
-  
   
   
   <div class="md-footer-meta md-typeset">
@@ -1442,7 +1413,7 @@ Bandwidth: 950.00, log_loss: 0.386
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "navigation.footer", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
     
       
         <script src="_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>
