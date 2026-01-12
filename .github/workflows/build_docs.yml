@@ -6,6 +6,9 @@ on:
     branches: [main]
     tags:
       - "v*"
+  pull_request:
+    branches:
+      - "*"
   workflow_dispatch:
     inputs:
       version:
@@ -43,6 +46,17 @@ jobs:
 
       - name: Make docs
         run: cd docs; make html
+
+      - name: Zip documentation
+        if: ${{ github.event_name == 'pull_request' }}
+        run: zip docs_artifact.zip docs/build/html -r
+
+      - name: Upload artifact
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: docs_artifact
+          path: docs_artifact.zip
 
       - name: Publish to Github Pages on main (dev)
         if: ${{ github.ref == 'refs/heads/main' }}
