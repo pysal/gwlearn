@@ -2,7 +2,9 @@
 ```
 
 ```{toctree}
+:hidden:
 Home <self>
+installation
 ```
 
 ```{toctree}
@@ -29,6 +31,9 @@ api
 ```{toctree}
 :hidden:
 :caption: For contributors
+contributing
 GitHub <https://github.com/uscuni/gwlearn>
+Changelog <https://github.com/uscuni/gwlearn/releases>
+
 ```
 

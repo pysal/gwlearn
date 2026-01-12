@@ -3,7 +3,7 @@
 [![Continuous Integration](https://github.com/pysal/gwlearn/actions/workflows/testing.yml/badge.svg)](https://github.com/pysal/gwlearn/actions/workflows/testing.yml)
 [![codecov](https://codecov.io/gh/pysal/gwlearn/branch/main/graph/badge.svg)](https://codecov.io/gh/pysal/gwlearn)
 [![PyPI version](https://badge.fury.io/py/gwlearn.svg)](https://badge.fury.io/py/gwlearn)
-<!-- [![Conda Version](https://img.shields.io/conda/vn/conda-forge/gwlearn.svg)](https://anaconda.org/conda-forge/gwlearn) -->
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/gwlearn.svg)](https://anaconda.org/conda-forge/gwlearn)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18173180.svg)](https://doi.org/10.5281/zenodo.18173180)
 [![Discord](https://img.shields.io/badge/Discord-join%20chat-7289da?style=flat&logo=discord&logoColor=cccccc&link=https://discord.gg/BxFTEPFFZn)](https://discord.gg/BxFTEPFFZn)
 [![SPEC 0 — Minimum Supported Dependencies](https://img.shields.io/badge/SPEC-0-green?labelColor=%23004811&color=%235CA038)](https://scientific-python.org/specs/spec-0000/)
@@ -11,11 +11,6 @@
 Geographically weighted modeling based on `scikit-learn`.
 
 The aim of the package is to provide implementations of spatially-explicit modelling.
-
-## Status
-
-Current development status is early beta. API of the package can change without a
-warning. Use with caution.
 
 ## Features
 
@@ -36,7 +31,7 @@ gdf = gpd.read_file(get_path('geoda.guerry'))
 adaptive = GWLinearRegression(
     bandwidth=25,
     fixed=False,
-    kernel='tricube'
+    kernel='bisquare'
 )
 adaptive.fit(
     gdf[['Crm_prp', 'Litercy', 'Donatns', 'Lottery']],
@@ -47,34 +42,24 @@ adaptive.fit(
 
 For details, see the [documentation](https://pysal.org/gwlearn).
 
+## Status
+
+Current development status is beta. The core API of the package should not change
+without a warning and a proper deprecation cycle. However, minor breaking changes may
+still occur.
+
 ## Installation
 
-The package is currently not released, so you will need to install it from source.
-
-You can either clone the repository:
+You can install gwlearn from PyPI or from conda-forge using the tool of your choice:
 
 ```sh
-git clone https://github.com/pysal/gwlearn.git
-cd gwlearn
-pip install .
+pip install gwlearn
 ```
 
-Or install directly from Github:
+Or from conda-forge:
 
 ```sh
-pip install git+https://github.com/pysal/gwlearn.git
-```
-
-The package depends on:
-
-```yaml
-geopandas>=1.0.0
-joblib>=1.4.0
-libpysal>=4.12
-numpy>=1.26.0
-scipy>=1.12.0
-scikit-learn>=1.4.0
-pandas>=2.1.0
+conda install gwlearn -c conda-forge
 ```
 
 ## Bug reports
@@ -91,3 +76,9 @@ If you have a question regarding `gwlearn`, feel free to open an issue or join a
 
 The package is licensed under BSD 3-Clause License (Copyright (c) 2025, Martin
 Fleischmann & PySAL Developers)
+
+## Funding
+
+<img src="https://github.com/pysal/gwlearn/raw/refs/heads/main/docs/source/_static/UK-logo-square-EN.svg" width="200" alt="Charles University logo">
+
+Charles University’s Primus programme through the project "Influence of Socioeconomic and Cultural Factors on Urban Structure in Central Europe", project reference `PRIMUS/24/SCI/023`.
