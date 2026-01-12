@@ -76,3 +76,9 @@ If you have a question regarding `gwlearn`, feel free to open an issue or join a
 
 The package is licensed under BSD 3-Clause License (Copyright (c) 2025, Martin
 Fleischmann & PySAL Developers)
+
+## Funding
+
+<img src="https://github.com/pysal/gwlearn/raw/refs/heads/main/docs/source/_static/UK-logo-square-EN.svg" width="200" alt="Charles University logo">
+
+Charles University’s Primus programme through the project "Influence of Socioeconomic and Cultural Factors on Urban Structure in Central Europe", project reference `PRIMUS/24/SCI/023`.
