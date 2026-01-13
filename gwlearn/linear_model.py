@@ -9,7 +9,7 @@ from libpysal import graph
 from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.utils.metadata_routing import _MetadataRequester
 from .base import BaseClassifier, BaseRegressor
-LogisticRegression(BaseClassifier, _MetadataRequester):
+class LogisticRegression(BaseClassifier, _MetadataRequester):
     """Geographically weighted logistic regression
 
     Fits one :class:`sklearn.linear_model.LogisticRegression` per focal observation
@@ -217,7 +217,7 @@ LogisticRegression(BaseClassifier, _MetadataRequester):
         )
 
         self._model_type = "logistic"
-        def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None):
+    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None):
         # INTERNAL ROUTING SETUP
         # This tells Scikit-Learn that this estimator expects 'geometry'
         self.set_fit_request(geometry=True)
