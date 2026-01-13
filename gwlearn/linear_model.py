@@ -7,11 +7,11 @@ import numpy as np
 import pandas as pd
 from libpysal import graph
 from sklearn.linear_model import LinearRegression, LogisticRegression
-
+from sklearn.utils.metadata_routing import _MetadataRequester
 from .base import BaseClassifier, BaseRegressor
 
 
-class GWLogisticRegression(BaseClassifier):
+class GWLogisticRegression(BaseClassifier, _MetadataRequester):
     """Geographically weighted logistic regression
 
     Fits one :class:`sklearn.linear_model.LogisticRegression` per focal observation
@@ -47,6 +47,12 @@ class GWLogisticRegression(BaseClassifier):
         further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default True
+    geometry : gpd.GeoSeries, optional
+        Geographic location of the observations in the sample. Used to determine the
+        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
+        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
+        need to be specified. To allow prediction, it is required to specify
+        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -151,9 +157,10 @@ class GWLogisticRegression(BaseClassifier):
     >>> gw = GWLogisticRegression(
     ...     bandwidth=30,
     ...     fixed=False,
+    ...     geometry=gdf.representative_point(),
     ...     keep_models=True,
     ...     max_iter=200,
-    ... ).fit(X, y, geometry=gdf.representative_point())
+    ... ).fit(X, y)
     >>> gw.pred_.head()
     0     True
     1    False
@@ -180,6 +187,7 @@ class GWLogisticRegression(BaseClassifier):
         ]
         | Callable = "bisquare",
         include_focal: bool = True,
+        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -200,6 +208,7 @@ class GWLogisticRegression(BaseClassifier):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
+            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -216,8 +225,15 @@ class GWLogisticRegression(BaseClassifier):
         )
 
         self._model_type = "logistic"
+        # INTERNAL ROUTING SETUP
+        # This tells Scikit-Learn that this estimator expects 'geometry'
+        self.set_fit_request(geometry=True)
+       # self.set_predict_request(geometry=True)
+        self.set_score_request(geometry=True)
 
-    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None):
+    def fit(self, X: pd.DataFrame, y: pd.Series, geometry=None, **fit_params):
+        if geometry is not None:
+            self.geometry = geometry
         if isinstance(X, pd.DataFrame):
             self.feature_names_in_ = X.columns.to_numpy()
         else:
@@ -230,7 +246,7 @@ class GWLogisticRegression(BaseClassifier):
             np.array([np.nan]),
         )  # intercept
 
-        super().fit(X=X, y=y, geometry=geometry)
+        super().fit(X=X, y=y, geometry= self.geometry, **fit_params)
 
         self.local_coef_ = pd.concat(
             [x[2] for x in self._score_data], axis=1, keys=self._names
@@ -275,7 +291,7 @@ class GWLogisticRegression(BaseClassifier):
         )
 
 
-class GWLinearRegression(BaseRegressor):
+class GWLinearRegression(BaseRegressor, _MetadataRequester):
     """Geographically weighted linear regression
 
     Fits one :class:`sklearn.linear_model.LinearRegression` per focal observation
@@ -309,6 +325,12 @@ class GWLinearRegression(BaseRegressor):
         further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default True
+    geometry : gpd.GeoSeries, optional
+        Geographic location of the observations in the sample. Used to determine the
+        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
+        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
+        need to be specified. To allow prediction, it is required to specify
+        ``geometry``.
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -390,7 +412,8 @@ class GWLinearRegression(BaseRegressor):
     >>> gwr = GWLinearRegression(
     ...     bandwidth=30,
     ...     fixed=False,
-    ... ).fit(X, y, geometry=gdf.representative_point())
+    ...     geometry=gdf.representative_point(),
+    ... ).fit(X, y)
     >>> gwr.local_r2_.head()
     0    0.614715
     1    0.488495
@@ -416,6 +439,7 @@ class GWLinearRegression(BaseRegressor):
         ]
         | Callable = "bisquare",
         include_focal: bool = True,
+        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -432,6 +456,7 @@ class GWLinearRegression(BaseRegressor):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
+            geometry=geometry,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -444,6 +469,9 @@ class GWLinearRegression(BaseRegressor):
         )
 
         self._model_type = "linear"
+        self.set_fit_request(geometry=True)
+        #self.set_predict_request(geometry=True)
+        self.set_score_request(geometry=True)
 
     def _get_score_data(self, local_model, X, y):  # noqa: ARG002
         return (
@@ -454,7 +482,9 @@ class GWLinearRegression(BaseRegressor):
             local_model.intercept_,  # intercept
         )
 
-    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None):
+    def fit(self, X: pd.DataFrame, y: pd.Series, geometry=None, **fit_params):
+        if geometry is not None:
+            self.geometry = geometry
         if isinstance(X, pd.DataFrame):
             self.feature_names_in_ = X.columns.to_numpy()
         else:
@@ -464,7 +494,7 @@ class GWLinearRegression(BaseRegressor):
             np.array([np.nan]),
         )  # intercept
 
-        super().fit(X=X, y=y, geometry=geometry)
+        super().fit(X=X, y=y, geometry=self.geometry, **fit_params)
 
         self.local_coef_ = pd.concat(
             [x[0] for x in self._score_data], axis=1, keys=self._names
@@ -474,3 +504,9 @@ class GWLinearRegression(BaseRegressor):
         )
 
         return self
+    def score(self, X, y, geometry=None, **score_params):
+        """Standard scoring that accepts metadata to prevent routing errors."""
+        from sklearn.metrics import r2_score
+        # Metadata routing will pass geometry here automatically
+        y_pred = self.predict(X, geometry=geometry)
+        return r2_score(y, y_pred)
