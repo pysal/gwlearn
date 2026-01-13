@@ -6,12 +6,11 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 from libpysal import graph
-from sklearn.linear_model import LinearRegression, LogisticRegression 
+from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LogisticRegression 
 from sklearn.utils.metadata_routing import _MetadataRequester
 
 from .base import BaseClassifier, BaseRegressor
-
-
 class LogisticRegression(BaseClassifier, _MetadataRequester):
     """Geographically weighted logistic regression
 
