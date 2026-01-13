@@ -6,7 +6,7 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 from libpysal import graph
-from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.linear_model import LinearRegression, LogisticRegression as SklearnLogisticRegression
 from sklearn.utils.metadata_routing import _MetadataRequester
 from .base import BaseClassifier, BaseRegressor
 class LogisticRegression(BaseClassifier, _MetadataRequester):
@@ -200,7 +200,7 @@ class LogisticRegression(BaseClassifier, _MetadataRequester):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
-            geometry=geometry,
+            geometry=None,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
