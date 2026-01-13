@@ -9,9 +9,7 @@ from libpysal import graph
 from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.utils.metadata_routing import _MetadataRequester
 from .base import BaseClassifier, BaseRegressor
-
-
-class GWLogisticRegression(BaseClassifier, _MetadataRequester):
+LogisticRegression(BaseClassifier, _MetadataRequester):
     """Geographically weighted logistic regression
 
     Fits one :class:`sklearn.linear_model.LogisticRegression` per focal observation
@@ -47,12 +45,7 @@ class GWLogisticRegression(BaseClassifier, _MetadataRequester):
         further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default True
-    geometry : gpd.GeoSeries, optional
-        Geographic location of the observations in the sample. Used to determine the
-        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
-        need to be specified. To allow prediction, it is required to specify
-        ``geometry``.
+    
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -160,7 +153,7 @@ class GWLogisticRegression(BaseClassifier, _MetadataRequester):
     ...     geometry=gdf.representative_point(),
     ...     keep_models=True,
     ...     max_iter=200,
-    ... ).fit(X, y)
+    ... ).fit(X, y, geometry=gdf.representative_point())
     >>> gw.pred_.head()
     0     True
     1    False
@@ -187,7 +180,6 @@ class GWLogisticRegression(BaseClassifier, _MetadataRequester):
         ]
         | Callable = "bisquare",
         include_focal: bool = True,
-        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
@@ -225,6 +217,7 @@ class GWLogisticRegression(BaseClassifier, _MetadataRequester):
         )
 
         self._model_type = "logistic"
+        def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None):
         # INTERNAL ROUTING SETUP
         # This tells Scikit-Learn that this estimator expects 'geometry'
         self.set_fit_request(geometry=True)
@@ -325,12 +318,7 @@ class GWLinearRegression(BaseRegressor, _MetadataRequester):
         further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default True
-    geometry : gpd.GeoSeries, optional
-        Geographic location of the observations in the sample. Used to determine the
-        spatial interaction weight based on specification by ``bandwidth``, ``fixed``,
-        ``kernel``, and ``include_focal`` keywords.  Either ``geometry`` or ``graph``
-        need to be specified. To allow prediction, it is required to specify
-        ``geometry``.
+    
     graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
@@ -412,8 +400,7 @@ class GWLinearRegression(BaseRegressor, _MetadataRequester):
     >>> gwr = GWLinearRegression(
     ...     bandwidth=30,
     ...     fixed=False,
-    ...     geometry=gdf.representative_point(),
-    ... ).fit(X, y)
+    ... ).fit(X, y, geometry=gdf.representative_point())
     >>> gwr.local_r2_.head()
     0    0.614715
     1    0.488495
@@ -439,7 +426,6 @@ class GWLinearRegression(BaseRegressor, _MetadataRequester):
         ]
         | Callable = "bisquare",
         include_focal: bool = True,
-        geometry: gpd.GeoSeries | None = None,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
