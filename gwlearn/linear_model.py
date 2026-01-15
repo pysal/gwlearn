@@ -218,14 +218,14 @@ class GWLogisticRegression(BaseClassifier, _MetadataRequester):
         )
 
         self._model_type = "logistic"
-    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None):
-        # INTERNAL ROUTING SETUP
-        # This tells Scikit-Learn that this estimator expects 'geometry'
+    def fit(self,
+            X: pd.DataFrame,
+            y: pd.Series,
+            geometry=None,
+            **_fit_params
+           ):
         self.set_fit_request(geometry=True)
-       # self.set_predict_request(geometry=True)
         self.set_score_request(geometry=True)
-
-    def fit(self, X: pd.DataFrame, y: pd.Series, geometry=None, **fit_params):
         if geometry is not None:
             self.geometry = geometry
         if isinstance(X, pd.DataFrame):
