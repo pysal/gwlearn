@@ -47,8 +47,7 @@ class GWLogisticRegression(BaseClassifier, _MetadataRequester):
         further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default True
-    
-    graph : Graph, optional
+   graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
         ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either
