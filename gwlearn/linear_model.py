@@ -10,6 +10,7 @@ from sklearn.linear_model import LinearRegression, LogisticRegression
 
 from .base import BaseClassifier, BaseRegressor
 
+
 class GWLogisticRegression(BaseClassifier):
     """Geographically weighted logistic regression
 
@@ -482,7 +483,7 @@ class GWLinearRegression(BaseRegressor):
         )
 
         return self
-    def score(self, X, y, geometry=None, **score_params):
+    def score(self, X, y, geometry=None, **_score_params):
         """Standard scoring that accepts metadata to prevent routing errors."""
         from sklearn.metrics import r2_score
         # Metadata routing will pass geometry here automatically
