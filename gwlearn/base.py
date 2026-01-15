@@ -709,7 +709,10 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self._empty_feature_imp = None
 
     def fit(
-        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None,**kwargs
+        self,
+        X: pd.DataFrame,
+        y: pd.Series, geometry: gpd.GeoSeries | None = None,
+        **_fit_params
     ) -> "BaseClassifier":
         """Fit geographically weighted local classification models.
 
@@ -1442,7 +1445,11 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         self.random_state = random_state
 
     def fit(
-        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None,**kwargs
+        self,
+        X: pd.DataFrame,
+        y: pd.Series,
+        geometry: gpd.GeoSeries | None = None,
+        **_fit_params
     ) -> "BaseRegressor":
         """Fit geographically weighted local regression models.
 
