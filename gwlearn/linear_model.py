@@ -2,14 +2,12 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Literal
 
-import geopandas as gpd
 import numpy as np
 import pandas as pd
 from libpysal import graph
 from sklearn.linear_model import LinearRegression, LogisticRegression
 
 from .base import BaseClassifier, BaseRegressor
-
 
 class GWLogisticRegression(BaseClassifier):
     """Geographically weighted logistic regression
