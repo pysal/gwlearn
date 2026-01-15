@@ -8,7 +8,6 @@ import pandas as pd
 from libpysal import graph
 from sklearn.linear_model import LinearRegression, LogisticRegression
 
-
 from .base import BaseClassifier, BaseRegressor
 
 class GWLogisticRegression(BaseClassifier):
