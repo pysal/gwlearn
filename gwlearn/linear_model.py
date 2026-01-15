@@ -10,7 +10,7 @@ from sklearn.linear_model import LinearRegression,LogisticRegression
 from sklearn.utils.metadata_routing import _MetadataRequester
 
 from .base import BaseClassifier, BaseRegressor
-class LogisticRegression(BaseClassifier, _MetadataRequester):
+class GWLogisticRegression(BaseClassifier, _MetadataRequester):
     """Geographically weighted logistic regression
 
     Fits one :class:`sklearn.linear_model.LogisticRegression` per focal observation
