@@ -150,7 +150,6 @@ class GWLogisticRegression(BaseClassifier):
     >>> gw = GWLogisticRegression(
     ...     bandwidth=30,
     ...     fixed=False,
-    ...     geometry=gdf.representative_point(),
     ...     keep_models=True,
     ...     max_iter=200,
     ... ).fit(X, y, geometry=gdf.representative_point())
