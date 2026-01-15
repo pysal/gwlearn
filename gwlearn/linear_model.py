@@ -7,11 +7,11 @@ import numpy as np
 import pandas as pd
 from libpysal import graph
 from sklearn.linear_model import LinearRegression, LogisticRegression
-from sklearn.utils.metadata_routing import _MetadataRequester
+
 
 from .base import BaseClassifier, BaseRegressor
 
-class GWLogisticRegression(BaseClassifier, _MetadataRequester):
+class GWLogisticRegression(BaseClassifier):
     """Geographically weighted logistic regression
 
     Fits one :class:`sklearn.linear_model.LogisticRegression` per focal observation
@@ -47,7 +47,7 @@ class GWLogisticRegression(BaseClassifier, _MetadataRequester):
         further spatial analysis of the model performance (and generalises to models
         that do not support OOB scoring). However, it leaves out the most representative
         sample. By default True
-   graph : Graph, optional
+    graph : Graph, optional
         Custom libpysal.graph.Graph object encoding the spatial interaction between
         observations in the sample. If given, it is used directly and ``bandwidth``,
         ``fixed``, ``kernel``, and ``include_focal`` keywords are ignored. Either
@@ -218,12 +218,7 @@ class GWLogisticRegression(BaseClassifier, _MetadataRequester):
         )
 
         self._model_type = "logistic"
-    def fit(self,
-            X: pd.DataFrame,
-            y: pd.Series,
-            geometry=None,
-            **_fit_params
-           ):
+    def fit(self,X: pd.DataFrame,y: pd.Series,geometry=None,**_fit_params):
         self.set_fit_request(geometry=True)
         self.set_score_request(geometry=True)
         if geometry is not None:
@@ -240,7 +235,7 @@ class GWLogisticRegression(BaseClassifier, _MetadataRequester):
             np.array([np.nan]),
         )  # intercept
 
-        super().fit(X=X, y=y, geometry= self.geometry, **fit_params)
+        super().fit(X=X, y=y, geometry= self.geometry, **_fit_params)
 
         self.local_coef_ = pd.concat(
             [x[2] for x in self._score_data], axis=1, keys=self._names
@@ -285,7 +280,7 @@ class GWLogisticRegression(BaseClassifier, _MetadataRequester):
         )
 
 
-class GWLinearRegression(BaseRegressor, _MetadataRequester):
+class GWLinearRegression(BaseRegressor):
     """Geographically weighted linear regression
 
     Fits one :class:`sklearn.linear_model.LinearRegression` per focal observation
@@ -442,7 +437,7 @@ class GWLinearRegression(BaseRegressor, _MetadataRequester):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
-            geometry=geometry,
+            geometry=None,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -455,10 +450,6 @@ class GWLinearRegression(BaseRegressor, _MetadataRequester):
         )
 
         self._model_type = "linear"
-        self.set_fit_request(geometry=True)
-        #self.set_predict_request(geometry=True)
-        self.set_score_request(geometry=True)
-
     def _get_score_data(self, local_model, X, y):  # noqa: ARG002
         return (
             pd.Series(
@@ -468,7 +459,10 @@ class GWLinearRegression(BaseRegressor, _MetadataRequester):
             local_model.intercept_,  # intercept
         )
 
-    def fit(self, X: pd.DataFrame, y: pd.Series, geometry=None, **fit_params):
+    def fit(self, X: pd.DataFrame, y: pd.Series, geometry=None, **_fit_params):
+        self.set_fit_request(geometry=True)
+        #self.set_predict_request(geometry=True)
+        self.set_score_request(geometry=True)
         if geometry is not None:
             self.geometry = geometry
         if isinstance(X, pd.DataFrame):
@@ -480,7 +474,7 @@ class GWLinearRegression(BaseRegressor, _MetadataRequester):
             np.array([np.nan]),
         )  # intercept
 
-        super().fit(X=X, y=y, geometry=self.geometry, **fit_params)
+        super().fit(X=X, y=y, geometry=self.geometry, **_fit_params)
 
         self.local_coef_ = pd.concat(
             [x[0] for x in self._score_data], axis=1, keys=self._names
