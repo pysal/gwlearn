@@ -708,14 +708,13 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self.leave_out = leave_out
         self._empty_score_data = None
         self._empty_feature_imp = None
-
-  def fit(
-    self,
-    X: pd.DataFrame,
-    y: pd.Series,
-    geometry: gpd.GeoSeries | None = None,
-    **_fit_params,
-) -> "BaseClassifier":
+    def fit(
+        self,
+        X: pd.DataFrame,
+        y: pd.Series,
+        geometry: gpd.GeoSeries | None = None,
+        **_fit_params,
+    ) -> "BaseClassifier":
     """Fit geographically weighted local classification models.
 
     This fits one local model per focal observation (subject to local invariance
@@ -746,19 +745,13 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
     The neighborhood definition comes from either ``self.graph`` or from
     ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
     """
-
-    if self.graph is None:
-        self._validate_geometry(geometry)
-
-    if _routing_enabled():
-        self.set_fit_request(geometry=True)
-
-    self._start = time()
-    self.geometry = geometry
-
-    
-   
-        def _is_binary(series: pd.Series) -> bool:
+        if self.graph is None:
+            self._validate_geometry(geometry)
+        if _routing_enabled():
+            self.set_fit_request(geometry=True)
+        self._start = time()
+        self.geometry = geometry
+    def _is_binary(series: pd.Series) -> bool:
             """Check if a pandas Series encodes a binary variable (bool or 0/1)."""
             unique_values = set(np.unique(series))
 
