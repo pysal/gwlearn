@@ -745,12 +745,10 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         The neighborhood definition comes from either ``self.graph`` or from
         ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
-            if _routing_enabled():
+    if _routing_enabled():
                 self.set_fit_request(geometry=True)
 
-        
         self._start = time()
-
         self.geometry = geometry
 
         def _is_binary(series: pd.Series) -> bool:
