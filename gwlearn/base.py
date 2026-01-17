@@ -13,6 +13,7 @@ from libpysal import graph
 from scipy.spatial import KDTree
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 from sklearn.model_selection import train_test_split
+from sklearn.utils.metadata_routing import _routing_enabled
 
 __all__ = ["BaseClassifier", "BaseRegressor"]
 
@@ -744,6 +745,10 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         The neighborhood definition comes from either ``self.graph`` or from
         ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
+            if _routing_enabled():
+                self.set_fit_request(geometry=True)
+
+        
         self._start = time()
 
         self.geometry = geometry
@@ -1483,6 +1488,10 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         """
         if self.graph is None:
             self._validate_geometry(geometry)
+        if _routing_enabled():
+            self.set_fit_request(geometry=True)
+
+        self._start = time()
 
         self.geometry = geometry
 
