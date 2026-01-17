@@ -743,8 +743,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Notes
         -----
         The neighborhood definition comes from either ``self.graph`` or from
-        ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
-        """
+        ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``)."""
+    
     if _routing_enabled():
                 self.set_fit_request(geometry=True)
 
