@@ -709,48 +709,55 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self._empty_score_data = None
         self._empty_feature_imp = None
 
-    def fit(
-        self,
-        X: pd.DataFrame,
-        y: pd.Series, geometry: gpd.GeoSeries | None = None,
-        **_fit_params
-    ) -> "BaseClassifier":
-        """Fit geographically weighted local classification models.
+  def fit(
+    self,
+    X: pd.DataFrame,
+    y: pd.Series,
+    geometry: gpd.GeoSeries | None = None,
+    **_fit_params,
+) -> "BaseClassifier":
+    """Fit geographically weighted local classification models.
 
-        This fits one local model per focal observation (subject to local invariance
-        checks and ``min_proportion``) and stores focal predictions.
+    This fits one local model per focal observation (subject to local invariance
+    checks and ``min_proportion``) and stores focal predictions.
 
-        Parameters
-        ----------
-        X : pandas.DataFrame
-            Feature matrix.
-        y : pandas.Series
-            Binary target encoded as boolean or ``{0, 1}``.
-        geometry : geopandas.GeoSeries | None
-            Geographic location of the observations in the sample. Used to determine the
-            spatial interaction weight based on specification by ``bandwidth``,
-            ``fixed``, ``kernel``, and ``include_focal`` keywords.  If `None`,
-            a precomputed ``graph`` needs to be specified. To allow prediction,
-            it is required to specify ``geometry``. If both ``graph`` and ``geometry``
-            are specified, ``graph`` is used at the fit time, while ``geometry`` is
-            used for prediction.
+    Parameters
+    ----------
+    X : pandas.DataFrame
+        Feature matrix.
+    y : pandas.Series
+        Binary target encoded as boolean or ``{0, 1}``.
+    geometry : geopandas.GeoSeries | None
+        Geographic location of the observations in the sample. Used to determine the
+        spatial interaction weight based on specification by ``bandwidth``,
+        ``fixed``, ``kernel``, and ``include_focal`` keywords.  If `None`,
+        a precomputed ``graph`` needs to be specified. To allow prediction,
+        it is required to specify ``geometry``. If both ``graph`` and ``geometry``
+        are specified, ``graph`` is used at the fit time, while ``geometry`` is
+        used for prediction.
 
-        Returns
-        -------
-        self
-            Fitted estimator.
+    Returns
+    -------
+    self
+        Fitted estimator.
 
-        Notes
-        -----
-        The neighborhood definition comes from either ``self.graph`` or from
-        ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``)."""
-    
+    Notes
+    -----
+    The neighborhood definition comes from either ``self.graph`` or from
+    ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
+    """
+
+    if self.graph is None:
+        self._validate_geometry(geometry)
+
     if _routing_enabled():
-                self.set_fit_request(geometry=True)
+        self.set_fit_request(geometry=True)
 
-        self._start = time()
-        self.geometry = geometry
+    self._start = time()
+    self.geometry = geometry
 
+    
+   
         def _is_binary(series: pd.Series) -> bool:
             """Check if a pandas Series encodes a binary variable (bool or 0/1)."""
             unique_values = set(np.unique(series))
