@@ -2,14 +2,12 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Literal
 
-import geopandas as gpd
 import numpy as np
 import pandas as pd
 from libpysal import graph
 from sklearn.linear_model import LinearRegression, LogisticRegression
 
 from .base import BaseClassifier, BaseRegressor
-
 
 class GWLogisticRegression(BaseClassifier):
     """Geographically weighted logistic regression
@@ -200,6 +198,7 @@ class GWLogisticRegression(BaseClassifier):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
+            geometry=None,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -216,8 +215,11 @@ class GWLogisticRegression(BaseClassifier):
         )
 
         self._model_type = "logistic"
-
-    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None):
+    def fit(self,X: pd.DataFrame,y: pd.Series,geometry=None,**_fit_params):
+        self.set_fit_request(geometry=True)
+        self.set_score_request(geometry=True)
+        if geometry is not None:
+            self.geometry = geometry
         if isinstance(X, pd.DataFrame):
             self.feature_names_in_ = X.columns.to_numpy()
         else:
@@ -230,7 +232,7 @@ class GWLogisticRegression(BaseClassifier):
             np.array([np.nan]),
         )  # intercept
 
-        super().fit(X=X, y=y, geometry=geometry)
+        super().fit(X=X, y=y, geometry= self.geometry, **_fit_params)
 
         self.local_coef_ = pd.concat(
             [x[2] for x in self._score_data], axis=1, keys=self._names
@@ -432,6 +434,7 @@ class GWLinearRegression(BaseRegressor):
             fixed=fixed,
             kernel=kernel,
             include_focal=include_focal,
+            geometry=None,
             graph=graph,
             n_jobs=n_jobs,
             fit_global_model=fit_global_model,
@@ -444,7 +447,6 @@ class GWLinearRegression(BaseRegressor):
         )
 
         self._model_type = "linear"
-
     def _get_score_data(self, local_model, X, y):  # noqa: ARG002
         return (
             pd.Series(
@@ -454,7 +456,12 @@ class GWLinearRegression(BaseRegressor):
             local_model.intercept_,  # intercept
         )
 
-    def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None):
+    def fit(self, X: pd.DataFrame, y: pd.Series, geometry=None, **_fit_params):
+        self.set_fit_request(geometry=True)
+        #self.set_predict_request(geometry=True)
+        self.set_score_request(geometry=True)
+        if geometry is not None:
+            self.geometry = geometry
         if isinstance(X, pd.DataFrame):
             self.feature_names_in_ = X.columns.to_numpy()
         else:
@@ -464,7 +471,7 @@ class GWLinearRegression(BaseRegressor):
             np.array([np.nan]),
         )  # intercept
 
-        super().fit(X=X, y=y, geometry=geometry)
+        super().fit(X=X, y=y, geometry=self.geometry, **_fit_params)
 
         self.local_coef_ = pd.concat(
             [x[0] for x in self._score_data], axis=1, keys=self._names
@@ -474,3 +481,9 @@ class GWLinearRegression(BaseRegressor):
         )
 
         return self
+    def score(self, X, y, geometry=None, **_score_params):
+        """Standard scoring that accepts metadata to prevent routing errors."""
+        from sklearn.metrics import r2_score
+        # Metadata routing will pass geometry here automatically
+        y_pred = self.predict(X, geometry=geometry)
+        return r2_score(y, y_pred)
