@@ -183,7 +183,7 @@ class GWLogisticRegression(BaseClassifier):
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
         fit_global_model: bool = True,
-        strict: bool = False,
+        strict: bool | None = False,
         keep_models: bool | str | Path = False,
         temp_folder: str | None = None,
         batch_size: int | None = None,
