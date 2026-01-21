@@ -260,7 +260,9 @@ class GWLogisticRegression(BaseClassifier):
 
         return self
 
-    def _get_score_data(self, local_model: LogisticRegression, X: pd.DataFrame, y: pd.Series):
+    def _get_score_data(
+        self, local_model: LogisticRegression, X: pd.DataFrame, y: pd.Series
+    ):
         local_proba = pd.DataFrame(
             local_model.predict_proba(X), columns=local_model.classes_
         )
