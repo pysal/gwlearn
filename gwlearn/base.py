@@ -1088,7 +1088,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                 with open(local_model, "rb") as f:
                     local_model = load(f)
 
-            if local_model is not None:
+            if not pd.isna(local_model):
                 pred.append(
                     pd.Series(
                         local_model.predict_proba(x_).flatten(),
@@ -1120,7 +1120,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             with open(local_model, "rb") as f:
                 local_model = load(f)
 
-        if local_model is not None:
+        if not pd.isna(local_model):
             return pd.Series(
                 local_model.predict_proba(x_).flatten(),
                 index=local_model.classes_,
