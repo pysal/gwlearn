@@ -8,7 +8,6 @@ dependencies:
   - pip
   # testing
   - geodatasets
-  - mgwr
   - pre-commit
   - pytest
   - pytest-cov
@@ -25,3 +24,4 @@ dependencies:
       - scikit-learn
       - git+https://github.com/geopandas/geopandas.git
       - git+https://github.com/pysal/libpysal.git
+      - git+https://github.com/pysal/mgwr.git
