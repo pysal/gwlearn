@@ -6,6 +6,7 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 from libpysal import graph
+from sklearn.base import BaseEstimator
 from sklearn.linear_model import LinearRegression, LogisticRegression
 
 from .base import BaseClassifier, BaseRegressor
@@ -261,8 +262,11 @@ class GWLogisticRegression(BaseClassifier):
         return self
 
     def _get_score_data(
-        self, local_model: LogisticRegression, X: pd.DataFrame, y: pd.Series
-    ):
+        self,
+        local_model: BaseEstimator,
+        X: pd.DataFrame,
+        y: pd.Series,
+    ) -> tuple:
         local_proba = pd.DataFrame(
             local_model.predict_proba(X), columns=local_model.classes_
         )
@@ -447,7 +451,12 @@ class GWLinearRegression(BaseRegressor):
 
         self._model_type = "linear"
 
-    def _get_score_data(self, local_model, X, y):  # noqa: ARG002
+    def _get_score_data(
+        self,
+        local_model: BaseEstimator,
+        X: pd.DataFrame,  # noqa: ARG002
+        y: pd.Series,  # noqa: ARG002
+    ) -> tuple:
         return (
             pd.Series(
                 local_model.coef_.flatten(),
