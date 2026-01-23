@@ -106,7 +106,7 @@ class BandwidthSearch:
     ...     max_iter=200,
     ... ).fit(X, y, geometry=gdf.representative_point())
     >>> search.optimal_bandwidth_
-    np.int64(40)
+    40
     """
 
     def __init__(

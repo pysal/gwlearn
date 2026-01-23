@@ -280,7 +280,7 @@ class GWRandomForestClassifier(BaseClassifier):
             self.oob_y_pooled_ = np.concatenate(non_empty_y)
         else:
             # Set to empty array with same dtype as y
-            self.oob_y_pooled_ = np.array([], dtype=y.dtype)  # ty:ignore[no-matching-overload]
+            self.oob_y_pooled_ = np.array([], dtype=y.dtype)
         if non_empty_pred:
             self.oob_pred_pooled_ = np.concatenate(non_empty_pred)
         else:
@@ -772,7 +772,7 @@ class GWRandomForestRegressor(BaseRegressor):
             self.oob_y_pooled_ = np.concatenate(non_empty_y)
         else:
             # Set to empty array with same dtype as y
-            self.oob_y_pooled_ = np.array([], dtype=y.dtype)  # type:ignore[no-matching-overload]
+            self.oob_y_pooled_ = np.array([], dtype=y.dtype)
         if non_empty_pred:
             self.oob_pred_pooled_ = np.concatenate(non_empty_pred)
         else:
