@@ -95,7 +95,7 @@ def test_interval_search_basic(sample_data):  # noqa: F811
     assert (
         search.min_bandwidth
         <= search.optimal_bandwidth_  # ty:ignore[unsupported-operator]
-        <= search.max_bandwidth  # ty:ignore[unsupported-operator]
+        <= search.max_bandwidth
     )
 
     # Check the number of bandwidths tested
@@ -141,7 +141,7 @@ def test_golden_section_search_basic(sample_data):  # noqa: F811
     assert (
         search.min_bandwidth
         <= search.optimal_bandwidth_  # ty:ignore[unsupported-operator]
-        <= search.max_bandwidth  # ty:ignore[unsupported-operator]
+        <= search.max_bandwidth
     )
     # Golden section should evaluate fewer points than interval search
     assert len(search.scores_) <= search.max_iterations * 2
