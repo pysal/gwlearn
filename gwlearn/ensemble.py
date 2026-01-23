@@ -7,6 +7,7 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 from libpysal import graph
+from sklearn.base import BaseEstimator
 from sklearn.ensemble import (
     GradientBoostingClassifier,
     GradientBoostingRegressor,
@@ -296,7 +297,12 @@ class GWRandomForestClassifier(BaseClassifier):
 
         return self
 
-    def _get_score_data(self, local_model, X, y):  # noqa: ARG002
+    def _get_score_data(
+        self,
+        local_model: BaseEstimator,
+        X: pd.DataFrame,  # noqa: ARG002
+        y: pd.Series,  # noqa: ARG002
+    ) -> float:
         return local_model.oob_score_
 
 
@@ -783,7 +789,12 @@ class GWRandomForestRegressor(BaseRegressor):
 
         return self
 
-    def _get_score_data(self, local_model, X, y):  # noqa: ARG002
+    def _get_score_data(
+        self,
+        local_model: BaseEstimator,
+        X: pd.DataFrame,  # noqa: ARG002
+        y: pd.Series,  # noqa: ARG002
+    ) -> float:
         return local_model.oob_score_
 
 

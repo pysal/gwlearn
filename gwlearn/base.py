@@ -488,7 +488,12 @@ class _BaseModel(BaseEstimator):
     def fit(self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None):
         raise NotImplementedError("Subclasses must implement fit")
 
-    def _get_score_data(self, local_model, X, y):  # noqa: ARG002
+    def _get_score_data(
+        self,
+        local_model: BaseEstimator,  # noqa: ARG002
+        X: pd.DataFrame,  # noqa: ARG002
+        y: pd.Series,  # noqa: ARG002
+    ) -> float | tuple:
         """Subclasses should implement custom function"""
         return np.nan
 
