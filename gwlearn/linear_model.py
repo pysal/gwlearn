@@ -138,6 +138,10 @@ class GWLogisticRegression(BaseClassifier):
     left_out_w_ : np.ndarray
         Array of weights on left out observations in local models when
         ``leave_out`` is set.
+    pooled_score_ : float
+        Accuracy computed from all local model predictions pooled together.
+    score_ : float
+        Alias for ``pooled_score_``.
 
     Examples
     --------
@@ -164,7 +168,6 @@ class GWLogisticRegression(BaseClassifier):
     dtype: boolean
     """
 
-    # TODO: score_ should be an alias of pooled_score_ - this is different from MGWR
     def __init__(
         self,
         bandwidth: float | None = None,
@@ -260,6 +263,30 @@ class GWLogisticRegression(BaseClassifier):
             self.pred_pooled_ = np.array([])
 
         return self
+
+    @property
+    def pooled_score_(self) -> float:
+        """Accuracy on pooled predictions vs pooled true labels.
+
+        Returns
+        -------
+        float
+            Accuracy computed from all local model predictions pooled together.
+        """
+        if self.y_pooled_.size == 0 or self.pred_pooled_.size == 0:
+            return float("nan")
+        return (self.y_pooled_ == self.pred_pooled_).mean()
+
+    @property
+    def score_(self) -> float:
+        """Alias for pooled_score_.
+
+        Returns
+        -------
+        float
+            Accuracy computed from all local model predictions pooled together.
+        """
+        return self.pooled_score_
 
     def _get_score_data(
         self,
@@ -382,6 +409,10 @@ class GWLinearRegression(BaseRegressor):
         each location
     local_intercept_ : pd.Series
         Local intercept values at each location
+    pooled_score_ : float
+        R² computed from all local model predictions pooled together.
+    score_ : float
+        Alias for ``pooled_score_``.
 
     Examples
     --------
@@ -484,4 +515,34 @@ class GWLinearRegression(BaseRegressor):
             [x[1] for x in self._score_data], index=self._names
         )
 
+        # Store pooled y for score computation
+        self.y_pooled_ = y.values
+        self.pred_pooled_ = self.pred_.values
+
         return self
+
+    @property
+    def pooled_score_(self) -> float:
+        """R² on pooled predictions vs pooled true values.
+
+        Returns
+        -------
+        float
+            R² computed from all local model predictions pooled together.
+        """
+        if len(self.y_pooled_) == 0:
+            return float("nan")
+        ss_res = ((self.y_pooled_ - self.pred_pooled_) ** 2).sum()
+        ss_tot = ((self.y_pooled_ - self.y_pooled_.mean()) ** 2).sum()
+        return 1 - ss_res / ss_tot if ss_tot != 0 else float("nan")
+
+    @property
+    def score_(self) -> float:
+        """Alias for pooled_score_.
+
+        Returns
+        -------
+        float
+            R² computed from all local model predictions pooled together.
+        """
+        return self.pooled_score_

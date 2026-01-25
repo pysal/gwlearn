@@ -148,6 +148,10 @@ class GWRandomForestClassifier(BaseClassifier):
         Pooled out-of-bag (OOB) true labels across all fitted local models.
     oob_pred_pooled_ : numpy.ndarray
         Pooled out-of-bag (OOB) predictions/scores across all fitted local models.
+    oob_pooled_score_ : float
+        Accuracy computed from all out-of-bag predictions pooled together.
+    score_ : float
+        Alias for ``oob_pooled_score_``.
 
     Examples
     --------
@@ -296,6 +300,32 @@ class GWRandomForestClassifier(BaseClassifier):
             print(f"{(time() - self._start):.2f}s: Finished")
 
         return self
+
+    @property
+    def oob_pooled_score_(self) -> float:
+        """Accuracy on pooled out-of-bag predictions vs pooled OOB true labels.
+
+        Returns
+        -------
+        float
+            Accuracy computed from all out-of-bag predictions pooled together.
+        """
+        if self.oob_y_pooled_.size == 0 or self.oob_pred_pooled_.size == 0:
+            return float("nan")
+        y_true = self.oob_y_pooled_.ravel()
+        y_pred = self.oob_pred_pooled_.ravel()
+        return (y_true == y_pred).mean()
+
+    @property
+    def score_(self) -> float:
+        """Alias for oob_pooled_score_.
+
+        Returns
+        -------
+        float
+            Accuracy computed from all out-of-bag predictions pooled together.
+        """
+        return self.oob_pooled_score_
 
     def _get_score_data(
         self,
@@ -646,6 +676,10 @@ class GWRandomForestRegressor(BaseRegressor):
         Pooled out-of-bag (OOB) true values across all fitted local models.
     oob_pred_pooled_ : numpy.ndarray
         Pooled out-of-bag (OOB) predictions across all fitted local models.
+    oob_pooled_score_ : float
+        R² computed from all out-of-bag predictions pooled together.
+    score_ : float
+        Alias for ``oob_pooled_score_``.
 
     Examples
     --------
@@ -788,6 +822,34 @@ class GWRandomForestRegressor(BaseRegressor):
             print(f"{(time() - self._start):.2f}s: Finished")
 
         return self
+
+    @property
+    def oob_pooled_score_(self) -> float:
+        """R² on pooled out-of-bag predictions vs pooled OOB true values.
+
+        Returns
+        -------
+        float
+            R² computed from all out-of-bag predictions pooled together.
+        """
+        if len(self.oob_y_pooled_) == 0:
+            return float("nan")
+        y_true = self.oob_y_pooled_.ravel()
+        y_pred = self.oob_pred_pooled_.ravel()
+        ss_res = ((y_true - y_pred) ** 2).sum()
+        ss_tot = ((y_true - y_true.mean()) ** 2).sum()
+        return 1 - ss_res / ss_tot if ss_tot != 0 else float("nan")
+
+    @property
+    def score_(self) -> float:
+        """Alias for oob_pooled_score_.
+
+        Returns
+        -------
+        float
+            R² computed from all out-of-bag predictions pooled together.
+        """
+        return self.oob_pooled_score_
 
     def _get_score_data(
         self,
