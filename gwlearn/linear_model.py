@@ -8,6 +8,7 @@ import pandas as pd
 from libpysal import graph
 from sklearn.base import BaseEstimator
 from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.metrics import accuracy_score, r2_score
 
 from .base import BaseClassifier, BaseRegressor
 
@@ -274,8 +275,8 @@ class GWLogisticRegression(BaseClassifier):
             Accuracy computed from all local model predictions pooled together.
         """
         if self.y_pooled_.size == 0 or self.pred_pooled_.size == 0:
-            return float("nan")
-        return (self.y_pooled_ == self.pred_pooled_).mean()
+            return np.nan
+        return accuracy_score(self.y_pooled_, self.pred_pooled_)
 
     @property
     def score_(self) -> float:
@@ -531,10 +532,8 @@ class GWLinearRegression(BaseRegressor):
             R² computed from all local model predictions pooled together.
         """
         if len(self.y_pooled_) == 0:
-            return float("nan")
-        ss_res = ((self.y_pooled_ - self.pred_pooled_) ** 2).sum()
-        ss_tot = ((self.y_pooled_ - self.y_pooled_.mean()) ** 2).sum()
-        return 1 - ss_res / ss_tot if ss_tot != 0 else float("nan")
+            return np.nan
+        return r2_score(self.y_pooled_, self.pred_pooled_)
 
     @property
     def score_(self) -> float:

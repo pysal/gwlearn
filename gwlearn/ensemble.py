@@ -14,6 +14,7 @@ from sklearn.ensemble import (
     RandomForestClassifier,
     RandomForestRegressor,
 )
+from sklearn.metrics import accuracy_score, r2_score
 
 from .base import BaseClassifier, BaseRegressor
 
@@ -311,10 +312,10 @@ class GWRandomForestClassifier(BaseClassifier):
             Accuracy computed from all out-of-bag predictions pooled together.
         """
         if self.oob_y_pooled_.size == 0 or self.oob_pred_pooled_.size == 0:
-            return float("nan")
+            return np.nan
         y_true = self.oob_y_pooled_.ravel()
         y_pred = self.oob_pred_pooled_.ravel()
-        return (y_true == y_pred).mean()
+        return accuracy_score(y_true, y_pred)
 
     @property
     def score_(self) -> float:
@@ -833,12 +834,10 @@ class GWRandomForestRegressor(BaseRegressor):
             R² computed from all out-of-bag predictions pooled together.
         """
         if len(self.oob_y_pooled_) == 0:
-            return float("nan")
+            return np.nan
         y_true = self.oob_y_pooled_.ravel()
         y_pred = self.oob_pred_pooled_.ravel()
-        ss_res = ((y_true - y_pred) ** 2).sum()
-        ss_tot = ((y_true - y_true.mean()) ** 2).sum()
-        return 1 - ss_res / ss_tot if ss_tot != 0 else float("nan")
+        return r2_score(y_true, y_pred)
 
     @property
     def score_(self) -> float:
