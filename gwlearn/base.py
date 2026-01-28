@@ -11,9 +11,9 @@ import pandas as pd
 from joblib import Parallel, delayed, dump, load
 from libpysal import graph
 from scipy.spatial import KDTree
-from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
+from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin, _fit_context
 from sklearn.model_selection import train_test_split
-
+from sklearn.utils.metadata_routing import MetadataRequest
 __all__ = ["BaseClassifier", "BaseRegressor"]
 
 
@@ -713,6 +713,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self._empty_score_data = None
         self._empty_feature_imp = None
 
+
     def fit(
         self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
     ) -> "BaseClassifier":
@@ -1268,6 +1269,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
 
 class BaseRegressor(_BaseModel, RegressorMixin):
+    _parameter_constraints: dict = {}
     """Generic geographically weighted regression meta-estimator.
 
     This class wraps a scikit-learn-compatible *regressor class* and fits one local
@@ -1445,10 +1447,28 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             **kwargs,
         )
         self.random_state = random_state
+        self.geometry = None
+    def get_metadata_routing(self):
+        routing = MetadataRequest(owner=self)
+        routing.fit.add_request("geometry", required=True)
+        routing.predict.add_request("geometry", required=True)
+        routing.score.add_request("geometry", required=True)
 
+        return routing
+
+
+    @_fit_context(prefer_skip_nested_validation=True)
     def fit(
-        self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
+       self,
+       X: pd.DataFrame,
+       y: pd.Series,
+       *,
+       geometry: gpd.GeoSeries | None = None,
+
+
+       **kwargs,
     ) -> "BaseRegressor":
+
         """Fit geographically weighted local regression models.
 
         Fits one local model per focal observation and stores focal (in-sample if
@@ -1480,9 +1500,11 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
         if self.graph is None:
+            if geometry is None:
+                raise ValueError("Either geometry or graph must be provided.")
             self._validate_geometry(geometry)
 
-        self.geometry = geometry
+
 
         weights = self.graph if self.graph is not None else self._build_weights()
         self._setup_model_storage()
@@ -1551,7 +1573,8 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     def predict(
         self,
         X: pd.DataFrame,
-        geometry: gpd.GeoSeries,
+        *,
+        geometry: gpd.GeoSeries | None = None,
         bandwidth: Literal["nearest"] | int | float | None = "nearest",
         global_model_weight: float = 0,
     ) -> pd.Series:
@@ -1604,6 +1627,8 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         Requires the estimator to have been fit with ``keep_models=True`` (or a
         ``Path``) so local models can be used at prediction time.
         """
+
+
         data = [X.iloc[[i]] for i in range(len(X))]
 
         predictions = []
@@ -1762,10 +1787,14 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         self,
         X: pd.DataFrame,
         y: pd.Series,
-        geometry: gpd.GeoSeries,
+
+        sample_weight=None,
+
+        geometry: gpd.GeoSeries| None = None,
         bandwidth: Literal["nearest"] | int | float | None = "nearest",
         global_model_weight: float = 0,
-    ) -> float:  # ty:ignore[invalid-method-override]
+
+    ) -> float:
         """Return the coefficient of determination R^2 of the prediction.
 
         Parameters
@@ -1786,8 +1815,12 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         float
             R^2 of self.predict(X, geometry).
         """
+
         y_pred = self.predict(
-            X, geometry, bandwidth=bandwidth, global_model_weight=global_model_weight
+            X,
+            geometry=geometry,
+            bandwidth=bandwidth,
+            global_model_weight=global_model_weight,
         )
         # Handle missing predictions (np.nan)
         mask = ~pd.isna(y_pred)
