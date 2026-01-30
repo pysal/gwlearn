@@ -1276,9 +1276,6 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     The fitted object exposes focal predictions (``pred_``,  in-sample if
     ``include_focal=True``) and local goodness-of-fit summaries.
 
-    Prediction for new (out-of-sample) observations is not currently implemented for
-    regressors.
-
     Notes
     -----
     - Only point geometries are supported.
