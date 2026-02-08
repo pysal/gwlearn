@@ -755,7 +755,7 @@ class GWRandomForestRegressor(BaseRegressor):
 
         self._model_type = "random_forest"
         self._model_kwargs["oob_score"] = self._get_oob_score_data
-        
+
         self._empty_score_data = (np.array([]), np.array([]))
 
     def _get_oob_score_data(self, true, pred):
