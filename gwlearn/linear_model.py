@@ -490,6 +490,8 @@ class GWLinearRegression(BaseRegressor):
         y: pd.Series,  # noqa: ARG002
     ) -> tuple:
         return (
+            y,
+            local_model.predict(X),
             pd.Series(
                 local_model.coef_.flatten(),
                 index=local_model.feature_names_in_,
@@ -503,6 +505,8 @@ class GWLinearRegression(BaseRegressor):
         else:
             self.feature_names_in_ = np.arange(X.shape[1])
         self._empty_score_data = (
+            np.array([]),
+            np.array([]),
             pd.Series(np.nan, index=self.feature_names_in_),  # local coefficients
             np.array([np.nan]),
         )  # intercept
@@ -510,15 +514,29 @@ class GWLinearRegression(BaseRegressor):
         super().fit(X=X, y=y, geometry=geometry)
 
         self.local_coef_ = pd.concat(
-            [x[0] for x in self._score_data], axis=1, keys=self._names
+            [x[2] for x in self._score_data], axis=1, keys=self._names
         ).T
         self.local_intercept_ = pd.Series(
-            [x[1] for x in self._score_data], index=self._names
+            [x[3] for x in self._score_data], index=self._names
         )
 
-        # Store pooled y for score computation
-        self.y_pooled_ = y.values
-        self.pred_pooled_ = self.pred_.values
+        self._y_local = [x[0] for x in self._score_data]
+        self._pred_local = [x[1] for x in self._score_data]
+
+        del self._score_data
+
+        if self._y_local and any(arr.size > 0 for arr in self._y_local):
+            self.y_pooled_ = np.concatenate(
+                [arr for arr in self._y_local if arr.size > 0]
+            )
+        else:
+            self.y_pooled_ = np.array([])
+        if self._pred_local and any(arr.size > 0 for arr in self._pred_local):
+            self.pred_pooled_ = np.concatenate(
+                [arr for arr in self._pred_local if arr.size > 0]
+            )
+        else:
+            self.pred_pooled_ = np.array([])
 
         return self
 

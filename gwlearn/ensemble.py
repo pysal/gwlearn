@@ -233,11 +233,12 @@ class GWRandomForestClassifier(BaseClassifier):
         self._model_type = "random_forest"
         self._model_kwargs["oob_score"] = self._get_oob_score_data
 
-        self._empty_score_data = (np.array([]).reshape(-1, 1), np.array([]))
+        self._empty_score_data = (np.array([]), np.array([]))
 
     def _get_oob_score_data(self, true, pred):
         """Callback used by scikit-learn to collect OOB targets/predictions."""
-        return true, pred
+        # sklearn passes true as 2D for classifiers, flatten it
+        return true.ravel(), pred
 
     def fit(
         self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
@@ -313,8 +314,8 @@ class GWRandomForestClassifier(BaseClassifier):
         """
         if self.oob_y_pooled_.size == 0 or self.oob_pred_pooled_.size == 0:
             return np.nan
-        y_true = self.oob_y_pooled_.ravel()
-        y_pred = self.oob_pred_pooled_.ravel()
+        y_true = self.oob_y_pooled_
+        y_pred = self.oob_pred_pooled_
         return accuracy_score(y_true, y_pred)
 
     @property
@@ -754,12 +755,13 @@ class GWRandomForestRegressor(BaseRegressor):
 
         self._model_type = "random_forest"
         self._model_kwargs["oob_score"] = self._get_oob_score_data
-
-        self._empty_score_data = (np.array([]).reshape(-1, 1), np.array([]))
+        
+        self._empty_score_data = (np.array([]), np.array([]))
 
     def _get_oob_score_data(self, true, pred):
         """Callback used by scikit-learn to collect OOB targets/predictions."""
-        return true, pred
+        # sklearn passes true as 2D array (-1, 1) for regressors, flatten it
+        return true.ravel(), pred
 
     def fit(
         self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
@@ -835,8 +837,8 @@ class GWRandomForestRegressor(BaseRegressor):
         """
         if len(self.oob_y_pooled_) == 0:
             return np.nan
-        y_true = self.oob_y_pooled_.ravel()
-        y_pred = self.oob_pred_pooled_.ravel()
+        y_true = self.oob_y_pooled_
+        y_pred = self.oob_pred_pooled_
         return r2_score(y_true, y_pred)
 
     @property
