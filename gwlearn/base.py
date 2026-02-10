@@ -596,6 +596,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
     Attributes
     ----------
+    local_class_support_: pd.Series
+        Number of distinct class labels in each local neighborhood.
     proba_ : pd.DataFrame
         Probability predictions for focal locations based on a local model trained
         around the point itself.
@@ -816,6 +818,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             ) = zip(*training_output, strict=False)
 
         self._n_labels = pd.Series(self._n_labels, index=self._names)
+        self.local_class_support_ = self._n_labels.copy()
         self.proba_ = pd.DataFrame(focal_proba, index=self._names)
 
         # Store hat values and compute effective degrees of freedom

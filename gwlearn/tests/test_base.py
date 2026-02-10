@@ -441,6 +441,35 @@ def test_fit_n_jobs_consistency(sample_data):
     )
 
 
+def test_local_class_support_exposed(sample_data):
+    """Test that local_class_support_ is exposed after fitting."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=10,
+        fixed=False,
+        random_state=42,
+        strict=False,
+        n_jobs=1,
+        max_iter=250,
+    )
+
+    clf.fit(X, y, geometry)
+
+    # Check that attribute exists
+    assert hasattr(clf, "local_class_support_")
+
+    # Check the Output format
+    assert isinstance(clf.local_class_support_, pd.Series)
+
+    # Check that Length matches number of local models
+    assert len(clf.local_class_support_) == len(clf._names)
+
+    # Check that values are positive integers
+    assert (clf.local_class_support_ >= 1).all()
+
+
 @pytest.mark.parametrize("bandwidth", ["nearest", 100000, None])
 def test_predict_proba_basic(sample_data, bandwidth):
     """Test basic functionality of predict_proba method."""
