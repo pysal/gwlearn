@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.abspath("../gwlearn/"))
 import gwlearn  # noqa
 
 project = "gwlearn"
-copyright = "2025-, Martin Fleischmann & PySAL Developers"
+copyright = "2025-, Martin Fleischmann & PySAL Developers"  # noqa: A001
 author = "Martin Fleischmann"
 
 version = gwlearn.__version__.split("+", 1)[0]  # remove commit hash
