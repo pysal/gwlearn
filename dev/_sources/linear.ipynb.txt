@@ -1251,7 +1251,7 @@
    "source": [
     "f, axs = plt.subplots(2, 2, figsize=(12, 10))\n",
     "\n",
-    "for column, ax in zip(adaptive.local_coef_.columns, axs.flat):\n",
+    "for column, ax in zip(adaptive.local_coef_.columns, axs.flat, strict=False):\n",
     "    gdf.plot(adaptive.local_coef_[column], legend=True, ax=ax)\n",
     "    ax.set_title(column)\n",
     "    ax.set_axis_off()"
@@ -2691,7 +2691,7 @@
    "source": [
     "f, axs = plt.subplots(2, 2, figsize=(12, 10))\n",
     "\n",
-    "for column, ax in zip(binary.local_coef_.columns, axs.flat):\n",
+    "for column, ax in zip(binary.local_coef_.columns, axs.flat, strict=False):\n",
     "    gdf.plot(\n",
     "        binary.local_coef_[column],\n",
     "        legend=True,\n",
