@@ -58,6 +58,9 @@ ignore = ["N803", "N806"] # name {} should be lowercase
     "E501",  # Line too long
     "F401",  # imported but unused
 ]
+ "**/conf.py" = [
+    "A001",  # Variable is shadowing a Python builtin (Sphinx requires `copyright`)
+]
 
 [tool.ty.rules]
 unresolved-attribute = "ignore"
