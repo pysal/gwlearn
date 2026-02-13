@@ -469,6 +469,84 @@ def test_local_class_support_exposed(sample_data):
     # Check that values are positive integers
     assert (clf.local_class_support_ >= 1).all()
 
+def test_local_class_support_invariant(sample_data):
+    """Test that invariant neighborhoods report support == 1 and are skipped."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=1, # Very small to force invariance
+        fixed=False,
+        random_state=42,
+        strict=False,
+        n_jobs=1,
+        max_iter=250,
+    )
+
+    clf.fit(X, y, geometry)
+
+    # Check that at least one neighborhood should be invariant
+    assert (clf.local_class_support_ == 1).any()
+
+    # Invariant neighborhoods should correspond to skipped models
+    invariant_idx = clf.local_class_support_ == 1
+    assert clf.pred_[invariant_idx].isna().all()
+
+    # some models should be skipped
+    assert clf.prediction_rate_ < 1
+
+def test_local_class_support_min_proportion(sample_data):
+    """Test that neighborhoods failing min_proportion report 2 labels but are skipped."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=20,
+        fixed=False,
+        min_proportion=0.9,
+        random_state=42,
+        strict=False,
+        n_jobs=1,
+        max_iter=250,
+    )
+
+    clf.fit(X, y, geometry)
+
+    # Checks that neighborhoods with two distinct labels should exist
+    two_label_idx = clf.local_class_support_ == 2
+    assert two_label_idx.any()
+
+    # Checks that some of those should be skipped due to imabalance
+    skipped = clf.pred_.isna()
+    assert (two_label_idx & skipped).any()
+
+    # Checks that skipping must have occured
+    assert clf.prediction_rate_ < 1
+
+def test_local_class_support_fitted_models(sample_data):
+    """Test that fully valid neighborhoods report support == 2 and are fitted."""
+    X, y, geometry = sample_data
+
+    # Large bandwidth to ensure both classes present and fitted
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=len(X) - 1,
+        fixed=False,
+        min_proportion=0.1,
+        random_state=42,
+        strict=False,
+        n_jobs=1,
+        max_iter=250,
+    )
+
+    clf.fit(X, y, geometry)
+
+    # Check that all neighborhoods should contain both classes
+    assert (clf.local_class_support_ == 2).all()
+
+    # All models should be fitted
+    assert clf.prediction_rate_ == 1
+
 
 @pytest.mark.parametrize("bandwidth", ["nearest", 100000, None])
 def test_predict_proba_basic(sample_data, bandwidth):
