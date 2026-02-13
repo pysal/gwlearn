@@ -469,13 +469,14 @@ def test_local_class_support_exposed(sample_data):
     # Check that values are positive integers
     assert (clf.local_class_support_ >= 1).all()
 
+
 def test_local_class_support_invariant(sample_data):
     """Test that invariant neighborhoods report support == 1 and are skipped."""
     X, y, geometry = sample_data
 
     clf = BaseClassifier(
         LogisticRegression,
-        bandwidth=1, # Very small to force invariance
+        bandwidth=1,  # Very small to force invariance
         fixed=False,
         random_state=42,
         strict=False,
@@ -495,8 +496,12 @@ def test_local_class_support_invariant(sample_data):
     # some models should be skipped
     assert clf.prediction_rate_ < 1
 
+
 def test_local_class_support_min_proportion(sample_data):
-    """Test that neighborhoods failing min_proportion report 2 labels but are skipped."""
+    """
+    Test that neighborhoods failing min_proportion report 2 labels
+    but are skipped.
+    """
     X, y, geometry = sample_data
 
     clf = BaseClassifier(
@@ -522,6 +527,7 @@ def test_local_class_support_min_proportion(sample_data):
 
     # Checks that skipping must have occured
     assert clf.prediction_rate_ < 1
+
 
 def test_local_class_support_fitted_models(sample_data):
     """Test that fully valid neighborhoods report support == 2 and are fitted."""
