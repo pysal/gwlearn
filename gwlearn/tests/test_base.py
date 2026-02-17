@@ -291,6 +291,49 @@ def test_fit_without_global_model(sample_data):
     assert hasattr(clf, "proba_")
 
 
+def test_fit_negative_bandwidth_raises(sample_data):
+    """
+    Test that a negative bandwidth raises a ValueError during fit.
+
+    Bandwidth validation is performed inside the fit() method
+    (not during initialization), following sklearn-style design.
+    """
+    X, y, geometry = sample_data
+
+    # Initialize with invalid negative bandwidth
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=-5,
+        fixed=True,
+    )
+
+    # Validation should trigger during fit()
+    with pytest.raises(ValueError, match="bandwidth must be a positive"):
+        clf.fit(X, y, geometry)
+
+
+def test_fit_adaptive_bandwidth_must_be_integer(sample_data):
+    """
+    Test that adaptive bandwidth (fixed=False) must be an integer.
+
+    When using adaptive bandwidth, the bandwidth represents
+    the number of nearest neighbors and therefore must be an integer.
+    Validation is performed during fit().
+    """
+    X, y, geometry = sample_data
+
+    # Initialize with non-integer adaptive bandwidth
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=2.5,
+        fixed=False,
+    )
+
+    # Fit should raise error due to invalid adaptive bandwidth type
+    with pytest.raises(ValueError, match="Adaptive bandwidth"):
+        clf.fit(X, y, geometry)
+
+
 def test_fit_with_strict_option(sample_data):
     """Test the strict option for invariant y."""
     X, y, geometry = sample_data

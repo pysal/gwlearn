@@ -78,17 +78,19 @@ class _BaseModel(BaseEstimator):
         *,
         bandwidth: float | None = None,
         fixed: bool = False,
-        kernel: Literal[
-            "triangular",
-            "parabolic",
-            # "gaussian",
-            "bisquare",
-            "tricube",
-            "cosine",
-            "boxcar",
-            # "exponential",
-        ]
-        | Callable = "bisquare",
+        kernel: (
+            Literal[
+                "triangular",
+                "parabolic",
+                # "gaussian",
+                "bisquare",
+                "tricube",
+                "cosine",
+                "boxcar",
+                # "exponential",
+            ]
+            | Callable
+        ) = "bisquare",
         include_focal: bool = False,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
@@ -475,6 +477,38 @@ class _BaseModel(BaseEstimator):
         raise NotImplementedError("Subclasses must implement _predict_local")
 
     # Abstract methods that subclasses must implement
+
+    def _validate_fit_inputs(
+        self,
+        X: pd.DataFrame,
+        y: pd.Series,
+        geometry: gpd.GeoSeries | None,
+    ) -> None:
+        # Length checks
+        if len(X) != len(y):
+            raise ValueError(
+                f"X and y must have the same length. Got {len(X)} and {len(y)}."
+            )
+
+        # Geometry presence
+        if self.graph is None and geometry is None:
+            raise ValueError("Either geometry or graph must be provided.")
+
+        # Geometry length check
+        if geometry is not None and len(X) != len(geometry):
+            raise ValueError(
+                f"X and geometry must have the same length. "
+                f"Got {len(X)} and {len(geometry)}."
+            )
+
+        # Bandwidth validation
+        if self.bandwidth is not None:
+            if self.bandwidth <= 0:
+                raise ValueError("bandwidth must be a positive number.")
+
+            if not self.fixed and not isinstance(self.bandwidth, int):
+                raise ValueError("Adaptive bandwidth (fixed=False) must be an integer.")
+
     def _fit_local(
         self,
         model,
@@ -664,17 +698,19 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         *,
         bandwidth: float | None = None,
         fixed: bool = False,
-        kernel: Literal[
-            "triangular",
-            "parabolic",
-            # "gaussian",
-            "bisquare",
-            "tricube",
-            "cosine",
-            "boxcar",
-            # "exponential",
-        ]
-        | Callable = "bisquare",
+        kernel: (
+            Literal[
+                "triangular",
+                "parabolic",
+                # "gaussian",
+                "bisquare",
+                "tricube",
+                "cosine",
+                "boxcar",
+                # "exponential",
+            ]
+            | Callable
+        ) = "bisquare",
         include_focal: bool = False,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
@@ -746,9 +782,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         The neighborhood definition comes from either ``self.graph`` or from
         ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
-        self._start = time()
 
-        self.geometry = geometry
+        self._start = time()
 
         def _is_binary(series: pd.Series) -> bool:
             """Check if a pandas Series encodes a binary variable (bool or 0/1)."""
@@ -763,7 +798,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         if not _is_binary(y):
             raise ValueError("Only binary dependent variable is supported.")
-
+        self._validate_fit_inputs(X, y, geometry)
+        self.geometry = geometry
         if self.verbose:
             print(f"{(time() - self._start):.2f}s: Building weights")
 
@@ -1402,17 +1438,19 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         *,
         bandwidth: float | None = None,
         fixed: bool = False,
-        kernel: Literal[
-            "triangular",
-            "parabolic",
-            # "gaussian",
-            "bisquare",
-            "tricube",
-            "cosine",
-            "boxcar",
-            # "exponential",
-        ]
-        | Callable = "bisquare",
+        kernel: (
+            Literal[
+                "triangular",
+                "parabolic",
+                # "gaussian",
+                "bisquare",
+                "tricube",
+                "cosine",
+                "boxcar",
+                # "exponential",
+            ]
+            | Callable
+        ) = "bisquare",
         include_focal: bool = False,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
@@ -1476,6 +1514,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         The neighborhood definition comes from either ``self.graph`` or from
         ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
+        self._validate_fit_inputs(X, y, geometry)
         if self.graph is None:
             self._validate_geometry(geometry)
 

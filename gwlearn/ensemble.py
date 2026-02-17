@@ -178,17 +178,19 @@ class GWRandomForestClassifier(BaseClassifier):
         *,
         bandwidth: float | None = None,
         fixed: bool = False,
-        kernel: Literal[
-            "triangular",
-            "parabolic",
-            # "gaussian",
-            "bisquare",
-            "tricube",
-            "cosine",
-            "boxcar",
-            # "exponential",
-        ]
-        | Callable = "bisquare",
+        kernel: (
+            Literal[
+                "triangular",
+                "parabolic",
+                # "gaussian",
+                "bisquare",
+                "tricube",
+                "cosine",
+                "boxcar",
+                # "exponential",
+            ]
+            | Callable
+        ) = "bisquare",
         include_focal: bool = False,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
@@ -448,17 +450,19 @@ class GWGradientBoostingClassifier(BaseClassifier):
         *,
         bandwidth: int | float | None = None,
         fixed: bool = False,
-        kernel: Literal[
-            "triangular",
-            "parabolic",
-            # "gaussian",
-            "bisquare",
-            "tricube",
-            "cosine",
-            "boxcar",
-            # "exponential",
-        ]
-        | Callable = "bisquare",
+        kernel: (
+            Literal[
+                "triangular",
+                "parabolic",
+                # "gaussian",
+                "bisquare",
+                "tricube",
+                "cosine",
+                "boxcar",
+                # "exponential",
+            ]
+            | Callable
+        ) = "bisquare",
         include_focal: bool = False,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
@@ -676,17 +680,19 @@ class GWRandomForestRegressor(BaseRegressor):
         *,
         bandwidth: float | None = None,
         fixed: bool = False,
-        kernel: Literal[
-            "triangular",
-            "parabolic",
-            # "gaussian",
-            "bisquare",
-            "tricube",
-            "cosine",
-            "boxcar",
-            # "exponential",
-        ]
-        | Callable = "bisquare",
+        kernel: (
+            Literal[
+                "triangular",
+                "parabolic",
+                # "gaussian",
+                "bisquare",
+                "tricube",
+                "cosine",
+                "boxcar",
+                # "exponential",
+            ]
+            | Callable
+        ) = "bisquare",
         include_focal: bool = False,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
@@ -931,17 +937,19 @@ class GWGradientBoostingRegressor(BaseRegressor):
         *,
         bandwidth: float | None = None,
         fixed: bool = False,
-        kernel: Literal[
-            "triangular",
-            "parabolic",
-            # "gaussian",
-            "bisquare",
-            "tricube",
-            "cosine",
-            "boxcar",
-            # "exponential",
-        ]
-        | Callable = "bisquare",
+        kernel: (
+            Literal[
+                "triangular",
+                "parabolic",
+                # "gaussian",
+                "bisquare",
+                "tricube",
+                "cosine",
+                "boxcar",
+                # "exponential",
+            ]
+            | Callable
+        ) = "bisquare",
         include_focal: bool = False,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,

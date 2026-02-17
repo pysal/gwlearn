@@ -169,17 +169,19 @@ class GWLogisticRegression(BaseClassifier):
         self,
         bandwidth: float | None = None,
         fixed: bool = False,
-        kernel: Literal[
-            "triangular",
-            "parabolic",
-            # "gaussian",
-            "bisquare",
-            "tricube",
-            "cosine",
-            "boxcar",
-            # "exponential",
-        ]
-        | Callable = "bisquare",
+        kernel: (
+            Literal[
+                "triangular",
+                "parabolic",
+                # "gaussian",
+                "bisquare",
+                "tricube",
+                "cosine",
+                "boxcar",
+                # "exponential",
+            ]
+            | Callable
+        ) = "bisquare",
         include_focal: bool = True,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
@@ -410,17 +412,19 @@ class GWLinearRegression(BaseRegressor):
         self,
         bandwidth: float | None = None,
         fixed: bool = False,
-        kernel: Literal[
-            "triangular",
-            "parabolic",
-            # "gaussian",
-            "bisquare",
-            "tricube",
-            "cosine",
-            "boxcar",
-            # "exponential",
-        ]
-        | Callable = "bisquare",
+        kernel: (
+            Literal[
+                "triangular",
+                "parabolic",
+                # "gaussian",
+                "bisquare",
+                "tricube",
+                "cosine",
+                "boxcar",
+                # "exponential",
+            ]
+            | Callable
+        ) = "bisquare",
         include_focal: bool = True,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
