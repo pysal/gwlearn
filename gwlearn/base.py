@@ -484,6 +484,21 @@ class _BaseModel(BaseEstimator):
         y: pd.Series,
         geometry: gpd.GeoSeries | None,
     ) -> None:
+        """
+        Validate input data and configuration parameters before model fitting.
+
+        This method performs structural and spatial consistency checks to ensure that:
+        - Feature matrix `X` and target vector `y` have matching lengths.
+        - At least one spatial structure (`geometry` or `graph`) is provided.
+        - The provided geometry, if any, matches the number of observations in `X`.
+        - Bandwidth is positive when specified.
+        - Adaptive bandwidth (`fixed=False`) is an integer.
+
+        Raises
+        ------
+        ValueError
+            If any of the validation conditions fail.
+        """
         # Length checks
         if len(X) != len(y):
             raise ValueError(
