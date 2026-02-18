@@ -333,6 +333,72 @@ def test_fit_adaptive_bandwidth_must_be_integer(sample_data):
     with pytest.raises(ValueError, match="Adaptive bandwidth"):
         clf.fit(X, y, geometry)
 
+def test_fit_length_mismatch_raises(sample_data):
+    """
+    Test that fit() raises ValueError when X and y
+    have different lengths.
+
+    This validates basic structural consistency of input data.
+    """
+    X, y, geometry = sample_data
+
+    # Remove last observation from y
+    # This creates a mismatch between X and y lengths
+    y_bad = y.iloc[:-1]
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+    )
+
+    # Fit should detect mismatch BEFORE doing any computation
+    with pytest.raises(ValueError, match="X and y must have the same length"):
+        clf.fit(X, y_bad, geometry)
+
+def test_fit_requires_geometry_or_graph(sample_data):
+    """
+    Test that fit() raises ValueError when neither
+    geometry nor graph is provided.
+
+    The model requires at least one spatial structure.
+    """
+    X, y, _ = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+    )
+
+    # Not passing geometry
+    # Not providing graph in initialization
+    # Should fail validation
+    with pytest.raises(ValueError, match="Either geometry or graph must be provided"):
+        clf.fit(X, y)
+        
+def test_fit_geometry_length_mismatch_raises(sample_data):
+    """
+    Test that fit() raises ValueError when geometry
+    length does not match X length.
+
+    Ensures spatial data aligns with observations.
+    """
+    X, y, geometry = sample_data
+
+    # Remove last geometry row to create mismatch
+    geometry_bad = geometry.iloc[:-1]
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+    )
+
+    # Validation should detect geometry length issue
+    with pytest.raises(ValueError, match="X and geometry must have the same length"):
+        clf.fit(X, y, geometry_bad)
+
 
 def test_fit_with_strict_option(sample_data):
     """Test the strict option for invariant y."""
