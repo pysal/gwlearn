@@ -78,19 +78,17 @@ class _BaseModel(BaseEstimator):
         *,
         bandwidth: float | None = None,
         fixed: bool = False,
-        kernel: (
-            Literal[
-                "triangular",
-                "parabolic",
-                # "gaussian",
-                "bisquare",
-                "tricube",
-                "cosine",
-                "boxcar",
-                # "exponential",
-            ]
-            | Callable
-        ) = "bisquare",
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            # "gaussian",
+            "bisquare",
+            "tricube",
+            "cosine",
+            "boxcar",
+            # "exponential",
+        ]
+        | Callable = "bisquare",
         include_focal: bool = False,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
@@ -477,7 +475,6 @@ class _BaseModel(BaseEstimator):
         raise NotImplementedError("Subclasses must implement _predict_local")
 
     # Abstract methods that subclasses must implement
-
     def _validate_fit_inputs(
         self,
         X: pd.DataFrame,
@@ -523,7 +520,7 @@ class _BaseModel(BaseEstimator):
 
             if not self.fixed and not isinstance(self.bandwidth, int):
                 raise ValueError("Adaptive bandwidth (fixed=False) must be an integer.")
-
+            
     def _fit_local(
         self,
         model,
@@ -713,19 +710,17 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         *,
         bandwidth: float | None = None,
         fixed: bool = False,
-        kernel: (
-            Literal[
-                "triangular",
-                "parabolic",
-                # "gaussian",
-                "bisquare",
-                "tricube",
-                "cosine",
-                "boxcar",
-                # "exponential",
-            ]
-            | Callable
-        ) = "bisquare",
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            # "gaussian",
+            "bisquare",
+            "tricube",
+            "cosine",
+            "boxcar",
+            # "exponential",
+        ]
+        | Callable = "bisquare",
         include_focal: bool = False,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
@@ -797,8 +792,9 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         The neighborhood definition comes from either ``self.graph`` or from
         ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
-
         self._start = time()
+
+        
 
         def _is_binary(series: pd.Series) -> bool:
             """Check if a pandas Series encodes a binary variable (bool or 0/1)."""
@@ -1453,19 +1449,17 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         *,
         bandwidth: float | None = None,
         fixed: bool = False,
-        kernel: (
-            Literal[
-                "triangular",
-                "parabolic",
-                # "gaussian",
-                "bisquare",
-                "tricube",
-                "cosine",
-                "boxcar",
-                # "exponential",
-            ]
-            | Callable
-        ) = "bisquare",
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            # "gaussian",
+            "bisquare",
+            "tricube",
+            "cosine",
+            "boxcar",
+            # "exponential",
+        ]
+        | Callable = "bisquare",
         include_focal: bool = False,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,

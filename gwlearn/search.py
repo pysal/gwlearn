@@ -114,19 +114,17 @@ class BandwidthSearch:
         model,
         *,
         fixed: bool = False,
-        kernel: (
-            Literal[
-                "triangular",
-                "parabolic",
-                # "gaussian",
-                "bisquare",
-                "tricube",
-                "cosine",
-                "boxcar",
-                # "exponential",
-            ]
-            | Callable
-        ) = "bisquare",
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            # "gaussian",
+            "bisquare",
+            "tricube",
+            "cosine",
+            "boxcar",
+            # "exponential",
+        ]
+        | Callable = "bisquare",
         n_jobs: int = -1,
         search_method: Literal["golden_section", "interval"] = "golden_section",
         criterion: str = "aicc",
