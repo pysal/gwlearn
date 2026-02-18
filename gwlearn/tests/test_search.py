@@ -102,8 +102,7 @@ def test_interval_search_basic(sample_data):  # noqa: F811
     expected_n_bandwidths = (
         int(
             (
-                search.max_bandwidth
-                - search.min_bandwidth  # ty:ignore[unsupported-operator]
+                search.max_bandwidth - search.min_bandwidth  # ty:ignore[unsupported-operator]
             )
             / search.interval
         )

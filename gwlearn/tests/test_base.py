@@ -333,6 +333,7 @@ def test_fit_adaptive_bandwidth_must_be_integer(sample_data):
     with pytest.raises(ValueError, match="Adaptive bandwidth"):
         clf.fit(X, y, geometry)
 
+
 def test_fit_length_mismatch_raises(sample_data):
     """
     Test that fit() raises ValueError when X and y
@@ -356,6 +357,7 @@ def test_fit_length_mismatch_raises(sample_data):
     with pytest.raises(ValueError, match="X and y must have the same length"):
         clf.fit(X, y_bad, geometry)
 
+
 def test_fit_requires_geometry_or_graph(sample_data):
     """
     Test that fit() raises ValueError when neither
@@ -376,7 +378,8 @@ def test_fit_requires_geometry_or_graph(sample_data):
     # Should fail validation
     with pytest.raises(ValueError, match="Either geometry or graph must be provided"):
         clf.fit(X, y)
-        
+
+
 def test_fit_geometry_length_mismatch_raises(sample_data):
     """
     Test that fit() raises ValueError when geometry
