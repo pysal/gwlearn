@@ -130,6 +130,8 @@ class GWLogisticRegression(BaseClassifier):
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
+    local_class_support_: pd.Series
+        Number of distinct class labels in each local neighborhood.
     left_out_y_ : np.ndarray
         Array of ``y`` values left out when ``leave_out`` is set.
     left_out_proba_ : np.ndarray

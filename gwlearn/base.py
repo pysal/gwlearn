@@ -618,6 +618,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
+    local_class_support_: pd.Series
+        Number of distinct class labels in each local neighborhood.
     left_out_y_ : numpy.ndarray
         Array of ``y`` values left out when ``leave_out`` is set.
     left_out_proba_ : numpy.ndarray
@@ -816,6 +818,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             ) = zip(*training_output, strict=False)
 
         self._n_labels = pd.Series(self._n_labels, index=self._names)
+        self.local_class_support_ = self._n_labels.copy()
         self.proba_ = pd.DataFrame(focal_proba, index=self._names)
 
         # Store hat values and compute effective degrees of freedom
