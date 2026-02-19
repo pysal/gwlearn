@@ -474,6 +474,52 @@ class _BaseModel(BaseEstimator):
         """
         raise NotImplementedError("Subclasses must implement _predict_local")
 
+    def _validate_fit_inputs(
+        self,
+        X: pd.DataFrame,
+        y: pd.Series,
+        geometry: gpd.GeoSeries | None,
+    ) -> None:
+        """
+        Validate input data and configuration parameters before model fitting.
+
+        This method performs structural and spatial consistency checks to ensure that:
+        - Feature matrix `X` and target vector `y` have matching lengths.
+        - At least one spatial structure (`geometry` or `graph`) is provided.
+        - The provided geometry, if any, matches the number of observations in `X`.
+        - Bandwidth is positive when specified.
+        - Adaptive bandwidth (`fixed=False`) is an integer.
+
+        Raises
+        ------
+        ValueError
+            If any of the validation conditions fail.
+        """
+        # Length checks
+        if len(X) != len(y):
+            raise ValueError(
+                f"X and y must have the same length. Got {len(X)} and {len(y)}."
+            )
+
+        # Geometry presence
+        if self.graph is None and geometry is None:
+            raise ValueError("Either geometry or graph must be provided.")
+
+        # Geometry length check
+        if geometry is not None and len(X) != len(geometry):
+            raise ValueError(
+                f"X and geometry must have the same length. "
+                f"Got {len(X)} and {len(geometry)}."
+            )
+
+        # Bandwidth validation
+        if self.bandwidth is not None:
+            if self.bandwidth <= 0:
+                raise ValueError("bandwidth must be a positive number.")
+
+            if not self.fixed and not isinstance(self.bandwidth, int):
+                raise ValueError("Adaptive bandwidth (fixed=False) must be an integer.")
+
     # Abstract methods that subclasses must implement
     def _fit_local(
         self,
@@ -750,8 +796,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         """
         self._start = time()
 
-        self.geometry = geometry
-
         def _is_binary(series: pd.Series) -> bool:
             """Check if a pandas Series encodes a binary variable (bool or 0/1)."""
             unique_values = set(np.unique(series))
@@ -765,7 +809,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         if not _is_binary(y):
             raise ValueError("Only binary dependent variable is supported.")
-
+        self._validate_fit_inputs(X, y, geometry)
+        self.geometry = geometry
         if self.verbose:
             print(f"{(time() - self._start):.2f}s: Building weights")
 
@@ -1479,6 +1524,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         The neighborhood definition comes from either ``self.graph`` or from
         ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
+        self._validate_fit_inputs(X, y, geometry)
         if self.graph is None:
             self._validate_geometry(geometry)
 
