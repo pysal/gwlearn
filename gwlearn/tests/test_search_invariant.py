@@ -1,13 +1,8 @@
 import numpy as np
 import pandas as pd
-import pytest
+
 from gwlearn.linear_model import GWLogisticRegression
 from gwlearn.search import BandwidthSearch
-
-try:
-    from geodatasets import get_path
-except ImportError:
-    pass
 
 
 def test_single_class_y_handled_gracefully(sample_data):
@@ -38,7 +33,9 @@ def test_single_class_y_handled_gracefully(sample_data):
 
 
 def test_log_loss_with_subset_y(sample_data):
-    """Test that log_loss works when y[~mask] has single class but y has mixed classes."""
+    """
+    Test that log_loss works when y[~mask] has single class but y has mixed classes.
+    """
     X, y_orig, geometry = sample_data
 
     # Mocking BandwidthSearch._score logic partially
@@ -62,14 +59,14 @@ def test_log_loss_with_subset_y(sample_data):
             self.bic_ = 100.0
             self.prediction_rate_ = 1.0  # Pretend high
 
-        def fit(self, X, y, geometry):
+        def fit(self, _X, _y, _geometry):
             return self
 
     class MockModelArg:
         def __init__(self, **kwargs):
             pass
 
-        def fit(self, X, y, geometry):
+        def fit(self, _X, y, _geometry):
             return MockGWM(y)
 
     search.model = MockModelArg
