@@ -85,3 +85,54 @@ def test_log_loss_with_subset_y(sample_data):
 
     # Should return inf for invariant masked y
     assert np.isinf(metrics_list[3])
+
+
+def test_log_loss_normal_execution(sample_data):
+    """Test that log_loss executes normally when y[~mask] has both classes."""
+    X, y_orig, geometry = sample_data
+
+    # Mocking BandwidthSearch._score logic partially
+    search = BandwidthSearch(GWLogisticRegression, geometry=geometry)
+    search.geometry = geometry
+    search.fixed = False
+
+    class MockGWM:
+        def __init__(self, y):
+            # Proba should have 2 columns.
+            probs = np.random.rand(len(y), 2)
+            probs = probs / probs.sum(axis=1)[:, np.newaxis]
+            self.proba_ = pd.DataFrame(probs, columns=[0, 1])
+            # No masking (no NaNs), so all predictions are valid
+
+            self.aicc_ = 100.0
+            self.aic_ = 100.0
+            self.bic_ = 100.0
+            self.prediction_rate_ = 1.0
+
+        def fit(self, X, y, geometry):  # noqa: ARG002
+            return self
+
+    class MockModelArg:
+        def __init__(self, **kwargs):  # noqa: ARG002
+            pass
+
+        def fit(self, X, y, geometry):  # noqa: ARG002
+            return MockGWM(y)
+
+    search.model = MockModelArg
+    search._model_kwargs = {}
+    search.criterion = "log_loss"
+    search.metrics = ["log_loss"]
+    search.n_jobs = 1
+    search.verbose = False
+
+    # y must be mixed (0s and 1s)
+    y = pd.Series([0, 1] * (len(y_orig) // 2))
+    if len(y) != len(X):
+        y = pd.Series([0, 1] * ((len(X) + 1) // 2))[: len(X)]
+
+    score, metrics_list = search._score(X, y, bw=100)
+
+    # Should calculate valid log_loss (not inf)
+    assert not np.isinf(metrics_list[3])
+    assert not np.isnan(metrics_list[3])
