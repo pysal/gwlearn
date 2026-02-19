@@ -250,6 +250,9 @@ def test_model_invariant_y_returns_inf(sample_data):  # noqa: F811
 
     # Check that the score is np.inf for invariant y
     assert score[0] == np.inf
+    assert isinstance(score[1], list)
+    assert len(score[1]) == 3
+    assert all(np.isnan(x) for x in score[1])
 
 
 def test_bandwidth_search_returns_self(sample_data):  # noqa: F811
