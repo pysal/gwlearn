@@ -59,14 +59,14 @@ def test_log_loss_with_subset_y(sample_data):
             self.bic_ = 100.0
             self.prediction_rate_ = 1.0  # Pretend high
 
-        def fit(self, _X, _y, _geometry):
+        def fit(self, X, y, geometry):  # noqa: ARG002
             return self
 
     class MockModelArg:
         def __init__(self, **kwargs):
             pass
 
-        def fit(self, _X, y, _geometry):
+        def fit(self, X, y, geometry):  # noqa: ARG002
             return MockGWM(y)
 
     search.model = MockModelArg
