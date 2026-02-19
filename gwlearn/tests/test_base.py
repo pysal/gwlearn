@@ -292,12 +292,7 @@ def test_fit_without_global_model(sample_data):
 
 
 def test_fit_negative_bandwidth_raises(sample_data):
-    """
-    Test that a negative bandwidth raises a ValueError during fit.
-
-    Bandwidth validation is performed inside the fit() method
-    (not during initialization), following sklearn-style design.
-    """
+    """Negative bandwidth raises ValueError in fit()."""
     X, y, geometry = sample_data
 
     # Initialize with invalid negative bandwidth
@@ -313,13 +308,7 @@ def test_fit_negative_bandwidth_raises(sample_data):
 
 
 def test_fit_adaptive_bandwidth_must_be_integer(sample_data):
-    """
-    Test that adaptive bandwidth (fixed=False) must be an integer.
-
-    When using adaptive bandwidth, the bandwidth represents
-    the number of nearest neighbors and therefore must be an integer.
-    Validation is performed during fit().
-    """
+    """Adaptive bandwidth must be an integer when fixed=False."""
     X, y, geometry = sample_data
 
     # Initialize with non-integer adaptive bandwidth
@@ -335,12 +324,7 @@ def test_fit_adaptive_bandwidth_must_be_integer(sample_data):
 
 
 def test_fit_length_mismatch_raises(sample_data):
-    """
-    Test that fit() raises ValueError when X and y
-    have different lengths.
-
-    This validates basic structural consistency of input data.
-    """
+    """fit() raises ValueError when X and y have different lengths."""
     X, y, geometry = sample_data
 
     # Remove last observation from y
@@ -359,12 +343,7 @@ def test_fit_length_mismatch_raises(sample_data):
 
 
 def test_fit_requires_geometry_or_graph(sample_data):
-    """
-    Test that fit() raises ValueError when neither
-    geometry nor graph is provided.
-
-    The model requires at least one spatial structure.
-    """
+    """fit() raises ValueError when neither geometry nor graph is provided."""
     X, y, _ = sample_data
 
     clf = BaseClassifier(
@@ -381,12 +360,7 @@ def test_fit_requires_geometry_or_graph(sample_data):
 
 
 def test_fit_geometry_length_mismatch_raises(sample_data):
-    """
-    Test that fit() raises ValueError when geometry
-    length does not match X length.
-
-    Ensures spatial data aligns with observations.
-    """
+    """fit() raises ValueError when geometry length mismatches X."""
     X, y, geometry = sample_data
 
     # Remove last geometry row to create mismatch

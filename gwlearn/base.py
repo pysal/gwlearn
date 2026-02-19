@@ -474,7 +474,6 @@ class _BaseModel(BaseEstimator):
         """
         raise NotImplementedError("Subclasses must implement _predict_local")
 
-    # Abstract methods that subclasses must implement
     def _validate_fit_inputs(
         self,
         X: pd.DataFrame,
@@ -521,6 +520,7 @@ class _BaseModel(BaseEstimator):
             if not self.fixed and not isinstance(self.bandwidth, int):
                 raise ValueError("Adaptive bandwidth (fixed=False) must be an integer.")
 
+    # Abstract methods that subclasses must implement
     def _fit_local(
         self,
         model,
