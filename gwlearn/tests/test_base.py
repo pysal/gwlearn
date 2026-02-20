@@ -1653,11 +1653,6 @@ def test_regressor_n_jobs_consistency(sample_regression_data):
         rtol=1e-5,
     )
 
-    # TODO: Check that performance metrics are also equal
-    # assert reg_sequential.focal_score_ == pytest.approx(reg_parallel.focal_score_)
-    # assert reg_sequential.mae_ == pytest.approx(reg_parallel.mae_)
-    # assert reg_sequential.mse_ == pytest.approx(reg_parallel.mse_)
-
     # Check that global models have the same coefficients
     np.testing.assert_allclose(
         reg_sequential.global_model.coef_,
