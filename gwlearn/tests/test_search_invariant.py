@@ -1,7 +1,8 @@
+import geopandas as gpd
 import numpy as np
 import pandas as pd
-import geopandas as gpd
 from shapely.geometry import Point
+
 from gwlearn.linear_model import GWLogisticRegression
 from gwlearn.search import BandwidthSearch
 
@@ -88,7 +89,7 @@ def test_bandwidth_search_local_invariant_y():
     # This should not crash and return Inf for the log_loss metric
     search.fit(X, y, geometry)
 
-    # Both score and log_loss metric should be Inf because y_masked is invariant [1,1,1,1,1]
+    # Both score and log_loss metric should be Inf because y_masked is invariant
     assert (search.scores_ == np.inf).all()
     assert (search.metrics_["log_loss"] == np.inf).all()
 
