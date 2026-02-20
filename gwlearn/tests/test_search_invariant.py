@@ -1,138 +1,119 @@
 import numpy as np
 import pandas as pd
-
+import geopandas as gpd
+from shapely.geometry import Point
 from gwlearn.linear_model import GWLogisticRegression
 from gwlearn.search import BandwidthSearch
 
 
-def test_single_class_y_handled_gracefully(sample_data):
-    """Test that BandwidthSearch handles single class y without crashing."""
-    X, y, geometry = sample_data
-    # Force y to be single class
-    y_single = pd.Series([1] * len(y))
+def test_bandwidth_search_global_invariant_y():
+    """
+    Verifies that BandwidthSearch handles a target y that is all 0s or all 1s.
+    The fix ensures _score returns a correctly sized list of NaNs instead of crashing.
+    """
+    # Create 10 points with invariant y (all ones)
+    n = 10
+    X = pd.DataFrame({"feat": np.random.rand(n)})
+    y = pd.Series([1] * n)
+    geometry = gpd.GeoSeries([Point(i, i) for i in range(n)])
 
     search = BandwidthSearch(
         GWLogisticRegression,
         fixed=True,
         search_method="interval",
-        min_bandwidth=100000,
-        max_bandwidth=200000,
-        interval=50000,
+        min_bandwidth=1,
+        max_bandwidth=5,
+        interval=1,
         verbose=False,
     )
 
-    # This should not crash and return Inf/NaNs
-    search.fit(X, y_single, geometry)
+    # This should not crash and should return Inf scores
+    search.fit(X, y, geometry)
 
-    # Check return values
-    assert hasattr(search, "scores_")
-    # All scores should be Inf
-    assert np.isinf(search.scores_).all()
-    # All metrics should be NaN
+    assert (search.scores_ == np.inf).all()
+    # Ensure metrics DataFrame has correct columns (met) and is all NaNs
     assert search.metrics_.isna().all().all()
+    assert len(search.metrics_.columns) == 3  # aicc, aic, bic (default)
 
 
-def test_log_loss_with_subset_y(sample_data):
+def test_bandwidth_search_local_invariant_y():
     """
-    Test that log_loss works when y[~mask] has single class but y has mixed classes.
+    Constructs data where target is mixed globally, but the subset of locations
+    that successfully fit a local model all have the same global label.
+
+    Data Setup:
+    - Cluster A (0-19): y=0. Far away. Will fail (invariant neighborhood).
+    - Cluster B (20-24): y=1. At x=100.
+    - Cluster C (25-29): y=0. At x=101.
+    - Cluster D (30-49): y=0. At x=101.5 (closer to C than B is).
+
+    With adaptive bandwidth k=10:
+    - Cluster A points see only y=0. Fail.
+    - Cluster B points see B (y=1) and C (y=0). Mixed! Success.
+    - Cluster C points see C (y=0) and D (y=0). Invariant! Fail.
+    - Cluster D points see only y=0. Fail.
+
+    Only Cluster B points (all y=1) succeed. y_masked is all 1s.
+    This triggers the fix in log_loss calculation for invariant subsets.
     """
-    X, y_orig, geometry = sample_data
+    # y construction
+    y = pd.Series([0] * 20 + [1] * 5 + [0] * 5 + [0] * 20)
+    n = len(y)
+    X = pd.DataFrame({"feat": np.random.rand(n)})
 
-    # Mocking BandwidthSearch._score logic partially
-    search = BandwidthSearch(GWLogisticRegression, geometry=geometry)
-    search.geometry = geometry
-    search.fixed = False
+    # Geometry construction
+    coords = []
+    for i in range(20):
+        coords.append(Point(0, i * 0.01))  # A
+    for i in range(5):
+        coords.append(Point(100, i * 0.01))  # B
+    for i in range(5):
+        coords.append(Point(101, i * 0.01))  # C
+    for i in range(20):
+        coords.append(Point(101.5, i * 0.01))  # D
+    geometry = gpd.GeoSeries(coords)
 
-    class MockGWM:
-        def __init__(self, y):
-            # Proba should have 2 columns if y is mixed
-            probs = np.random.rand(len(y), 2)
-            probs = probs / probs.sum(axis=1)[:, np.newaxis]
-            self.proba_ = pd.DataFrame(probs, columns=[0, 1])
-            # Set proba to NaN where y is 1. So valid predictions only for class 0.
-            # This simulates models being skipped/invalid for class 1 neighbors
-            mask_y = y == 1
-            self.proba_.loc[mask_y, :] = np.nan
+    search = BandwidthSearch(
+        GWLogisticRegression,
+        fixed=False,
+        search_method="interval",
+        min_bandwidth=10,
+        max_bandwidth=10,
+        interval=1,
+        criterion="log_loss",
+        metrics=["log_loss"],
+        verbose=False,
+    )
 
-            self.aicc_ = 100.0
-            self.aic_ = 100.0
-            self.bic_ = 100.0
-            self.prediction_rate_ = 1.0  # Pretend high
+    # This should not crash and return Inf for the log_loss metric
+    search.fit(X, y, geometry)
 
-        def fit(self, X, y, geometry):  # noqa: ARG002
-            return self
-
-    class MockModelArg:
-        def __init__(self, **kwargs):
-            pass
-
-        def fit(self, X, y, geometry):  # noqa: ARG002
-            return MockGWM(y)
-
-    search.model = MockModelArg
-    search._model_kwargs = {}
-    search.criterion = "log_loss"
-    search.metrics = ["log_loss"]
-    search.n_jobs = 1
-    search.verbose = False
-
-    # y must be mixed (0s and 1s)
-    y = pd.Series([0, 1] * (len(y_orig) // 2))
-    if len(y) != len(X):
-        y = pd.Series([0, 1] * ((len(X) + 1) // 2))[: len(X)]
-
-    score, metrics_list = search._score(X, y, bw=100)
-
-    # Should return inf for invariant masked y
-    assert np.isinf(metrics_list[3])
+    # Both score and log_loss metric should be Inf because y_masked is invariant [1,1,1,1,1]
+    assert (search.scores_ == np.inf).all()
+    assert (search.metrics_["log_loss"] == np.inf).all()
 
 
-def test_log_loss_normal_execution(sample_data):
-    """Test that log_loss executes normally when y[~mask] has both classes."""
-    X, y_orig, geometry = sample_data
+def test_bandwidth_search_standard_data(sample_data):
+    """
+    Ensure log_loss calculation still works correctly on mixed data where
+    local neighborhoods are also mixed.
+    """
+    X, y, geometry = sample_data
 
-    # Mocking BandwidthSearch._score logic partially
-    search = BandwidthSearch(GWLogisticRegression, geometry=geometry)
-    search.geometry = geometry
-    search.fixed = False
+    search = BandwidthSearch(
+        GWLogisticRegression,
+        fixed=True,
+        search_method="interval",
+        min_bandwidth=200000,
+        max_bandwidth=200000,
+        interval=1,
+        criterion="log_loss",
+        metrics=["log_loss"],
+        verbose=False,
+    )
 
-    class MockGWM:
-        def __init__(self, y):
-            # Proba should have 2 columns.
-            probs = np.random.rand(len(y), 2)
-            probs = probs / probs.sum(axis=1)[:, np.newaxis]
-            self.proba_ = pd.DataFrame(probs, columns=[0, 1])
-            # No masking (no NaNs), so all predictions are valid
+    search.fit(X, y, geometry)
 
-            self.aicc_ = 100.0
-            self.aic_ = 100.0
-            self.bic_ = 100.0
-            self.prediction_rate_ = 1.0
-
-        def fit(self, X, y, geometry):  # noqa: ARG002
-            return self
-
-    class MockModelArg:
-        def __init__(self, **kwargs):  # noqa: ARG002
-            pass
-
-        def fit(self, X, y, geometry):  # noqa: ARG002
-            return MockGWM(y)
-
-    search.model = MockModelArg
-    search._model_kwargs = {}
-    search.criterion = "log_loss"
-    search.metrics = ["log_loss"]
-    search.n_jobs = 1
-    search.verbose = False
-
-    # y must be mixed (0s and 1s)
-    y = pd.Series([0, 1] * (len(y_orig) // 2))
-    if len(y) != len(X):
-        y = pd.Series([0, 1] * ((len(X) + 1) // 2))[: len(X)]
-
-    score, metrics_list = search._score(X, y, bw=100)
-
-    # Should calculate valid log_loss (not inf)
-    assert not np.isinf(metrics_list[3])
-    assert not np.isnan(metrics_list[3])
+    # Should calculate valid finite log_loss
+    assert not np.isinf(search.metrics_["log_loss"]).all()
+    assert not search.metrics_["log_loss"].isna().all()
