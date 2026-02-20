@@ -118,3 +118,70 @@ def test_bandwidth_search_standard_data(sample_data):
     # Should calculate valid finite log_loss
     assert not np.isinf(search.metrics_["log_loss"]).all()
     assert not search.metrics_["log_loss"].isna().all()
+
+
+def test_bandwidth_search_all_models_fail():
+    """
+    Verifies the fix for the idxmin() crash when no bandwidth produces valid models.
+    """
+    # Mixed y globally
+    y = pd.Series([0] * 10 + [1] * 10)
+    n = len(y)
+    X = pd.DataFrame({"feat": np.random.rand(n)})
+
+    # Far apart clusters
+    coords = [Point(0, i * 0.01) for i in range(10)] + [
+        Point(100, i * 0.01) for i in range(10)
+    ]
+    geometry = gpd.GeoSeries(coords)
+
+    # Small bandwidth k=5 ensures every neighborhood is invariant
+    search = BandwidthSearch(
+        GWLogisticRegression,
+        fixed=False,
+        search_method="interval",
+        min_bandwidth=5,
+        max_bandwidth=5,
+        interval=1,
+        criterion="log_loss",
+        metrics=["log_loss", "prediction_rate"],
+        verbose=False,
+    )
+
+    # This should not crash, even though all models fail
+    search.fit(X, y, geometry)
+
+    # Score should be Inf (since criterion is log_loss)
+    assert (search.scores_ == np.inf).all()
+    assert (search.metrics_["prediction_rate"] == 0).all()
+    assert (search.metrics_["log_loss"] == np.inf).all()
+
+
+def test_bandwidth_search_all_models_fail_prediction_rate_criterion():
+    """
+    Exercises the specific branch: if self.criterion == "prediction_rate"
+    """
+    y = pd.Series([0] * 10 + [1] * 10)
+    X = pd.DataFrame({"feat": np.random.rand(20)})
+    coords = [Point(0, i * 0.01) for i in range(10)] + [
+        Point(100, i * 0.01) for i in range(10)
+    ]
+    geometry = gpd.GeoSeries(coords)
+
+    search = BandwidthSearch(
+        GWLogisticRegression,
+        fixed=False,
+        search_method="interval",
+        min_bandwidth=5,
+        max_bandwidth=5,
+        interval=1,
+        criterion="prediction_rate",
+        metrics=["prediction_rate"],
+        verbose=False,
+    )
+
+    search.fit(X, y, geometry)
+
+    # Score should be 0 (the prediction rate itself)
+    assert (search.scores_ == 0).all()
+    assert (search.metrics_["prediction_rate"] == 0).all()
