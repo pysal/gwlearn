@@ -14,6 +14,7 @@ from sklearn.ensemble import (
     RandomForestClassifier,
     RandomForestRegressor,
 )
+from sklearn.metrics import accuracy_score, r2_score
 
 from .base import BaseClassifier, BaseRegressor
 
@@ -150,6 +151,10 @@ class GWRandomForestClassifier(BaseClassifier):
         Pooled out-of-bag (OOB) true labels across all fitted local models.
     oob_pred_pooled_ : numpy.ndarray
         Pooled out-of-bag (OOB) predictions/scores across all fitted local models.
+    oob_pooled_score_ : float
+        Accuracy computed from all out-of-bag predictions pooled together.
+    score_ : float
+        Alias for ``oob_pooled_score_``.
 
     Examples
     --------
@@ -230,11 +235,12 @@ class GWRandomForestClassifier(BaseClassifier):
         self._model_type = "random_forest"
         self._model_kwargs["oob_score"] = self._get_oob_score_data
 
-        self._empty_score_data = (np.array([]).reshape(-1, 1), np.array([]))
+        self._empty_score_data = (np.array([]), np.array([]))
 
     def _get_oob_score_data(self, true, pred):
         """Callback used by scikit-learn to collect OOB targets/predictions."""
-        return true, pred
+        # sklearn passes true as 2D for classifiers, flatten it
+        return true.ravel(), pred
 
     def fit(
         self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
@@ -298,6 +304,32 @@ class GWRandomForestClassifier(BaseClassifier):
             print(f"{(time() - self._start):.2f}s: Finished")
 
         return self
+
+    @property
+    def oob_pooled_score_(self) -> float:
+        """Accuracy on pooled out-of-bag predictions vs pooled OOB true labels.
+
+        Returns
+        -------
+        float
+            Accuracy computed from all out-of-bag predictions pooled together.
+        """
+        if self.oob_y_pooled_.size == 0 or self.oob_pred_pooled_.size == 0:
+            return np.nan
+        y_true = self.oob_y_pooled_
+        y_pred = self.oob_pred_pooled_
+        return accuracy_score(y_true, y_pred)
+
+    @property
+    def score_(self) -> float:
+        """Alias for oob_pooled_score_.
+
+        Returns
+        -------
+        float
+            Accuracy computed from all out-of-bag predictions pooled together.
+        """
+        return self.oob_pooled_score_
 
     def _get_score_data(
         self,
@@ -648,6 +680,10 @@ class GWRandomForestRegressor(BaseRegressor):
         Pooled out-of-bag (OOB) true values across all fitted local models.
     oob_pred_pooled_ : numpy.ndarray
         Pooled out-of-bag (OOB) predictions across all fitted local models.
+    oob_pooled_score_ : float
+        R² computed from all out-of-bag predictions pooled together.
+    score_ : float
+        Alias for ``oob_pooled_score_``.
 
     Examples
     --------
@@ -722,11 +758,12 @@ class GWRandomForestRegressor(BaseRegressor):
         self._model_type = "random_forest"
         self._model_kwargs["oob_score"] = self._get_oob_score_data
 
-        self._empty_score_data = (np.array([]).reshape(-1, 1), np.array([]))
+        self._empty_score_data = (np.array([]), np.array([]))
 
     def _get_oob_score_data(self, true, pred):
         """Callback used by scikit-learn to collect OOB targets/predictions."""
-        return true, pred
+        # sklearn passes true as 2D array (-1, 1) for regressors, flatten it
+        return true.ravel(), pred
 
     def fit(
         self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
@@ -790,6 +827,32 @@ class GWRandomForestRegressor(BaseRegressor):
             print(f"{(time() - self._start):.2f}s: Finished")
 
         return self
+
+    @property
+    def oob_pooled_score_(self) -> float:
+        """R² on pooled out-of-bag predictions vs pooled OOB true values.
+
+        Returns
+        -------
+        float
+            R² computed from all out-of-bag predictions pooled together.
+        """
+        if len(self.oob_y_pooled_) == 0:
+            return np.nan
+        y_true = self.oob_y_pooled_
+        y_pred = self.oob_pred_pooled_
+        return r2_score(y_true, y_pred)
+
+    @property
+    def score_(self) -> float:
+        """Alias for oob_pooled_score_.
+
+        Returns
+        -------
+        float
+            R² computed from all out-of-bag predictions pooled together.
+        """
+        return self.oob_pooled_score_
 
     def _get_score_data(
         self,
