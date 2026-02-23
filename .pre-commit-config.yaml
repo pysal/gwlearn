@@ -4,9 +4,9 @@ repos:
     rev: "v0.14.10"
     hooks:
       - id: ruff-check
-        files: "gwlearn\/|doc\/"
+        files: "gwlearn\/|docs\/"
       - id: ruff-format
-        files: "gwlearn\/|doc\/"
+        files: "gwlearn\/|docs\/"
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: "v6.0.0"
     hooks:
