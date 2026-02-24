@@ -255,3 +255,96 @@ def test_gwgb_regressor_fit_basic(sample_regression_data):  # noqa: F811
     assert hasattr(model, "aic_")
     assert hasattr(model, "aicc_")
     assert hasattr(model, "bic_")
+
+
+def test_gwrf_classifier_pooled_score(sample_data):
+    """Test oob_pooled_score_ and score_ on GWRandomForestClassifier."""
+    X, y, geometry = sample_data
+
+    model = GWRandomForestClassifier(
+        bandwidth=150000,
+        fixed=True,
+        random_state=42,
+        strict=False,
+        n_estimators=50,
+        n_jobs=1,
+    )
+    model.fit(X, y, geometry)
+
+    # oob_pooled_score_ and score_ should exist and be a float in [0, 1]
+    assert hasattr(model, "oob_pooled_score_")
+    assert hasattr(model, "score_")
+    assert isinstance(model.oob_pooled_score_, float)
+    assert 0.0 <= model.oob_pooled_score_ <= 1.0
+
+    # score_ is an alias for oob_pooled_score_
+    assert model.score_ == model.oob_pooled_score_
+
+    # The underlying pooled OOB arrays should be non-empty
+    assert model.oob_y_pooled_.size > 0
+    assert model.oob_pred_pooled_.size > 0
+
+
+def test_gwrf_regressor_pooled_score(sample_regression_data):
+    """Test oob_pooled_score_ and score_ on GWRandomForestRegressor."""
+    X, y, geometry = sample_regression_data
+
+    model = GWRandomForestRegressor(
+        bandwidth=150000,
+        fixed=True,
+        random_state=42,
+        strict=False,
+        n_estimators=50,
+        n_jobs=1,
+    )
+    model.fit(X, y, geometry)
+
+    # oob_pooled_score_ should be a valid float (R²)
+    assert hasattr(model, "oob_pooled_score_")
+    assert hasattr(model, "score_")
+    assert isinstance(model.oob_pooled_score_, float)
+
+    # score_ is an alias for oob_pooled_score_
+    assert model.score_ == model.oob_pooled_score_
+
+    # The underlying pooled OOB arrays should be non-empty
+    assert model.oob_y_pooled_.size > 0
+    assert model.oob_pred_pooled_.size > 0
+
+
+def test_gwgb_no_pooled_score(sample_data):
+    """GWGradientBoostingClassifier should NOT expose pooled_score_ or score_."""
+    X, y, geometry = sample_data
+
+    model = GWGradientBoostingClassifier(
+        bandwidth=150000,
+        fixed=True,
+        random_state=42,
+        strict=False,
+        n_estimators=10,
+        n_jobs=1,
+    )
+    model.fit(X, y, geometry)
+
+    assert not hasattr(model, "pooled_score_")
+    assert not hasattr(model, "oob_pooled_score_")
+    assert not hasattr(model, "score_")
+
+
+def test_gwgb_regressor_no_pooled_score(sample_regression_data):
+    """GWGradientBoostingRegressor should NOT expose pooled_score_ or score_."""
+    X, y, geometry = sample_regression_data
+
+    model = GWGradientBoostingRegressor(
+        bandwidth=150000,
+        fixed=True,
+        random_state=42,
+        strict=False,
+        n_estimators=10,
+        n_jobs=1,
+    )
+    model.fit(X, y, geometry)
+
+    assert not hasattr(model, "pooled_score_")
+    assert not hasattr(model, "oob_pooled_score_")
+    assert not hasattr(model, "score_")

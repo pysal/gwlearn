@@ -279,3 +279,95 @@ def test_against_mgwr():
     assert_almost_equal(gwlr.aicc_, res.aicc, decimal=0)
     assert_almost_equal(gwlr.effective_df_, res.ENP)
     assert_almost_equal(gwlr.log_likelihood_, res.llf)
+
+
+def test_gwlogistic_pooled_score(sample_data):
+    """Test pooled_score_ and score_ attributes of GWLogisticRegression."""
+    X, y, geometry = sample_data
+
+    model = GWLogisticRegression(
+        bandwidth=150000,
+        fixed=True,
+        random_state=42,
+        strict=False,
+        max_iter=500,
+        n_jobs=1,
+        include_focal=True,
+    )
+    model.fit(X, y, geometry)
+
+    # pooled_score_ and score_ should exist and be a float in [0, 1]
+    assert hasattr(model, "pooled_score_")
+    assert hasattr(model, "score_")
+    assert isinstance(model.pooled_score_, float)
+    assert 0.0 <= model.pooled_score_ <= 1.0
+
+    # score_ is an alias for pooled_score_
+    assert model.score_ == model.pooled_score_
+
+    # The underlying pooled arrays should be non-empty
+    assert model.y_pooled_.size > 0
+    assert model.pred_pooled_.size > 0
+
+
+def test_gwlogistic_pooled_score_include_focal_false(sample_data):
+    """Test pooled_score_ when include_focal=False (OOF predictions)."""
+    X, y, geometry = sample_data
+
+    model = GWLogisticRegression(
+        bandwidth=150000,
+        fixed=True,
+        random_state=42,
+        strict=False,
+        max_iter=500,
+        n_jobs=1,
+        include_focal=False,
+    )
+    model.fit(X, y, geometry)
+
+    # pooled_score_ should still be a valid float
+    assert hasattr(model, "pooled_score_")
+    assert isinstance(model.pooled_score_, float)
+    assert model.score_ == model.pooled_score_
+
+
+def test_gwlinear_pooled_score(sample_regression_data):
+    """Test pooled_score_ and score_ attributes of GWLinearRegression."""
+    X, y, geometry = sample_regression_data
+
+    model = GWLinearRegression(
+        bandwidth=150000,
+        fixed=True,
+        n_jobs=1,
+        include_focal=True,
+    )
+    model.fit(X, y, geometry)
+
+    # pooled_score_ and score_ should exist and be a float
+    assert hasattr(model, "pooled_score_")
+    assert hasattr(model, "score_")
+    assert isinstance(model.pooled_score_, float)
+
+    # score_ is an alias for pooled_score_
+    assert model.score_ == model.pooled_score_
+
+    # The underlying pooled arrays should be non-empty
+    assert model.y_pooled_.size > 0
+    assert model.pred_pooled_.size > 0
+
+
+def test_gwlinear_pooled_score_include_focal_false(sample_regression_data):
+    """Test pooled_score_ when include_focal=False (OOF predictions)."""
+    X, y, geometry = sample_regression_data
+
+    model = GWLinearRegression(
+        bandwidth=150000,
+        fixed=True,
+        n_jobs=1,
+        include_focal=False,
+    )
+    model.fit(X, y, geometry)
+
+    assert hasattr(model, "pooled_score_")
+    assert isinstance(model.pooled_score_, float)
+    assert model.score_ == model.pooled_score_
