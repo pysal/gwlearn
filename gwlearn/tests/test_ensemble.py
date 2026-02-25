@@ -348,3 +348,29 @@ def test_gwgb_regressor_no_pooled_score(sample_regression_data):
     assert not hasattr(model, "pooled_score_")
     assert not hasattr(model, "oob_pooled_score_")
     assert not hasattr(model, "score_")
+
+
+
+def test_gwrf_classifier_oob_pooled_score_empty():
+    """oob_pooled_score_ returns nan when pooled OOB arrays are empty."""
+    import numpy as np
+
+    model = GWRandomForestClassifier(bandwidth=10, fixed=True, n_estimators=10)
+    # Manually simulate the state after fit where all local models were skipped
+    model.oob_y_pooled_ = np.array([], dtype=bool)
+    model.oob_pred_pooled_ = np.array([], dtype=float)
+
+    assert np.isnan(model.oob_pooled_score_)
+    assert np.isnan(model.score_)
+
+
+def test_gwrf_regressor_oob_pooled_score_empty():
+    """oob_pooled_score_ returns nan when pooled OOB arrays are empty."""
+    import numpy as np
+
+    model = GWRandomForestRegressor(bandwidth=10, fixed=True, n_estimators=10)
+    model.oob_y_pooled_ = np.array([], dtype=float)
+    model.oob_pred_pooled_ = np.array([], dtype=float)
+
+    assert np.isnan(model.oob_pooled_score_)
+    assert np.isnan(model.score_)

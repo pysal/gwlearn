@@ -282,7 +282,11 @@ def test_against_mgwr():
 
 
 def test_gwlogistic_pooled_score(sample_data):
-    """Test pooled_score_ and score_ attributes of GWLogisticRegression."""
+    """Test pooled_score_ and score_ on GWLogisticRegression.
+
+    Verifies that y_pooled_ contains true pooled local-neighborhood labels
+    (not just focal y), meaning its length exceeds len(y) when include_focal=True.
+    """
     X, y, geometry = sample_data
 
     model = GWLogisticRegression(
@@ -305,13 +309,15 @@ def test_gwlogistic_pooled_score(sample_data):
     # score_ is an alias for pooled_score_
     assert model.score_ == model.pooled_score_
 
-    # The underlying pooled arrays should be non-empty
+    # pooled arrays are truly pooled: each obs appears in multiple neighborhoods
     assert model.y_pooled_.size > 0
     assert model.pred_pooled_.size > 0
+    assert model.y_pooled_.size == model.pred_pooled_.size
+    assert model.y_pooled_.size > len(y)
 
 
 def test_gwlogistic_pooled_score_include_focal_false(sample_data):
-    """Test pooled_score_ when include_focal=False (OOF predictions)."""
+    """Test pooled_score_ when include_focal=False (leave-out predictions)."""
     X, y, geometry = sample_data
 
     model = GWLogisticRegression(
@@ -329,10 +335,27 @@ def test_gwlogistic_pooled_score_include_focal_false(sample_data):
     assert hasattr(model, "pooled_score_")
     assert isinstance(model.pooled_score_, float)
     assert model.score_ == model.pooled_score_
+    assert model.y_pooled_.size > 0
+
+
+def test_gwlogistic_pooled_score_empty():
+    """pooled_score_ returns nan when no local models produced data."""
+    import numpy as np
+
+    model = GWLogisticRegression(bandwidth=10, fixed=True, max_iter=100)
+    model.y_pooled_ = np.array([])
+    model.pred_pooled_ = np.array([])
+
+    assert np.isnan(model.pooled_score_)
+    assert np.isnan(model.score_)
 
 
 def test_gwlinear_pooled_score(sample_regression_data):
-    """Test pooled_score_ and score_ attributes of GWLinearRegression."""
+    """Test pooled_score_ and score_ on GWLinearRegression.
+
+    Verifies that y_pooled_ contains true pooled local-neighborhood values
+    (not just focal y), meaning its length exceeds len(y) when include_focal=True.
+    """
     X, y, geometry = sample_regression_data
 
     model = GWLinearRegression(
@@ -351,13 +374,15 @@ def test_gwlinear_pooled_score(sample_regression_data):
     # score_ is an alias for pooled_score_
     assert model.score_ == model.pooled_score_
 
-    # The underlying pooled arrays should be non-empty
+    # pooled arrays are truly pooled: size exceeds len(y)
     assert model.y_pooled_.size > 0
     assert model.pred_pooled_.size > 0
+    assert model.y_pooled_.size == model.pred_pooled_.size
+    assert model.y_pooled_.size > len(y)
 
 
 def test_gwlinear_pooled_score_include_focal_false(sample_regression_data):
-    """Test pooled_score_ when include_focal=False (OOF predictions)."""
+    """Test pooled_score_ when include_focal=False (leave-out predictions)."""
     X, y, geometry = sample_regression_data
 
     model = GWLinearRegression(
@@ -371,3 +396,16 @@ def test_gwlinear_pooled_score_include_focal_false(sample_regression_data):
     assert hasattr(model, "pooled_score_")
     assert isinstance(model.pooled_score_, float)
     assert model.score_ == model.pooled_score_
+    assert model.y_pooled_.size > 0
+
+
+def test_gwlinear_pooled_score_empty():
+    """pooled_score_ returns nan when no local models produced data."""
+    import numpy as np
+
+    model = GWLinearRegression(bandwidth=10, fixed=True)
+    model.y_pooled_ = np.array([])
+    model.pred_pooled_ = np.array([])
+
+    assert np.isnan(model.pooled_score_)
+    assert np.isnan(model.score_)
