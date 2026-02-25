@@ -9,64 +9,23 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed, dump, load
-from libpysal import graph
+from libpysal import graph, kernels
 from scipy.spatial import KDTree
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 from sklearn.model_selection import train_test_split
 
 __all__ = ["BaseClassifier", "BaseRegressor"]
 
-
-def _triangular(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
-    u = np.clip(distances / bandwidth, 0, 1)
-    return 1 - u
-
-
-def _parabolic(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
-    u = np.clip(distances / bandwidth, 0, 1)
-    return 1 - u**2
-
-
-def _gaussian(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
-    u = distances / bandwidth
-    return np.exp(-((u / 2) ** 2))
-
-
-def _bisquare(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
-    u = np.clip(distances / bandwidth, 0, 1)
-    return (1 - u**2) ** 2
-
-
-def _cosine(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
-    u = np.clip(distances / bandwidth, 0, 1)
-    return np.cos(np.pi / 2 * u)
-
-
-def _exponential(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
-    u = distances / bandwidth
-    return np.exp(-u)
-
-
-def _boxcar(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
-    r = (distances < bandwidth).astype(int)
-    return r
-
-
-def _tricube(distances: np.ndarray, bandwidth: np.ndarray | float) -> np.ndarray:
-    u = np.clip(distances / bandwidth, 0, 1)
-    return (1 - u**3) ** 3
-
-
-_kernel_functions = {
-    "triangular": _triangular,
-    "parabolic": _parabolic,
-    # "gaussian": _gaussian,
-    "bisquare": _bisquare,
-    "tricube": _tricube,
-    "cosine": _cosine,
-    "boxcar": _boxcar,
-    # "exponential": _exponential,
-}
+_kernel_functions = (
+    "triangular",
+    "parabolic",
+    # "gaussian",
+    "bisquare",
+    "tricube",
+    "cosine",
+    "boxcar",
+    # "exponential",
+)
 
 
 class _BaseModel(BaseEstimator):
@@ -140,7 +99,7 @@ class _BaseModel(BaseEstimator):
         if self.fixed:  # fixed distance
             weights = graph.Graph.build_kernel(
                 self.geometry,
-                kernel=_kernel_functions[self.kernel],
+                kernel=self.kernel,
                 bandwidth=self.bandwidth,
             )
         else:  # adaptive KNN
@@ -154,7 +113,7 @@ class _BaseModel(BaseEstimator):
             # the epsilon comes from MGWR to avoid division by zero
             bandwidth = weights._adjacency.groupby(level=0).transform("max") * 1.0000001
             weights = graph.Graph(
-                adjacency=_kernel_functions[self.kernel](weights._adjacency, bandwidth),
+                adjacency=kernels.kernel(weights._adjacency, bandwidth, kernel=self.kernel, decay=True),
                 is_sorted=True,
             )
         if self.include_focal:
@@ -417,11 +376,13 @@ class _BaseModel(BaseEstimator):
                 geometry, predicate="dwithin", distance=self.bandwidth
             )
             local_ids = self._local_models.index[indices_array.flatten()].to_numpy()
-            distance = _kernel_functions[self.kernel](
+            distance = kernels.kernel(
                 self.geometry.iloc[indices_array].distance(
                     geometry.iloc[input_ids], align=False
                 ),
                 bw,
+                kernel=self.kernel,
+                decay=True,
             )
         else:
             training_coords = self.geometry.get_coordinates()
@@ -440,7 +401,9 @@ class _BaseModel(BaseEstimator):
             kernel_bandwidth = (
                 pd.Series(distances).groupby(input_ids).transform("max") + 1e-6
             )  # can't have 0
-            distance = _kernel_functions[self.kernel](distances, kernel_bandwidth)
+            distance = kernels.kernel(
+                distances, kernel_bandwidth, kernel=self.kernel, decay=True
+            )
 
         split_indices = np.where(np.diff(input_ids))[0] + 1
         local_model_ids = np.split(local_ids, split_indices)
