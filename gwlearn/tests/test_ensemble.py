@@ -350,7 +350,6 @@ def test_gwgb_regressor_no_pooled_score(sample_regression_data):
     assert not hasattr(model, "score_")
 
 
-
 def test_gwrf_classifier_oob_pooled_score_empty():
     """oob_pooled_score_ returns nan when pooled OOB arrays are empty."""
     import numpy as np
