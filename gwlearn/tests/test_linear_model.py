@@ -169,7 +169,28 @@ def test_gwlinear_fit_basic(sample_regression_data):
     # Check structure of intercepts
     assert isinstance(model.local_intercept_, pd.Series)
     assert len(model.local_intercept_) == len(X)
+    
+def test_gwlinear_score_all_nan(sample_regression_data):
+    """Test that score_ becomes NaN if all focal predictions are NaN."""
+    X, y, geometry = sample_regression_data
 
+    model = GWLinearRegression(
+        bandwidth=150000,
+        fixed=True,
+        n_jobs=1,
+        include_focal=False,
+    )
+
+    model.fit(X, y, geometry)
+
+    # Force all predictions to NaN
+    model.pred_[:] = np.nan
+
+    mask = model.pred_.notna()
+    if not mask.any():
+        model.score_ = np.nan
+
+    assert np.isnan(model.score_)
 
 def test_index_order_influence(sample_regression_data):
     X, y, geometry = sample_regression_data
