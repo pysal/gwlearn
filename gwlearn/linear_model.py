@@ -8,6 +8,7 @@ import pandas as pd
 from libpysal import graph
 from sklearn.base import BaseEstimator
 from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.metrics import accuracy_score, r2_score
 
 from .base import BaseClassifier, BaseRegressor
 
@@ -140,6 +141,10 @@ class GWLogisticRegression(BaseClassifier):
     left_out_w_ : np.ndarray
         Array of weights on left out observations in local models when
         ``leave_out`` is set.
+    pooled_score_ : float
+        Accuracy computed from all local model predictions pooled together.
+    score_ : float
+        Alias for ``pooled_score_``.
 
     Examples
     --------
@@ -166,7 +171,6 @@ class GWLogisticRegression(BaseClassifier):
     dtype: boolean
     """
 
-    # TODO: score_ should be an alias of pooled_score_ - this is different from MGWR
     def __init__(
         self,
         bandwidth: float | None = None,
@@ -262,6 +266,30 @@ class GWLogisticRegression(BaseClassifier):
             self.pred_pooled_ = np.array([])
 
         return self
+
+    @property
+    def pooled_score_(self) -> float:
+        """Accuracy on pooled predictions vs pooled true labels.
+
+        Returns
+        -------
+        float
+            Accuracy computed from all local model predictions pooled together.
+        """
+        if self.y_pooled_.size == 0 or self.pred_pooled_.size == 0:
+            return np.nan
+        return accuracy_score(self.y_pooled_, self.pred_pooled_)
+
+    @property
+    def score_(self) -> float:
+        """Alias for pooled_score_.
+
+        Returns
+        -------
+        float
+            Accuracy computed from all local model predictions pooled together.
+        """
+        return self.pooled_score_
 
     def _get_score_data(
         self,
@@ -384,6 +412,10 @@ class GWLinearRegression(BaseRegressor):
         each location
     local_intercept_ : pd.Series
         Local intercept values at each location
+    pooled_score_ : float
+        R² computed from all local model predictions pooled together.
+    score_ : float
+        Alias for ``pooled_score_``.
 
     Examples
     --------
@@ -460,6 +492,8 @@ class GWLinearRegression(BaseRegressor):
         y: pd.Series,  # noqa: ARG002
     ) -> tuple:
         return (
+            y,
+            local_model.predict(X),
             pd.Series(
                 local_model.coef_.flatten(),
                 index=local_model.feature_names_in_,
@@ -473,6 +507,8 @@ class GWLinearRegression(BaseRegressor):
         else:
             self.feature_names_in_ = np.arange(X.shape[1])
         self._empty_score_data = (
+            np.array([]),
+            np.array([]),
             pd.Series(np.nan, index=self.feature_names_in_),  # local coefficients
             np.array([np.nan]),
         )  # intercept
@@ -480,10 +516,52 @@ class GWLinearRegression(BaseRegressor):
         super().fit(X=X, y=y, geometry=geometry)
 
         self.local_coef_ = pd.concat(
-            [x[0] for x in self._score_data], axis=1, keys=self._names
+            [x[2] for x in self._score_data], axis=1, keys=self._names
         ).T
         self.local_intercept_ = pd.Series(
-            [x[1] for x in self._score_data], index=self._names
+            [x[3] for x in self._score_data], index=self._names
         )
 
+        self._y_local = [x[0] for x in self._score_data]
+        self._pred_local = [x[1] for x in self._score_data]
+
+        del self._score_data
+
+        if self._y_local and any(arr.size > 0 for arr in self._y_local):
+            self.y_pooled_ = np.concatenate(
+                [arr for arr in self._y_local if arr.size > 0]
+            )
+        else:
+            self.y_pooled_ = np.array([])
+        if self._pred_local and any(arr.size > 0 for arr in self._pred_local):
+            self.pred_pooled_ = np.concatenate(
+                [arr for arr in self._pred_local if arr.size > 0]
+            )
+        else:
+            self.pred_pooled_ = np.array([])
+
         return self
+
+    @property
+    def pooled_score_(self) -> float:
+        """R² on pooled predictions vs pooled true values.
+
+        Returns
+        -------
+        float
+            R² computed from all local model predictions pooled together.
+        """
+        if len(self.y_pooled_) == 0:
+            return np.nan
+        return r2_score(self.y_pooled_, self.pred_pooled_)
+
+    @property
+    def score_(self) -> float:
+        """Alias for pooled_score_.
+
+        Returns
+        -------
+        float
+            R² computed from all local model predictions pooled together.
+        """
+        return self.pooled_score_
