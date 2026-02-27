@@ -169,7 +169,7 @@ def test_gwlinear_fit_basic(sample_regression_data):
     # Check structure of intercepts
     assert isinstance(model.local_intercept_, pd.Series)
     assert len(model.local_intercept_) == len(X)
-    
+
 def test_gwlinear_score_all_nan(sample_regression_data):
     """Test that score_ becomes NaN if all focal predictions are NaN."""
     X, y, geometry = sample_regression_data
