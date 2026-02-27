@@ -123,7 +123,7 @@ class _BaseModel(BaseEstimator):
         if "random_state" in inspect.signature(self.model).parameters:
             return self.model(random_state=self.random_state, **model_kwargs)
         return self.model(**model_kwargs)
-    
+
     def _validate_geometry(self, geometry):
         """Validate that geometry contains only Point geometries"""
         if not isinstance(geometry, gpd.GeoSeries):
@@ -944,9 +944,9 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         if skip:
             return output
-        
+
         local_model = self._init_local_model(model_kwargs)
-        
+
         if self.undersample:
             if isinstance(self.undersample, float):
                 rus = BinaryRandomUnderSampler(
@@ -1728,9 +1728,9 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         focal_x: np.ndarray,
         model_kwargs: dict,
     ) -> list[Hashable]:
-        
+
         local_model = self._init_local_model(model_kwargs)
-        
+
         X = data.drop(columns=["_y", "_weight"])
         y = data["_y"]
 
