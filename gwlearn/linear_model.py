@@ -244,7 +244,13 @@ class GWLogisticRegression(BaseClassifier):
 
         self._y_local = [x[0] for x in self._score_data]
         self._pred_local = [x[1] for x in self._score_data]
-
+        # Calculate pooled accuracy (Mean Accuracy)
+        # self.pred_ contains focal predictions; y is the original target
+        mask = self.pred_.notna()
+        if mask.any():
+            self.score_ = (self.pred_[mask] == y[mask]).mean()
+        else:
+            self.score_ = np.nan
         del self._score_data
 
         # Check for empty arrays before concatenation to avoid unexpected shapes
@@ -485,5 +491,15 @@ class GWLinearRegression(BaseRegressor):
         self.local_intercept_ = pd.Series(
             [x[1] for x in self._score_data], index=self._names
         )
+        # Calculate pooled R2 score
+        mask = self.pred_.notna()
+        if mask.any():
+            y_true = y[mask]
+            y_focal_pred = self.pred_[mask]
 
+            ss_res = ((y_true - y_focal_pred) ** 2).sum()
+            ss_tot = ((y_true - y_true.mean()) ** 2).sum()
+            self.score_ = 1 - (ss_res / ss_tot) if ss_tot != 0 else 0.0
+        else:
+            self.score_ = np.nan
         return self
