@@ -178,6 +178,27 @@ When submitting a pull request:
 1. *After* opening an issue and discussing with the development team, create a PR with
    the proposed changes.
 
+### Documentation
+
+The documentation is built using Sphinx with MyST-NB, which executes all notebooks
+during the build. To build locally:
+```sh
+pixi run sphinx-build docs/source docs/build/html
+```
+
+Open `docs/build/html/index.html` to preview the result.
+
+#### Adding example notebooks
+
+Place new notebooks in `docs/source/` and register them in the `toctree` in
+`docs/source/index.md`. Before submitting, verify the notebook executes cleanly:
+```sh
+pixi run pytest --nbmake docs/source/your_notebook.ipynb
+```
+
+Notebooks should use real-world datasets and demonstrate a meaningful analytical
+workflow rather than reproducing what is already covered in the existing documentation.
+
 <!-- omit in toc -->
 ## Attribution
 
