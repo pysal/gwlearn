@@ -410,14 +410,8 @@ class _BaseModel(BaseEstimator):
 
         bw = bandwidth if bandwidth is not None else self.bandwidth
 
-        if bw is None or not isinstance(bw, Real):
-            raise ValueError(f"Bandwidth {bw} is not valid.")
-
-        if np.isnan(bw):
-            raise ValueError("Bandwidth must not be NaN.")
-
-        if bw <= 0:
-            raise ValueError("Bandwidth must be a positive number.")
+        if (bw is None or not isinstance(bw, Real)) or np.isnan(bw) or (bw <= 0):
+            raise ValueError(f"Bandwidth must be a positive scalar number. Got '{bw}'.")
 
         if not self.fixed and not isinstance(bw, Integral):
             raise ValueError("Adaptive bandwidth (fixed=False) must be an integer.")
@@ -525,7 +519,7 @@ class _BaseModel(BaseEstimator):
         # Bandwidth validation
         if self.bandwidth is not None:
             if self.bandwidth <= 0:
-                raise ValueError("bandwidth must be a positive number.")
+                raise ValueError("Bandwidth must be a positive scalar number.")
 
             if not self.fixed and not isinstance(self.bandwidth, Integral):
                 raise ValueError("Adaptive bandwidth (fixed=False) must be an integer.")

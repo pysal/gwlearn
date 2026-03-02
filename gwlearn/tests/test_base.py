@@ -303,7 +303,7 @@ def test_fit_negative_bandwidth_raises(sample_data):
     )
 
     # Validation should trigger during fit()
-    with pytest.raises(ValueError, match="bandwidth must be a positive"):
+    with pytest.raises(ValueError, match="Bandwidth must be a positive scalar"):
         clf.fit(X, y, geometry)
 
 
@@ -335,7 +335,7 @@ def test_predict_proba_rejects_nan_bandwidth(sample_data):
     )
     clf.fit(X, y, geometry)
 
-    with pytest.raises(ValueError, match="must not be NaN"):
+    with pytest.raises(ValueError, match="Bandwidth must be a positive scalar"):
         clf.predict_proba(X, geometry, bandwidth=np.nan)
 
 
@@ -351,7 +351,7 @@ def test_predict_proba_rejects_negative_bandwidth(sample_data):
     )
     clf.fit(X, y, geometry)
 
-    with pytest.raises(ValueError, match="must be a positive number"):
+    with pytest.raises(ValueError, match="Bandwidth must be a positive scalar"):
         clf.predict_proba(X, geometry, bandwidth=-5)
 
 
