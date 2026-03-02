@@ -400,16 +400,21 @@ class _BaseModel(BaseEstimator):
         """
         self._validate_geometry(geometry)
 
-        if not (isinstance(self.geometry, gpd.GeoSeries)):
-            raise ValueError("Geometry need to be specified to enable prediction.")
+        if not (
+            (isinstance(self.bandwidth, Real) or bandwidth)
+            and isinstance(self.geometry, gpd.GeoSeries)
+        ):
+            raise ValueError(
+                "Bandwidth and geometry need to be specified to enable prediction."
+            )
 
         bw = bandwidth if bandwidth is not None else self.bandwidth
 
-        if not isinstance(bw, Real):
+        if bw is None or not isinstance(bw, Real):
             raise ValueError(f"Bandwidth {bw} is not valid.")
 
         if np.isnan(bw):
-            raise ValueError("Bandwidth must not be Nan.")
+            raise ValueError("Bandwidth must not be NaN.")
 
         if bw <= 0:
             raise ValueError("Bandwidth must be a positive number.")

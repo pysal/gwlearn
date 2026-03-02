@@ -335,7 +335,7 @@ def test_predict_proba_rejects_nan_bandwidth(sample_data):
     )
     clf.fit(X, y, geometry)
 
-    with pytest.raises(ValueError, match="must not be Nan"):
+    with pytest.raises(ValueError, match="must not be NaN"):
         clf.predict_proba(X, geometry, bandwidth=np.nan)
 
 
