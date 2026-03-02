@@ -303,7 +303,7 @@ def test_fit_negative_bandwidth_raises(sample_data):
     )
 
     # Validation should trigger during fit()
-    with pytest.raises(ValueError, match="bandwidth must be a positive"):
+    with pytest.raises(ValueError, match="Bandwidth must be a positive scalar"):
         clf.fit(X, y, geometry)
 
 
@@ -321,6 +321,56 @@ def test_fit_adaptive_bandwidth_must_be_integer(sample_data):
     # Fit should raise error due to invalid adaptive bandwidth type
     with pytest.raises(ValueError, match="Adaptive bandwidth"):
         clf.fit(X, y, geometry)
+
+
+def test_predict_proba_rejects_nan_bandwidth(sample_data):
+    """Tests that NaN bandwidth raises ValueError in predict_proba()."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=5,
+        fixed=True,
+        keep_models=True,
+    )
+    clf.fit(X, y, geometry)
+
+    with pytest.raises(ValueError, match="Bandwidth must be a positive scalar"):
+        clf.predict_proba(X, geometry, bandwidth=np.nan)
+
+
+def test_predict_proba_rejects_negative_bandwidth(sample_data):
+    """Tests that negative bandwidth raises ValueError in predict_proba()."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=5,
+        fixed=True,
+        keep_models=True,
+    )
+    clf.fit(X, y, geometry)
+
+    with pytest.raises(ValueError, match="Bandwidth must be a positive scalar"):
+        clf.predict_proba(X, geometry, bandwidth=-5)
+
+
+def test_predict_proba_rejects_non_integer_adaptive_bandwidth(sample_data):
+    """
+    Tests that non-integer adaptive bandwidth raises ValueError in predict_proba().
+    """
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=5,
+        fixed=False,
+        keep_models=True,
+    )
+    clf.fit(X, y, geometry)
+
+    with pytest.raises(ValueError, match="must be an integer"):
+        clf.predict_proba(X, geometry, bandwidth=5.5)
 
 
 def test_fit_length_mismatch_raises(sample_data):

@@ -1,6 +1,7 @@
 import inspect
 import warnings
 from collections.abc import Callable, Hashable
+from numbers import Integral, Real
 from pathlib import Path
 from time import time
 from typing import Literal
@@ -131,7 +132,7 @@ class _BaseModel(BaseEstimator):
 
     def _build_weights(self) -> graph.Graph:
         """Build spatial weights graph"""
-        if not isinstance(self.bandwidth, float | int):
+        if not isinstance(self.bandwidth, Real):
             raise ValueError(
                 "Bandwidth is not a valid value. Needs to be float or int, "
                 f"got {self.bandwidth}."
@@ -400,7 +401,7 @@ class _BaseModel(BaseEstimator):
         self._validate_geometry(geometry)
 
         if not (
-            (isinstance(self.bandwidth, float | int) or bandwidth)
+            (isinstance(self.bandwidth, Real) or bandwidth)
             and isinstance(self.geometry, gpd.GeoSeries)
         ):
             raise ValueError(
@@ -409,8 +410,11 @@ class _BaseModel(BaseEstimator):
 
         bw = bandwidth if bandwidth is not None else self.bandwidth
 
-        if bw is None or not isinstance(bw, int | float):
-            raise ValueError(f"Bandwidth {bw} is not valid.")
+        if (bw is None or not isinstance(bw, Real)) or np.isnan(bw) or (bw <= 0):
+            raise ValueError(f"Bandwidth must be a positive scalar number. Got '{bw}'.")
+
+        if not self.fixed and not isinstance(bw, Integral):
+            raise ValueError("Adaptive bandwidth (fixed=False) must be an integer.")
 
         if self.fixed:
             input_ids, indices_array = self.geometry.sindex.query(
@@ -515,9 +519,9 @@ class _BaseModel(BaseEstimator):
         # Bandwidth validation
         if self.bandwidth is not None:
             if self.bandwidth <= 0:
-                raise ValueError("bandwidth must be a positive number.")
+                raise ValueError("Bandwidth must be a positive scalar number.")
 
-            if not self.fixed and not isinstance(self.bandwidth, int):
+            if not self.fixed and not isinstance(self.bandwidth, Integral):
                 raise ValueError("Adaptive bandwidth (fixed=False) must be an integer.")
 
     # Abstract methods that subclasses must implement
