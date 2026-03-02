@@ -323,6 +323,56 @@ def test_fit_adaptive_bandwidth_must_be_integer(sample_data):
         clf.fit(X, y, geometry)
 
 
+def test_predict_proba_rejects_nan_bandwidth(sample_data):
+    """Tests that NaN bandwidth raises ValueError in predict_proba()."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=5,
+        fixed=True,
+        keep_models=True,
+    )
+    clf.fit(X, y, geometry)
+
+    with pytest.raises(ValueError, match="must not be Nan"):
+        clf.predict_proba(X, geometry, bandwidth=np.nan)
+
+
+def test_predict_proba_rejects_negative_bandwidth(sample_data):
+    """Tests that negative bandwidth raises ValueError in predict_proba()."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=5,
+        fixed=True,
+        keep_models=True,
+    )
+    clf.fit(X, y, geometry)
+
+    with pytest.raises(ValueError, match="must be a positive number"):
+        clf.predict_proba(X, geometry, bandwidth=-5)
+
+
+def test_predict_proba_rejects_non_integer_adaptive_bandwidth(sample_data):
+    """
+    Tests that non-integer adaptive bandwidth raises ValueError in predict_proba().
+    """
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=5,
+        fixed=False,
+        keep_models=True,
+    )
+    clf.fit(X, y, geometry)
+
+    with pytest.raises(ValueError, match="must be an integer"):
+        clf.predict_proba(X, geometry, bandwidth=5.5)
+
+
 def test_fit_length_mismatch_raises(sample_data):
     """fit() raises ValueError when X and y have different lengths."""
     X, y, geometry = sample_data
