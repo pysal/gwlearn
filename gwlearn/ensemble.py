@@ -118,19 +118,6 @@ class GWRandomForestClassifier(BaseClassifier):
     pred_ : pd.Series
         Binary predictions for focal locations based on a local model trained around the
         location itself.
-    hat_values_ : pd.Series
-        Hat values for each location (diagonal elements of hat matrix)
-    effective_df_ : float
-        Effective degrees of freedom (sum of hat values)
-    log_likelihood_ : float
-        Global log likelihood of the model
-    aic_ : float
-        Akaike information criterion of the model
-    aicc_ : float
-        Corrected Akaike information criterion to account for model
-        complexity (smaller bandwidths)
-    bic_ : float
-        Bayesian information criterion
     feature_importances_ : pd.DataFrame
         Feature importance values for each local model
     prediction_rate_ : float
@@ -400,19 +387,6 @@ class GWGradientBoostingClassifier(BaseClassifier):
     pred_ : pd.Series
         Binary predictions for focal locations based on a local model trained around the
         location itself.
-    hat_values_ : pd.Series
-        Hat values for each location (diagonal elements of hat matrix)
-    effective_df_ : float
-        Effective degrees of freedom (sum of hat values)
-    log_likelihood_ : float
-        Global log likelihood of the model
-    aic_ : float
-        Akaike inofrmation criterion of the model
-    aicc_ : float
-        Corrected Akaike information criterion to account to account for model
-        complexity (smaller bandwidths)
-    bic_ : float
-        Bayesian information criterion
     feature_importances_ : pd.DataFrame
         Feature importance values for each local model
     prediction_rate_ : float
@@ -627,19 +601,6 @@ class GWRandomForestRegressor(BaseRegressor):
         Weighted mean of y for each location.
     local_r2_ : pd.Series
         Local R2 for each location.
-    hat_values_ : pd.Series
-        Hat values for each location (diagonal elements of hat matrix)
-    effective_df_ : float
-        Effective degrees of freedom (sum of hat values)
-    log_likelihood_ : float
-        Global log likelihood of the model
-    aic_ : float
-        Akaike information criterion of the model
-    aicc_ : float
-        Corrected Akaike information criterion to account for model
-        complexity (smaller bandwidths)
-    bic_ : float
-        Bayesian information criterion
     feature_importances_ : pd.DataFrame
         Feature importance values for each local model
     oob_y_pooled_ : numpy.ndarray
@@ -886,19 +847,6 @@ class GWGradientBoostingRegressor(BaseRegressor):
         Weighted mean of y for each location.
     local_r2_ : pd.Series
         Local R2 for each location.
-    hat_values_ : pd.Series
-        Hat values for each location (diagonal elements of hat matrix)
-    effective_df_ : float
-        Effective degrees of freedom (sum of hat values)
-    log_likelihood_ : float
-        Global log likelihood of the model
-    aic_ : float
-        Akaike information criterion of the model
-    aicc_ : float
-        Corrected Akaike information criterion to account for model
-        complexity (smaller bandwidths)
-    bic_ : float
-        Bayesian information criterion
     feature_importances_ : pd.DataFrame
         Feature importance values for each local model
 

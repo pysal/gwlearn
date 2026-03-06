@@ -273,6 +273,19 @@ class _BaseModel(BaseEstimator):
             del local_model
             return None
 
+    @property
+    def _supports_ic(self) -> bool:
+        """True for model types for which information criteria are valid.
+
+        Information criteria (AIC, AICc, BIC) and the hat-matrix-based
+        ``effective_df_`` are theoretically grounded only for maximum-likelihood
+        models with a linear structure: ``"linear"`` (Gaussian) and
+        ``"logistic"`` (Bernoulli / GLM).  Tree-based ensembles
+        (``"random_forest"``, ``"gradient_boosting"``) do not satisfy these
+        preconditions, so those attributes are simply not computed or exposed.
+        """
+        return self._model_type in {"linear", "logistic"}
+
     def _compute_hat_value(
         self, X: pd.DataFrame, weights: np.ndarray, focal_x: np.ndarray
     ) -> float:
@@ -310,7 +323,9 @@ class _BaseModel(BaseEstimator):
                 XtWX
             )  # Use pseudo-inverse for numerical stability
 
-            # Hat value: h_ii = x_i^T (X^T W X)^(-1) x_i * w_i
+            # Hat value: h_ii = x_i^T (X^T W X)^(-1) x_i
+            # w_ii is omitted: for include_focal=True with compact kernels,
+            # kernel(0, bw) = 1 so the full formula gives the same result.
             hat_value = focal_with_intercept.T @ XtWX_inv @ focal_with_intercept
 
             return hat_value
@@ -320,7 +335,11 @@ class _BaseModel(BaseEstimator):
             return np.nan
 
     def _compute_information_criteria(self):
-        """Compute AIC, BIC, and AICc using the global log likelihood"""
+        """Compute AIC, AICc, and BIC from the global log-likelihood.
+
+        Only called when :attr:`_supports_ic` is ``True`` (i.e. linear or
+        logistic models).  Must not be invoked for tree-based estimators.
+        """
         n = (
             self._n_fitted_models
             if hasattr(self, "_n_fitted_models")
@@ -332,20 +351,26 @@ class _BaseModel(BaseEstimator):
 
         if not np.isnan(self.log_likelihood_) and not np.isnan(k):
             # Akaike Information Criterion
+            # k+1 counts effective_df_ plus one scale parameter (σ² for linear
+            # regression). For logistic/non-linear models this adds a small constant
+            # that cancels in comparative use (bandwidth search).
             self.aic_ = 2 * (k + 1) - 2 * self.log_likelihood_
 
             # Bayesian Information Criterion
             # Cast n to float to avoid overload resolution issues with numpy.log
-            self.bic_ = np.log(n) * (k + 1) - 2 * self.log_likelihood_
+            self.bic_ = np.log(float(n)) * (k + 1) - 2 * self.log_likelihood_
 
-            # Corrected AIC for small samples
-            if n - k - 1 > 0:
-                self.aicc_ = self.aic_ + (2 * k * (k + 1)) / (n - k - 1)
-                # the implementation below matches MGWR but the formula above is
-                # typical AICc implementation. The difference is minor.
-                # self.aicc_ = -2.0 * self.log_likelihood_ + 2.0 * n * (k + 1.0) / (
-                #     n - k - 2.0
-                # )
+            # Corrected AIC — GWR/MGWR form (Fotheringham et al. 2002).
+            # Uses p = k+1 consistently in both the AIC and the small-sample
+            # correction, so it is internally consistent:
+            #   AICc = -2ℓ + 2n(k+1)/(n-k-2)
+            #        = AIC + 2(k+1)(k+2)/(n-k-2)
+            # Compare the Burnham & Anderson (2002) general formula which would give
+            # AIC + 2p(p+1)/(n-p-1) with p = k+1: same result.
+            if n - k - 2 > 0:
+                self.aicc_ = -2.0 * self.log_likelihood_ + 2.0 * n * (k + 1.0) / (
+                    n - k - 2.0
+                )
             else:
                 self.aicc_ = np.nan
         else:
@@ -603,18 +628,23 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         Binary predictions for focal locations based on a local model trained around the
         location itself.
     hat_values_ : pd.Series
-        Hat values for each location (diagonal elements of hat matrix)
+        Hat values for each location (diagonal elements of the hat matrix).
+        Only available for logistic models.
     effective_df_ : float
-        Effective degrees of freedom (sum of hat values)
+        Effective degrees of freedom (sum of hat values).
+        Only available for logistic models.
     log_likelihood_ : float
-        Global log likelihood of the model
+        Global log-likelihood of the model.
+        Only available for logistic models.
     aic_ : float
-        Akaike information criterion of the model
+        Akaike information criterion.
+        Only available for logistic models.
     aicc_ : float
-        Corrected Akaike information criterion to account for model complexity (smaller
-        bandwidths)
+        Corrected Akaike information criterion (small-sample correction).
+        Only available for logistic models.
     bic_ : float
-        Bayesian information criterion
+        Bayesian information criterion.
+        Only available for logistic models.
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
@@ -818,9 +848,10 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self._n_labels = pd.Series(self._n_labels, index=self._names)
         self.proba_ = pd.DataFrame(focal_proba, index=self._names)
 
-        # Store hat values and compute effective degrees of freedom
-        self.hat_values_ = pd.Series(hat_values, index=self._names)
-        self.effective_df_ = np.nansum(self.hat_values_)
+        # Hat values and IC are only valid for linear/logistic models.
+        if self._supports_ic:
+            self.hat_values_ = pd.Series(hat_values, index=self._names)
+            self.effective_df_ = np.nansum(self.hat_values_)
 
         # support both bool and 0, 1 encoding of binary variable
         col = True if True in self.proba_.columns else 1
@@ -843,14 +874,15 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
                 print(f"{(time() - self._start):.2f}s: Fitting global model")
             self._fit_global_model(X, y)
 
-        # Compute global log likelihood and information criteria
-        if self.verbose:
-            print(f"{(time() - self._start):.2f}s: Computing global likelihood")
-        self.log_likelihood_ = self._compute_global_log_likelihood(y)
+        # Log-likelihood and IC are only valid for linear/logistic models.
+        if self._supports_ic:
+            if self.verbose:
+                print(f"{(time() - self._start):.2f}s: Computing global likelihood")
+            self.log_likelihood_ = self._compute_global_log_likelihood(y)
 
-        if self.verbose:
-            print(f"{(time() - self._start):.2f}s: Computing information criteria")
-        self._compute_information_criteria()
+            if self.verbose:
+                print(f"{(time() - self._start):.2f}s: Computing information criteria")
+            self._compute_information_criteria()
 
         return self
 
@@ -928,7 +960,12 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             local_model.predict_proba(focal_x_df).flatten(), index=local_model.classes_
         )
 
-        hat_value = self._compute_hat_value(X, data["_weight"], focal_x)
+        # Hat value is only meaningful for linear/logistic models.
+        hat_value = (
+            self._compute_hat_value(X, data["_weight"], focal_x)
+            if self._supports_ic
+            else np.nan
+        )
 
         if self.leave_out:
             left_out_proba = local_model.predict_proba(
@@ -1357,18 +1394,23 @@ class BaseRegressor(_BaseModel, RegressorMixin):
     local_r2_ : pd.Series
         Local R2 for each location.
     hat_values_ : pd.Series
-        Hat values for each location (diagonal elements of hat matrix).
+        Hat values for each location (diagonal elements of the hat matrix).
+        Only available for linear models.
     effective_df_ : float
         Effective degrees of freedom (sum of hat values).
+        Only available for linear models.
     log_likelihood_ : float
-        Global log likelihood of the model.
+        Global log-likelihood of the model (Gaussian assumption).
+        Only available for linear models.
     aic_ : float
-        Akaike information criterion of the model.
+        Akaike information criterion.
+        Only available for linear models.
     aicc_ : float
-        Corrected Akaike information criterion to account for model
-        complexity (smaller bandwidths).
+        Corrected Akaike information criterion (small-sample correction).
+        Only available for linear models.
     bic_ : float
         Bayesian information criterion.
+        Only available for linear models.
 
     Examples
     --------
@@ -1525,23 +1567,12 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         if self.fit_global_model:
             self._fit_global_model(X, y)
 
-        # Store hat values
-        self.hat_values_ = pd.Series(hat_values, index=self._names)
-        # Compute effective degrees of freedom (trace of hat matrix)
-        self.effective_df_ = np.nansum(self.hat_values_)
-
-        # adjusted R2
-        # n = len(self.pred_)
-        # if not np.isnan(self.focal_r2_) and not np.isnan(self.effective_df_):
-        #     if n - self.effective_df_ - 1 > 0:
-        #         self.focal_adj_r2_ = 1 - (
-        #             (1 - self.focal_r2_) * (n - 1) / (n - self.effective_df_ - 1)
-        #         )
-        #     else:
-        #         self.focal_adj_r2_ = np.nan
-
-        self.log_likelihood_ = self._compute_global_log_likelihood()
-        self._compute_information_criteria()
+        # Hat values, log-likelihood, and IC are only valid for linear models.
+        if self._supports_ic:
+            self.hat_values_ = pd.Series(hat_values, index=self._names)
+            self.effective_df_ = np.nansum(self.hat_values_)
+            self.log_likelihood_ = self._compute_global_log_likelihood()
+            self._compute_information_criteria()
 
         return self
 
@@ -1695,8 +1726,12 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         y_bar = self._y_bar(y, data["_weight"])
         tss = self._tss(y, y_bar, data["_weight"])
 
-        # Compute hat value for this location
-        hat_value = self._compute_hat_value(X, data["_weight"], focal_x)
+        # Hat value is only meaningful for linear/logistic models.
+        hat_value = (
+            self._compute_hat_value(X, data["_weight"], focal_x)
+            if self._supports_ic
+            else np.nan
+        )
 
         output = [
             name,
@@ -1717,31 +1752,39 @@ class BaseRegressor(_BaseModel, RegressorMixin):
 
     def _compute_global_log_likelihood(self) -> float:
         """
-        Compute the global log likelihood for the entire GWR model
+        Compute the global log likelihood for the entire GWR model assuming
+        Gaussian errors (appropriate for linear regression).
 
-        Parameters:
-        -----------
-        y : pd.Series
-            Original target values
+        Uses only observations with non-NaN residuals so that models with
+        partially-missing focal predictions still return a valid likelihood.
+        The fitted sample size is stored in ``self._n_fitted_models`` so that
+        :meth:`_compute_information_criteria` uses a consistent ``n``.
 
-        Returns:
-        --------
-        float : Global log likelihood value for the entire GWR model
+        Returns
+        -------
+        float
+            Global log-likelihood value.
         """
-        residuals = self.resid_
+        residuals = self.resid_.dropna()
         n = len(residuals)
+        # Store so _compute_information_criteria uses the same n.
+        self._n_fitted_models = n
 
-        # Estimate sigma from the residuals
-        sigma = np.sqrt(np.sum(residuals**2) / n)
+        if n == 0:
+            return np.nan
+
+        # MLE estimate of σ (maximises the Gaussian likelihood)
+        sigma2 = np.sum(residuals**2) / n
+        sigma = np.sqrt(sigma2)
 
         if sigma <= 0:
             return np.nan
 
-        # Global log likelihood assuming Gaussian errors
+        # Global log-likelihood assuming Gaussian errors
         log_likelihood = (
-            -n / 2 * np.log(2 * np.pi)
-            - n * np.log(sigma)
-            - np.sum(residuals**2) / (2 * sigma**2)
+            -n / 2.0 * np.log(2 * np.pi)
+            - n / 2.0 * np.log(sigma2)
+            - np.sum(residuals**2) / (2.0 * sigma2)
         )
 
         return log_likelihood
