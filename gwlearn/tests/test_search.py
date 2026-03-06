@@ -462,7 +462,7 @@ def test_bandwidth_search_global_invariant_y():
 
     assert (search.scores_ == np.inf).all()
     # Ensure metrics DataFrame has correct columns (met) and is all NaNs
-    assert search.metrics_.isna().all().all()  # ty:ignore[possibly-missing-attribute]
+    assert search.metrics_.isna().all().all()
     assert len(search.metrics_.columns) == 3  # aicc, aic, bic (default)
 
 

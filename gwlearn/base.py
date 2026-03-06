@@ -138,10 +138,16 @@ class _BaseModel(BaseEstimator):
                 f"got {self.bandwidth}."
             )
 
+        kernel = (
+            _kernel_functions[self.kernel]
+            if isinstance(self.kernel, str)
+            else self.kernel
+        )
+
         if self.fixed:  # fixed distance
             weights = graph.Graph.build_kernel(
                 self.geometry,
-                kernel=_kernel_functions[self.kernel],
+                kernel=kernel,
                 bandwidth=self.bandwidth,
             )
         else:  # adaptive KNN
@@ -155,7 +161,7 @@ class _BaseModel(BaseEstimator):
             # the epsilon comes from MGWR to avoid division by zero
             bandwidth = weights._adjacency.groupby(level=0).transform("max") * 1.0000001
             weights = graph.Graph(
-                adjacency=_kernel_functions[self.kernel](weights._adjacency, bandwidth),
+                adjacency=kernel(weights._adjacency, bandwidth),
                 is_sorted=True,
             )
         if self.include_focal:
@@ -359,7 +365,10 @@ class _BaseModel(BaseEstimator):
 
             # Bayesian Information Criterion
             # Cast n to float to avoid overload resolution issues with numpy.log
-            self.bic_ = np.log(float(n)) * (k + 1) - 2 * self.log_likelihood_  # ty:ignore[invalid-argument-type]
+            self.bic_ = (
+                np.log(float(n)) * (k + 1)  # ty:ignore[invalid-argument-type]
+                - 2 * self.log_likelihood_
+            )
 
             # Corrected AIC — GWR/MGWR form (Fotheringham et al. 2002).
             # Uses p = k+1 consistently in both the AIC and the small-sample
@@ -369,8 +378,12 @@ class _BaseModel(BaseEstimator):
             # Compare the Burnham & Anderson (2002) general formula which would give
             # AIC + 2p(p+1)/(n-p-1) with p = k+1: same result.
             if n - k - 2 > 0:
-                self.aicc_ = -2.0 * self.log_likelihood_ + 2.0 * n * (k + 1.0) / (
-                    n - k - 2.0
+                self.aicc_ = (
+                    -2.0 * self.log_likelihood_
+                    + 2.0
+                    * n  # ty:ignore[unsupported-operator]
+                    * (k + 1.0)
+                    / (n - k - 2.0)
                 )
             else:
                 self.aicc_ = np.nan
@@ -441,12 +454,18 @@ class _BaseModel(BaseEstimator):
         if not self.fixed and not isinstance(bw, Integral):
             raise ValueError("Adaptive bandwidth (fixed=False) must be an integer.")
 
+        kernel = (
+            _kernel_functions[self.kernel]
+            if isinstance(self.kernel, str)
+            else self.kernel
+        )
+
         if self.fixed:
             input_ids, indices_array = self.geometry.sindex.query(
                 geometry, predicate="dwithin", distance=self.bandwidth
             )
             local_ids = self._local_models.index[indices_array.flatten()].to_numpy()
-            distance = _kernel_functions[self.kernel](
+            distance = kernel(
                 self.geometry.iloc[indices_array].distance(
                     geometry.iloc[input_ids], align=False
                 ),
@@ -469,7 +488,7 @@ class _BaseModel(BaseEstimator):
             kernel_bandwidth = (
                 pd.Series(distances).groupby(input_ids).transform("max") + 1e-6
             )  # can't have 0
-            distance = _kernel_functions[self.kernel](distances, kernel_bandwidth)
+            distance = kernel(distances, kernel_bandwidth)
 
         split_indices = np.where(np.diff(input_ids))[0] + 1
         local_model_ids = np.split(local_ids, split_indices)
