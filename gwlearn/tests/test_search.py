@@ -22,7 +22,7 @@ def test_bandwidth_search_init(sample_data):
     assert search.kernel == "bisquare"
     assert search.n_jobs == -1
     assert search.search_method == "golden_section"
-    assert search.criterion == "aicc"
+    assert search.criterion is None
     assert search.min_bandwidth is None
     assert search.max_bandwidth is None
     assert search.interval is None
