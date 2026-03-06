@@ -183,7 +183,7 @@ class _BaseModel(BaseEstimator):
         if self.batch_size:
             training_output = []
             num_groups = len(y)
-            indices = np.arange(num_groups)
+            indices = X.index
             for i in range(0, num_groups, self.batch_size):
                 if self.verbose:
                     print(
@@ -196,7 +196,7 @@ class _BaseModel(BaseEstimator):
 
                 index = subset_weights.index
                 _weight = subset_weights.values
-                X_focals = X.values[batch_indices]
+                X_focals = X.loc[batch_indices].values
 
                 batch_training_output = self._batch_fit(X, y, index, _weight, X_focals)
                 training_output.extend(batch_training_output)
