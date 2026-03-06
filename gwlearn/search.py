@@ -201,8 +201,12 @@ class BandwidthSearch:
 
         In case of invariant y in a local model, returns np.inf
         """
+        met = ["aicc", "aic", "bic"]
+        if self.metrics is not None:
+            met += self.metrics
+
         if len(np.unique(y)) == 1:
-            return (np.inf, [])
+            return (np.inf, [np.nan] * len(met))
 
         gwm = self.model(
             bandwidth=bw,
@@ -215,19 +219,21 @@ class BandwidthSearch:
             **self._model_kwargs,
         ).fit(X=X, y=y, geometry=self.geometry)
 
-        met = ["aicc", "aic", "bic"]
-        if self.metrics is not None:
-            met += self.metrics
-
         if hasattr(gwm, "prediction_rate_") and gwm.prediction_rate_ == 0:
             # prediction rate should report 0, everything else is undefined
-            score = (
-                gwm.prediction_rate_ if self.criterion == "prediction_rate" else np.nan
-            )
+            if self.criterion == "prediction_rate":
+                score = gwm.prediction_rate_
+            else:
+                score = np.inf if self.minimize else -np.inf
 
-            all_metrics = [
-                gwm.prediction_rate_ if m == "prediction_rate" else np.nan for m in met
-            ]
+            all_metrics = []
+            for m in met:
+                if m == "prediction_rate":
+                    all_metrics.append(gwm.prediction_rate_)
+                elif m == "log_loss":
+                    all_metrics.append(np.inf)
+                else:
+                    all_metrics.append(np.nan)
 
             return score, all_metrics
 
@@ -235,7 +241,15 @@ class BandwidthSearch:
         for m in met:
             if m == "log_loss":
                 mask = gwm.proba_.isna().any(axis=1)
-                all_metrics.append(metrics.log_loss(y[~mask], gwm.proba_[~mask]))
+                y_masked = y[~mask]
+                if len(np.unique(y_masked)) < 2:
+                    all_metrics.append(np.inf)
+                else:
+                    all_metrics.append(
+                        metrics.log_loss(
+                            y_masked, gwm.proba_[~mask], labels=np.unique(y)
+                        )
+                    )
             else:
                 all_metrics.append(getattr(gwm, m + "_"))
 

@@ -1,6 +1,7 @@
 import inspect
 import warnings
 from collections.abc import Callable, Hashable
+from numbers import Integral, Real
 from pathlib import Path
 from time import time
 from typing import Literal
@@ -131,7 +132,7 @@ class _BaseModel(BaseEstimator):
 
     def _build_weights(self) -> graph.Graph:
         """Build spatial weights graph"""
-        if not isinstance(self.bandwidth, float | int):
+        if not isinstance(self.bandwidth, Real):
             raise ValueError(
                 "Bandwidth is not a valid value. Needs to be float or int, "
                 f"got {self.bandwidth}."
@@ -425,7 +426,7 @@ class _BaseModel(BaseEstimator):
         self._validate_geometry(geometry)
 
         if not (
-            (isinstance(self.bandwidth, float | int) or bandwidth)
+            (isinstance(self.bandwidth, Real) or bandwidth)
             and isinstance(self.geometry, gpd.GeoSeries)
         ):
             raise ValueError(
@@ -434,8 +435,11 @@ class _BaseModel(BaseEstimator):
 
         bw = bandwidth if bandwidth is not None else self.bandwidth
 
-        if bw is None or not isinstance(bw, int | float):
-            raise ValueError(f"Bandwidth {bw} is not valid.")
+        if (bw is None or not isinstance(bw, Real)) or np.isnan(bw) or (bw <= 0):
+            raise ValueError(f"Bandwidth must be a positive scalar number. Got '{bw}'.")
+
+        if not self.fixed and not isinstance(bw, Integral):
+            raise ValueError("Adaptive bandwidth (fixed=False) must be an integer.")
 
         if self.fixed:
             input_ids, indices_array = self.geometry.sindex.query(
@@ -498,6 +502,52 @@ class _BaseModel(BaseEstimator):
         Prediction result (type depends on subclass implementation).
         """
         raise NotImplementedError("Subclasses must implement _predict_local")
+
+    def _validate_fit_inputs(
+        self,
+        X: pd.DataFrame,
+        y: pd.Series,
+        geometry: gpd.GeoSeries | None,
+    ) -> None:
+        """
+        Validate input data and configuration parameters before model fitting.
+
+        This method performs structural and spatial consistency checks to ensure that:
+        - Feature matrix `X` and target vector `y` have matching lengths.
+        - At least one spatial structure (`geometry` or `graph`) is provided.
+        - The provided geometry, if any, matches the number of observations in `X`.
+        - Bandwidth is positive when specified.
+        - Adaptive bandwidth (`fixed=False`) is an integer.
+
+        Raises
+        ------
+        ValueError
+            If any of the validation conditions fail.
+        """
+        # Length checks
+        if len(X) != len(y):
+            raise ValueError(
+                f"X and y must have the same length. Got {len(X)} and {len(y)}."
+            )
+
+        # Geometry presence
+        if self.graph is None and geometry is None:
+            raise ValueError("Either geometry or graph must be provided.")
+
+        # Geometry length check
+        if geometry is not None and len(X) != len(geometry):
+            raise ValueError(
+                f"X and geometry must have the same length. "
+                f"Got {len(X)} and {len(geometry)}."
+            )
+
+        # Bandwidth validation
+        if self.bandwidth is not None:
+            if self.bandwidth <= 0:
+                raise ValueError("Bandwidth must be a positive scalar number.")
+
+            if not self.fixed and not isinstance(self.bandwidth, Integral):
+                raise ValueError("Adaptive bandwidth (fixed=False) must be an integer.")
 
     # Abstract methods that subclasses must implement
     def _fit_local(
@@ -648,6 +698,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
     prediction_rate_ : float
         Proportion of models that are fitted, where the rest are skipped due to not
         fulfilling ``min_proportion``.
+    local_class_support_: pd.Series
+        Number of distinct class labels in each local neighborhood.
     left_out_y_ : numpy.ndarray
         Array of ``y`` values left out when ``leave_out`` is set.
     left_out_proba_ : numpy.ndarray
@@ -778,8 +830,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         """
         self._start = time()
 
-        self.geometry = geometry
-
         def _is_binary(series: pd.Series) -> bool:
             """Check if a pandas Series encodes a binary variable (bool or 0/1)."""
             unique_values = set(np.unique(series))
@@ -793,7 +843,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         if not _is_binary(y):
             raise ValueError("Only binary dependent variable is supported.")
-
+        self._validate_fit_inputs(X, y, geometry)
+        self.geometry = geometry
         if self.verbose:
             print(f"{(time() - self._start):.2f}s: Building weights")
 
@@ -846,6 +897,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             ) = zip(*training_output, strict=False)
 
         self._n_labels = pd.Series(self._n_labels, index=self._names)
+        self.local_class_support_ = self._n_labels.copy()
         self.proba_ = pd.DataFrame(focal_proba, index=self._names)
 
         # Hat values and IC are only valid for linear/logistic models.
@@ -1518,6 +1570,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         The neighborhood definition comes from either ``self.graph`` or from
         ``geometry`` + (``bandwidth``, ``fixed``, ``kernel``, ``include_focal``).
         """
+        self._validate_fit_inputs(X, y, geometry)
         if self.graph is None:
             self._validate_geometry(geometry)
 

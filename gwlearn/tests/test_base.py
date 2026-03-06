@@ -291,6 +291,142 @@ def test_fit_without_global_model(sample_data):
     assert hasattr(clf, "proba_")
 
 
+def test_fit_negative_bandwidth_raises(sample_data):
+    """Negative bandwidth raises ValueError in fit()."""
+    X, y, geometry = sample_data
+
+    # Initialize with invalid negative bandwidth
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=-5,
+        fixed=True,
+    )
+
+    # Validation should trigger during fit()
+    with pytest.raises(ValueError, match="Bandwidth must be a positive scalar"):
+        clf.fit(X, y, geometry)
+
+
+def test_fit_adaptive_bandwidth_must_be_integer(sample_data):
+    """Adaptive bandwidth must be an integer when fixed=False."""
+    X, y, geometry = sample_data
+
+    # Initialize with non-integer adaptive bandwidth
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=2.5,
+        fixed=False,
+    )
+
+    # Fit should raise error due to invalid adaptive bandwidth type
+    with pytest.raises(ValueError, match="Adaptive bandwidth"):
+        clf.fit(X, y, geometry)
+
+
+def test_predict_proba_rejects_nan_bandwidth(sample_data):
+    """Tests that NaN bandwidth raises ValueError in predict_proba()."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=5,
+        fixed=True,
+        keep_models=True,
+    )
+    clf.fit(X, y, geometry)
+
+    with pytest.raises(ValueError, match="Bandwidth must be a positive scalar"):
+        clf.predict_proba(X, geometry, bandwidth=np.nan)
+
+
+def test_predict_proba_rejects_negative_bandwidth(sample_data):
+    """Tests that negative bandwidth raises ValueError in predict_proba()."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=5,
+        fixed=True,
+        keep_models=True,
+    )
+    clf.fit(X, y, geometry)
+
+    with pytest.raises(ValueError, match="Bandwidth must be a positive scalar"):
+        clf.predict_proba(X, geometry, bandwidth=-5)
+
+
+def test_predict_proba_rejects_non_integer_adaptive_bandwidth(sample_data):
+    """
+    Tests that non-integer adaptive bandwidth raises ValueError in predict_proba().
+    """
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=5,
+        fixed=False,
+        keep_models=True,
+    )
+    clf.fit(X, y, geometry)
+
+    with pytest.raises(ValueError, match="must be an integer"):
+        clf.predict_proba(X, geometry, bandwidth=5.5)
+
+
+def test_fit_length_mismatch_raises(sample_data):
+    """fit() raises ValueError when X and y have different lengths."""
+    X, y, geometry = sample_data
+
+    # Remove last observation from y
+    # This creates a mismatch between X and y lengths
+    y_bad = y.iloc[:-1]
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+    )
+
+    # Fit should detect mismatch BEFORE doing any computation
+    with pytest.raises(ValueError, match="X and y must have the same length"):
+        clf.fit(X, y_bad, geometry)
+
+
+def test_fit_requires_geometry_or_graph(sample_data):
+    """fit() raises ValueError when neither geometry nor graph is provided."""
+    X, y, _ = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+    )
+
+    # Not passing geometry
+    # Not providing graph in initialization
+    # Should fail validation
+    with pytest.raises(ValueError, match="Either geometry or graph must be provided"):
+        clf.fit(X, y)
+
+
+def test_fit_geometry_length_mismatch_raises(sample_data):
+    """fit() raises ValueError when geometry length mismatches X."""
+    X, y, geometry = sample_data
+
+    # Remove last geometry row to create mismatch
+    geometry_bad = geometry.iloc[:-1]
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+    )
+
+    # Validation should detect geometry length issue
+    with pytest.raises(ValueError, match="X and geometry must have the same length"):
+        clf.fit(X, y, geometry_bad)
+
+
 def test_fit_with_strict_option(sample_data):
     """Test the strict option for invariant y."""
     X, y, geometry = sample_data
@@ -439,6 +575,119 @@ def test_fit_n_jobs_consistency(sample_data):
     np.testing.assert_allclose(
         clf_sequential.global_model.coef_, clf_parallel.global_model.coef_, rtol=1e-5
     )
+
+
+def test_local_class_support_exposed(sample_data):
+    """Test that local_class_support_ is exposed after fitting."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=10,
+        fixed=False,
+        random_state=42,
+        strict=False,
+        n_jobs=1,
+        max_iter=250,
+    )
+
+    clf.fit(X, y, geometry)
+
+    # Check that attribute exists
+    assert hasattr(clf, "local_class_support_")
+
+    # Check the Output format
+    assert isinstance(clf.local_class_support_, pd.Series)
+
+    # Check that Length matches number of local models
+    assert len(clf.local_class_support_) == len(clf._names)
+
+    # Check that values are positive integers
+    assert (clf.local_class_support_ >= 1).all()
+
+
+def test_local_class_support_invariant(sample_data):
+    """Test that invariant neighborhoods report support == 1 and are skipped."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=1,  # Very small to force invariance
+        fixed=False,
+        random_state=42,
+        strict=False,
+        n_jobs=1,
+        max_iter=250,
+    )
+
+    clf.fit(X, y, geometry)
+
+    # Check that at least one neighborhood should be invariant
+    assert (clf.local_class_support_ == 1).any()
+
+    # Invariant neighborhoods should correspond to skipped models
+    invariant_idx = clf.local_class_support_ == 1
+    assert clf.pred_[invariant_idx].isna().all()
+
+    # some models should be skipped
+    assert clf.prediction_rate_ < 1
+
+
+def test_local_class_support_min_proportion(sample_data):
+    """
+    Test that neighborhoods failing min_proportion report 2 labels
+    but are skipped.
+    """
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=20,
+        fixed=False,
+        min_proportion=0.9,
+        random_state=42,
+        strict=False,
+        n_jobs=1,
+        max_iter=250,
+    )
+
+    clf.fit(X, y, geometry)
+
+    # Checks that neighborhoods with two distinct labels should exist
+    two_label_idx = clf.local_class_support_ == 2
+    assert two_label_idx.any()
+
+    # Checks that some of those should be skipped due to imabalance
+    skipped = clf.pred_.isna()
+    assert (two_label_idx & skipped).any()
+
+    # Checks that skipping must have occured
+    assert clf.prediction_rate_ < 1
+
+
+def test_local_class_support_fitted_models(sample_data):
+    """Test that fully valid neighborhoods report support == 2 and are fitted."""
+    X, y, geometry = sample_data
+
+    # Large bandwidth to ensure both classes present and fitted
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=len(X) - 1,
+        fixed=False,
+        min_proportion=0.1,
+        random_state=42,
+        strict=False,
+        n_jobs=1,
+        max_iter=250,
+    )
+
+    clf.fit(X, y, geometry)
+
+    # Check that all neighborhoods should contain both classes
+    assert (clf.local_class_support_ == 2).all()
+
+    # All models should be fitted
+    assert clf.prediction_rate_ == 1
 
 
 @pytest.mark.parametrize("bandwidth", ["nearest", 100000, None])
@@ -1453,11 +1702,6 @@ def test_regressor_n_jobs_consistency(sample_regression_data):
         check_exact=False,
         rtol=1e-5,
     )
-
-    # TODO: Check that performance metrics are also equal
-    # assert reg_sequential.focal_score_ == pytest.approx(reg_parallel.focal_score_)
-    # assert reg_sequential.mae_ == pytest.approx(reg_parallel.mae_)
-    # assert reg_sequential.mse_ == pytest.approx(reg_parallel.mse_)
 
     # Check that global models have the same coefficients
     np.testing.assert_allclose(
