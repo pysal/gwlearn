@@ -43,7 +43,7 @@
       
     
         <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.74c816e3f9967dd6e.min.css?v=6cfe2491" />
-        <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+        <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
         <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
         <link rel="stylesheet" type="text/css" href="_static/custom.css?v=a80dc075" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
@@ -964,7 +964,7 @@ Extracting &#39;south/south.gpkg&#39; from &#39;/home/runner/.cache/geodatasets/
 </div>
 </div>
 <h2 id="interval-search">Interval search<a class="headerlink" href="#interval-search" title="Link to this heading">¶</a></h2>
-<p>Interval search tests the model at a set interval.</p>
+<p>Interval search tests the model at a set interval. The default and recommended criterion for linear models is corrected Akaike’s information criterion (AICc).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span> <span class="o">=</span> <span class="n">BandwidthSearch</span><span class="p">(</span>
@@ -987,19 +987,19 @@ Extracting &#39;south/south.gpkg&#39; from &#39;/home/runner/.cache/geodatasets/
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 50.00, aicc: 7685.453
-Bandwidth: 150.00, aicc: 7598.040
-Bandwidth: 250.00, aicc: 7672.563
-Bandwidth: 350.00, aicc: 7722.884
-Bandwidth: 450.00, aicc: 7764.566
-Bandwidth: 550.00, aicc: 7811.208
-Bandwidth: 650.00, aicc: 7862.718
-Bandwidth: 750.00, aicc: 7904.325
-Bandwidth: 850.00, aicc: 7941.803
-Bandwidth: 950.00, aicc: 7981.327
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 50.00, aicc: 7687.620
+Bandwidth: 150.00, aicc: 7598.565
+Bandwidth: 250.00, aicc: 7672.857
+Bandwidth: 350.00, aicc: 7723.089
+Bandwidth: 450.00, aicc: 7764.724
+Bandwidth: 550.00, aicc: 7811.336
+Bandwidth: 650.00, aicc: 7862.825
+Bandwidth: 750.00, aicc: 7904.418
+Bandwidth: 850.00, aicc: 7941.883
+Bandwidth: 950.00, aicc: 7981.397
 </code></pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x7f6358ae2cf0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x7fd840a06e40&gt;
 </code></pre></div>
 </div>
 </div>
@@ -1015,7 +1015,7 @@ Bandwidth: 950.00, aicc: 7981.327
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;Axes: &gt;
 </code></pre></div>
 </div>
-<img alt="_images/180f7fead2a8f63e92148f3dc50443ab3ba4ca8e148c5df01d9ae3b67d3f7252.png" src="_images/180f7fead2a8f63e92148f3dc50443ab3ba4ca8e148c5df01d9ae3b67d3f7252.png" />
+<img alt="_images/e43bd3e629527686e3176626171863e0696d84c1fa84fb90e61b7d6200d6a17f.png" src="_images/e43bd3e629527686e3176626171863e0696d84c1fa84fb90e61b7d6200d6a17f.png" />
 </div>
 </div>
 <p>The optimal bandwidth is then the lowest one.</p>
@@ -1054,23 +1054,23 @@ Bandwidth: 950.00, aicc: 7981.327
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 388150.3, score: 7669.800
-Bandwidth: 621849.7, score: 7770.467
-Bandwidth: 243708.23, score: 7595.916
-Bandwidth: 154442.07, score: 7909.632
-Bandwidth: 298880.77, score: 7625.628
-Bandwidth: 209613.32, score: 7615.954
-Bandwidth: 264783.28, score: 7604.069
-Bandwidth: 230686.59, score: 7596.427
-Bandwidth: 251759.37, score: 7598.529
-Bandwidth: 238735.76, score: 7595.231
-Bandwidth: 235660.47, score: 7595.389
-Bandwidth: 240634.23, score: 7595.329
-Bandwidth: 237560.29, score: 7595.268
-Bandwidth: 239460.08, score: 7595.241
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Bandwidth: 388150.3, score: 7670.159
+Bandwidth: 621849.7, score: 7770.628
+Bandwidth: 243708.23, score: 7596.823
+Bandwidth: 154442.07, score: 7912.455
+Bandwidth: 298880.77, score: 7626.218
+Bandwidth: 209613.32, score: 7617.231
+Bandwidth: 264783.28, score: 7604.824
+Bandwidth: 230686.59, score: 7597.453
+Bandwidth: 251759.37, score: 7599.373
+Bandwidth: 238735.76, score: 7596.182
+Bandwidth: 235660.47, score: 7596.368
+Bandwidth: 240634.23, score: 7596.262
+Bandwidth: 237560.29, score: 7596.229
+Bandwidth: 239460.08, score: 7596.185
 </code></pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x7f630024da90&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x7fd7cd394e10&gt;
 </code></pre></div>
 </div>
 </div>
@@ -1089,7 +1089,7 @@ Bandwidth: 239460.08, score: 7595.241
 </div>
 </div>
 <h2 id="other-metrics">Other metrics<a class="headerlink" href="#other-metrics" title="Link to this heading">¶</a></h2>
-<p>By default, <code class="docutils literal notranslate"><span class="pre">BandwidthSearch</span></code> computes AICc, AIC and BIC, available through <code class="docutils literal notranslate"><span class="pre">metrics_</span></code>.</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">BandwidthSearch</span></code> computes AICc, AIC and BIC for linear models, available through <code class="docutils literal notranslate"><span class="pre">metrics_</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span><span class="o">.</span><span class="n">metrics_</span>
@@ -1123,85 +1123,85 @@ Bandwidth: 239460.08, score: 7595.241
   <tbody>
     <tr>
       <th>388150.300000</th>
-      <td>7669.800284</td>
+      <td>7670.159314</td>
       <td>7650.730706</td>
       <td>8238.208833</td>
     </tr>
     <tr>
       <th>621849.700000</th>
-      <td>7770.467076</td>
+      <td>7770.627977</td>
       <td>7766.321405</td>
       <td>8047.693794</td>
     </tr>
     <tr>
       <th>243708.229909</th>
-      <td>7595.915658</td>
+      <td>7596.823008</td>
       <td>7497.313206</td>
       <td>8762.156146</td>
     </tr>
     <tr>
       <th>154442.070091</th>
-      <td>7909.631563</td>
+      <td>7912.454856</td>
       <td>7355.237895</td>
       <td>9995.188728</td>
     </tr>
     <tr>
       <th>298880.767422</th>
-      <td>7625.628201</td>
+      <td>7626.217681</td>
       <td>7578.766844</td>
       <td>8477.096909</td>
     </tr>
     <tr>
       <th>209613.319310</th>
-      <td>7615.953544</td>
+      <td>7617.230987</td>
       <td>7443.545102</td>
       <td>9065.985674</td>
     </tr>
     <tr>
       <th>264783.280267</th>
-      <td>7604.069091</td>
+      <td>7604.823570</td>
       <td>7531.986411</td>
       <td>8628.488146</td>
     </tr>
     <tr>
       <th>230686.589297</th>
-      <td>7596.426806</td>
+      <td>7597.453089</td>
       <td>7475.433826</td>
       <td>8862.323769</td>
     </tr>
     <tr>
       <th>251759.367217</th>
-      <td>7598.528817</td>
+      <td>7599.373132</td>
       <td>7511.192286</td>
       <td>8708.266105</td>
     </tr>
     <tr>
       <th>238735.758279</th>
-      <td>7595.231162</td>
+      <td>7596.181669</td>
       <td>7488.668425</td>
       <td>8798.649792</td>
     </tr>
     <tr>
       <th>235660.465361</th>
-      <td>7595.389267</td>
+      <td>7596.367751</td>
       <td>7483.564238</td>
       <td>8822.281852</td>
     </tr>
     <tr>
       <th>240634.225285</th>
-      <td>7595.328622</td>
+      <td>7596.262234</td>
       <td>7491.905192</td>
       <td>8784.335011</td>
     </tr>
     <tr>
       <th>237560.292439</th>
-      <td>7595.268103</td>
+      <td>7596.229247</td>
       <td>7486.713835</td>
       <td>8807.668987</td>
     </tr>
     <tr>
       <th>239460.075156</th>
-      <td>7595.240977</td>
+      <td>7596.184987</td>
       <td>7489.889063</td>
       <td>8793.138119</td>
     </tr>
@@ -1209,7 +1209,7 @@ Bandwidth: 239460.08, score: 7595.241
 </table>
 </div></div></div>
 </div>
-<p>You can also ask for a log loss and even use it as a criterion for the selection. This is useful when comparing classification models with varying prediction rate (you can also retrieve that for each bandwidth).</p>
+<p>You can also ask for a log loss and even use it as a criterion for the selection. This is useful when comparing classification models with varying prediction rate (you can also retrieve that for each bandwidth) or when using non-linear models, where MAE or RMSE should be used instead of AICc.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">search</span> <span class="o">=</span> <span class="n">BandwidthSearch</span><span class="p">(</span>
@@ -1240,7 +1240,7 @@ Bandwidth: 650.00, log_loss: 0.437
 Bandwidth: 850.00, log_loss: 0.454
 </code></pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x7f6308213750&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>&lt;gwlearn.search.BandwidthSearch at 0x7fd7d912b750&gt;
 </code></pre></div>
 </div>
 </div>
@@ -1281,7 +1281,7 @@ Bandwidth: 850.00, log_loss: 0.454
   <tbody>
     <tr>
       <th>50</th>
-      <td>1376.806547</td>
+      <td>1378.952921</td>
       <td>1119.216533</td>
       <td>2551.160956</td>
       <td>0.275782</td>
@@ -1289,7 +1289,7 @@ Bandwidth: 850.00, log_loss: 0.454
     </tr>
     <tr>
       <th>250</th>
-      <td>1262.969346</td>
+      <td>1263.263762</td>
       <td>1249.800971</td>
       <td>1741.819969</td>
       <td>0.376227</td>
@@ -1297,7 +1297,7 @@ Bandwidth: 850.00, log_loss: 0.454
     </tr>
     <tr>
       <th>450</th>
-      <td>1275.319005</td>
+      <td>1275.477037</td>
       <td>1271.315792</td>
       <td>1547.948404</td>
       <td>0.412885</td>
@@ -1305,7 +1305,7 @@ Bandwidth: 850.00, log_loss: 0.454
     </tr>
     <tr>
       <th>650</th>
-      <td>1308.172651</td>
+      <td>1308.279791</td>
       <td>1306.304157</td>
       <td>1497.258268</td>
       <td>0.436826</td>
@@ -1313,7 +1313,7 @@ Bandwidth: 850.00, log_loss: 0.454
     </tr>
     <tr>
       <th>850</th>
-      <td>1337.777857</td>
+      <td>1337.858308</td>
       <td>1336.720382</td>
       <td>1481.487638</td>
       <td>0.453824</td>
