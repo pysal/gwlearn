@@ -11,61 +11,81 @@ from sklearn import metrics
 class BandwidthSearch:
     """Optimal bandwidth search for geographically weighted estimators.
 
-    Reports information criteria and (optionally) other scores from multiple models with
-    varying bandwidth. When using golden section search, it minimizes (or maximizes)
-    the chosen ``criterion``.
+    Reports scores from multiple models with varying bandwidth and identifies
+    the optimal one.  When using golden section search, it minimizes (or
+    maximizes) the chosen ``criterion``.
 
-    When using classification models with a defined ``min_proportion``, keep in mind
-    that some locations may be excluded from the final model. In such a case, the
-    information criteria are typically not comparable across models with different
-    bandwidths and shall not be used to determine the optimal one.
+    The search supports two broad families of models:
+
+    * **Linear / logistic models** (:class:`~gwlearn.linear_model.GWLinearRegression`,
+      :class:`~gwlearn.linear_model.GWLogisticRegression`): information criteria
+      ``"aicc"``, ``"aic"``, ``"bic"`` are valid and recommended.  They are included
+      in ``metrics_`` automatically.
+    * **Non-linear models** (random forest, gradient boosting, …): information
+      criteria are *not* valid (no closed-form log-likelihood or hat matrix).
+      Use ``"rmse"`` / ``"mae"`` for regression or ``"log_loss"`` combined with
+      ``"prediction_rate"`` for classification instead.
+
+    When using classification models with a defined ``min_proportion``, keep in
+    mind that some locations may be excluded from the final model.  In such a
+    case, even the valid information criteria are not comparable across
+    bandwidths and ``"log_loss"`` should be preferred.
 
     Parameters
     ----------
     model : type
         A geographically weighted estimator class (e.g.
-        :class:`gwlearn.linear_model.GWLogisticRegression`) that can be instantiated as
-        ``model(bandwidth=..., geometry=..., fixed=..., kernel=..., n_jobs=..., ...)``
-        and exposes information criteria attributes like ``aicc_``/``aic_``/``bic_``.
+        :class:`gwlearn.linear_model.GWLogisticRegression`) that can be
+        instantiated as
+        ``model(bandwidth=..., fixed=..., kernel=..., n_jobs=..., ...)``.
     fixed : bool, optional
-        True for distance based bandwidth and False for adaptive (nearest neighbor)
-        bandwidth, by default ``False``
+        True for distance based bandwidth and False for adaptive (nearest
+        neighbor) bandwidth, by default ``False``
     kernel : str | Callable, optional
-        Type of kernel function used to weight observations, by default ``"bisquare"``
+        Type of kernel function used to weight observations, by default
+        ``"bisquare"``
     n_jobs : int, optional
-        The number of jobs to run in parallel. ``-1`` means using all processors,
-        by default ``-1``
+        The number of jobs to run in parallel. ``-1`` means using all
+        processors, by default ``-1``
     search_method : {"golden_section", "interval"}, optional
-        Method used to search for optimal bandwidth. When using ``"golden_section"``,
-        the Golden section optimization is used to find the optimal bandwidth while
-        attempting to minimize or maximise ``criterion``. When using ``"interval"``,
-        fits all models within the specified bandwidths at a set interval without any
-        attempt to optimize the selection. By default ``"golden_section"``.
+        Method used to search for optimal bandwidth. When using
+        ``"golden_section"``, the Golden section optimization is used to find
+        the optimal bandwidth while attempting to minimize or maximise
+        ``criterion``. When using ``"interval"``, fits all models within the
+        specified bandwidths at a set interval without any attempt to optimize
+        the selection. By default ``"golden_section"``.
     criterion : str, optional
         Criterion used to select the optimal bandwidth.
 
-        Supported values include
-        ``{"aicc", "aic", "bic", "prediction_rate", "log_loss"}``.
-        If you pass another string, it is interpreted as an attribute name ``m`` and
+        Built-in special values:
+
+        * ``"aicc"``, ``"aic"``, ``"bic"`` — information criteria;
+          **only valid for linear / logistic models**.
+        * ``"log_loss"`` — cross-entropy loss; for classifiers only.
+        * ``"prediction_rate"`` — proportion of fitted locations; classifiers.
+        * ``"rmse"`` — root mean squared error of focal residuals; regressors.
+        * ``"mae"`` — mean absolute error of focal residuals; regressors.
+
+        Any other string ``m`` is interpreted as an attribute name and
         retrieved from the fitted model as ``getattr(model, m + "_")``.
-        By default ``"aicc"``.
+        By default ``"aicc"`` for linear models and ``"rmse"`` for non-linear.
     metrics : list[str] | None, optional
-        Additional metrics to report for each bandwidth. Metrics follow the same
-        conventions as ``criterion`` (including special cases ``"log_loss"`` and
-        ``"prediction_rate"``). By default ``None``.
+        Additional metrics to report for each bandwidth.  Follow the same
+        conventions as ``criterion``.  By default ``None``.
     minimize : bool, optional
-        Minimize or maximize the ``criterion``. When using information criterions,
-        like AICc, the optimal solution is the lowest value. When using other metrics,
-        the optimal may be the highest value. By default True, assuming lower is
-        better.
+        Minimize or maximize the ``criterion``.  For information criteria and
+        error metrics the optimum is the lowest value; for ``"prediction_rate"``
+        or accuracy-like metrics it is the highest.  By default ``True``.
     min_bandwidth : int | float | None, optional
         Minimum bandwidth to consider, by default ``None``
     max_bandwidth : int | float | None, optional
         Maximum bandwidth to consider, by default ``None``
     interval : int | float | None, optional
-        Interval for bandwidth search when using "interval" method, by default ``None``
+        Interval for bandwidth search when using ``"interval"`` method, by
+        default ``None``
     max_iterations : int, optional
-        Maximum number of iterations for golden section search, by default ``100``
+        Maximum number of iterations for golden section search, by default
+        ``100``
     tolerance : float, optional
         Tolerance for convergence in golden section search, by default ``1e-2``
     verbose : bool | int, optional
@@ -76,9 +96,12 @@ class BandwidthSearch:
     Attributes
     ----------
     scores_ : pd.Series
-        Series of criterion scores for each bandwidth tested (index is bandwidth).
+        Series of criterion scores for each bandwidth tested (index is
+        bandwidth).
     metrics_ : pd.DataFrame
-        DataFrame of additional metrics for each bandwidth tested.
+        DataFrame of additional metrics for each bandwidth tested.  For
+        linear/logistic models, columns ``"aicc"``, ``"aic"``, ``"bic"`` are
+        always present; they are omitted for non-linear models.
     optimal_bandwidth_ : int | float
         The optimal bandwidth found by the search method.
 
@@ -127,7 +150,7 @@ class BandwidthSearch:
         | Callable = "bisquare",
         n_jobs: int = -1,
         search_method: Literal["golden_section", "interval"] = "golden_section",
-        criterion: str = "aicc",
+        criterion: str | None = None,
         metrics: list | None = None,
         minimize: bool = True,
         min_bandwidth: int | float | None = None,
@@ -153,6 +176,8 @@ class BandwidthSearch:
         self.tolerance = tolerance
         self.metrics = metrics
         self.verbose = verbose
+        # Probe model type once at construction to know whether IC is valid.
+        self._supports_ic = model()._supports_ic
 
     def fit(
         self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries
@@ -183,6 +208,27 @@ class BandwidthSearch:
         """
         self.geometry = geometry
 
+        if self.criterion is None:
+            if self._supports_ic:
+                self.criterion = "aicc"
+            else:
+                self.criterion = "rmse"
+                if self.metrics is not None and self.criterion not in self.metrics:
+                    self.metrics.append(self.criterion)
+                else:
+                    self.metrics = [self.criterion]
+
+        _ic_criteria = {"aicc", "aic", "bic"}
+        if self.criterion in _ic_criteria and not self._supports_ic:
+            raise ValueError(
+                f"criterion='{self.criterion}' requires information criteria "
+                f"(AIC/AICc/BIC) which are not valid for "
+                f"'{self.model.__name__}'. "
+                f"For regression models use criterion='rmse' or criterion='mae'; "
+                f"for classification models use criterion='log_loss' or "
+                f"criterion='prediction_rate'."
+            )
+
         if self.search_method == "interval":
             self._interval(X=X, y=y)
         elif self.search_method == "golden_section":
@@ -194,6 +240,11 @@ class BandwidthSearch:
 
         return self
 
+    @property
+    def _ic_metrics(self) -> list[str]:
+        """IC metric names included automatically when the model supports them."""
+        return ["aicc", "aic", "bic"] if self._supports_ic else []
+
     def _score(
         self, X: pd.DataFrame, y: pd.Series, bw: int | float
     ) -> tuple[float, list[float]]:
@@ -201,7 +252,7 @@ class BandwidthSearch:
 
         In case of invariant y in a local model, returns np.inf
         """
-        met = ["aicc", "aic", "bic"]
+        met = self._ic_metrics.copy()
         if self.metrics is not None:
             met += self.metrics
 
@@ -230,7 +281,7 @@ class BandwidthSearch:
             for m in met:
                 if m == "prediction_rate":
                     all_metrics.append(gwm.prediction_rate_)
-                elif m == "log_loss":
+                elif m in ("log_loss", "rmse", "mae"):
                     all_metrics.append(np.inf)
                 else:
                     all_metrics.append(np.nan)
@@ -240,6 +291,11 @@ class BandwidthSearch:
         all_metrics = []
         for m in met:
             if m == "log_loss":
+                if not hasattr(gwm, "proba_"):
+                    raise ValueError(
+                        "criterion='log_loss' requires a classifier with 'proba_' "
+                        f"but '{type(gwm).__name__}' is a regressor."
+                    )
                 mask = gwm.proba_.isna().any(axis=1)
                 y_masked = y[~mask]
                 if len(np.unique(y_masked)) < 2:
@@ -250,6 +306,20 @@ class BandwidthSearch:
                             y_masked, gwm.proba_[~mask], labels=np.unique(y)
                         )
                     )
+            elif m == "rmse":
+                if not hasattr(gwm, "resid_"):
+                    raise ValueError(
+                        "criterion='rmse' requires a regressor with 'resid_' "
+                        f"but '{type(gwm).__name__}' is a classifier."
+                    )
+                all_metrics.append(np.sqrt(np.nanmean(gwm.resid_**2)))
+            elif m == "mae":
+                if not hasattr(gwm, "resid_"):
+                    raise ValueError(
+                        "criterion='mae' requires a regressor with 'resid_' "
+                        f"but '{type(gwm).__name__}' is a classifier."
+                    )
+                all_metrics.append(np.nanmean(np.abs(gwm.resid_)))
             else:
                 all_metrics.append(getattr(gwm, m + "_"))
 
@@ -289,9 +359,7 @@ class BandwidthSearch:
         self.metrics_ = pd.DataFrame(
             metrics,
             index=pd.Index(
-                ["aicc", "aic", "bic"] + self.metrics
-                if self.metrics
-                else ["aicc", "aic", "bic"]
+                self._ic_metrics + self.metrics if self.metrics else self._ic_metrics
             ),
         ).T
 
@@ -380,8 +448,6 @@ class BandwidthSearch:
         self.metrics_ = pd.DataFrame(
             metrics,
             index=pd.Index(
-                ["aicc", "aic", "bic"] + self.metrics
-                if self.metrics
-                else ["aicc", "aic", "bic"]
+                self._ic_metrics + self.metrics if self.metrics else self._ic_metrics
             ),
         ).T
