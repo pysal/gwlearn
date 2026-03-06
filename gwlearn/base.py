@@ -359,7 +359,7 @@ class _BaseModel(BaseEstimator):
 
             # Bayesian Information Criterion
             # Cast n to float to avoid overload resolution issues with numpy.log
-            self.bic_ = np.log(float(n)) * (k + 1) - 2 * self.log_likelihood_
+            self.bic_ = np.log(float(n)) * (k + 1) - 2 * self.log_likelihood_  # ty:ignore[invalid-argument-type]
 
             # Corrected AIC — GWR/MGWR form (Fotheringham et al. 2002).
             # Uses p = k+1 consistently in both the AIC and the small-sample

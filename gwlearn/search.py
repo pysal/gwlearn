@@ -323,6 +323,7 @@ class BandwidthSearch:
             else:
                 all_metrics.append(getattr(gwm, m + "_"))
 
+        assert self.criterion is not None
         return all_metrics[met.index(self.criterion)], all_metrics
 
     def _interval(self, X: pd.DataFrame, y: pd.Series) -> None:
