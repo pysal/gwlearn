@@ -536,6 +536,43 @@ def test_fit_with_batch_processing(sample_data):
     )
 
 
+def test_fit_batch_processing_non_consecutive_index(sample_data):
+    """Test fitting with batch processing on non-consecutive index."""
+    X, y, geometry = sample_data
+
+    # Create non-consecutive indices
+    new_index = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+    new_index.reverse()
+    X_indexed = X.iloc[:10].copy()
+    X_indexed.index = new_index
+    y_indexed = y.iloc[:10].copy()
+    y_indexed.index = new_index
+    geometry_indexed = geometry.iloc[:10].copy()
+    geometry_indexed.index = new_index
+
+    # Create a classifier with batch processing
+    batch_size = 3
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+        batch_size=batch_size,
+        random_state=42,
+        strict=False,
+        verbose=True,
+        max_iter=500,
+    )
+
+    # Fit the model with non-consecutive index
+    clf.fit(X_indexed, y_indexed, geometry_indexed)
+
+    # Check that the model was fit successfully
+    assert hasattr(clf, "proba_")
+    assert 0 <= clf.pred_.mean() <= 1
+    assert len(clf.proba_) == 10
+    assert list(clf.proba_.index) == new_index
+
+
 def test_fit_n_jobs_consistency(sample_data):
     """Test that parallel processing gives the same results as sequential (n_jobs=1)."""
     X, y, geometry = sample_data
