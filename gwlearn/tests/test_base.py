@@ -280,6 +280,7 @@ def test_fit_without_global_model(sample_data):
         fit_global_model=False,
         random_state=42,
         strict=False,  # To avoid warnings on invariance
+        max_iter=500,
     )
 
     clf.fit(X, y, geometry)
@@ -366,6 +367,7 @@ def test_predict_proba_rejects_non_integer_adaptive_bandwidth(sample_data):
         bandwidth=5,
         fixed=False,
         keep_models=True,
+        max_iter=500,
     )
     clf.fit(X, y, geometry)
 
@@ -503,6 +505,7 @@ def test_fit_with_batch_processing(sample_data):
         random_state=42,
         strict=False,  # To avoid warnings on invariance
         verbose=True,
+        max_iter=500,
     )
 
     # Capture print output to verify batch processing messages
@@ -527,6 +530,7 @@ def test_fit_with_batch_processing(sample_data):
         bandwidth=150000,
         fixed=True,
         random_state=42,
+        max_iter=500,
     )
     clf_no_batch.fit(X, y, geometry)
 
@@ -824,6 +828,7 @@ def test_predict_basic(sample_data, bandwidth):
         keep_models=True,
         random_state=42,
         strict=False,  # To avoid warnings on invariance
+        max_iter=500,
     )
     clf.fit(X, y, geometry)
 
@@ -853,6 +858,7 @@ def test_predict_with_models_on_disk(sample_data, bandwidth):
             keep_models=temp_dir,
             random_state=42,
             strict=False,  # To avoid warnings on invariance
+            max_iter=500,
         )
         clf.fit(X, y, geometry)
 
@@ -886,6 +892,7 @@ def test_predict_invalid_geometry(sample_data, bandwidth):
         keep_models=True,
         random_state=42,
         strict=False,  # To avoid warnings on invariance
+        max_iter=500,
     )
     clf.fit(X, y, geometry)  # Use point geometries for fitting
 
@@ -1164,6 +1171,7 @@ def test_repr_html_with_fitted_model(sample_data):
         fixed=True,
         random_state=42,
         strict=False,
+        max_iter=500,
     )
     clf.fit(X, y, geometry)
 
