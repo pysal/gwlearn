@@ -9,11 +9,12 @@ from typing import Literal
 import geopandas as gpd
 import numpy as np
 import pandas as pd
-from joblib import Parallel, delayed, dump, load
+from joblib import dump, load
 from libpysal import graph
 from scipy.spatial import KDTree
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 from sklearn.model_selection import train_test_split
+from sklearn.utils.parallel import Parallel, delayed
 
 __all__ = ["BaseClassifier", "BaseRegressor"]
 
