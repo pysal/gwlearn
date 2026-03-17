@@ -180,12 +180,13 @@ def test_gwrf_regressor_fit_basic(sample_regression_data):  # noqa: F811
     assert hasattr(model, "TSS_")
     assert hasattr(model, "y_bar_")
     assert hasattr(model, "local_r2_")
-    assert hasattr(model, "hat_values_")
-    assert hasattr(model, "effective_df_")
-    assert hasattr(model, "log_likelihood_")
-    assert hasattr(model, "aic_")
-    assert hasattr(model, "aicc_")
-    assert hasattr(model, "bic_")
+    # IC-related attributes are not defined for non-linear models
+    assert not hasattr(model, "hat_values_")
+    assert not hasattr(model, "effective_df_")
+    assert not hasattr(model, "log_likelihood_")
+    assert not hasattr(model, "aic_")
+    assert not hasattr(model, "aicc_")
+    assert not hasattr(model, "bic_")
 
 
 def test_gwgb_regressor_init():
@@ -249,9 +250,10 @@ def test_gwgb_regressor_fit_basic(sample_regression_data):  # noqa: F811
     assert hasattr(model, "TSS_")
     assert hasattr(model, "y_bar_")
     assert hasattr(model, "local_r2_")
-    assert hasattr(model, "hat_values_")
-    assert hasattr(model, "effective_df_")
-    assert hasattr(model, "log_likelihood_")
-    assert hasattr(model, "aic_")
-    assert hasattr(model, "aicc_")
-    assert hasattr(model, "bic_")
+    # IC-related attributes are not defined for non-linear models
+    assert not hasattr(model, "hat_values_")
+    assert not hasattr(model, "effective_df_")
+    assert not hasattr(model, "log_likelihood_")
+    assert not hasattr(model, "aic_")
+    assert not hasattr(model, "aicc_")
+    assert not hasattr(model, "bic_")
