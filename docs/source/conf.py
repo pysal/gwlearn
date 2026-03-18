@@ -51,8 +51,8 @@ exclude_patterns = []
 intersphinx_mapping = {
     "geopandas": ("https://geopandas.org/en/latest", None),
     "libpysal": (
-        "https://pysal.org/libpysal/",
-        "https://pysal.org/libpysal//objects.inv",
+        "https://pysal.org/libpysal/stable",
+        "https://pysal.org/libpysal/stable/objects.inv",
     ),
     "python": ("https://docs.python.org/3", None),
     "sklearn": ("https://scikit-learn.org/stable", None),
@@ -81,10 +81,11 @@ html_favicon = "_static/pysal_favicon.ico"
 html_theme_options = {
     "icon": {
         "repo": "fontawesome/brands/github",
-        "edit": "material/file-edit-outline",
+        "edit": "material/file-code",
     },
     "site_url": "https://pysal.org/gwlearn",
     "repo_url": "https://github.com/pysal/gwlearn/",
+    "edit_uri": "blob/main/docs/source",
     "repo_name": "pysal/gwlearn",
     "features": [
         # "navigation.expand",
@@ -104,7 +105,7 @@ html_theme_options = {
         "toc.sticky",
         # "content.tabs.link",
         "content.code.copy",
-        # "content.action.edit",
+        "content.action.edit",
         # "content.action.view",
         # "content.tooltips",
         # "announce.dismiss",

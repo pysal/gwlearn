@@ -22,7 +22,7 @@ dependencies:
   - pandarm
   - ipykernel
   - myst-nb
-  - sphinx<9
+  - sphinx
   - sphinxcontrib-bibtex
   - sphinx-autosummary-accessors
   - sphinx-copybutton
