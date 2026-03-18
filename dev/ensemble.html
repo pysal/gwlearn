@@ -1178,6 +1178,14 @@
                   
 
 
+  
+    <a href="https://github.com/pysal/gwlearn/blob/main/docs/source/ensemble.ipynb" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg>
+    </a>
+  
+  
+
 <h1 id="ensemble-models">Ensemble models<a class="headerlink" href="#ensemble-models" title="Link to this heading">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> implements geographically weighted versions of ensemble models for both classification and regression tasks. For classification, there’s a caveat: given it is unlikely that all categories are present in all local models, fitting a non-binary would lead to inconsistent local models. Hence gwlearn currently supports only binary classification.</p>
 <p>This notebook outlines how to fit the models and extract their attributes. For details on prediction, see the <a class="reference internal" href="predict.html"><span class="std std-doc">Prediction</span></a> guide.</p>
@@ -2077,7 +2085,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7612193056731583
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7679932260795935
 </code></pre></div>
 </div>
 </div>
@@ -2091,7 +2099,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7447473892181767
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7443635337284787
 </code></pre></div>
 </div>
 </div>
@@ -2106,8 +2114,8 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.68666667, 0.71333333, 0.69333333, ..., 0.58666667, 0.73333333,
-       0.67333333], shape=(1412,))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.66      , 0.68666667, 0.7       , ..., 0.58      , 0.71333333,
+       0.65333333], shape=(1412,))
 </code></pre></div>
 </div>
 </div>
@@ -2121,7 +2129,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a4f4ca036ae95679a254edf860b2dfd1419a0ebff19088d03add4e6c207009b2.png" src="_images/a4f4ca036ae95679a254edf860b2dfd1419a0ebff19088d03add4e6c207009b2.png" />
+<img alt="_images/0848178ab2056eadfae87d43e8a184c10bb8bfc901bfbbc65b0392faf3fdf8aa.png" src="_images/0848178ab2056eadfae87d43e8a184c10bb8bfc901bfbbc65b0392faf3fdf8aa.png" />
 </div>
 </div>
 <h3 id="feature-importance">Feature importance<a class="headerlink" href="#feature-importance" title="Link to this heading">¶</a></h3>
@@ -2162,48 +2170,48 @@ forceTheme('sk-container-id-1');</script></body></div></div>
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.169982</td>
-      <td>0.167709</td>
-      <td>0.195963</td>
-      <td>0.247106</td>
-      <td>0.106508</td>
-      <td>0.112732</td>
+      <td>0.151362</td>
+      <td>0.190570</td>
+      <td>0.203943</td>
+      <td>0.204972</td>
+      <td>0.111137</td>
+      <td>0.138015</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.154618</td>
-      <td>0.153471</td>
-      <td>0.231972</td>
-      <td>0.209417</td>
-      <td>0.116280</td>
-      <td>0.134241</td>
+      <td>0.181293</td>
+      <td>0.160162</td>
+      <td>0.201847</td>
+      <td>0.228067</td>
+      <td>0.099400</td>
+      <td>0.129231</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.189481</td>
-      <td>0.152680</td>
-      <td>0.174646</td>
-      <td>0.246523</td>
-      <td>0.137850</td>
-      <td>0.098820</td>
+      <td>0.169658</td>
+      <td>0.169242</td>
+      <td>0.214239</td>
+      <td>0.227862</td>
+      <td>0.121132</td>
+      <td>0.097865</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.173211</td>
-      <td>0.169767</td>
-      <td>0.180265</td>
-      <td>0.244846</td>
-      <td>0.112191</td>
-      <td>0.119720</td>
+      <td>0.180048</td>
+      <td>0.171229</td>
+      <td>0.196830</td>
+      <td>0.220469</td>
+      <td>0.101922</td>
+      <td>0.129503</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.145578</td>
-      <td>0.190621</td>
-      <td>0.205572</td>
-      <td>0.220739</td>
-      <td>0.114704</td>
-      <td>0.122786</td>
+      <td>0.126514</td>
+      <td>0.171684</td>
+      <td>0.212248</td>
+      <td>0.224921</td>
+      <td>0.117886</td>
+      <td>0.146747</td>
     </tr>
     <tr>
       <th>...</th>
@@ -2216,48 +2224,48 @@ forceTheme('sk-container-id-1');</script></body></div></div>
     </tr>
     <tr>
       <th>1407</th>
-      <td>0.130096</td>
-      <td>0.170721</td>
-      <td>0.242105</td>
-      <td>0.265607</td>
-      <td>0.093814</td>
-      <td>0.097658</td>
+      <td>0.142816</td>
+      <td>0.181472</td>
+      <td>0.266849</td>
+      <td>0.232294</td>
+      <td>0.097063</td>
+      <td>0.079507</td>
     </tr>
     <tr>
       <th>1408</th>
-      <td>0.179395</td>
-      <td>0.163052</td>
-      <td>0.217142</td>
-      <td>0.223498</td>
-      <td>0.117620</td>
-      <td>0.099292</td>
+      <td>0.183510</td>
+      <td>0.174435</td>
+      <td>0.194537</td>
+      <td>0.224090</td>
+      <td>0.112715</td>
+      <td>0.110713</td>
     </tr>
     <tr>
       <th>1409</th>
-      <td>0.151565</td>
-      <td>0.170321</td>
-      <td>0.193077</td>
-      <td>0.225877</td>
-      <td>0.153039</td>
-      <td>0.106122</td>
+      <td>0.157195</td>
+      <td>0.176249</td>
+      <td>0.217204</td>
+      <td>0.211684</td>
+      <td>0.133359</td>
+      <td>0.104309</td>
     </tr>
     <tr>
       <th>1410</th>
-      <td>0.151460</td>
-      <td>0.189810</td>
-      <td>0.207757</td>
-      <td>0.216518</td>
-      <td>0.111314</td>
-      <td>0.123140</td>
+      <td>0.169649</td>
+      <td>0.187474</td>
+      <td>0.219357</td>
+      <td>0.190361</td>
+      <td>0.099220</td>
+      <td>0.133939</td>
     </tr>
     <tr>
       <th>1411</th>
-      <td>0.147805</td>
-      <td>0.189924</td>
-      <td>0.246375</td>
-      <td>0.186837</td>
-      <td>0.108739</td>
-      <td>0.120320</td>
+      <td>0.134489</td>
+      <td>0.171446</td>
+      <td>0.244416</td>
+      <td>0.197921</td>
+      <td>0.123919</td>
+      <td>0.127809</td>
     </tr>
   </tbody>
 </table>
@@ -2273,7 +2281,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c62f16ac8c2c5ac5aa169162359649482e344769a68638e96c9d019c48b77e5d.png" src="_images/c62f16ac8c2c5ac5aa169162359649482e344769a68638e96c9d019c48b77e5d.png" />
+<img alt="_images/ccfccb22781fe8f3d1e857619fae66900e238cea5255e21d6e03c9f96d9af41c.png" src="_images/ccfccb22781fe8f3d1e857619fae66900e238cea5255e21d6e03c9f96d9af41c.png" />
 </div>
 </div>
 <p>You can compare all of this to values extracted from a global model, fitted alongside.</p>
@@ -2284,8 +2292,8 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.14662375, 0.14740558, 0.21802172, 0.25810983, 0.11152219,
-       0.11831693])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.14500857, 0.14618463, 0.22936405, 0.266701  , 0.11029829,
+       0.10244347])
 </code></pre></div>
 </div>
 </div>
@@ -2297,12 +2305,12 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>HR60    0.154328
-HR70    0.159169
-HR80    0.202491
-HR90    0.221852
-HC60    0.139973
-HC70    0.122187
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>HR60    0.154022
+HR70    0.160060
+HR80    0.202699
+HR90    0.222232
+HC60    0.139597
+HC70    0.121390
 dtype: float64
 </code></pre></div>
 </div>
@@ -4135,7 +4143,7 @@ forceTheme('sk-container-id-3');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7552921253175275
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7510584250635055
 </code></pre></div>
 </div>
 </div>
@@ -4177,48 +4185,48 @@ forceTheme('sk-container-id-3');</script></body></div></div>
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.144189</td>
-      <td>0.257890</td>
-      <td>0.186349</td>
-      <td>0.218231</td>
-      <td>0.093544</td>
-      <td>0.099798</td>
+      <td>0.155196</td>
+      <td>0.257912</td>
+      <td>0.186344</td>
+      <td>0.218278</td>
+      <td>0.082449</td>
+      <td>0.099821</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.174754</td>
-      <td>0.179271</td>
-      <td>0.203331</td>
-      <td>0.234756</td>
-      <td>0.086915</td>
-      <td>0.120973</td>
+      <td>0.196016</td>
+      <td>0.172484</td>
+      <td>0.203187</td>
+      <td>0.233784</td>
+      <td>0.073495</td>
+      <td>0.121033</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.243117</td>
-      <td>0.139540</td>
-      <td>0.158953</td>
-      <td>0.288788</td>
-      <td>0.056309</td>
-      <td>0.113294</td>
+      <td>0.240654</td>
+      <td>0.139080</td>
+      <td>0.175464</td>
+      <td>0.287971</td>
+      <td>0.062666</td>
+      <td>0.094166</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.176105</td>
-      <td>0.205641</td>
-      <td>0.169386</td>
-      <td>0.261930</td>
-      <td>0.087441</td>
-      <td>0.099496</td>
+      <td>0.170305</td>
+      <td>0.204255</td>
+      <td>0.170904</td>
+      <td>0.261445</td>
+      <td>0.093372</td>
+      <td>0.099720</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.070704</td>
-      <td>0.182691</td>
-      <td>0.260387</td>
-      <td>0.240202</td>
-      <td>0.095096</td>
-      <td>0.150919</td>
+      <td>0.071238</td>
+      <td>0.184751</td>
+      <td>0.257580</td>
+      <td>0.243153</td>
+      <td>0.095314</td>
+      <td>0.147963</td>
     </tr>
     <tr>
       <th>...</th>
@@ -4231,48 +4239,48 @@ forceTheme('sk-container-id-3');</script></body></div></div>
     </tr>
     <tr>
       <th>1407</th>
-      <td>0.119857</td>
-      <td>0.174635</td>
-      <td>0.385650</td>
-      <td>0.254047</td>
-      <td>0.029943</td>
-      <td>0.035867</td>
+      <td>0.119615</td>
+      <td>0.176377</td>
+      <td>0.381225</td>
+      <td>0.254225</td>
+      <td>0.033918</td>
+      <td>0.034639</td>
     </tr>
     <tr>
       <th>1408</th>
-      <td>0.232786</td>
-      <td>0.146220</td>
-      <td>0.279785</td>
-      <td>0.205738</td>
-      <td>0.087027</td>
-      <td>0.048445</td>
+      <td>0.229440</td>
+      <td>0.136601</td>
+      <td>0.286778</td>
+      <td>0.207895</td>
+      <td>0.090489</td>
+      <td>0.048798</td>
     </tr>
     <tr>
       <th>1409</th>
-      <td>0.136107</td>
-      <td>0.305516</td>
-      <td>0.249536</td>
-      <td>0.171810</td>
-      <td>0.097888</td>
-      <td>0.039143</td>
+      <td>0.111542</td>
+      <td>0.314952</td>
+      <td>0.260427</td>
+      <td>0.187767</td>
+      <td>0.079021</td>
+      <td>0.046290</td>
     </tr>
     <tr>
       <th>1410</th>
-      <td>0.124346</td>
-      <td>0.229061</td>
-      <td>0.264378</td>
-      <td>0.229490</td>
-      <td>0.029126</td>
-      <td>0.123598</td>
+      <td>0.124294</td>
+      <td>0.231869</td>
+      <td>0.263652</td>
+      <td>0.229857</td>
+      <td>0.028718</td>
+      <td>0.121611</td>
     </tr>
     <tr>
       <th>1411</th>
-      <td>0.071649</td>
-      <td>0.186374</td>
-      <td>0.326525</td>
-      <td>0.245591</td>
-      <td>0.111496</td>
-      <td>0.058364</td>
+      <td>0.070715</td>
+      <td>0.189646</td>
+      <td>0.332183</td>
+      <td>0.240187</td>
+      <td>0.113893</td>
+      <td>0.053375</td>
     </tr>
   </tbody>
 </table>
@@ -5133,7 +5141,7 @@ forceTheme('sk-container-id-4');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7265876375952582
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7217047699689528
 </code></pre></div>
 </div>
 </div>
@@ -6098,8 +6106,8 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.06380961, 0.10319452, 0.20423375, 0.45914604, 0.10997577,
-       0.0596403 ])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.06171254, 0.10301512, 0.20478243, 0.45817376, 0.11242651,
+       0.05988964])
 </code></pre></div>
 </div>
 </div>
@@ -6185,7 +6193,7 @@ dtype: float64
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy", "content.action.edit"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
     
       
         <script src="_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>

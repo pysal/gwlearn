@@ -930,6 +930,14 @@
                   
 
 
+  
+    <a href="https://github.com/pysal/gwlearn/blob/main/docs/source/imbalance.ipynb" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg>
+    </a>
+  
+  
+
 <h1 id="class-imbalance">Class imbalance<a class="headerlink" href="#class-imbalance" title="Link to this heading">¶</a></h1>
 <p>Class imbalance across the space can be a serious issue when trying to build a geographically weighted classification model. You can get to such extreme situations, that all of the observations within the set bandwidth share a single value. In that case, fitting a model that would predicting anything else than that value is not possible.</p>
 <p>Even in less extreme cases, the class imbalance can induce bias to the local model.</p>
@@ -1839,7 +1847,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/05c9b569f87faa5caa19bdef55ee1a749141d5b5c3e1afaffe2d129e8898e3b3.png" src="_images/05c9b569f87faa5caa19bdef55ee1a749141d5b5c3e1afaffe2d129e8898e3b3.png" />
+<img alt="_images/c66486508d4322c1dbac399461758aff4cc61d768a3e1d143efd8f0ab776c43a.png" src="_images/c66486508d4322c1dbac399461758aff4cc61d768a3e1d143efd8f0ab776c43a.png" />
 </div>
 </div>
 <p>The local performance for such a model then looks like this.</p>
@@ -1852,7 +1860,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c28532d11b89e82878ee2a06573e746715562caf58cdbfac35965e4b7ebd4b7c.png" src="_images/c28532d11b89e82878ee2a06573e746715562caf58cdbfac35965e4b7ebd4b7c.png" />
+<img alt="_images/4501ad9236193ed6600306b56ad87e04583cfb0d03773e167975793a3f4ad466.png" src="_images/4501ad9236193ed6600306b56ad87e04583cfb0d03773e167975793a3f4ad466.png" />
 </div>
 </div>
 <h2 id="adapting-the-allowed-proportion">Adapting the allowed proportion<a class="headerlink" href="#adapting-the-allowed-proportion" title="Link to this heading">¶</a></h2>
@@ -2729,7 +2737,7 @@ forceTheme('sk-container-id-2');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b72c95e5b234492dfe187156eeaf522376b69c1b4527d7723312be548998bb0d.png" src="_images/b72c95e5b234492dfe187156eeaf522376b69c1b4527d7723312be548998bb0d.png" />
+<img alt="_images/b9b63672666affb80d98302efa157f6d938cef1c71e882bc7fc53cceb29edf0d.png" src="_images/b9b63672666affb80d98302efa157f6d938cef1c71e882bc7fc53cceb29edf0d.png" />
 </div>
 </div>
 <h2 id="undersampling">Undersampling<a class="headerlink" href="#undersampling" title="Link to this heading">¶</a></h2>
@@ -3626,7 +3634,7 @@ forceTheme('sk-container-id-3');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8e00b1f7e735768e05a18a2d0eeb18df96162a0d805ed4daf4c5d35a2134fa05.png" src="_images/8e00b1f7e735768e05a18a2d0eeb18df96162a0d805ed4daf4c5d35a2134fa05.png" />
+<img alt="_images/5fd952fe37294d42b0d839f7902f2da48e2038d4f6d98431159cca7e84e9d319.png" src="_images/5fd952fe37294d42b0d839f7902f2da48e2038d4f6d98431159cca7e84e9d319.png" />
 </div>
 </div>
 <p>Keep in mind that for models like this one, where we use only 25 observations in each local model, undersampling can have a severe efect on the model robustness in a negative way, as it may reduce the number of observations that are actually used by quite a lot. Use with caution and ideally in situations where you rely on a larger number of neighbors.</p>
@@ -3693,7 +3701,7 @@ forceTheme('sk-container-id-3');</script></body></div></div>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy", "content.action.edit"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
     
       
         <script src="_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>
