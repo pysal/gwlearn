@@ -22,7 +22,7 @@ def test_bandwidth_search_init(sample_data):
     assert search.kernel == "bisquare"
     assert search.n_jobs == -1
     assert search.search_method == "golden_section"
-    assert search.criterion == "aicc"
+    assert search.criterion is None
     assert search.min_bandwidth is None
     assert search.max_bandwidth is None
     assert search.interval is None
@@ -271,6 +271,7 @@ def test_bandwidth_search_returns_self(sample_data):  # noqa: F811
         interval=100000,  # Just two points for speed
         verbose=False,
         random_state=42,
+        max_iter=500,
     )
 
     # Fit and check return value
@@ -285,8 +286,7 @@ def test_bandwidth_search_accepts_model_params(sample_data):  # noqa: F811
     # Set some custom parameters for the model
     custom_params = {
         "C": 0.5,
-        "max_iter": 200,
-        "penalty": "l2",
+        "max_iter": 500,
         "solver": "liblinear",
         "random_state": 42,
     }
@@ -328,6 +328,7 @@ def test_bandwidth_search_verbosity(sample_data):  # noqa: F811
         interval=100000,  # Just two points for speed
         verbose=True,  # Enable verbosity
         random_state=42,
+        max_iter=500,
     )
 
     # Capture standard output
@@ -353,6 +354,7 @@ def test_bandwidth_search_verbosity(sample_data):  # noqa: F811
         interval=100000,
         verbose=False,  # Disable verbosity
         random_state=42,
+        max_iter=500,
     )
 
     f_quiet = io.StringIO()
@@ -390,6 +392,7 @@ def test_bandwidth_search_metrics(sample_data, search_method):
         metrics=custom_metrics,
         verbose=False,
         random_state=42,
+        max_iter=500,
     )
 
     # Fit the bandwidth search
@@ -540,6 +543,7 @@ def test_bandwidth_search_standard_data(sample_data):
         criterion="log_loss",
         metrics=["log_loss"],
         verbose=False,
+        max_iter=500,
     )
 
     search.fit(X, y, geometry)

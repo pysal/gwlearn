@@ -280,6 +280,7 @@ def test_fit_without_global_model(sample_data):
         fit_global_model=False,
         random_state=42,
         strict=False,  # To avoid warnings on invariance
+        max_iter=500,
     )
 
     clf.fit(X, y, geometry)
@@ -303,7 +304,7 @@ def test_fit_negative_bandwidth_raises(sample_data):
     )
 
     # Validation should trigger during fit()
-    with pytest.raises(ValueError, match="bandwidth must be a positive"):
+    with pytest.raises(ValueError, match="Bandwidth must be a positive scalar"):
         clf.fit(X, y, geometry)
 
 
@@ -321,6 +322,57 @@ def test_fit_adaptive_bandwidth_must_be_integer(sample_data):
     # Fit should raise error due to invalid adaptive bandwidth type
     with pytest.raises(ValueError, match="Adaptive bandwidth"):
         clf.fit(X, y, geometry)
+
+
+def test_predict_proba_rejects_nan_bandwidth(sample_data):
+    """Tests that NaN bandwidth raises ValueError in predict_proba()."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=5,
+        fixed=True,
+        keep_models=True,
+    )
+    clf.fit(X, y, geometry)
+
+    with pytest.raises(ValueError, match="Bandwidth must be a positive scalar"):
+        clf.predict_proba(X, geometry, bandwidth=np.nan)
+
+
+def test_predict_proba_rejects_negative_bandwidth(sample_data):
+    """Tests that negative bandwidth raises ValueError in predict_proba()."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=5,
+        fixed=True,
+        keep_models=True,
+    )
+    clf.fit(X, y, geometry)
+
+    with pytest.raises(ValueError, match="Bandwidth must be a positive scalar"):
+        clf.predict_proba(X, geometry, bandwidth=-5)
+
+
+def test_predict_proba_rejects_non_integer_adaptive_bandwidth(sample_data):
+    """
+    Tests that non-integer adaptive bandwidth raises ValueError in predict_proba().
+    """
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=5,
+        fixed=False,
+        keep_models=True,
+        max_iter=500,
+    )
+    clf.fit(X, y, geometry)
+
+    with pytest.raises(ValueError, match="must be an integer"):
+        clf.predict_proba(X, geometry, bandwidth=5.5)
 
 
 def test_fit_length_mismatch_raises(sample_data):
@@ -453,6 +505,7 @@ def test_fit_with_batch_processing(sample_data):
         random_state=42,
         strict=False,  # To avoid warnings on invariance
         verbose=True,
+        max_iter=500,
     )
 
     # Capture print output to verify batch processing messages
@@ -477,6 +530,7 @@ def test_fit_with_batch_processing(sample_data):
         bandwidth=150000,
         fixed=True,
         random_state=42,
+        max_iter=500,
     )
     clf_no_batch.fit(X, y, geometry)
 
@@ -484,6 +538,43 @@ def test_fit_with_batch_processing(sample_data):
     pd.testing.assert_frame_equal(
         clf.proba_, clf_no_batch.proba_, check_exact=False, rtol=1e-5
     )
+
+
+def test_fit_batch_processing_non_consecutive_index(sample_data):
+    """Test fitting with batch processing on non-consecutive index."""
+    X, y, geometry = sample_data
+
+    # Create non-consecutive indices
+    new_index = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+    new_index.reverse()
+    X_indexed = X.iloc[:10].copy()
+    X_indexed.index = new_index
+    y_indexed = y.iloc[:10].copy()
+    y_indexed.index = new_index
+    geometry_indexed = geometry.iloc[:10].copy()
+    geometry_indexed.index = new_index
+
+    # Create a classifier with batch processing
+    batch_size = 3
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=150000,
+        fixed=True,
+        batch_size=batch_size,
+        random_state=42,
+        strict=False,
+        verbose=True,
+        max_iter=500,
+    )
+
+    # Fit the model with non-consecutive index
+    clf.fit(X_indexed, y_indexed, geometry_indexed)
+
+    # Check that the model was fit successfully
+    assert hasattr(clf, "proba_")
+    assert 0 <= clf.pred_.mean() <= 1
+    assert len(clf.proba_) == 10
+    assert list(clf.proba_.index) == new_index
 
 
 def test_fit_n_jobs_consistency(sample_data):
@@ -737,6 +828,7 @@ def test_predict_basic(sample_data, bandwidth):
         keep_models=True,
         random_state=42,
         strict=False,  # To avoid warnings on invariance
+        max_iter=500,
     )
     clf.fit(X, y, geometry)
 
@@ -766,6 +858,7 @@ def test_predict_with_models_on_disk(sample_data, bandwidth):
             keep_models=temp_dir,
             random_state=42,
             strict=False,  # To avoid warnings on invariance
+            max_iter=500,
         )
         clf.fit(X, y, geometry)
 
@@ -799,6 +892,7 @@ def test_predict_invalid_geometry(sample_data, bandwidth):
         keep_models=True,
         random_state=42,
         strict=False,  # To avoid warnings on invariance
+        max_iter=500,
     )
     clf.fit(X, y, geometry)  # Use point geometries for fitting
 
@@ -1077,6 +1171,7 @@ def test_repr_html_with_fitted_model(sample_data):
         fixed=True,
         random_state=42,
         strict=False,
+        max_iter=500,
     )
     clf.fit(X, y, geometry)
 
