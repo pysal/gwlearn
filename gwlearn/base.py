@@ -99,6 +99,7 @@ class _BaseModel(BaseEstimator):
         keep_models: bool | str | Path = False,
         temp_folder: str | None = None,
         batch_size: int | None = None,
+        coplanar: Literal["raise", "jitter", "clique"] = "raise",
         verbose: bool = False,
         **kwargs,
     ):
@@ -117,6 +118,7 @@ class _BaseModel(BaseEstimator):
         self.keep_models = keep_models
         self.temp_folder = temp_folder
         self.batch_size = batch_size
+        self.coplanar = coplanar
         self.verbose = verbose
         self._model_type = None
 
@@ -150,12 +152,14 @@ class _BaseModel(BaseEstimator):
                 self.geometry,
                 kernel=kernel,
                 bandwidth=self.bandwidth,
+                coplanar=self.coplanar,
             )
         else:  # adaptive KNN
             weights = graph.Graph.build_kernel(
                 self.geometry,
                 kernel="identity",
                 k=self.bandwidth - 1 if self.include_focal else self.bandwidth,
+                coplanar=self.coplanar,
             )
             # post-process identity weights by the selected kernel
             # and kernel bandwidth derived from each neighborhood
@@ -684,6 +688,11 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         invariance and resulting information criteria are not comparable.
     random_state : int | None, optional
         Random seed for reproducibility, by default None
+    coplanar: "raise", "jitter", "clique", optional
+        Method for handling coplanar points with adaptive kernel. Options are
+        ``'raise'`` (raising an exception when coplanar points are present),
+        ``'jitter'`` (randomly displace coplanar points to produce uniqueness), &
+        ``'clique'`` (induce fully-connected sub cliques for coplanar points).
     verbose : bool, optional
         Whether to print progress information, by default False
     **kwargs
@@ -789,6 +798,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         undersample: bool | float = False,
         leave_out: float | int | None = None,
         random_state: int | None = None,
+        coplanar: Literal["raise", "jitter", "clique"] = "raise",
         verbose: bool = False,
         **kwargs,
     ):
@@ -805,6 +815,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             keep_models=keep_models,
             temp_folder=temp_folder,
             batch_size=batch_size,
+            coplanar=coplanar,
             verbose=verbose,
             **kwargs,
         )
@@ -1446,6 +1457,11 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         not fit into memory. By default None
     random_state : int | None, optional
         Random seed for reproducibility, by default None
+    coplanar: "raise", "jitter", "clique", optional
+        Method for handling coplanar points with adaptive kernel. Options are
+        ``'raise'`` (raising an exception when coplanar points are present),
+        ``'jitter'`` (randomly displace coplanar points to produce uniqueness), &
+        ``'clique'`` (induce fully-connected sub cliques for coplanar points).
     verbose : bool, optional
         Whether to print progress information, by default False
     **kwargs
@@ -1536,6 +1552,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         temp_folder: str | None = None,
         batch_size: int | None = None,
         random_state: int | None = None,
+        coplanar: Literal["raise", "jitter", "clique"] = "raise",
         verbose: bool = False,
         **kwargs,
     ):
@@ -1552,6 +1569,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             keep_models=keep_models,
             temp_folder=temp_folder,
             batch_size=batch_size,
+            coplanar=coplanar,
             verbose=verbose,
             **kwargs,
         )
