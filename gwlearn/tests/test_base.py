@@ -11,6 +11,7 @@ import sklearn
 from geodatasets import get_path
 from libpysal.graph import Graph
 from packaging.version import Version
+from shapely.geometry import Point
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.model_selection import GridSearchCV
@@ -52,6 +53,7 @@ def test_init_custom_parameters():
         batch_size=10,
         min_proportion=0.3,
         max_iter=200,  # A LogisticRegression parameter
+        coplanar="jitter",
     )
 
     assert clf.model == LogisticRegression
@@ -67,6 +69,7 @@ def test_init_custom_parameters():
     assert clf.min_proportion == 0.3
     assert "max_iter" in clf._model_kwargs
     assert clf._model_kwargs["max_iter"] == 200
+    assert clf.coplanar == "jitter"
 
 
 def test_init_keep_models_path():
@@ -248,6 +251,44 @@ def test_fit_different_kernels(sample_data, kernel):
 
     # Check that the model was fit successfully
     assert 0 <= clf.pred_.mean() <= 1
+
+
+@pytest.mark.parametrize(
+    "coplanar",
+    [
+        "jitter",
+        # 'clique', see https://github.com/pysal/libpysal/issues/897
+    ],
+)
+def test_fit_adaptive_bandwidth_with_coplanar(coplanar):
+    """Adaptive fitting should work with duplicate points."""
+    X = pd.DataFrame({"feat": np.arange(6)})
+    y = pd.Series([0, 1, 0, 1, 0, 1])
+    geometry = gpd.GeoSeries(
+        [
+            Point(0, 0),
+            Point(0, 0),
+            Point(1, 0),
+            Point(2, 0),
+            Point(3, 0),
+            Point(4, 0),
+        ]
+    )
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=2,
+        fixed=False,
+        coplanar=coplanar,
+        strict=False,
+        fit_global_model=False,
+        max_iter=200,
+    )
+
+    clf.fit(X, y, geometry)
+
+    assert hasattr(clf, "proba_")
+    assert clf.coplanar == coplanar
 
 
 def test_fit_fixed_bandwidth(sample_data):

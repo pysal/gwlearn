@@ -44,6 +44,12 @@ class BandwidthSearch:
     kernel : str | Callable, optional
         Type of kernel function used to weight observations, by default
         ``"bisquare"``
+    coplanar : {"raise", "jitter", "clique"}, optional
+        Method for handling coplanar points with adaptive kernels. Options are
+        ``"raise"`` (raising an exception when coplanar points are present),
+        ``"jitter"`` (randomly displace coplanar points to produce uniqueness),
+        and ``"clique"`` (induce fully-connected sub-cliques for coplanar
+        points). By default ``"raise"``
     n_jobs : int, optional
         The number of jobs to run in parallel. ``-1`` means using all
         processors, by default ``-1``
@@ -148,6 +154,7 @@ class BandwidthSearch:
             # "exponential",
         ]
         | Callable = "bisquare",
+        coplanar: Literal["raise", "jitter", "clique"] = "raise",
         n_jobs: int = -1,
         search_method: Literal["golden_section", "interval"] = "golden_section",
         criterion: str | None = None,
@@ -164,6 +171,7 @@ class BandwidthSearch:
         self.model = model
         self.kernel = kernel
         self.fixed = fixed
+        self.coplanar = coplanar
         self._model_kwargs = kwargs
         self.n_jobs = n_jobs
         self.search_method = search_method
@@ -263,6 +271,7 @@ class BandwidthSearch:
             bandwidth=bw,
             fixed=self.fixed,
             kernel=self.kernel,
+            coplanar=self.coplanar,
             n_jobs=self.n_jobs,
             fit_global_model=False,
             strict=False,
