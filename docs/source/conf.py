@@ -8,15 +8,17 @@
 import os
 import sys
 
+from packaging.version import Version
+
 sys.path.insert(0, os.path.abspath("../gwlearn/"))
 
-import gwlearn  # noqa
+import gwlearn
 
 project = "gwlearn"
 copyright = "2025-, Martin Fleischmann & PySAL Developers"
 author = "Martin Fleischmann"
 
-version = gwlearn.__version__.split("+", 1)[0]  # remove commit hash
+version = Version(gwlearn.__version__).public  # remove commit hash
 release = version
 
 language = "en"
