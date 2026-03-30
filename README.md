@@ -51,6 +51,12 @@ The implementation includes experimental validation:
 
 ---
 
+## 📊 GWPCA Visualization
+
+![GWPCA Visualization](docs/images/plot1.png)
+*Spatial variation captured by GWPCA showing change in correlation structure across space.*
+![GWPCA Visualization](docs/images/plot2.png)
+
 ### Note
 
 This is an initial prototype and subject to change. Feedback on API design, performance, and integration with `gwlearn` is welcome.
