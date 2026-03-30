@@ -1,84 +1,56 @@
-# gwlearn
+## GWPCA Prototype (Work in Progress)
 
-[![Continuous Integration](https://github.com/pysal/gwlearn/actions/workflows/testing.yml/badge.svg)](https://github.com/pysal/gwlearn/actions/workflows/testing.yml)
-[![codecov](https://codecov.io/gh/pysal/gwlearn/branch/main/graph/badge.svg)](https://codecov.io/gh/pysal/gwlearn)
-[![PyPI version](https://badge.fury.io/py/gwlearn.svg)](https://badge.fury.io/py/gwlearn)
-[![Conda Version](https://img.shields.io/conda/vn/conda-forge/gwlearn.svg)](https://anaconda.org/conda-forge/gwlearn)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18173180.svg)](https://doi.org/10.5281/zenodo.18173180)
-[![Discord](https://img.shields.io/badge/Discord-join%20chat-7289da?style=flat&logo=discord&logoColor=cccccc&link=https://discord.gg/BxFTEPFFZn)](https://discord.gg/BxFTEPFFZn)
-[![SPEC 0 — Minimum Supported Dependencies](https://img.shields.io/badge/SPEC-0-green?labelColor=%23004811&color=%235CA038)](https://scientific-python.org/specs/spec-0000/)
+This branch introduces a prototype implementation of **Geographically Weighted Principal Component Analysis (GWPCA)** for spatially varying dimensionality reduction.
 
-Geographically weighted modeling based on `scikit-learn`.
+### Features
 
-The aim of the package is to provide implementations of spatially-explicit modelling.
+* Local PCA using spatial kernel weighting
+* Supports:
+  * Fixed bandwidth
+  * Adaptive (k-nearest neighbors) bandwidth
+* Efficient neighbor search using `cKDTree`
+* Compatible with `scikit-learn` style (`fit`, `transform`)
 
-## Features
+---
 
-`gwlearn` provides a framework for prototyping geographically weighted extensions of
-regression and classification models based on `scikit-learn` and `libpysal.graph` and a
-subset of models implemented on top of this framework. For example, you can run
-geographically weighted linear regression in a following manner.
+### Examples
 
-```py
-import geopandas as gpd
-from geodatasets import get_path
+Run the following to see GWPCA in action:
 
-from gwlearn.linear_model import GWLinearRegression
-
-
-gdf = gpd.read_file(get_path('geoda.guerry'))
-
-adaptive = GWLinearRegression(
-    bandwidth=25,
-    fixed=False,
-    kernel='bisquare'
-)
-adaptive.fit(
-    gdf[['Crm_prp', 'Litercy', 'Donatns', 'Lottery']],
-    gdf["Suicids"],
-    geometry=gdf.representative_point(),
-)
+```bash
+python examples/gwpca_demo.py
+python examples/gwpca_visual_demo.py
 ```
 
-For details, see the [documentation](https://pysal.org/gwlearn).
+* `gwpca_demo.py` → basic usage
+* `gwpca_visual_demo.py` → shows spatial non-stationarity
 
-## Status
+---
 
-Current development status is beta. The core API of the package should not change
-without a warning and a proper deprecation cycle. However, minor breaking changes may
-still occur.
+### Tests
 
-## Installation
+Unit tests are included:
 
-You can install gwlearn from PyPI or from conda-forge using the tool of your choice:
-
-```sh
-pip install gwlearn
+```bash
+pytest
 ```
 
-Or from conda-forge:
+All tests pass successfully, ensuring basic correctness and stability.
 
-```sh
-conda install gwlearn -c conda-forge
-```
+---
 
-## Bug reports
+### Validation
 
-To search for or report bugs, please see the
-[Github issue tracker](https://github.com/pysal/gwlearn/issues).
+The implementation includes experimental validation:
 
-## Get in touch
+* Comparison with global PCA
+* Spatial analysis using Moran’s I
+* Monte Carlo simulation
 
-If you have a question regarding `gwlearn`, feel free to open an issue or join a chat on
-[Discord](https://discord.gg/he6Y8D2ap3).
+(See `experiments/gwpca_validation.py`)
 
-## License
+---
 
-The package is licensed under BSD 3-Clause License (Copyright (c) 2025, Martin
-Fleischmann & PySAL Developers)
+### Note
 
-## Funding
-
-<img src="https://github.com/pysal/gwlearn/raw/refs/heads/main/docs/source/_static/UK-logo-square-EN.svg" width="200" alt="Charles University logo">
-
-Charles University’s Primus programme through the project "Influence of Socioeconomic and Cultural Factors on Urban Structure in Central Europe", project reference `PRIMUS/24/SCI/023`.
+This is an initial prototype and subject to change. Feedback on API design, performance, and integration with `gwlearn` is welcome.
