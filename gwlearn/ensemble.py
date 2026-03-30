@@ -105,6 +105,11 @@ class GWRandomForestClassifier(BaseClassifier):
         invariance and resulting information criteria are not comparable.
     random_state : int | None, optional
         Random seed for reproducibility, by default None
+    coplanar: "raise", "jitter", "clique", optional
+        Method for handling coplanar points with adaptive kernel. Options are
+        ``'raise'`` (raising an exception when coplanar points are present),
+        ``'jitter'`` (randomly displace coplanar points to produce uniqueness), &
+        ``'clique'`` (induce fully-connected sub cliques for coplanar points).
     verbose : bool, optional
         Whether to print progress information, by default False
     **kwargs
@@ -190,6 +195,7 @@ class GWRandomForestClassifier(BaseClassifier):
         undersample: bool | float = False,
         leave_out: float | int | None = None,
         random_state: int | None = None,
+        coplanar: Literal["raise", "jitter", "clique"] = "raise",
         verbose: bool = False,
         **kwargs,
     ):
@@ -210,6 +216,7 @@ class GWRandomForestClassifier(BaseClassifier):
             undersample=undersample,
             leave_out=leave_out,
             random_state=random_state,
+            coplanar=coplanar,
             verbose=verbose,
             **kwargs,
         )
@@ -376,6 +383,11 @@ class GWGradientBoostingClassifier(BaseClassifier):
         By default False
     random_state : int | None, optional
         Random seed for reproducibility, by default None
+    coplanar: "raise", "jitter", "clique", optional
+        Method for handling coplanar points with adaptive kernel. Options are
+        ``'raise'`` (raising an exception when coplanar points are present),
+        ``'jitter'`` (randomly displace coplanar points to produce uniqueness), &
+        ``'clique'`` (induce fully-connected sub cliques for coplanar points).
     verbose : bool, optional
         Whether to print progress information, by default False
     **kwargs
@@ -446,6 +458,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
         min_proportion: float = 0.2,
         undersample: bool | float = False,
         random_state: int | None = None,
+        coplanar: Literal["raise", "jitter", "clique"] = "raise",
         verbose: bool = False,
         **kwargs,
     ):
@@ -465,6 +478,7 @@ class GWGradientBoostingClassifier(BaseClassifier):
             min_proportion=min_proportion,
             undersample=undersample,
             random_state=random_state,
+            coplanar=coplanar,
             verbose=verbose,
             **kwargs,
         )
@@ -584,6 +598,11 @@ class GWRandomForestRegressor(BaseRegressor):
         not fit into memory. By default None
     random_state : int | None, optional
         Random seed for reproducibility, by default None
+    coplanar: "raise", "jitter", "clique", optional
+        Method for handling coplanar points with adaptive kernel. Options are
+        ``'raise'`` (raising an exception when coplanar points are present),
+        ``'jitter'`` (randomly displace coplanar points to produce uniqueness), &
+        ``'clique'`` (induce fully-connected sub cliques for coplanar points).
     verbose : bool, optional
         Whether to print progress information, by default False
     **kwargs
@@ -659,6 +678,7 @@ class GWRandomForestRegressor(BaseRegressor):
         temp_folder: str | None = None,
         batch_size: int | None = None,
         random_state: int | None = None,
+        coplanar: Literal["raise", "jitter", "clique"] = "raise",
         verbose: bool = False,
         **kwargs,
     ):
@@ -676,6 +696,7 @@ class GWRandomForestRegressor(BaseRegressor):
             temp_folder=temp_folder,
             batch_size=batch_size,
             random_state=random_state,
+            coplanar=coplanar,
             verbose=verbose,
             **kwargs,
         )
@@ -830,6 +851,11 @@ class GWGradientBoostingRegressor(BaseRegressor):
         not fit into memory. By default None
     random_state : int | None, optional
         Random seed for reproducibility, by default None
+    coplanar: "raise", "jitter", "clique", optional
+        Method for handling coplanar points with adaptive kernel. Options are
+        ``'raise'`` (raising an exception when coplanar points are present),
+        ``'jitter'`` (randomly displace coplanar points to produce uniqueness), &
+        ``'clique'`` (induce fully-connected sub cliques for coplanar points).
     verbose : bool, optional
         Whether to print progress information, by default False
     **kwargs
@@ -901,6 +927,7 @@ class GWGradientBoostingRegressor(BaseRegressor):
         temp_folder: str | None = None,
         batch_size: int | None = None,
         random_state: int | None = None,
+        coplanar: Literal["raise", "jitter", "clique"] = "raise",
         verbose: bool = False,
         **kwargs,
     ):
@@ -918,6 +945,7 @@ class GWGradientBoostingRegressor(BaseRegressor):
             temp_folder=temp_folder,
             batch_size=batch_size,
             random_state=random_state,
+            coplanar=coplanar,
             verbose=verbose,
             **kwargs,
         )

@@ -15,6 +15,11 @@ on:
         description: Manual Doc Build
         default: run-doc-build
         required: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   docs:
     name: Build & push docs
@@ -36,7 +41,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup micromamba
-        uses: mamba-org/setup-micromamba@v2
+        uses: mamba-org/setup-micromamba@v3
         with:
           environment-file: ${{ matrix.environment-file }}
           micromamba-version: "latest"

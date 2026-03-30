@@ -314,6 +314,36 @@ def test_bandwidth_search_accepts_model_params(sample_data):  # noqa: F811
     assert hasattr(search, "optimal_bandwidth_")
 
 
+def test_bandwidth_search_accepts_coplanar_option():
+    """Test that BandwidthSearch exposes and forwards the coplanar option."""
+    X = pd.DataFrame({"feat": np.arange(6)})
+    y = pd.Series([0, 1, 0, 1, 0, 1])
+    geometry = gpd.GeoSeries(
+        [Point(0, 0), Point(0, 0), Point(1, 0), Point(2, 0), Point(3, 0), Point(4, 0)]
+    )
+
+    search = BandwidthSearch(
+        model=GWLogisticRegression,
+        fixed=False,
+        coplanar="jitter",
+        search_method="interval",
+        min_bandwidth=2,
+        max_bandwidth=2,
+        interval=1,
+        criterion="prediction_rate",
+        metrics=["prediction_rate"],
+        minimize=False,
+        verbose=False,
+        max_iter=200,
+    )
+
+    assert search.coplanar == "jitter"
+
+    search.fit(X, y, geometry)
+
+    assert hasattr(search, "optimal_bandwidth_")
+
+
 def test_bandwidth_search_verbosity(sample_data):  # noqa: F811
     """Test that the verbose flag in BandwidthSearch produces expected output."""
     X, y, geometry = sample_data

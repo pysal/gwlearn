@@ -8,15 +8,17 @@
 import os
 import sys
 
+from packaging.version import Version
+
 sys.path.insert(0, os.path.abspath("../gwlearn/"))
 
-import gwlearn  # noqa
+import gwlearn
 
 project = "gwlearn"
 copyright = "2025-, Martin Fleischmann & PySAL Developers"
 author = "Martin Fleischmann"
 
-version = gwlearn.__version__.split("+", 1)[0]  # remove commit hash
+version = Version(gwlearn.__version__).public  # remove commit hash
 release = version
 
 language = "en"
@@ -146,6 +148,8 @@ nb_execution_mode = "cache"
 nb_execution_timeout = -1
 nb_kernel_rgx_aliases = {".*": "python3"}
 nb_merge_streams = True
+nb_execution_raise_on_error = True
+nb_execution_show_tb = True
 autodoc_typehints = "none"
 
 
