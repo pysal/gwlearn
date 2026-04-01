@@ -13,6 +13,7 @@
       ~GWGradientBoostingRegressor.fit
       ~GWGradientBoostingRegressor.get_metadata_routing
       ~GWGradientBoostingRegressor.get_params
+      ~GWGradientBoostingRegressor.local_metric
       ~GWGradientBoostingRegressor.predict
       ~GWGradientBoostingRegressor.score
       ~GWGradientBoostingRegressor.set_fit_request

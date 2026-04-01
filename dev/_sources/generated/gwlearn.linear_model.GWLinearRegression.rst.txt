@@ -13,6 +13,7 @@
       ~GWLinearRegression.fit
       ~GWLinearRegression.get_metadata_routing
       ~GWLinearRegression.get_params
+      ~GWLinearRegression.local_metric
       ~GWLinearRegression.predict
       ~GWLinearRegression.score
       ~GWLinearRegression.set_fit_request

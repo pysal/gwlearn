@@ -13,6 +13,7 @@
       ~BaseRegressor.fit
       ~BaseRegressor.get_metadata_routing
       ~BaseRegressor.get_params
+      ~BaseRegressor.local_metric
       ~BaseRegressor.predict
       ~BaseRegressor.score
       ~BaseRegressor.set_fit_request
