@@ -298,7 +298,7 @@ class GWRandomForestClassifier(BaseClassifier):
         local_model: BaseEstimator,
         X: pd.DataFrame,  # noqa: ARG002
         y: pd.Series,  # noqa: ARG002
-    ) -> float:
+    ) -> tuple:
         return local_model.oob_score_
 
 
@@ -484,7 +484,6 @@ class GWGradientBoostingClassifier(BaseClassifier):
         )
 
         self._model_type = "gradient_boosting"
-        self._empty_score_data = np.nan
 
     def fit(
         self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
@@ -778,7 +777,7 @@ class GWRandomForestRegressor(BaseRegressor):
         local_model: BaseEstimator,
         X: pd.DataFrame,  # noqa: ARG002
         y: pd.Series,  # noqa: ARG002
-    ) -> float:
+    ) -> tuple:
         return local_model.oob_score_
 
 
