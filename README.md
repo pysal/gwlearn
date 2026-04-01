@@ -1,4 +1,4 @@
-## GWPCA Prototype (Work in Progress)
+##  GWPCA Prototype (Work in Progress)
 
 This branch introduces a prototype implementation of **Geographically Weighted Principal Component Analysis (GWPCA)** for spatially varying dimensionality reduction.
 
