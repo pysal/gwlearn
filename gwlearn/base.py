@@ -4,7 +4,7 @@ from collections.abc import Callable, Hashable
 from numbers import Integral, Real
 from pathlib import Path
 from time import time
-from typing import Any, Literal
+from typing import Literal
 
 import geopandas as gpd
 import numpy as np
@@ -592,7 +592,7 @@ class _BaseModel(BaseEstimator):
         local_model: BaseEstimator,  # noqa: ARG002
         X: pd.DataFrame,  # noqa: ARG002
         y: pd.Series,  # noqa: ARG002
-    ) -> object:
+    ) -> float | tuple:
         """Subclasses should implement custom function"""
         return np.nan
 
@@ -617,32 +617,6 @@ class _BaseModel(BaseEstimator):
             else:
                 results.append(func(y, y_pred, *args, **kwargs))
         return np.array(results)
-
-    def _maybe_set_local_metric_data(self) -> None:
-        """Populate local metric arrays when _score_data stores y/pred pairs."""
-        score_data = getattr(self, "_score_data", None)
-        if not isinstance(score_data, tuple) or len(score_data) == 0:
-            return
-
-        y_local: list[np.ndarray] = []
-        pred_local: list[np.ndarray] = []
-
-        for item in score_data:
-            if not isinstance(item, tuple | list) or len(item) < 2:
-                return
-
-            y_item: Any = item[0]
-            pred_item: Any = item[1]
-            if not isinstance(y_item, np.ndarray) or not isinstance(
-                pred_item, np.ndarray
-            ):
-                return
-
-            y_local.append(y_item)
-            pred_local.append(pred_item)
-
-        self._y_local = y_local
-        self._pred_local = pred_local
 
 
 class BaseClassifier(ClassifierMixin, _BaseModel):
@@ -994,7 +968,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         self._n_fitted_models = (~self.proba_[col].isna()).sum()
         self.prediction_rate_ = self._n_fitted_models / nan_mask.shape[0]
-        self._maybe_set_local_metric_data()
+        self._y_local = [x[0] for x in self._score_data]
+        self._pred_local = [x[1] for x in self._score_data]
 
         if self.leave_out and self.prediction_rate_ > 0:
             self.left_out_y_ = np.concatenate([arr[1] for arr in left_out_proba])
@@ -1023,7 +998,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         local_model: BaseEstimator,
         X: pd.DataFrame,
         y: pd.Series,
-    ) -> object:
+    ) -> tuple:
         return y.to_numpy(), local_model.predict(X)
 
     def _fit_local(
@@ -1690,7 +1665,8 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         self.TSS_ = pd.Series(tss, index=self._names)
         self.y_bar_ = pd.Series(y_bar, index=self._names)
         self.local_r2_ = (self.TSS_ - self.RSS_) / self.TSS_
-        self._maybe_set_local_metric_data()
+        self._y_local = [x[0] for x in self._score_data]
+        self._pred_local = [x[1] for x in self._score_data]
 
         if self.fit_global_model:
             self._fit_global_model(X, y)
@@ -1709,7 +1685,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         local_model: BaseEstimator,
         X: pd.DataFrame,
         y: pd.Series,
-    ) -> object:
+    ) -> tuple:
         return y.to_numpy(), local_model.predict(X)
 
     def predict(
