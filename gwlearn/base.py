@@ -618,6 +618,23 @@ class _BaseModel(BaseEstimator):
                 results.append(func(y, y_pred, *args, **kwargs))
         return np.array(results)
 
+    def _maybe_set_local_metric_data(self) -> None:
+        """Populate local metric arrays when _score_data stores y/pred pairs."""
+        if not hasattr(self, "_score_data") or len(self._score_data) == 0:
+            return
+
+        first = self._score_data[0]
+        if not (
+            isinstance(first, tuple | list)
+            and len(first) >= 2
+            and hasattr(first[0], "shape")
+            and hasattr(first[1], "shape")
+        ):
+            return
+
+        self._y_local = [x[0] for x in self._score_data]
+        self._pred_local = [x[1] for x in self._score_data]
+
 
 class BaseClassifier(ClassifierMixin, _BaseModel):
     """Generic geographically weighted classification meta-estimator.
@@ -968,8 +985,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         self._n_fitted_models = (~self.proba_[col].isna()).sum()
         self.prediction_rate_ = self._n_fitted_models / nan_mask.shape[0]
-        self._y_local = [x[0] for x in self._score_data]
-        self._pred_local = [x[1] for x in self._score_data]
+        self._maybe_set_local_metric_data()
 
         if self.leave_out and self.prediction_rate_ > 0:
             self.left_out_y_ = np.concatenate([arr[1] for arr in left_out_proba])
@@ -1665,8 +1681,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         self.TSS_ = pd.Series(tss, index=self._names)
         self.y_bar_ = pd.Series(y_bar, index=self._names)
         self.local_r2_ = (self.TSS_ - self.RSS_) / self.TSS_
-        self._y_local = [x[0] for x in self._score_data]
-        self._pred_local = [x[1] for x in self._score_data]
+        self._maybe_set_local_metric_data()
 
         if self.fit_global_model:
             self._fit_global_model(X, y)
