@@ -596,6 +596,28 @@ class _BaseModel(BaseEstimator):
         """Subclasses should implement custom function"""
         return np.nan
 
+    def local_metric(self, func: Callable, *args, **kwargs) -> np.ndarray:
+        """Compute a metric per fitted local model.
+
+        Parameters
+        ----------
+        func : callable
+            Callable with a signature ``func(y_true, y_pred, *args, **kwargs)``.
+
+        Returns
+        -------
+        numpy.ndarray
+            One value per focal location (NaN for skipped / unfitted local models).
+        """
+        results = []
+
+        for y, y_pred in zip(self._y_local, self._pred_local, strict=True):
+            if y.shape[0] == 0:
+                results.append(np.nan)
+            else:
+                results.append(func(y, y_pred, *args, **kwargs))
+        return np.array(results)
+
 
 class BaseClassifier(ClassifierMixin, _BaseModel):
     """Generic geographically weighted classification meta-estimator.
@@ -823,7 +845,7 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
         self.undersample = undersample
         self.random_state = random_state
         self.leave_out = leave_out
-        self._empty_score_data = None
+        self._empty_score_data = (np.array([]), np.array([]))
         self._empty_feature_imp = None
 
     def fit(
@@ -946,6 +968,8 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
 
         self._n_fitted_models = (~self.proba_[col].isna()).sum()
         self.prediction_rate_ = self._n_fitted_models / nan_mask.shape[0]
+        self._y_local = [x[0] for x in self._score_data]
+        self._pred_local = [x[1] for x in self._score_data]
 
         if self.leave_out and self.prediction_rate_ > 0:
             self.left_out_y_ = np.concatenate([arr[1] for arr in left_out_proba])
@@ -968,6 +992,14 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             self._compute_information_criteria()
 
         return self
+
+    def _get_score_data(
+        self,
+        local_model: BaseEstimator,
+        X: pd.DataFrame,
+        y: pd.Series,
+    ) -> tuple:
+        return y.to_numpy(), local_model.predict(X)
 
     def _fit_local(
         self,
@@ -1364,28 +1396,6 @@ class BaseClassifier(ClassifierMixin, _BaseModel):
             return float("nan")
         return (y_pred[mask] == y[mask]).mean()
 
-    def local_metric(self, func: Callable, *args, **kwargs) -> np.ndarray:
-        """Compute a metric per fitted local model.
-
-        Parameters
-        ----------
-        func : callable
-            Callable with a signature ``func(y_true, y_pred, *args, **kwargs)``.
-
-        Returns
-        -------
-        numpy.ndarray
-            One value per focal location (NaN for skipped / unfitted local models).
-        """
-        results = []
-
-        for y, y_pred in zip(self._y_local, self._pred_local, strict=True):
-            if y.shape[0] == 0:
-                results.append(np.nan)
-            else:
-                results.append(func(y, y_pred, *args, **kwargs))
-        return np.array(results)
-
 
 class BaseRegressor(_BaseModel, RegressorMixin):
     """Generic geographically weighted regression meta-estimator.
@@ -1574,6 +1584,7 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             **kwargs,
         )
         self.random_state = random_state
+        self._empty_score_data = (np.array([]), np.array([]))
 
     def fit(
         self, X: pd.DataFrame, y: pd.Series, geometry: gpd.GeoSeries | None = None
@@ -1654,6 +1665,8 @@ class BaseRegressor(_BaseModel, RegressorMixin):
         self.TSS_ = pd.Series(tss, index=self._names)
         self.y_bar_ = pd.Series(y_bar, index=self._names)
         self.local_r2_ = (self.TSS_ - self.RSS_) / self.TSS_
+        self._y_local = [x[0] for x in self._score_data]
+        self._pred_local = [x[1] for x in self._score_data]
 
         if self.fit_global_model:
             self._fit_global_model(X, y)
@@ -1666,6 +1679,14 @@ class BaseRegressor(_BaseModel, RegressorMixin):
             self._compute_information_criteria()
 
         return self
+
+    def _get_score_data(
+        self,
+        local_model: BaseEstimator,
+        X: pd.DataFrame,
+        y: pd.Series,
+    ) -> tuple:
+        return y.to_numpy(), local_model.predict(X)
 
     def predict(
         self,

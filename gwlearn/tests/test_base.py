@@ -14,6 +14,7 @@ from packaging.version import Version
 from shapely.geometry import Point
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.metrics import accuracy_score, mean_absolute_error
 from sklearn.model_selection import GridSearchCV
 
 from gwlearn.base import BaseClassifier, BaseRegressor, _kernel_functions
@@ -1949,6 +1950,32 @@ def test_classifier_score(sample_data):
     assert isinstance(acc, float)
 
 
+def test_classifier_local_metric(sample_data):
+    """Test local_metric on BaseClassifier."""
+    X, y, geometry = sample_data
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=10,
+        fixed=False,
+        random_state=42,
+        max_iter=200,
+        strict=False,
+        n_jobs=1,
+    )
+    clf.fit(X, y, geometry)
+
+    local_accuracy = clf.local_metric(accuracy_score)
+    expected = np.array(
+        [
+            np.nan if y_local.shape[0] == 0 else accuracy_score(y_local, pred_local)
+            for y_local, pred_local in zip(clf._y_local, clf._pred_local, strict=True)
+        ]
+    )
+
+    np.testing.assert_allclose(local_accuracy, expected, equal_nan=True)
+    assert len(local_accuracy) == len(X)
+
+
 def test_regressor_score(sample_regression_data):
     """Test the score method of BaseRegressor with geometry argument."""
     X, y, geometry = sample_regression_data
@@ -1964,6 +1991,32 @@ def test_regressor_score(sample_regression_data):
     r2 = reg.score(X, y, geometry)
     assert -1.0 <= r2 <= 1.0
     assert isinstance(r2, float)
+
+
+def test_regressor_local_metric(sample_regression_data):
+    """Test local_metric on BaseRegressor."""
+    X, y, geometry = sample_regression_data
+    reg = BaseRegressor(
+        LinearRegression,
+        bandwidth=10,
+        fixed=False,
+        random_state=42,
+        n_jobs=1,
+    )
+    reg.fit(X, y, geometry)
+
+    local_mae = reg.local_metric(mean_absolute_error)
+    expected = np.array(
+        [
+            np.nan
+            if y_local.shape[0] == 0
+            else mean_absolute_error(y_local, pred_local)
+            for y_local, pred_local in zip(reg._y_local, reg._pred_local, strict=True)
+        ]
+    )
+
+    np.testing.assert_allclose(local_mae, expected, equal_nan=True)
+    assert len(local_mae) == len(X)
 
 
 def test_metadata_routing(sample_regression_data):
