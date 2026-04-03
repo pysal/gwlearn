@@ -1,7 +1,6 @@
-import sys
-import os
 import numpy as np
 from shapely.geometry import Point
+
 from gwlearn.gwpca import GWPCA
 
 # Create simple data

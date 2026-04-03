@@ -1,5 +1,6 @@
 import numpy as np
 from shapely.geometry import Point
+
 from gwlearn.gwpca import GWPCA
 
 

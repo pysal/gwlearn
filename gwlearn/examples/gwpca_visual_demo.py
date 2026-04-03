@@ -1,9 +1,8 @@
-import sys
-import os
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 from shapely.geometry import Point
 from sklearn.decomposition import PCA
+
 from gwlearn.gwpca import GWPCA
 
 # 1. Create grid
@@ -37,36 +36,43 @@ local_evr = model.explained_variance_[:, 0] / np.sum(model.explained_variance_, 
 # 5. Plot comparison
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
 
-ax1.scatter(coords[:, 0], coords[:, 1], c=[global_evr]*n, cmap='viridis', vmin=0.5, vmax=1.0)
+ax1.scatter(
+    coords[:, 0], coords[:, 1], c=[global_evr] * n, cmap="viridis", vmin=0.5, vmax=1.0
+)
 ax1.set_title(f"Standard Global PCA\nExplained Variance: {global_evr:.2f}")
 
-im = ax2.scatter(coords[:, 0], coords[:, 1], c=local_evr, cmap='viridis', vmin=0.5, vmax=1.0)
-plt.colorbar(im, ax=ax2, label='Local Variance Explained')
+im = ax2.scatter(
+    coords[:, 0], coords[:, 1], c=local_evr, cmap="viridis", vmin=0.5, vmax=1.0
+)
+plt.colorbar(im, ax=ax2, label="Local Variance Explained")
 ax2.set_title(f"GWPCA\nMean Local Explained Variance: {np.mean(local_evr):.2f}")
 
 plt.show()
 
-print(f"Improvement: {((np.mean(local_evr) - global_evr) / global_evr)*100:.1f}%")
+print(f"Improvement: {((np.mean(local_evr) - global_evr) / global_evr) * 100:.1f}%")
 
 # 6. Loadings visualization
 pc1_loadings_var2 = model.loadings_[:, 0, 1]
 
 plt.figure(figsize=(10, 8))
-im = plt.scatter(coords[:, 0], coords[:, 1],
-                 c=pc1_loadings_var2,
-                 cmap='coolwarm',
-                 s=70,
-                 edgecolor='white',
-                 linewidth=0.1)
+im = plt.scatter(
+    coords[:, 0],
+    coords[:, 1],
+    c=pc1_loadings_var2,
+    cmap="coolwarm",
+    s=70,
+    edgecolor="white",
+    linewidth=0.1,
+)
 
-plt.colorbar(im, label='PC1 Loading for Variable 2')
+plt.colorbar(im, label="PC1 Loading for Variable 2")
 plt.title("GWPCA Proof: Spatial Non-Stationarity")
 plt.xlabel("West <---> East")
 plt.ylabel("North <---> South")
 
-plt.axvline(x=5, color='black', linestyle='--', alpha=0.5)
+plt.axvline(x=5, color="black", linestyle="--", alpha=0.5)
 
-plt.text(2, 9, "Variable 2 follows Var 1", fontweight='bold')
-plt.text(6, 9, "Variable 2 opposes Var 1", fontweight='bold')
+plt.text(2, 9, "Variable 2 follows Var 1", fontweight="bold")
+plt.text(6, 9, "Variable 2 opposes Var 1", fontweight="bold")
 
 plt.show()

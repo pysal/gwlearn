@@ -197,6 +197,23 @@ class GWLogisticRegression(BaseClassifier):
         verbose: bool = False,
         **kwargs,
     ):
+
+        # --- Bandwidth Validation---
+        if bandwidth is not None and bandwidth <= 0:
+            raise ValueError("bandwidth must be positive")
+        # --- Kernel ---
+        valid_kernels = {
+            "triangular",
+            "parabolic",
+            "bisquare",
+            "tricube",
+            "cosine",
+            "boxcar",
+        }
+        if isinstance(kernel, str) and kernel not in valid_kernels:
+            raise ValueError(
+                f"Invalid kernel: {kernel}. Kernel must be one of {valid_kernels}"
+            )
         super().__init__(
             model=LogisticRegression,
             bandwidth=bandwidth,
@@ -434,6 +451,24 @@ class GWLinearRegression(BaseRegressor):
         verbose: bool = False,
         **kwargs,
     ):
+        # --- Validation: bandwidth ---
+        if bandwidth is not None and bandwidth <= 0:
+            raise ValueError("bandwidth must be positive")
+
+        # --- Validation: kernel ---
+        valid_kernels = {
+            "triangular",
+            "parabolic",
+            "bisquare",
+            "tricube",
+            "cosine",
+            "boxcar",
+        }
+
+        if isinstance(kernel, str) and kernel not in valid_kernels:
+            raise ValueError(
+                f"Invalid kernel: {kernel}. Kernel must be one of {valid_kernels}"
+            )
         super().__init__(
             model=LinearRegression,
             bandwidth=bandwidth,
