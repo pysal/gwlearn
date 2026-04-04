@@ -1,5 +1,6 @@
 from collections.abc import Callable
 from pathlib import Path
+from typing import Literal
 
 import geopandas as gpd
 import numpy as np
@@ -170,7 +171,17 @@ class GWLogisticRegression(BaseClassifier):
         self,
         bandwidth: float | None = None,
         fixed: bool = False,
-        kernel: str | Callable = "bisquare",
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            # "gaussian",
+            "bisquare",
+            "tricube",
+            "cosine",
+            "boxcar",
+            # "exponential",
+        ]
+        | Callable = "bisquare",
         include_focal: bool = True,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,
@@ -418,7 +429,17 @@ class GWLinearRegression(BaseRegressor):
         self,
         bandwidth: float | None = None,
         fixed: bool = False,
-        kernel: str | Callable = "bisquare",
+        kernel: Literal[
+            "triangular",
+            "parabolic",
+            # "gaussian",
+            "bisquare",
+            "tricube",
+            "cosine",
+            "boxcar",
+            # "exponential",
+        ]
+        | Callable = "bisquare",
         include_focal: bool = True,
         graph: graph.Graph | None = None,
         n_jobs: int = -1,

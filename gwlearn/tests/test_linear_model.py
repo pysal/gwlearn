@@ -285,11 +285,9 @@ def test_against_mgwr():
 def test_invalid_bandwidth(bandwidth):
     """Ensure models raise ValueError for non-positive bandwidth values."""
 
-    # bandwidth=0 should be rejected
     with pytest.raises(ValueError, match="bandwidth must be positive"):
         GWLogisticRegression(bandwidth=bandwidth)
 
-    # negative bandwidth should also be rejected
     with pytest.raises(ValueError, match="bandwidth must be positive"):
         GWLinearRegression(bandwidth=bandwidth)
 
@@ -298,10 +296,8 @@ def test_invalid_bandwidth(bandwidth):
 def test_invalid_kernel(kernel):
     """Ensure models raise ValueError for unsupported kernel strings."""
 
-    # invalid kernel string should raise error
     with pytest.raises(ValueError, match="Invalid kernel"):
-        GWLogisticRegression(kernel="invalid_kernel")
+        GWLogisticRegression(kernel=kernel)  # type: ignore[arg-type]
 
-    # another invalid kernel case for linear model
-    with pytest.raises(ValueError, match=kernel):
-        GWLinearRegression(kernel=kernel)
+    with pytest.raises(ValueError, match="Invalid kernel"):
+        GWLinearRegression(kernel=kernel)  # type: ignore[arg-type]
