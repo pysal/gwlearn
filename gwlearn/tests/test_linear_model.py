@@ -279,3 +279,27 @@ def test_against_mgwr():
     assert_almost_equal(gwlr.aicc_, res.aicc, decimal=0)
     assert_almost_equal(gwlr.effective_df_, res.ENP)
     assert_almost_equal(gwlr.log_likelihood_, res.llf)
+@pytest.mark.parametrize("bandwidth", [0, -1, -100])
+def test_invalid_bandwidth(bandwidth):
+    """Ensure models raise ValueError for non-positive bandwidth values."""
+
+    # bandwidth=0 should be rejected
+    with pytest.raises(ValueError, match="bandwidth must be positive"):
+        GWLogisticRegression(bandwidth=bandwidth)
+
+    # negative bandwidth should also be rejected
+    with pytest.raises(ValueError, match="bandwidth must be positive"):
+        GWLinearRegression(bandwidth=bandwidth)
+
+
+@pytest.mark.parametrize("kernel", ["invalid", "abc", "wrong_kernel"])
+def test_invalid_kernel(kernel):
+    """Ensure models raise ValueError for unsupported kernel strings."""
+
+    # invalid kernel string should raise error
+    with pytest.raises(ValueError, match="Invalid kernel"):
+        GWLogisticRegression(kernel="invalid_kernel")
+
+    # another invalid kernel case for linear model
+    with pytest.raises(ValueError, match=kernel):
+        GWLinearRegression(kernel=kernel)
