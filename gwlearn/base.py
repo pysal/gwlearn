@@ -576,9 +576,9 @@ class _BaseModel(BaseEstimator):
 
             if not isinstance(bw, Real):
                 raise ValueError("Bandwidth must be a positive scalar number.")
-            
+
             if  bw <= 0:
-                raise ValueError("Bandwidth must be a positive scalar number.") 
+                raise ValueError("Bandwidth must be a positive scalar number.")
             if not self.fixed and not isinstance(bw, Integral):
                 raise ValueError("Adaptive bandwidth (fixed=False) must be an integer.")
 
