@@ -558,33 +558,41 @@ class _BaseModel(BaseEstimator):
         if self.graph is None and geometry is None:
             raise ValueError("Either geometry or graph must be provided.")
 
-        # Geometry length check
-        if geometry is not None and len(X) != len(geometry):
-            raise ValueError(
-                f"X and geometry must have the same length. "
-                f"Got {len(X)} and {len(geometry)}."
-            )
+        # Geometry checks
+        if geometry is not None:
+            if len(X) != len(geometry):
+                raise ValueError(
+                    f"X and geometry must have the same length. "
+                    f"Got {len(X)} and {len(geometry)}."
+                )
+            self._validate_geometry(geometry)
 
         # Bandwidth validation
-        if self.bandwidth is not None:
-            if self.bandwidth <= 0:
+        bw = self.bandwidth
+        if bw is not None:
+            # must be scalar and not NaN
+            if not np.isscalar(bw) or pd.isna(bw):
                 raise ValueError("Bandwidth must be a positive scalar number.")
 
-            if not self.fixed and not isinstance(self.bandwidth, Integral):
+            if bw <= 0:
+                raise ValueError("Bandwidth must be a positive scalar number.")
+
+            if not self.fixed and not isinstance(bw, Integral):
                 raise ValueError("Adaptive bandwidth (fixed=False) must be an integer.")
-        
+
         if self.kernel is not None:
-         if isinstance(self.kernel, str):
-            if self.kernel not in _kernel_functions:
+            if isinstance(self.kernel, str):
+                if self.kernel not in _kernel_functions:
+                    raise ValueError(
+                        f"Invalid kernel '{self.kernel}'. "
+                        f"Supported kernels are: {list(_kernel_functions.keys())} "
+                        "or a callable."
+                    )
+            elif not callable(self.kernel):
                 raise ValueError(
-                    f"Invalid kernel '{self.kernel}'. "
-                    f"Supported kernels are: {list(_kernel_functions.keys())} "
-                    "or a callable."
+                    "kernel must be either a valid string or a callable function."
                 )
-         elif not callable(self.kernel):
-            raise ValueError(
-                "kernel must be either a valid string or a callable function."
-            )
+
     # Abstract methods that subclasses must implement
     def _fit_local(
         self,

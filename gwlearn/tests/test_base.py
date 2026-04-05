@@ -88,7 +88,7 @@ def test_init_keep_models_path():
     assert clf.keep_models == path_obj
 
 
-def test_init_kernel_validation():
+def test_init_kernel_assignment():
     """Test BaseClassifier initialization with various kernel options."""
     # Test with each predefined kernel
     for kernel_name in _kernel_functions:
@@ -119,12 +119,18 @@ def test_init_with_real_data():
 
 
 @pytest.mark.parametrize("bandwidth", [0, -1, -100])
-def test_init_invalid_bandwidth(bandwidth):
-    """Test BaseClassifier initialization with invalid bandwidth values."""
-    # Bandwidth should be positive, but the class doesn't validate this at init time
-    # This test confirms current behavior but might need updating if validation is added
-    clf = BaseClassifier(LogisticRegression, bandwidth=bandwidth)
-    assert clf.bandwidth == bandwidth
+def test_fit_invalid_bandwidth_raises(sample_data, bandwidth):
+    """Ensure ValueError is raised for non-positive bandwidth during fit."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=bandwidth,
+        fixed=True,
+    )
+
+    with pytest.raises(ValueError, match="Bandwidth must be a positive scalar"):
+        clf.fit(X, y, geometry)
 
 
 def test_init_multiple_kwargs():
@@ -2042,3 +2048,18 @@ def test_metadata_routing(sample_regression_data):
     assert gs.best_estimator_.include_focal
 
     sklearn.set_config(enable_metadata_routing=False)
+
+
+@pytest.mark.parametrize("kernel", ["invalid", "abc", "wrong_kernel"])
+def test_fit_invalid_kernel_raises(sample_data, kernel):
+    """Ensure ValueError is raised for invalid kernel during fit."""
+    X, y, geometry = sample_data
+
+    clf = BaseClassifier(
+        LogisticRegression,
+        bandwidth=10,
+        kernel=kernel,
+    )
+
+    with pytest.raises(ValueError, match="Invalid kernel"):
+        clf.fit(X, y, geometry)
