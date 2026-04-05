@@ -572,7 +572,19 @@ class _BaseModel(BaseEstimator):
 
             if not self.fixed and not isinstance(self.bandwidth, Integral):
                 raise ValueError("Adaptive bandwidth (fixed=False) must be an integer.")
-
+        
+        if self.kernel is not None:
+         if isinstance(self.kernel, str):
+            if self.kernel not in _kernel_functions:
+                raise ValueError(
+                    f"Invalid kernel '{self.kernel}'. "
+                    f"Supported kernels are: {list(_kernel_functions.keys())} "
+                    "or a callable."
+                )
+         elif not callable(self.kernel):
+            raise ValueError(
+                "kernel must be either a valid string or a callable function."
+            )
     # Abstract methods that subclasses must implement
     def _fit_local(
         self,
