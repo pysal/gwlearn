@@ -136,8 +136,8 @@ def test_bandwidth_not_real(sample_data):
     """Ensure non-numeric bandwidth raises ValueError."""
     X, y, geometry = sample_data
 
-    # Pass an invalid (non-numeric) bandwidth
-    clf = BaseClassifier(LogisticRegression, bandwidth="invalid")
+    # Pass an invalid (non-numeric) bandwidth,intentionally passing invalid types for runtime validation
+    clf = BaseClassifier(LogisticRegression, bandwidth="invalid") # type: ignore[arg-type]
 
     # Validation should fail during fit()
     with pytest.raises(ValueError, match="Bandwidth"):
@@ -2078,8 +2078,8 @@ def test_kernel_not_callable_or_string(sample_data):
     """Ensure invalid kernel type (not string/callable) raises ValueError."""
     X, y, geometry = sample_data
     
-    # Kernel must be either a valid string or callable
-    clf = BaseClassifier(LogisticRegression, bandwidth=10, kernel=123)
+    # Kernel must be either a valid string or callable,intentionally passing invalid tests
+    clf = BaseClassifier(LogisticRegression, bandwidth=10, kernel=123) # type: ignore[arg-type]
 
     # Expect validation failure
     with pytest.raises(ValueError, match="kernel must"):
