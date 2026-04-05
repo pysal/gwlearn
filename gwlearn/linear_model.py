@@ -197,7 +197,6 @@ class GWLogisticRegression(BaseClassifier):
         verbose: bool = False,
         **kwargs,
     ):
-
         super().__init__(
             model=LogisticRegression,
             bandwidth=bandwidth,
