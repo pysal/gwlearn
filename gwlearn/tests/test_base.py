@@ -132,6 +132,16 @@ def test_fit_invalid_bandwidth_raises(sample_data, bandwidth):
     with pytest.raises(ValueError, match="Bandwidth must be a positive scalar"):
         clf.fit(X, y, geometry)
 
+def test_bandwidth_not_real(sample_data):
+    """Ensure non-numeric bandwidth raises ValueError."""
+    X, y, geometry = sample_data
+
+    # Pass an invalid (non-numeric) bandwidth
+    clf = BaseClassifier(LogisticRegression, bandwidth="invalid")
+
+    # Validation should fail during fit()
+    with pytest.raises(ValueError, match="Bandwidth"):
+        clf.fit(X, y, geometry)
 
 def test_init_multiple_kwargs():
     """Test BaseClassifier initialization with multiple model kwargs."""
@@ -2062,4 +2072,15 @@ def test_fit_invalid_kernel_raises(sample_data, kernel):
     )
 
     with pytest.raises(ValueError, match="Invalid kernel"):
+        clf.fit(X, y, geometry)
+
+def test_kernel_not_callable_or_string(sample_data):
+    """Ensure invalid kernel type (not string/callable) raises ValueError."""
+    X, y, geometry = sample_data
+    
+    # Kernel must be either a valid string or callable
+    clf = BaseClassifier(LogisticRegression, bandwidth=10, kernel=123)
+
+    # Expect validation failure
+    with pytest.raises(ValueError, match="kernel must"):
         clf.fit(X, y, geometry)
