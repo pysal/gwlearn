@@ -280,6 +280,7 @@ def test_against_mgwr():
     assert_almost_equal(gwlr.effective_df_, res.ENP)
     assert_almost_equal(gwlr.log_likelihood_, res.llf)
 
+
 def test_gwlogistic_predict(sample_data):
     # Unpack sample dataset (features, target, spatial geometry)
     X, y, geometry = sample_data
@@ -296,16 +297,17 @@ def test_gwlogistic_predict(sample_data):
     model.fit(X, y, geometry=geometry)
 
     # Generate predictions using fitted local models
-    preds = model.predict(X,geometry=geometry)
+    preds = model.predict(X, geometry=geometry)
 
     # Assert: number of predictions matches number of input samples
     assert len(preds) == len(X)
 
     # Assert: predictions are valid binary outputs (0/1 or True/False)
     assert set(np.unique(preds.dropna())).issubset({0, 1})
-    
+
     # Ensure predictions are not all NaN
     assert not preds.isna().all()
+
 
 def test_gwlogistic_predict_proba(sample_data):
     # Unpack sample dataset
@@ -338,14 +340,11 @@ def test_predict_requires_keep_models(sample_data):
 
     # Initialize model WITHOUT storing local models
     model = GWLogisticRegression(
-        bandwidth=10,
-        fixed=False,
-        keep_models=False,
-        max_iter=1000
+        bandwidth=10, fixed=False, keep_models=False, max_iter=1000
     )
-    #Fit model
+    # Fit model
     model.fit(X, y, geometry=geometry)
 
     # prediction requires stored local models → should fail
-    with pytest.raises(AttributeError,match="_local_models"):
+    with pytest.raises(AttributeError, match="_local_models"):
         model.predict(X, geometry=geometry)
