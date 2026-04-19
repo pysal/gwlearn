@@ -31,11 +31,11 @@ pip install git+https://github.com/pysal/gwlearn.git
 The package depends on:
 
 ```yaml
-geopandas>=1.0.0
-joblib>=1.4.0
+geopandas>=1.1.0
+joblib>=1.5.0
 libpysal>=4.12
-numpy>=1.26.0
-scipy>=1.12.0
-scikit-learn>=1.4.0
-pandas>=2.1.0
+numpy>=2.0.0
+scipy>=1.14.0
+scikit-learn>=1.5.0
+pandas>=2.3.0
 ```
