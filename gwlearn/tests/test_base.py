@@ -179,11 +179,12 @@ def test_fit_basic_functionality(sample_data):
 
     # Create classifier with default params
     clf = BaseClassifier(
-        RandomForestClassifier,
+        LogisticRegression,
         bandwidth=10,
         fixed=False,
         random_state=42,  # For reproducibility
         strict=False,  # To avoid warnings on invariance
+        max_iter=250,
     )
 
     # Fit the model
@@ -194,7 +195,7 @@ def test_fit_basic_functionality(sample_data):
 
     # Test that the global model was fitted
     assert hasattr(clf, "global_model")
-    assert isinstance(clf.global_model, RandomForestClassifier)
+    assert isinstance(clf.global_model, LogisticRegression)
 
     assert 0 <= clf.pred_.mean() <= 1
 
@@ -237,11 +238,12 @@ def test_fit_with_keep_models_path(sample_data):
     with tempfile.TemporaryDirectory() as temp_dir:
         # Create a classifier with keep_models as a path
         clf = BaseClassifier(
-            RandomForestClassifier,
+            LogisticRegression,
             bandwidth=10,
             fixed=False,
             keep_models=temp_dir,
             random_state=42,
+            max_iter=250,
             strict=False,  # To avoid warnings on invariance
             n_jobs=1,
         )
@@ -259,12 +261,13 @@ def test_fit_different_kernels(sample_data, kernel):
     X, y, geometry = sample_data
 
     clf = BaseClassifier(
-        RandomForestClassifier,
+        LogisticRegression,
         bandwidth=10,
         fixed=False,
         kernel=kernel,
         random_state=42,
         strict=False,  # To avoid warnings on invariance
+        max_iter=500,
     )
 
     clf.fit(X, y, geometry)
@@ -317,11 +320,12 @@ def test_fit_fixed_bandwidth(sample_data):
 
     # Use a small k for faster testing
     clf = BaseClassifier(
-        RandomForestClassifier,
-        bandwidth=100_000,  # Use 10 nearest neighbors
-        fixed=True,  # Adaptive bandwidth
+        LogisticRegression,
+        bandwidth=100_000,
+        fixed=True,
         random_state=42,
         strict=False,  # To avoid warnings on invariance
+        max_iter=500,
     )
 
     clf.fit(X, y, geometry)
@@ -495,7 +499,7 @@ def test_fit_with_strict_option(sample_data):
     X, y, geometry = sample_data
 
     clf = BaseClassifier(
-        RandomForestClassifier,
+        LogisticRegression,
         bandwidth=X.shape[0] - 1,  # global bandwidth
         fixed=False,
         strict=True,  # Raise error if invariant
@@ -507,7 +511,7 @@ def test_fit_with_strict_option(sample_data):
     clf.fit(X, y, geometry)
 
     clf = BaseClassifier(
-        RandomForestClassifier,
+        LogisticRegression,
         bandwidth=5,  # known to produce invariant subsets
         fixed=False,
         strict=True,  # Raise error if invariant
@@ -520,7 +524,7 @@ def test_fit_with_strict_option(sample_data):
 
     # But with strict=False, it should just warn
     clf = BaseClassifier(
-        RandomForestClassifier,
+        LogisticRegression,
         bandwidth=5,
         fixed=False,
         strict=None,  # Just warn if invariant
@@ -1000,11 +1004,12 @@ def test_binary_target_zero_one(sample_data):
     y_01 = y.astype(int)
 
     clf = BaseClassifier(
-        RandomForestClassifier,
+        LogisticRegression,
         bandwidth=150000,
         fixed=True,
         random_state=42,
         strict=False,
+        max_iter=500,
     )
 
     # Should run without errors
@@ -1025,11 +1030,12 @@ def test_non_binary_target_raises_error(sample_data):
     y_non_binary = pd.Series(np.random.choice([1, 2, 3], size=len(X)), index=X.index)
 
     clf = BaseClassifier(
-        RandomForestClassifier,
+        LogisticRegression,
         bandwidth=150000,
         fixed=True,
         random_state=42,
         strict=False,
+        max_iter=500,
     )
 
     # This should raise a ValueError due to non-binary target
@@ -1045,11 +1051,12 @@ def test_binary_with_string_values_raises_error(sample_data):
     y_str = pd.Series(np.random.choice(["yes", "no"], size=len(X)), index=X.index)
 
     clf = BaseClassifier(
-        RandomForestClassifier,
+        LogisticRegression,
         bandwidth=150000,
         fixed=True,
         random_state=42,
         strict=False,
+        max_iter=500,
     )
 
     # This should raise a ValueError due to string values
@@ -1365,7 +1372,7 @@ def test_regressor_fit_basic_functionality(sample_regression_data):
 
     # Create regressor with default params
     reg = BaseRegressor(
-        RandomForestRegressor,
+        LinearRegression,
         bandwidth=10,
         fixed=False,
         random_state=42,  # For reproducibility
@@ -1379,7 +1386,7 @@ def test_regressor_fit_basic_functionality(sample_regression_data):
 
     # Test that the global model was fitted
     assert hasattr(reg, "global_model")
-    assert isinstance(reg.global_model, RandomForestRegressor)
+    assert isinstance(reg.global_model, LinearRegression)
 
 
 def test_regressor_fit_with_keep_models(sample_regression_data):
@@ -1415,7 +1422,7 @@ def test_regressor_fit_with_keep_models_path(sample_regression_data):
     with tempfile.TemporaryDirectory() as temp_dir:
         # Create a regressor with keep_models as a path
         reg = BaseRegressor(
-            RandomForestRegressor,
+            LinearRegression,
             bandwidth=10,
             fixed=False,
             keep_models=temp_dir,
@@ -1436,7 +1443,7 @@ def test_regressor_fit_different_kernels(sample_regression_data, kernel):
     X, y, geometry = sample_regression_data
 
     reg = BaseRegressor(
-        RandomForestRegressor,
+        LinearRegression,
         bandwidth=10,
         fixed=False,
         kernel=kernel,
@@ -1454,7 +1461,7 @@ def test_regressor_fit_fixed_bandwidth(sample_regression_data):
     X, y, geometry = sample_regression_data
 
     reg = BaseRegressor(
-        RandomForestRegressor,
+        LinearRegression,
         bandwidth=100_000,
         fixed=True,  # Fixed bandwidth
         random_state=42,
@@ -1853,7 +1860,7 @@ def test_regressor_fit_focal_inclusion(sample_regression_data):
 
     # Create regressor with focal exclusion
     no_focal = BaseRegressor(
-        RandomForestRegressor,
+        LinearRegression,
         bandwidth=10,
         fixed=False,
         include_focal=False,
@@ -1866,7 +1873,7 @@ def test_regressor_fit_focal_inclusion(sample_regression_data):
 
     # Create regressor with focal inclusion
     focal = BaseRegressor(
-        RandomForestRegressor,
+        LinearRegression,
         bandwidth=10,
         fixed=False,
         include_focal=True,
