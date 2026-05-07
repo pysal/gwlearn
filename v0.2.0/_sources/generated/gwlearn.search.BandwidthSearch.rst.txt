@@ -1,0 +1,18 @@
+﻿gwlearn.search.BandwidthSearch
+==============================
+
+.. currentmodule:: gwlearn.search
+
+.. autoclass:: BandwidthSearch
+
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BandwidthSearch.__init__
+      ~BandwidthSearch.fit
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
