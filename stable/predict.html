@@ -42,10 +42,10 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.acf80fe7f4d9ef9e2.min.css?v=9e56d0d2" />
-        <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.74c816e3f9967dd6e.min.css?v=6cfe2491" />
+        <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
         <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-        <link rel="stylesheet" type="text/css" href="_static/custom.css?v=a80dc075" />
+        <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d127c87d" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1054,6 +1054,14 @@
                   
 
 
+  
+    <a href="https://github.com/pysal/gwlearn/blob/main/docs/source/predict.ipynb" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg>
+    </a>
+  
+  
+
 <h1 id="prediction">Prediction<a class="headerlink" href="#prediction" title="Link to this heading">¶</a></h1>
 <p>Both classification and regression models implement tools for prediction. Classifiers provide <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> (probabilities) and <code class="docutils literal notranslate"><span class="pre">predict</span></code> (labels), while regressors provide <code class="docutils literal notranslate"><span class="pre">predict</span></code> (continuous values) as any scikit-learn estimator would. However, they are retrieved differently.</p>
 <p>The prediction can be either done using a single nearest local model or using the ensemble of local models available within the bandwidth. At the same time, the prediction from local model(s) can be fused with the global model to combine the best from both worlds, following Georganos et al (2021).</p>
@@ -1822,6 +1830,16 @@ a.param-doc-link::before {
 
         <tr class="default">
             <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('coplanar',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">coplanar</td>
+            <td class="value">&#x27;raise&#x27;</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('verbose',
                           this.parentElement.nextElementSibling)"
             ></i></td>
@@ -1989,29 +2007,29 @@ forceTheme('sk-container-id-1');</script></body></div></div>
   </thead>
   <tbody>
     <tr>
-      <th>21213</th>
-      <td>0.851408</td>
-      <td>0.148592</td>
+      <th>01081</th>
+      <td>0.075593</td>
+      <td>0.924407</td>
     </tr>
     <tr>
-      <th>12119</th>
-      <td>0.432795</td>
-      <td>0.567205</td>
+      <th>51670</th>
+      <td>0.583728</td>
+      <td>0.416272</td>
     </tr>
     <tr>
-      <th>54069</th>
-      <td>0.850914</td>
-      <td>0.149086</td>
+      <th>48115</th>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>12067</th>
-      <td>0.284449</td>
-      <td>0.715551</td>
+      <th>51045</th>
+      <td>0.822575</td>
+      <td>0.177425</td>
     </tr>
     <tr>
-      <th>48401</th>
-      <td>0.137071</td>
-      <td>0.862929</td>
+      <th>28085</th>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>...</th>
@@ -2019,29 +2037,29 @@ forceTheme('sk-container-id-1');</script></body></div></div>
       <td>...</td>
     </tr>
     <tr>
-      <th>01021</th>
-      <td>0.460585</td>
-      <td>0.539415</td>
+      <th>45079</th>
+      <td>0.001364</td>
+      <td>0.998636</td>
     </tr>
     <tr>
-      <th>28123</th>
-      <td>0.000482</td>
-      <td>0.999518</td>
+      <th>51133</th>
+      <td>0.508735</td>
+      <td>0.491265</td>
     </tr>
     <tr>
-      <th>37173</th>
-      <td>0.627462</td>
-      <td>0.372538</td>
+      <th>37003</th>
+      <td>0.640475</td>
+      <td>0.359525</td>
     </tr>
     <tr>
-      <th>24027</th>
-      <td>0.551527</td>
-      <td>0.448473</td>
+      <th>48133</th>
+      <td>0.962367</td>
+      <td>0.037633</td>
     </tr>
     <tr>
-      <th>05057</th>
-      <td>0.505031</td>
-      <td>0.494969</td>
+      <th>51177</th>
+      <td>0.732862</td>
+      <td>0.267138</td>
     </tr>
   </tbody>
 </table>
@@ -2051,25 +2069,27 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 <p>You can then check the accuracy of this prediction. Note that similarly to fitting, there might be locations that return NA, if the local model was not fitted due to invariance.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">proba</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">proba</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="kc">True</span><span class="p">,</span> <span class="n">missing_kwds</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
 <span class="p">)</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 </code></pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e35f6c0d6126ac743ed53180406b67b376ba8d6cea02e01a3f3a9bc26ac912f4.png" src="_images/e35f6c0d6126ac743ed53180406b67b376ba8d6cea02e01a3f3a9bc26ac912f4.png" />
+<img alt="_images/c1ac2337b23ed6ed1306324f2d85395a9404f1914d59089fc9269cea16bc4bf3.png" src="_images/c1ac2337b23ed6ed1306324f2d85395a9404f1914d59089fc9269cea16bc4bf3.png" />
 </div>
 </div>
 <p>The missing values have been linked to models that were not fitted. You can check all of those visually by plotting the focal prediction.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">({</span><span class="s2">&quot;pred&quot;</span><span class="p">:</span> <span class="n">gwrf</span><span class="o">.</span><span class="n">pred_</span><span class="p">},</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;pred&quot;</span><span class="p">,</span> <span class="n">missing_kwds</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">({</span><span class="s2">&quot;pred&quot;</span><span class="p">:</span> <span class="n">gwrf</span><span class="o">.</span><span class="n">pred_</span><span class="p">},</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="s2">&quot;pred&quot;</span><span class="p">,</span> <span class="n">missing_kwds</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 </code></pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b8965bddf8c3222dc1e43002f0a4e5b725208e805e9a4f0abdd7f69a0fab8e40.png" src="_images/b8965bddf8c3222dc1e43002f0a4e5b725208e805e9a4f0abdd7f69a0fab8e40.png" />
+<img alt="_images/a649cfc84b8ca04ce967fe8e1c71be262cf5ac68b8be269e34b4958de34d16f5.png" src="_images/a649cfc84b8ca04ce967fe8e1c71be262cf5ac68b8be269e34b4958de34d16f5.png" />
 </div>
 </div>
 <p>Filter it out and measure the performance on the left-out sample.</p>
@@ -2084,7 +2104,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.773109243697479
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7777777777777778
 </code></pre></div>
 </div>
 </div>
@@ -2136,29 +2156,29 @@ forceTheme('sk-container-id-1');</script></body></div></div>
   </thead>
   <tbody>
     <tr>
-      <th>21213</th>
-      <td>0.815308</td>
-      <td>0.184692</td>
+      <th>01081</th>
+      <td>0.142863</td>
+      <td>0.857137</td>
     </tr>
     <tr>
-      <th>12119</th>
-      <td>0.424737</td>
-      <td>0.575263</td>
+      <th>51670</th>
+      <td>0.575762</td>
+      <td>0.424238</td>
     </tr>
     <tr>
-      <th>54069</th>
-      <td>0.820987</td>
-      <td>0.179013</td>
+      <th>48115</th>
+      <td>0.950979</td>
+      <td>0.049021</td>
     </tr>
     <tr>
-      <th>12067</th>
-      <td>0.294774</td>
-      <td>0.705226</td>
+      <th>51045</th>
+      <td>0.833039</td>
+      <td>0.166961</td>
     </tr>
     <tr>
-      <th>48401</th>
-      <td>0.151296</td>
-      <td>0.848704</td>
+      <th>28085</th>
+      <td>0.135267</td>
+      <td>0.864733</td>
     </tr>
     <tr>
       <th>...</th>
@@ -2166,29 +2186,29 @@ forceTheme('sk-container-id-1');</script></body></div></div>
       <td>...</td>
     </tr>
     <tr>
-      <th>01021</th>
-      <td>0.425014</td>
-      <td>0.574986</td>
+      <th>45079</th>
+      <td>0.008040</td>
+      <td>0.991960</td>
     </tr>
     <tr>
-      <th>28123</th>
-      <td>0.003512</td>
-      <td>0.996488</td>
+      <th>51133</th>
+      <td>0.502157</td>
+      <td>0.497843</td>
     </tr>
     <tr>
-      <th>37173</th>
-      <td>0.583904</td>
-      <td>0.416096</td>
+      <th>37003</th>
+      <td>0.683346</td>
+      <td>0.316654</td>
     </tr>
     <tr>
-      <th>24027</th>
-      <td>0.591688</td>
-      <td>0.408312</td>
+      <th>48133</th>
+      <td>0.941980</td>
+      <td>0.058020</td>
     </tr>
     <tr>
-      <th>05057</th>
-      <td>0.427127</td>
-      <td>0.572873</td>
+      <th>51177</th>
+      <td>0.716580</td>
+      <td>0.283420</td>
     </tr>
   </tbody>
 </table>
@@ -2198,14 +2218,14 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 <p>Given it relies on an ensemble, not a single nearest model, it returns NaN only when all the local models within the bandwidth were not fitted.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">proba_ensemble</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">proba_ensemble</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="kc">True</span><span class="p">,</span> <span class="n">missing_kwds</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
 <span class="p">)</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 </code></pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/27bd378709b368261e9a78da7aafd529ec9eecf29a31419b8ec834eff798c4da.png" src="_images/27bd378709b368261e9a78da7aafd529ec9eecf29a31419b8ec834eff798c4da.png" />
+<img alt="_images/2316556963a2d995d4310060ef4c9cd1ad925b59d822a9f7a26e951eca957e2a.png" src="_images/2316556963a2d995d4310060ef4c9cd1ad925b59d822a9f7a26e951eca957e2a.png" />
 </div>
 </div>
 <p>This is one of the benefits of the ensemble prediction. Another is theoretical spatial robustness. Nevertheless, the actual metrics are typically very similar between the models.</p>
@@ -2219,7 +2239,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.8028169014084507
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.8098591549295775
 </code></pre></div>
 </div>
 </div>
@@ -2263,29 +2283,29 @@ forceTheme('sk-container-id-1');</script></body></div></div>
   </thead>
   <tbody>
     <tr>
-      <th>21213</th>
-      <td>0.783617</td>
-      <td>0.216383</td>
+      <th>01081</th>
+      <td>0.109510</td>
+      <td>0.890490</td>
     </tr>
     <tr>
-      <th>12119</th>
-      <td>0.437712</td>
-      <td>0.562288</td>
+      <th>51670</th>
+      <td>0.600758</td>
+      <td>0.399242</td>
     </tr>
     <tr>
-      <th>54069</th>
-      <td>0.849137</td>
-      <td>0.150863</td>
+      <th>48115</th>
+      <td>0.376251</td>
+      <td>0.623749</td>
     </tr>
     <tr>
-      <th>12067</th>
-      <td>0.349904</td>
-      <td>0.650096</td>
+      <th>51045</th>
+      <td>0.845998</td>
+      <td>0.154002</td>
     </tr>
     <tr>
-      <th>48401</th>
-      <td>0.144149</td>
-      <td>0.855851</td>
+      <th>28085</th>
+      <td>0.504317</td>
+      <td>0.495683</td>
     </tr>
     <tr>
       <th>...</th>
@@ -2293,29 +2313,29 @@ forceTheme('sk-container-id-1');</script></body></div></div>
       <td>...</td>
     </tr>
     <tr>
-      <th>01021</th>
-      <td>0.451985</td>
-      <td>0.548015</td>
+      <th>45079</th>
+      <td>0.001632</td>
+      <td>0.998368</td>
     </tr>
     <tr>
-      <th>28123</th>
-      <td>0.040443</td>
-      <td>0.959557</td>
+      <th>51133</th>
+      <td>0.523029</td>
+      <td>0.476971</td>
     </tr>
     <tr>
-      <th>37173</th>
-      <td>0.572167</td>
-      <td>0.427833</td>
+      <th>37003</th>
+      <td>0.657646</td>
+      <td>0.342354</td>
     </tr>
     <tr>
-      <th>24027</th>
-      <td>0.604923</td>
-      <td>0.395077</td>
+      <th>48133</th>
+      <td>0.920304</td>
+      <td>0.079696</td>
     </tr>
     <tr>
-      <th>05057</th>
-      <td>0.484115</td>
-      <td>0.515885</td>
+      <th>51177</th>
+      <td>0.750291</td>
+      <td>0.249709</td>
     </tr>
   </tbody>
 </table>
@@ -2332,7 +2352,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7887323943661971
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7816901408450704
 </code></pre></div>
 </div>
 </div>
@@ -3045,6 +3065,16 @@ a.param-doc-link::before {
 
         <tr class="default">
             <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('coplanar',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">coplanar</td>
+            <td class="value">&#x27;raise&#x27;</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('verbose',
                           this.parentElement.nextElementSibling)"
             ></i></td>
@@ -3203,14 +3233,14 @@ Length: 142, dtype: float64
 <p>Visualize the predicted values spatially.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">({</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">pred_reg</span><span class="p">},</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">({</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">pred_reg</span><span class="p">},</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="s2">&quot;prediction&quot;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 </code></pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a0b7dc0d8be8c3ff05366343dd270bc809b10a51253e2b311b65f8c83e2daed1.png" src="_images/a0b7dc0d8be8c3ff05366343dd270bc809b10a51253e2b311b65f8c83e2daed1.png" />
+<img alt="_images/ce272d395acea4e26dd55fda339ec3f9bd552d5592a3c0bcbda7219db3537ee7.png" src="_images/ce272d395acea4e26dd55fda339ec3f9bd552d5592a3c0bcbda7219db3537ee7.png" />
 </div>
 </div>
 <p>Evaluate the prediction performance using common regression metrics.</p>
@@ -3376,7 +3406,7 @@ RMSE: 3.203
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy", "content.action.edit"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
     
       
         <script src="_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>

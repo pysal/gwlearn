@@ -13,6 +13,7 @@
       ~GWRandomForestRegressor.fit
       ~GWRandomForestRegressor.get_metadata_routing
       ~GWRandomForestRegressor.get_params
+      ~GWRandomForestRegressor.local_metric
       ~GWRandomForestRegressor.predict
       ~GWRandomForestRegressor.score
       ~GWRandomForestRegressor.set_fit_request

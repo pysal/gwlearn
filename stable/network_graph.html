@@ -42,10 +42,10 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.acf80fe7f4d9ef9e2.min.css?v=9e56d0d2" />
-        <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.74c816e3f9967dd6e.min.css?v=6cfe2491" />
+        <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
         <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-        <link rel="stylesheet" type="text/css" href="_static/custom.css?v=a80dc075" />
+        <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d127c87d" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -826,6 +826,14 @@
                   
 
 
+  
+    <a href="https://github.com/pysal/gwlearn/blob/main/docs/source/network_graph.ipynb" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg>
+    </a>
+  
+  
+
 <h1 id="using-custom-graphs">Using custom graphs<a class="headerlink" href="#using-custom-graphs" title="Link to this heading">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">gwlearn</span></code>’s geographically weighted modelling framework is built on top of <code class="docutils literal notranslate"><span class="pre">libpysal.graph.Graph</span></code> objects, which are typically generated on-the-fly based on the bandwidth and kernel specification. However, you can easily derive the graph in other way and use it wihtin the model, instead of relying on its limited distance and KNN builders.</p>
 <p>Below is a basic example using linear regression and a graph redived from travel cost.</p>
@@ -864,13 +872,13 @@ Extracting &#39;walnuthills_updated&#39; from &#39;/home/runner/.cache/geodatase
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Generating contraction hierarchies with 4 threads.
-Setting CH node vector of size 6041
-Setting CH edge vector of size 17172
-Range graph removed 17608 edges of 34344
+Setting CH node vector of size 8752
+Setting CH edge vector of size 25876
+Range graph removed 26376 edges of 51752
 . 10% . 20% . 30% . 40% . 50% . 60% . 70% . 80% . 90% . 100%
 </code></pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>/home/runner/micromamba/envs/py313-latest/lib/python3.13/site-packages/pandarm/loaders/osm.py:68: UserWarning: GeoDataFrame is stored in coordinate system PROJCS[&quot;Lambert_Conformal_Conic&quot;,GEOGCS[&quot;GCS_GRS 1980(IUGG, 1980)&quot;,DATUM[&quot;unknown&quot;,SPHEROID[&quot;GRS80&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]],PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;],PARAMETER[&quot;latitude_of_origin&quot;,38],PARAMETER[&quot;central_meridian&quot;,-82.5],PARAMETER[&quot;standard_parallel_1&quot;,40.0333333333333],PARAMETER[&quot;standard_parallel_2&quot;,38.7333333333333],PARAMETER[&quot;false_easting&quot;,1968500],PARAMETER[&quot;false_northing&quot;,0],UNIT[&quot;US survey foot&quot;,0.304800609601219,AUTHORITY[&quot;EPSG&quot;,&quot;9003&quot;]],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH]] so the pandana.Network will also be stored in this system
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>/home/runner/micromamba/envs/py314-latest/lib/python3.14/site-packages/pandarm/loaders/osm.py:68: UserWarning: GeoDataFrame is stored in coordinate system PROJCS[&quot;Lambert_Conformal_Conic&quot;,GEOGCS[&quot;GCS_GRS 1980(IUGG, 1980)&quot;,DATUM[&quot;unknown&quot;,SPHEROID[&quot;GRS80&quot;,6378137,298.257222101]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]],PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;],PARAMETER[&quot;latitude_of_origin&quot;,38],PARAMETER[&quot;central_meridian&quot;,-82.5],PARAMETER[&quot;standard_parallel_1&quot;,40.0333333333333],PARAMETER[&quot;standard_parallel_2&quot;,38.7333333333333],PARAMETER[&quot;false_easting&quot;,1968500],PARAMETER[&quot;false_northing&quot;,0],UNIT[&quot;US survey foot&quot;,0.304800609601219,AUTHORITY[&quot;EPSG&quot;,&quot;9003&quot;]],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH]] so the pandarm.Network will also be stored in this system
   warn(
 </code></pre></div>
 </div>
@@ -906,7 +914,7 @@ Range graph removed 17608 edges of 34344
                 </tr>
                 <tr>
                     <td>Number of edges:</td>
-                    <td>       60083</td>
+                    <td>       60023</td>
                 </tr>
                 <tr>
                     <td>Number of connected components:</td>
@@ -918,11 +926,11 @@ Range graph removed 17608 edges of 34344
                 </tr>
                 <tr>
                     <td>Number of non-zero edges:</td>
-                    <td>       60083</td>
+                    <td>       60021</td>
                 </tr>
                 <tr>
                     <td>Percentage of non-zero edges:</td>
-                    <td>      28.77%</td>
+                    <td>      28.74%</td>
                 </tr>
                 <tr>
                     <td>Number of asymmetries:</td>
@@ -946,13 +954,13 @@ Range graph removed 17608 edges of 34344
                 </tr>
                 <tr>
                     <td>Min:</td>
-                    <td>       14</td>
+                    <td>        5</td>
                     <td>75%:</td>
-                    <td>      182</td>
+                    <td>      181</td>
                 </tr>
                 <tr>
                     <td>Max:</td>
-                    <td>      237</td>
+                    <td>      239</td>
                 </tr>
             </table>
             <table>
@@ -983,21 +991,21 @@ Range graph removed 17608 edges of 34344
                 <caption>Sum of weights and Traces</caption>
                 <tr>
                     <td>S0:</td>
-                    <td>       20249</td>
+                    <td>       20217</td>
                     <td>GG:</td>
-                    <td>       11854</td>
+                    <td>       11837</td>
                 </tr>
                 <tr>
                     <td>S1:</td>
-                    <td>       23707</td>
+                    <td>       23674</td>
                     <td>G'G:</td>
-                    <td>       11854</td>
+                    <td>       11837</td>
                 </tr>
                 <tr>
                     <td>S3:</td>
-                    <td>     4549675</td>
+                    <td>     4547012</td>
                     <td>G'G + GG:</td>
-                    <td>       23707</td>
+                    <td>       23674</td>
                 </tr>
             </table>
             <div>
@@ -1583,7 +1591,7 @@ a.param-doc-link::before {
     height: 14px;
     cursor: pointer;
 }
-</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLinearRegression(graph=&lt;Graph of 457 nodes and 60083 nonzero edges (1 component, 0 isolates) indexed by
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GWLinearRegression(graph=&lt;Graph of 457 nodes and 60021 nonzero edges (1 component, 0 isolates) indexed by
  [0, 1, 2, 3, 4, ...]&gt;)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>GWLinearRegression</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
         <div class="estimator-table">
             <details>
@@ -1698,6 +1706,16 @@ a.param-doc-link::before {
             ></i></td>
             <td class="param">batch_size</td>
             <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('coplanar',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">coplanar</td>
+            <td class="value">&#x27;raise&#x27;</td>
         </tr>
     
 
@@ -1839,17 +1857,17 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0      384.603817
-1       17.493526
-2       17.012188
-3       17.465285
-4       46.412049
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0      384.274447
+1       11.768678
+2       16.942585
+3       17.725323
+4       46.407214
           ...    
-452      5.442217
-453      0.421027
-454      0.304030
-455      1.145678
-456      2.545481
+452      5.449991
+453      0.654258
+454      0.271890
+455      1.278109
+456      2.553458
 Length: 457, dtype: float64
 </code></pre></div>
 </div>
@@ -1863,17 +1881,17 @@ Length: 457, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0      0.951699
-1      0.986406
-2      0.988286
-3      0.974134
-4      0.983171
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0      0.953835
+1      0.974009
+2      0.987756
+3      0.974396
+4      0.983303
          ...   
-452    0.792568
-453    0.673972
-454    0.714757
-455    0.873360
-456    0.856583
+452    0.790968
+453    0.667201
+454    0.710544
+455    0.871292
+456    0.855416
 Length: 457, dtype: float64
 </code></pre></div>
 </div>
@@ -1887,7 +1905,7 @@ Length: 457, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8d1a8d8024af89f2ca5b72cc10aa62208a3adec66aea36946c22cd074e011704.png" src="_images/8d1a8d8024af89f2ca5b72cc10aa62208a3adec66aea36946c22cd074e011704.png" />
+<img alt="_images/96f54e410fab7eb230cac6fe1e78d6cc72112054c77be157fa6c03c35ffd8789.png" src="_images/96f54e410fab7eb230cac6fe1e78d6cc72112054c77be157fa6c03c35ffd8789.png" />
 </div>
 </div>
 
@@ -1953,7 +1971,7 @@ Length: 457, dtype: float64
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy", "content.action.edit"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
     
       
         <script src="_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>

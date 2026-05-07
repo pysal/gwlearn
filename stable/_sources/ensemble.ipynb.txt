@@ -5259,7 +5259,7 @@
     }
    ],
    "source": [
-    "gdf.set_geometry('geometry').plot(gwgb_reg.local_r2_, legend=True).set_axis_off()"
+    "gdf.set_geometry(\"geometry\").plot(gwgb_reg.local_r2_, legend=True).set_axis_off()"
    ]
   },
   {
@@ -5393,7 +5393,9 @@
     }
    ],
    "source": [
-    "gdf.set_geometry('geometry').plot(gwgb_reg.feature_importances_[\"HC60\"], legend=True).set_axis_off()"
+    "gdf.set_geometry(\"geometry\").plot(\n",
+    "    gwgb_reg.feature_importances_[\"HC60\"], legend=True\n",
+    ").set_axis_off()"
    ]
   },
   {

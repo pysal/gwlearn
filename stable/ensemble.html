@@ -42,10 +42,10 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.acf80fe7f4d9ef9e2.min.css?v=9e56d0d2" />
-        <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.74c816e3f9967dd6e.min.css?v=6cfe2491" />
+        <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
         <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-        <link rel="stylesheet" type="text/css" href="_static/custom.css?v=a80dc075" />
+        <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d127c87d" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1178,6 +1178,14 @@
                   
 
 
+  
+    <a href="https://github.com/pysal/gwlearn/blob/main/docs/source/ensemble.ipynb" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg>
+    </a>
+  
+  
+
 <h1 id="ensemble-models">Ensemble models<a class="headerlink" href="#ensemble-models" title="Link to this heading">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> implements geographically weighted versions of ensemble models for both classification and regression tasks. For classification, there’s a caveat: given it is unlikely that all categories are present in all local models, fitting a non-binary would lead to inconsistent local models. Hence gwlearn currently supports only binary classification.</p>
 <p>This notebook outlines how to fit the models and extract their attributes. For details on prediction, see the <a class="reference internal" href="predict.html"><span class="std std-doc">Prediction</span></a> guide.</p>
@@ -1937,6 +1945,16 @@ a.param-doc-link::before {
 
         <tr class="default">
             <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('coplanar',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">coplanar</td>
+            <td class="value">&#x27;raise&#x27;</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('verbose',
                           this.parentElement.nextElementSibling)"
             ></i></td>
@@ -2077,7 +2095,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7519051651143099
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7544453852667231
 </code></pre></div>
 </div>
 </div>
@@ -2091,7 +2109,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7451199548405306
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7447248094834885
 </code></pre></div>
 </div>
 </div>
@@ -2106,8 +2124,8 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.7       , 0.68      , 0.70666667, ..., 0.66666667, 0.72      ,
-       0.64      ], shape=(1412,))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.73333333, 0.69333333, 0.70666667, ..., 0.63333333, 0.7       ,
+       0.65333333], shape=(1412,))
 </code></pre></div>
 </div>
 </div>
@@ -2121,7 +2139,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b85bd6cebbedc77ef6a04b1b80f5f4be11ba127bd1b3d134653f55ed15300799.png" src="_images/b85bd6cebbedc77ef6a04b1b80f5f4be11ba127bd1b3d134653f55ed15300799.png" />
+<img alt="_images/2af5ca54ed656a43f8e01d05b3261959fe1888548c76a645c18f2ea999e3ad1f.png" src="_images/2af5ca54ed656a43f8e01d05b3261959fe1888548c76a645c18f2ea999e3ad1f.png" />
 </div>
 </div>
 <h3 id="feature-importance">Feature importance<a class="headerlink" href="#feature-importance" title="Link to this heading">¶</a></h3>
@@ -2162,48 +2180,48 @@ forceTheme('sk-container-id-1');</script></body></div></div>
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.175262</td>
-      <td>0.184945</td>
-      <td>0.219566</td>
-      <td>0.172445</td>
-      <td>0.116174</td>
-      <td>0.131608</td>
+      <td>0.178027</td>
+      <td>0.167443</td>
+      <td>0.231952</td>
+      <td>0.204827</td>
+      <td>0.099260</td>
+      <td>0.118490</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.164942</td>
-      <td>0.160960</td>
-      <td>0.194433</td>
-      <td>0.225871</td>
-      <td>0.126787</td>
-      <td>0.127007</td>
+      <td>0.180882</td>
+      <td>0.149456</td>
+      <td>0.194311</td>
+      <td>0.222602</td>
+      <td>0.117185</td>
+      <td>0.135564</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.194772</td>
-      <td>0.172693</td>
-      <td>0.202059</td>
-      <td>0.228143</td>
-      <td>0.099970</td>
-      <td>0.102363</td>
+      <td>0.168630</td>
+      <td>0.166859</td>
+      <td>0.196526</td>
+      <td>0.241205</td>
+      <td>0.115688</td>
+      <td>0.111092</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.167625</td>
-      <td>0.154423</td>
-      <td>0.183584</td>
-      <td>0.257252</td>
-      <td>0.114241</td>
-      <td>0.122874</td>
+      <td>0.176461</td>
+      <td>0.178173</td>
+      <td>0.187441</td>
+      <td>0.213480</td>
+      <td>0.107323</td>
+      <td>0.137122</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.121015</td>
-      <td>0.174813</td>
-      <td>0.219208</td>
-      <td>0.207307</td>
-      <td>0.135021</td>
-      <td>0.142635</td>
+      <td>0.115842</td>
+      <td>0.166888</td>
+      <td>0.226206</td>
+      <td>0.228526</td>
+      <td>0.138270</td>
+      <td>0.124268</td>
     </tr>
     <tr>
       <th>...</th>
@@ -2216,48 +2234,48 @@ forceTheme('sk-container-id-1');</script></body></div></div>
     </tr>
     <tr>
       <th>1407</th>
-      <td>0.146904</td>
-      <td>0.186638</td>
-      <td>0.266308</td>
-      <td>0.209590</td>
-      <td>0.100908</td>
-      <td>0.089652</td>
+      <td>0.125245</td>
+      <td>0.181347</td>
+      <td>0.264024</td>
+      <td>0.230545</td>
+      <td>0.098394</td>
+      <td>0.100444</td>
     </tr>
     <tr>
       <th>1408</th>
-      <td>0.175127</td>
-      <td>0.159761</td>
-      <td>0.204198</td>
-      <td>0.237939</td>
-      <td>0.107381</td>
-      <td>0.115594</td>
+      <td>0.190620</td>
+      <td>0.168342</td>
+      <td>0.210101</td>
+      <td>0.214631</td>
+      <td>0.109935</td>
+      <td>0.106372</td>
     </tr>
     <tr>
       <th>1409</th>
-      <td>0.150050</td>
-      <td>0.177905</td>
-      <td>0.219030</td>
-      <td>0.202209</td>
-      <td>0.139490</td>
-      <td>0.111317</td>
+      <td>0.158701</td>
+      <td>0.178799</td>
+      <td>0.193051</td>
+      <td>0.212825</td>
+      <td>0.136950</td>
+      <td>0.119673</td>
     </tr>
     <tr>
       <th>1410</th>
-      <td>0.140831</td>
-      <td>0.188748</td>
-      <td>0.209192</td>
-      <td>0.222865</td>
-      <td>0.102037</td>
-      <td>0.136327</td>
+      <td>0.140705</td>
+      <td>0.194526</td>
+      <td>0.194751</td>
+      <td>0.218719</td>
+      <td>0.105440</td>
+      <td>0.145859</td>
     </tr>
     <tr>
       <th>1411</th>
-      <td>0.149736</td>
-      <td>0.190486</td>
-      <td>0.229676</td>
-      <td>0.211665</td>
-      <td>0.107149</td>
-      <td>0.111288</td>
+      <td>0.149059</td>
+      <td>0.158705</td>
+      <td>0.240114</td>
+      <td>0.208791</td>
+      <td>0.113009</td>
+      <td>0.130322</td>
     </tr>
   </tbody>
 </table>
@@ -2273,7 +2291,7 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c6fb2a937c7ec3cee60cf4f056c415064191763d0bc5cff262baa47293b092a3.png" src="_images/c6fb2a937c7ec3cee60cf4f056c415064191763d0bc5cff262baa47293b092a3.png" />
+<img alt="_images/2d760009a95811a25c27efcb0830e2a766bf4d2f229dbd70c79389bb070a6ea4.png" src="_images/2d760009a95811a25c27efcb0830e2a766bf4d2f229dbd70c79389bb070a6ea4.png" />
 </div>
 </div>
 <p>You can compare all of this to values extracted from a global model, fitted alongside.</p>
@@ -2284,8 +2302,8 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.13531906, 0.15205718, 0.22265273, 0.26571481, 0.10917275,
-       0.11508347])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.14386046, 0.14657487, 0.2137384 , 0.26681841, 0.11440376,
+       0.11460409])
 </code></pre></div>
 </div>
 </div>
@@ -2297,12 +2315,12 @@ forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>HR60    0.154336
-HR70    0.159758
-HR80    0.202595
-HR90    0.221217
-HC60    0.139824
-HC70    0.122270
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>HR60    0.153952
+HR70    0.159372
+HR80    0.202617
+HR90    0.221813
+HC60    0.140419
+HC70    0.121828
 dtype: float64
 </code></pre></div>
 </div>
@@ -3012,6 +3030,16 @@ a.param-doc-link::before {
 
         <tr class="default">
             <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('coplanar',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">coplanar</td>
+            <td class="value">&#x27;raise&#x27;</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('verbose',
                           this.parentElement.nextElementSibling)"
             ></i></td>
@@ -3165,7 +3193,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/edba345c12fcb7c77fdac0fb9df4dffae658b1ce4b7c9f42c58df8937da4ed03.png" src="_images/edba345c12fcb7c77fdac0fb9df4dffae658b1ce4b7c9f42c58df8937da4ed03.png" />
+<img alt="_images/2137bc2f9cbb13629f655cd491ce90665088cc8e37e6c77c969ca0bcce573374.png" src="_images/2137bc2f9cbb13629f655cd491ce90665088cc8e37e6c77c969ca0bcce573374.png" />
 </div>
 </div>
 <h3 id="out-of-bag-performance">Out-of-bag performance<a class="headerlink" href="#out-of-bag-performance" title="Link to this heading">¶</a></h3>
@@ -3278,7 +3306,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f7cbacb2529df68847c3bccbd93a4fafdae5c95d84aee29c60976eefc865f91b.png" src="_images/f7cbacb2529df68847c3bccbd93a4fafdae5c95d84aee29c60976eefc865f91b.png" />
+<img alt="_images/33cb5c08e58105e10580c60c784cf864e2f2eda367418bd2ee5700fcfc01a6be.png" src="_images/33cb5c08e58105e10580c60c784cf864e2f2eda367418bd2ee5700fcfc01a6be.png" />
 </div>
 </div>
 <h2 id="gradient-boosting-classifier">Gradient Boosting Classifier<a class="headerlink" href="#gradient-boosting-classifier" title="Link to this heading">¶</a></h2>
@@ -3997,6 +4025,16 @@ a.param-doc-link::before {
 
         <tr class="default">
             <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('coplanar',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">coplanar</td>
+            <td class="value">&#x27;raise&#x27;</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('verbose',
                           this.parentElement.nextElementSibling)"
             ></i></td>
@@ -4135,7 +4173,7 @@ forceTheme('sk-container-id-3');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7519051651143099
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7527519051651143
 </code></pre></div>
 </div>
 </div>
@@ -4177,48 +4215,48 @@ forceTheme('sk-container-id-3');</script></body></div></div>
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.154404</td>
-      <td>0.246327</td>
-      <td>0.186073</td>
-      <td>0.223552</td>
-      <td>0.083367</td>
-      <td>0.106277</td>
+      <td>0.136518</td>
+      <td>0.258043</td>
+      <td>0.186636</td>
+      <td>0.221380</td>
+      <td>0.101187</td>
+      <td>0.096236</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.173605</td>
-      <td>0.183494</td>
-      <td>0.202743</td>
-      <td>0.232666</td>
-      <td>0.089027</td>
-      <td>0.118465</td>
+      <td>0.164365</td>
+      <td>0.180673</td>
+      <td>0.196480</td>
+      <td>0.232205</td>
+      <td>0.099753</td>
+      <td>0.126525</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.233858</td>
-      <td>0.149237</td>
-      <td>0.170019</td>
-      <td>0.288885</td>
-      <td>0.077463</td>
-      <td>0.080537</td>
+      <td>0.243104</td>
+      <td>0.134697</td>
+      <td>0.156874</td>
+      <td>0.288118</td>
+      <td>0.064193</td>
+      <td>0.113014</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.159110</td>
-      <td>0.206456</td>
-      <td>0.169064</td>
-      <td>0.263997</td>
-      <td>0.109313</td>
-      <td>0.092060</td>
+      <td>0.180464</td>
+      <td>0.199408</td>
+      <td>0.170284</td>
+      <td>0.267887</td>
+      <td>0.083847</td>
+      <td>0.098110</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.070634</td>
-      <td>0.184557</td>
-      <td>0.253220</td>
-      <td>0.243258</td>
-      <td>0.098233</td>
-      <td>0.150098</td>
+      <td>0.071146</td>
+      <td>0.183141</td>
+      <td>0.255869</td>
+      <td>0.240399</td>
+      <td>0.092629</td>
+      <td>0.156816</td>
     </tr>
     <tr>
       <th>...</th>
@@ -4231,48 +4269,48 @@ forceTheme('sk-container-id-3');</script></body></div></div>
     </tr>
     <tr>
       <th>1407</th>
-      <td>0.116920</td>
-      <td>0.174529</td>
-      <td>0.382258</td>
-      <td>0.256265</td>
-      <td>0.030611</td>
-      <td>0.039418</td>
+      <td>0.122836</td>
+      <td>0.174833</td>
+      <td>0.380091</td>
+      <td>0.255345</td>
+      <td>0.029418</td>
+      <td>0.037478</td>
     </tr>
     <tr>
       <th>1408</th>
-      <td>0.228609</td>
-      <td>0.137436</td>
-      <td>0.288441</td>
-      <td>0.205854</td>
-      <td>0.093750</td>
-      <td>0.045911</td>
+      <td>0.231312</td>
+      <td>0.155676</td>
+      <td>0.271611</td>
+      <td>0.206889</td>
+      <td>0.088767</td>
+      <td>0.045745</td>
     </tr>
     <tr>
       <th>1409</th>
-      <td>0.142738</td>
-      <td>0.299661</td>
-      <td>0.269686</td>
-      <td>0.154569</td>
-      <td>0.087637</td>
-      <td>0.045708</td>
+      <td>0.115087</td>
+      <td>0.281542</td>
+      <td>0.255828</td>
+      <td>0.193624</td>
+      <td>0.096530</td>
+      <td>0.057389</td>
     </tr>
     <tr>
       <th>1410</th>
-      <td>0.124735</td>
-      <td>0.228995</td>
-      <td>0.263891</td>
-      <td>0.230463</td>
-      <td>0.029804</td>
-      <td>0.122111</td>
+      <td>0.126515</td>
+      <td>0.228035</td>
+      <td>0.264537</td>
+      <td>0.229502</td>
+      <td>0.026376</td>
+      <td>0.125036</td>
     </tr>
     <tr>
       <th>1411</th>
-      <td>0.070191</td>
-      <td>0.185821</td>
-      <td>0.330971</td>
-      <td>0.242135</td>
-      <td>0.112868</td>
-      <td>0.058014</td>
+      <td>0.070553</td>
+      <td>0.184536</td>
+      <td>0.328115</td>
+      <td>0.242309</td>
+      <td>0.109891</td>
+      <td>0.064595</td>
     </tr>
   </tbody>
 </table>
@@ -4996,6 +5034,16 @@ a.param-doc-link::before {
 
         <tr class="default">
             <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('coplanar',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">coplanar</td>
+            <td class="value">&#x27;raise&#x27;</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('verbose',
                           this.parentElement.nextElementSibling)"
             ></i></td>
@@ -5133,7 +5181,7 @@ forceTheme('sk-container-id-4');</script></body></div></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7256279988710133
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>0.7216200959638724
 </code></pre></div>
 </div>
 </div>
@@ -5836,6 +5884,16 @@ a.param-doc-link::before {
 
         <tr class="default">
             <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('coplanar',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">coplanar</td>
+            <td class="value">&#x27;raise&#x27;</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('verbose',
                           this.parentElement.nextElementSibling)"
             ></i></td>
@@ -5984,12 +6042,12 @@ dtype: float64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="s1">&#39;geometry&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwgb_reg</span><span class="o">.</span><span class="n">local_r2_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="s2">&quot;geometry&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwgb_reg</span><span class="o">.</span><span class="n">local_r2_</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 </code></pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/be0e419d5919d281711b356ca133750edb4a587ad89bceb3a0f0447f45368d96.png" src="_images/be0e419d5919d281711b356ca133750edb4a587ad89bceb3a0f0447f45368d96.png" />
+<img alt="_images/6b658d00bd3dd02c8f3c342b3e0f3a411f7e7f19a0a7dc1fb97eb7227b52268d.png" src="_images/6b658d00bd3dd02c8f3c342b3e0f3a411f7e7f19a0a7dc1fb97eb7227b52268d.png" />
 </div>
 </div>
 <h3 id="id2">Feature importance<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
@@ -6079,12 +6137,14 @@ dtype: float64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="s1">&#39;geometry&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gwgb_reg</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">[</span><span class="s2">&quot;HC60&quot;</span><span class="p">],</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gdf</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="s2">&quot;geometry&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">gwgb_reg</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">[</span><span class="s2">&quot;HC60&quot;</span><span class="p">],</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
 </code></pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fdea71830bf07ce14786347c80fec5ce5967e4bfc28ead60eea080033be917f7.png" src="_images/fdea71830bf07ce14786347c80fec5ce5967e4bfc28ead60eea080033be917f7.png" />
+<img alt="_images/dd250252988c3f77125b137a04cf1d405cea08a9b79e5b9b4bbea6ce2918532b.png" src="_images/dd250252988c3f77125b137a04cf1d405cea08a9b79e5b9b4bbea6ce2918532b.png" />
 </div>
 </div>
 <h3 id="comparison-with-global-model">Comparison with global model<a class="headerlink" href="#comparison-with-global-model" title="Link to this heading">¶</a></h3>
@@ -6096,8 +6156,8 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.06518682, 0.10324622, 0.20475016, 0.45862558, 0.10809939,
-       0.06009183])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>array([0.06535742, 0.10266324, 0.20501105, 0.45921824, 0.10844103,
+       0.05930901])
 </code></pre></div>
 </div>
 </div>
@@ -6183,7 +6243,7 @@ dtype: float64
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy", "content.action.edit"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
     
       
         <script src="_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>

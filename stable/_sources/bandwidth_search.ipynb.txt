@@ -55,7 +55,7 @@
    "source": [
     "## Interval search\n",
     "\n",
-    "Interval search tests the model at a set interval."
+    "Interval search tests the model at a set interval. The default and recommended criterion for linear models is corrected Akaike's information criterion (AICc)."
    ]
   },
   {
@@ -279,7 +279,7 @@
    "source": [
     "## Other metrics\n",
     "\n",
-    "By default, `BandwidthSearch` computes AICc, AIC and BIC, available through `metrics_`."
+    "By default, `BandwidthSearch` computes AICc, AIC and BIC for linear models, available through `metrics_`."
    ]
   },
   {
@@ -435,7 +435,7 @@
    "id": "04810c85",
    "metadata": {},
    "source": [
-    "You can also ask for a log loss and even use it as a criterion for the selection. This is useful when comparing classification models with varying prediction rate (you can also retrieve that for each bandwidth)."
+    "You can also ask for a log loss and even use it as a criterion for the selection. This is useful when comparing classification models with varying prediction rate (you can also retrieve that for each bandwidth) or when using non-linear models, where MAE or RMSE should be used instead of AICc."
    ]
   },
   {

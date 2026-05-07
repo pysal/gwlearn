@@ -42,10 +42,10 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.acf80fe7f4d9ef9e2.min.css?v=9e56d0d2" />
-        <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.74c816e3f9967dd6e.min.css?v=6cfe2491" />
+        <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
         <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-        <link rel="stylesheet" type="text/css" href="_static/custom.css?v=a80dc075" />
+        <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d127c87d" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -930,6 +930,14 @@
                   
 
 
+  
+    <a href="https://github.com/pysal/gwlearn/blob/main/docs/source/introduction.ipynb" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg>
+    </a>
+  
+  
+
 <h1 id="generic-geographically-weighted-models">Generic geographically weighted models<a class="headerlink" href="#generic-geographically-weighted-models" title="Link to this heading">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> implements generic structures for geographically weighted modelling useful for flexible prototyping of various types of local models. On top, it provides implementation of a subset of specific models for regression and classification tasks.</p>
 <h2 id="common-principle">Common principle<a class="headerlink" href="#common-principle" title="Link to this heading">¶</a></h2>
@@ -961,7 +969,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4cd6f40416928952dbfc42f4ad77b31636935690a42b86a030a0bd125a4f4d9a.png" src="_images/4cd6f40416928952dbfc42f4ad77b31636935690a42b86a030a0bd125a4f4d9a.png" />
+<img alt="_images/1219925df3d9dbdd89575ac52ec77b946ce0a3d298442003bf0145e87e9598d4.png" src="_images/1219925df3d9dbdd89575ac52ec77b946ce0a3d298442003bf0145e87e9598d4.png" />
 </div>
 </div>
 <p>Start with the model class that will be used as individual local models. In this case, <code class="docutils literal notranslate"><span class="pre">Ridge</span></code> regression.</p>
@@ -1672,6 +1680,16 @@ a.param-doc-link::before {
             ></i></td>
             <td class="param">random_state</td>
             <td class="value">None</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('coplanar',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">coplanar</td>
+            <td class="value">&#x27;raise&#x27;</td>
         </tr>
     
 
@@ -2508,6 +2526,16 @@ a.param-doc-link::before {
 
         <tr class="default">
             <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('coplanar',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">coplanar</td>
+            <td class="value">&#x27;raise&#x27;</td>
+        </tr>
+    
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
                  onclick="copyToClipboard('verbose',
                           this.parentElement.nextElementSibling)"
             ></i></td>
@@ -2708,7 +2736,7 @@ Length: 85, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/92a7ce8e54a2cf43a5dfb0406221f93fc15b88ec1433039d9999af15bcff0cac.png" src="_images/92a7ce8e54a2cf43a5dfb0406221f93fc15b88ec1433039d9999af15bcff0cac.png" />
+<img alt="_images/f4f4179dec8aea1aa77d9d0fab81062dba38a14dde014dc422358ac625cebc81.png" src="_images/f4f4179dec8aea1aa77d9d0fab81062dba38a14dde014dc422358ac625cebc81.png" />
 </div>
 </div>
 <p>With regression models, you can further retrieve local $R^2$.</p>
@@ -2742,22 +2770,7 @@ Length: 85, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/678c1962a89347eeead175570196e9f54426d24b07bd0889a8d07a69f38cbad0.png" src="_images/678c1962a89347eeead175570196e9f54426d24b07bd0889a8d07a69f38cbad0.png" />
-</div>
-</div>
-<p>For the model comparison, you can also get information criteria.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">gwr</span><span class="o">.</span><span class="n">aic_</span><span class="p">,</span> <span class="n">gwr</span><span class="o">.</span><span class="n">aicc_</span><span class="p">,</span> <span class="n">gwr</span><span class="o">.</span><span class="n">bic_</span>
-</code></pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>(np.float64(1959.9276982723031),
- np.float64(2006.2572989448213),
- np.float64(2044.5755838379869))
-</code></pre></div>
-</div>
+<img alt="_images/08a5bde9ae4eecbad905726f47bcd4b5da1196eba9bca940883145e811ac1f69.png" src="_images/08a5bde9ae4eecbad905726f47bcd4b5da1196eba9bca940883145e811ac1f69.png" />
 </div>
 </div>
 <h2 id="implemented-models">Implemented models<a class="headerlink" href="#implemented-models" title="Link to this heading">¶</a></h2>
@@ -2826,7 +2839,7 @@ Length: 85, dtype: float64
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy", "content.action.edit"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
     
       
         <script src="_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>

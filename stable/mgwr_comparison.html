@@ -42,10 +42,10 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.acf80fe7f4d9ef9e2.min.css?v=9e56d0d2" />
-        <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.74c816e3f9967dd6e.min.css?v=6cfe2491" />
+        <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
         <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-        <link rel="stylesheet" type="text/css" href="_static/custom.css?v=a80dc075" />
+        <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d127c87d" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -970,6 +970,14 @@
                   
 
 
+  
+    <a href="https://github.com/pysal/gwlearn/blob/main/docs/source/mgwr_comparison.ipynb" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg>
+    </a>
+  
+  
+
 <h1 id="comparison-with-mgwr">Comparison with MGWR<a class="headerlink" href="#comparison-with-mgwr" title="Link to this heading">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> is a modern, flexible alternative to traditional geographically weighted regression libraries like <a class="reference external" href="https://github.com/pysal/mgwr"><code class="docutils literal notranslate"><span class="pre">mgwr</span></code></a>. While both enable spatial regression analysis, they have fundamentally different design philosophies. Where <code class="docutils literal notranslate"><span class="pre">gwlearn</span></code> is designed to provide a flexible framework for a wide variety of models, <code class="docutils literal notranslate"><span class="pre">mgwr</span></code> is designed to provide performant implementaion of (multiscale) geographically weighted linear regression.</p>
 <div class="cell docutils container">
@@ -1015,9 +1023,9 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>gwlearn R²: 0.7251  AICc: 2007.4
-CPU times: user 115 ms, sys: 10.3 ms, total: 126 ms
-Wall time: 2.47 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>gwlearn R²: 0.7251  AICc: 2011.2
+CPU times: user 144 ms, sys: 14.9 ms, total: 159 ms
+Wall time: 2.63 s
 </code></pre></div>
 </div>
 </div>
@@ -1040,8 +1048,8 @@ Wall time: 2.47 s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>mgwr R²: 0.7251  AICc: 2011.2
-CPU times: user 27.3 ms, sys: 4.93 ms, total: 32.3 ms
-Wall time: 57.5 ms
+CPU times: user 27.9 ms, sys: 2.23 ms, total: 30.1 ms
+Wall time: 108 ms
 </code></pre></div>
 </div>
 </div>
@@ -1065,7 +1073,7 @@ Wall time: 57.5 ms
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>R²:   gwlearn=0.7251,  mgwr=0.7251
 AIC:  gwlearn=1960.75, mgwr=1960.75
 BIC:  gwlearn=2045.63, mgwr=2045.63
-AICc: gwlearn=2007.43, mgwr=2011.20
+AICc: gwlearn=2011.20, mgwr=2011.20
 </code></pre></div>
 </div>
 </div>
@@ -1087,8 +1095,8 @@ AICc: gwlearn=2007.43, mgwr=2011.20
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>mgwr optimal bandwidth: 70.0
-CPU times: user 167 ms, sys: 20.1 ms, total: 187 ms
-Wall time: 199 ms
+CPU times: user 143 ms, sys: 18.5 ms, total: 161 ms
+Wall time: 205 ms
 </code></pre></div>
 </div>
 </div>
@@ -1110,8 +1118,8 @@ Wall time: 199 ms
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>gwlearn optimal bandwidth: 70
-CPU times: user 612 ms, sys: 21.4 ms, total: 634 ms
-Wall time: 968 ms
+CPU times: user 708 ms, sys: 34.6 ms, total: 743 ms
+Wall time: 1.11 s
 </code></pre></div>
 </div>
 </div>
@@ -1182,7 +1190,7 @@ Wall time: 968 ms
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy", "content.action.edit"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/gwlearn/versions.json"}}</script>
     
       
         <script src="_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>
