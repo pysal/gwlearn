@@ -13,9 +13,12 @@ dependencies:
   # testing
   - geodatasets
   - mgwr
-  - pre-commit
-  - pytest
-  - pytest-cov
-  - pytest-xdist
-  - pytest-doctestplus
-  - ty
+  # docs
+  - pandarm
+  - ipykernel
+  - myst-nb
+  - sphinx
+  - sphinxcontrib-bibtex
+  - sphinx-autosummary-accessors
+  - sphinx-copybutton
+  - sphinx-immaterial
