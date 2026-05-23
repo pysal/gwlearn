@@ -12,6 +12,8 @@ installation
 :caption: User Guide
 introduction
 linear
+gw_linear_regression_example
+gw_logistic_regression_example
 ensemble
 predict
 imbalance
